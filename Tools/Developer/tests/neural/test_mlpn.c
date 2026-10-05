@@ -558,6 +558,76 @@ TEST(mlpn_a_null_layer_is_refused_at_every_depth) {
     }
 }
 
+// The contents of each layer. Before any of these checks, an oNBInput of 0 made
+// mlpn_configure() write oInput[0xFFFFFFFF] - a crash, not a failure, against
+// the unchecked code - and a null vector surfaced only in mlpn_compute().
+
+#define KBIAS_SENTINEL      (-7.0F)
+
+TEST(mlpn_configure_refuses_a_layer_with_no_input) {
+    local_setup();
+
+    vInput[KNB_IN - 1U] = KBIAS_SENTINEL;
+    vLayer.oNBInput     = 0U;
+
+    EXPECT_EQ_I(mlpn_configure(&vNetwork), KERR_MLPN_CNERR);
+    EXPECT_EQ_F32(vInput[KNB_IN - 1U], KBIAS_SENTINEL);
+}
+
+TEST(mlpn_configure_refuses_a_layer_with_no_output) {
+    local_setup();
+
+    vLayer.oNBOutput = 0U;
+    EXPECT_EQ_I(mlpn_configure(&vNetwork), KERR_MLPN_CNERR);
+}
+
+TEST(mlpn_configure_refuses_every_null_vector) {
+    uint32_t    field;
+
+    for (field = 0U; field < 4U; field++) {
+        local_setup();
+
+        switch (field) {
+            case 0U:  { vLayer.oInput      = nullptr; break; }
+            case 1U:  { vLayer.oActivation = nullptr; break; }
+            case 2U:  { vLayer.oOutput     = nullptr; break; }
+            default:  { vLayer.oWeight     = nullptr; break; }
+        }
+        EXPECT_EQ_I(mlpn_configure(&vNetwork), KERR_MLPN_CNERR);
+    }
+}
+
+TEST(mlpn_configure_refuses_an_unknown_non_linear_function) {
+    local_setup();
+
+    vLayer.oNonLinear = (uint32_t)KMLPN_SMAX + 1U;
+    EXPECT_EQ_I(mlpn_configure(&vNetwork), KERR_MLPN_CNERR);
+
+// The last known function is still accepted.
+
+    vLayer.oNonLinear = KMLPN_SMAX;
+    EXPECT_EQ_I(mlpn_configure(&vNetwork), KERR_MLPN_NOERR);
+}
+
+TEST(mlpn_configure_a_refused_network_is_left_untouched) {
+    mlpnLayer_t     bad;
+
+    local_setup();
+
+// A valid first layer and an invalid second one: every layer is checked
+// before any is initialised, so the first layer's bias slot is not written.
+
+    bad          = vLayer;
+    bad.oNBInput = 0U;
+
+    vInput[KNB_IN - 1U] = KBIAS_SENTINEL;
+    vNetwork.oNBLayer   = 2U;
+    vNetwork.oLayer_L2  = &bad;
+
+    EXPECT_EQ_I(mlpn_configure(&vNetwork), KERR_MLPN_CNERR);
+    EXPECT_EQ_F32(vInput[KNB_IN - 1U], KBIAS_SENTINEL);
+}
+
 // The module descriptor
 // =====================
 

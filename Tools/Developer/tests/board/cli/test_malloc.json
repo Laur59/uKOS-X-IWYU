@@ -1,0 +1,32 @@
+{
+  "module": "test_malloc",
+  "note": "test_malloc N starts ten anonymous processes at KKERN_PRIORITY_MEDIUM_03 - above the console - that fill, check and free the heap forever. Nothing can stop them (kill works on module names), so the stress run itself is NOT a row: it would leave the board unusable until a reset, and on Discovery_N657, the one board that builds it, SWD cannot reset a board that is not faulted. Only the paths that must start nothing are here. Never pass 0, a non-number or a count whose N*4 wraps: those allocate and START the test.",
+
+  "tests": [
+    {
+      "id": "test_malloc/no-argument",
+      "cmd": "test_malloc",
+      "expect": ["^Random test of the memo_malloc\\.$", "^Incorrect arguments\\.$"],
+      "refute": ["^Test in progress"],
+      "timeout": 10
+    },
+    {
+      "id": "test_malloc/too-many-arguments",
+      "cmd": "test_malloc 10 20",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["^Test in progress"],
+      "timeout": 10
+    },
+    {
+      "id": "test_malloc/pool-too-large",
+      "cmd": "test_malloc 100000000",
+      "expect": ["^Not enough memory\\. Restart!$"],
+      "refute": ["^Test in progress"],
+      "then": [
+        {"send": "process", "timeout": 15, "refute": ["Process: [0-9]"]}
+      ],
+      "timeout": 10,
+      "note": "400 MB of pointers cannot be allocated on any board, so the first reservation fails and nothing may be started"
+    }
+  ]
+}

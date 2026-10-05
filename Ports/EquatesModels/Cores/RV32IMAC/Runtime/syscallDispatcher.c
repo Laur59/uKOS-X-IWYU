@@ -52,11 +52,18 @@ void    syscallDispatcher(void) {
     uintptr_t   mepc   = (uintptr_t)frame[0];
 
     if (mepc == (uintptr_t)priv_returnElevation) {
-        frame[2] |= (uint32_t)MSTATUS_MPP;          // elevate: MPP = 3 (M-mode)
+
+// elevate: MPP = 3 (M-mode)
+
+        frame[2] |= (uint32_t)MSTATUS_MPP;
         return;
     }
+
     if (mepc == (uintptr_t)priv_returnRestore) {
-        frame[2] &= ~(uint32_t)MSTATUS_MPP;         // restore: MPP = 0 (U-mode)
+
+// restore: MPP = 0 (U-mode)
+
+        frame[2] &= ~(uint32_t)MSTATUS_MPP;
         return;
     }
     #endif

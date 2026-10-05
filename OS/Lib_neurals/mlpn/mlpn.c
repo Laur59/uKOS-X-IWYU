@@ -74,6 +74,7 @@ MODULE(
 
 static  void    local_init(void);
 static  void    local_initialiseLayer(mlpnLayer_t *layer);
+static  bool    local_isLayerValid(const mlpnLayer_t *layer);
 static  void    local_computeLayer(mlpnLayer_t *layer);
 static  void    local_nonLinear_tan0(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput);
 static  void    local_nonLinear_tan1(const float32_t *w, const float32_t *x, float32_t *a, float32_t *y, uint32_t nbInput, uint32_t nbOutput);
@@ -89,23 +90,26 @@ static  void    local_nonLinear_smax(const float32_t *w, const float32_t *x, flo
  * Call example in C:
  *
  * \code{.c}
- * // Layer 1
+ * // Layer 1: 3 inputs + the bias, 5 neurons
  *
- * #define    KMLPN_L1_NB_IN     (3 + 1)                  // 3 inputs + the bias
- * #define    KMLPN_L1_NB_OUT    5                        // 5 outputs
+ * #define    KMLPN_L1_NB_IN     (3 + 1)
+ * #define    KMLPN_L1_NB_OUT    5
  *
  * static                  float32_t          vInput_L1[KMLPN_L1_NB_IN];
  * static                  float32_t          vActivation_L1[KMLPN_L1_NB_OUT];
  * static                  float32_t          vOutput_L1[KMLPN_L1_NB_OUT + 1];
  * static     const        float32_t          vWeight_L1[KMLPN_L1_NB_OUT][KMLPN_L1_NB_IN] = {
- *                                                { -0.7654f, 1.3442f, 4,6543f,  3,1234f },
- *                                                { 0.2654f, -5.3442f, 1,6543f,  8,1234f },
- *                                                { 0.3654f,  6.3442f, -2,6543f, 7,1234f },
- *                                                { 0.4654f, -7.3442f, 6,6543f,  3,1234f },
- *                                                { 05654f,  -6.3442f, 4,6543f,  1,1234f }
+ *                                                { -0.7654f,  1.3442f,  4.6543f,  3.1234f },
+ *                                                {  0.2654f, -5.3442f,  1.6543f,  8.1234f },
+ *                                                {  0.3654f,  6.3442f, -2.6543f,  7.1234f },
+ *                                                {  0.4654f, -7.3442f,  6.6543f,  3.1234f },
+ *                                                {  0.5654f, -6.3442f,  4.6543f,  1.1234f }
  *                                            };
  *
- * static     const        mlpnLayer_t       aLayer_L1 = {
+ * // A layer is not const: mlpnNetwork_t holds non-const mlpnLayer_t pointers.
+ * // mlpn_configure writes the bias (the last entry) of each input vector
+ *
+ * static                  mlpnLayer_t        aLayer_L1 = {
  *                                                KMLPN_TAN0,
  *                                                KMLPN_L1_NB_IN,
  *                                                KMLPN_L1_NB_OUT,
@@ -115,26 +119,22 @@ static  void    local_nonLinear_smax(const float32_t *w, const float32_t *x, flo
  *                                                &vWeight_L1[0][0]
  *                                            };
  *
- * // Layer 2
+ * // Layer 2: the 5 outputs of layer 1 + the bias, 2 neurons
  *
- * #define    KMLPN_L2_NB_IN     (KMLPN_L1_NB_OUT + 1)    // 5 inputs + the bias
- * #define    KMLPN_L1_NB_OUT    2                        // 2 outputs
+ * #define    KMLPN_L2_NB_IN     (KMLPN_L1_NB_OUT + 1)
+ * #define    KMLPN_L2_NB_OUT    2
  *
- * static                  float32_t          vActivation_L2[KMLPN_L1_NB_OUT];
- * static                  float32_t          vOutput_L2[KMLPN_L1_NB_OUT + 1];
- * static     const        float32_t          vWeight_L2[KMLPN_L1_NB_OUT][KMLPN_L2_NB_IN] = {
- *                                                { -0.3654f, 6.3442f },
- *                                                { 0.4654f,  7.3432f },
- *                                                { 0.3654f,  9.3482f },
- *                                                { 0.4654f,  8.3442f },
- *                                                { 0.5684f,  3.3472f },
- *                                                { 0.0654f,  2.3442f },
+ * static                  float32_t          vActivation_L2[KMLPN_L2_NB_OUT];
+ * static                  float32_t          vOutput_L2[KMLPN_L2_NB_OUT + 1];
+ * static     const        float32_t          vWeight_L2[KMLPN_L2_NB_OUT][KMLPN_L2_NB_IN] = {
+ *                                                { -0.3654f,  0.4654f,  0.3654f,  0.4654f,  0.5684f,  0.0654f },
+ *                                                {  6.3442f,  7.3432f,  9.3482f,  8.3442f,  3.3472f,  2.3442f }
  *                                            };
  *
- * static     const        mlpnLayer_t       aLayer_L2 = {
+ * static                  mlpnLayer_t        aLayer_L2 = {
  *                                                KMLPN_TAN0,
  *                                                KMLPN_L2_NB_IN,
- *                                                KMLPN_L1_NB_OUT,
+ *                                                KMLPN_L2_NB_OUT,
  *                                                &vOutput_L1[0],
  *                                                &vActivation_L2[0],
  *                                                &vOutput_L2[0],
@@ -143,83 +143,57 @@ static  void    local_nonLinear_smax(const float32_t *w, const float32_t *x, flo
  *
  * // The full network
  *
- * #define    KMLPN_NB_LAYERS    2                        // 2 layers
+ * #define    KMLPN_NB_LAYERS    2
  *
- * static     const        mlpnNetwork_t     aNetwork = {
- *                                               KMLPN_NB_LAYERS,
- *                                               &aLayer_L1,
- *                                               &aLayer_L2,
- *                                               nullptr,
- *                                               nullptr,
- *                                               nullptr
+ * static     const        mlpnNetwork_t      aNetwork = {
+ *                                                KMLPN_NB_LAYERS,
+ *                                                &aLayer_L1,
+ *                                                &aLayer_L2,
+ *                                                nullptr,
+ *                                                nullptr,
+ *                                                nullptr
  *                                            };
  *
  *    status = mlpn_configure(&aNetwork);
- *
- * }
  * \endcode
  *
  * \param[in]   *network        Ptr on the network description
  * \return      KERR_MLPN_NOERR OK
- * \return      KERR_MLPN_GEERR General error
- * \return      KERR_MLPN_NOMEM Not enough memory
+ * \return      KERR_MLPN_GEERR General error (a layer count outside 1..5, a null layer)
+ * \return      KERR_MLPN_CNERR Configuration error (an unknown non-linear function, no input or
+ *                              no output, a null vector or weight matrix); nothing is written
  *
  */
 int32_t mlpn_configure(const mlpnNetwork_t *network) {
+    mlpnLayer_t     *layers[5];
+    uint32_t        i;
 
     local_init();
 
-// Initialise all the layers
+    layers[0] = network->oLayer_L1;
+    layers[1] = network->oLayer_L2;
+    layers[2] = network->oLayer_L3;
+    layers[3] = network->oLayer_L4;
+    layers[4] = network->oLayer_L5;
 
-    switch (network->oNBLayer) {
-        case 1U: {
-            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
-            local_initialiseLayer(network->oLayer_L1);
-            break;
-        }
-        case 2U: {
-            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
-            local_initialiseLayer(network->oLayer_L1);
-            local_initialiseLayer(network->oLayer_L2);
-            break;
-        }
-        case 3U: {
-            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L3 == nullptr) { return KERR_MLPN_GEERR; }
-            local_initialiseLayer(network->oLayer_L1);
-            local_initialiseLayer(network->oLayer_L2);
-            local_initialiseLayer(network->oLayer_L3);
-            break;
-        }
-        case 4U: {
-            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L3 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L4 == nullptr) { return KERR_MLPN_GEERR; }
-            local_initialiseLayer(network->oLayer_L1);
-            local_initialiseLayer(network->oLayer_L2);
-            local_initialiseLayer(network->oLayer_L3);
-            local_initialiseLayer(network->oLayer_L4);
-            break;
-        }
-        case 5U: {
-            if (network->oLayer_L1 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L2 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L3 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L4 == nullptr) { return KERR_MLPN_GEERR; }
-            if (network->oLayer_L5 == nullptr) { return KERR_MLPN_GEERR; }
-            local_initialiseLayer(network->oLayer_L1);
-            local_initialiseLayer(network->oLayer_L2);
-            local_initialiseLayer(network->oLayer_L3);
-            local_initialiseLayer(network->oLayer_L4);
-            local_initialiseLayer(network->oLayer_L5);
-            break;
-        }
-        default: { return KERR_MLPN_GEERR; }
+    if ((network->oNBLayer < 1U) || (network->oNBLayer > 5U)) {
+        return KERR_MLPN_GEERR;
     }
 
+// Every layer is checked before any is initialised, so a refused network is
+// left untouched. The contents were never checked: an oNBInput of 0 made
+// local_initialiseLayer() write oInput[0xFFFFFFFF], and a null vector or weight
+// pointer was only found by mlpn_compute() dereferencing it
+
+    for (i = 0U; i < network->oNBLayer; i++) {
+        if (layers[i] == nullptr) { return KERR_MLPN_GEERR; }
+    }
+    for (i = 0U; i < network->oNBLayer; i++) {
+        if (!local_isLayerValid(layers[i])) { return KERR_MLPN_CNERR; }
+    }
+    for (i = 0U; i < network->oNBLayer; i++) {
+        local_initialiseLayer(layers[i]);
+    }
     return KERR_MLPN_NOERR;
 }
 
@@ -229,20 +203,18 @@ int32_t mlpn_configure(const mlpnNetwork_t *network) {
  * Call example in C:
  *
  * \code{.c}
- * // Compute the network
+ * // Compute the network (declared as in the mlpn_configure example)
  *
- * vInput_L1[0] = accelerationX;
- * vInput_L1[1] = accelerationY;
- * vInput_L1[2] = accelerationZ;
+ *    vInput_L1[0] = accelerationX;
+ *    vInput_L1[1] = accelerationY;
+ *    vInput_L1[2] = accelerationZ;
  *
  *    status = mlpn_compute(&aNetwork);
  *
- *    (void)dprintf(KSYST, "Activation %3ld.%03ld %3ld.%03ld, Output %3ld.%03ld %3ld.%03ld\n", FLOAT_3(vActivation_L2[0]),
- *                                                                                             FLOAT_3(Activation_L2[1]),
- *                                                                                             FLOAT_3(vOutput_L2[0]),
- *                                                                                             FLOAT_3(vOutput_L2[1]));
- *
- * }
+ *    (void)dprintf(KSYST, "Activation %.3f %.3f, Output %.3f %.3f\n", (double)vActivation_L2[0],
+ *                                                                      (double)vActivation_L2[1],
+ *                                                                      (double)vOutput_L2[0],
+ *                                                                      (double)vOutput_L2[1]);
  * \endcode
  *
  * \param[in]   *network        Ptr on the network description
@@ -319,6 +291,23 @@ int32_t mlpn_compute(const mlpnNetwork_t *network) {
  */
 static  void    local_init(void) {
 
+}
+
+/*
+ * \brief local_isLayerValid
+ *
+ * - A layer mlpn_configure() can initialise and mlpn_compute() can run: a known
+ *   non-linear function, at least one input (the bias) and one output, and all
+ *   four vectors present
+ *
+ */
+static  bool    local_isLayerValid(const mlpnLayer_t *layer) {
+
+    if (layer->oNonLinear > (uint32_t)KMLPN_SMAX)                   { return false; }
+    if ((layer->oNBInput == 0U) || (layer->oNBOutput == 0U))        { return false; }
+    if ((layer->oInput  == nullptr) || (layer->oActivation == nullptr)) { return false; }
+    if ((layer->oOutput == nullptr) || (layer->oWeight     == nullptr)) { return false; }
+    return true;
 }
 
 /*
@@ -519,11 +508,11 @@ static void local_nonLinear_tan1(const float32_t *w, const float32_t *x, float32
 /*
  * \brief local_nonLinear_tan2
  *
- * - This is a very fast linear approximation of the tanh function
+ * - This is a fast rational approximation of the tanh function
  *
- *   tanh(p) = -1, if p <= -1
- *   tanh(p) = +1, if p >= +1
- *   tanh(p) =  p, if (p > -1) && (p < +1)
+ *   tanh(p) = -1, if p <= -3
+ *   tanh(p) = +1, if p >= +3
+ *   tanh(p) = p (27 + p^2) / (27 + 9 p^2), otherwise
  *
  */
 [[gnu::always_inline]]
@@ -606,7 +595,6 @@ static  void    local_nonLinear_tan3(const float32_t *w, const float32_t *x, flo
 static  inline  float32_t   local_relu(float32_t p) {
 
     if (p <= 0.0F) { return 0.0F; }
-    if (p > +1.0F) { return p;  }
     return p;
 }
 

@@ -3,11 +3,11 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * Goal:    Basic LVGL configuration
- *      Set 16 & 26 pixel fonts.
- *      Internal memory allocator
+ *          Set 16 & 26 pixel fonts.
+ *          Internal memory allocator
  *
- *      Configuration file for LVGL v9.5.x
- *  (based on lv_conf_template.h v9.5.0)
+ *          Configuration file for LVGL v9.6.x
+ *          (based on lv_conf_template.h v9.6.0)
  */
 
 #if 1
@@ -18,9 +18,10 @@
 // COLOR SETTINGS
 // --------------
 
-// Color depth: 1 (I1), 8 (L8), 16 (RGB565), 24 (RGB888), 32 (XRGB8888)
+// Default color format: LV_COLOR_FORMAT_I1, _L8, _RGB565, _RGB888, _XRGB8888, ...
+// (LV_COLOR_DEPTH is derived from it)
 //
-#define LV_COLOR_DEPTH                                  32
+#define LV_COLOR_FORMAT_DEFAULT                         LV_COLOR_FORMAT_XRGB8888
 
 // STDLIB WRAPPER SETTINGS
 // -----------------------
@@ -137,7 +138,6 @@
 #define LV_USE_ASSERT_MEM_INTEGRITY                     0
 #define LV_USE_ASSERT_OBJ                               0
 
-#define LV_ASSERT_HANDLER_INCLUDE                       <stdint.h>
 #define LV_ASSERT_HANDLER                               while(1);
 
 // Others
@@ -217,12 +217,6 @@
 #define LV_USE_CALENDAR                                 1
 #if LV_USE_CALENDAR
     #define LV_CALENDAR_WEEK_STARTS_MONDAY              0
-    #if LV_CALENDAR_WEEK_STARTS_MONDAY
-        #define LV_CALENDAR_DEFAULT_DAY_NAMES           { "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su" }
-    #else
-        #define LV_CALENDAR_DEFAULT_DAY_NAMES           { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" }
-    #endif
-    #define LV_CALENDAR_DEFAULT_MONTH_NAMES             { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
     #define LV_USE_CALENDAR_HEADER_ARROW                1
     #define LV_USE_CALENDAR_HEADER_DROPDOWN             1
     #define LV_USE_CALENDAR_CHINESE                     0

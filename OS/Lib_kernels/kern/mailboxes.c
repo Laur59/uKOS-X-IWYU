@@ -359,7 +359,10 @@ int32_t kern_writeQueue(mbox_t *handle, uintptr_t message, uint32_t timeout) {
  * \endcode
  *
  * \param[in]   *handle         Ptr on the handle
- * \param[out]  **message       Ptr on the message (return nullptr in case of error)
+ * \param[out]  **message       Ptr on the message. In reference mode it is set to
+ *                              nullptr before the transfer, so a timeout or a kill
+ *                              leaves nullptr; a guard failure (NOMBO, MBNCF, FRISR)
+ *                              and copy mode leave it as the caller had it
  * \param[out]  *size           Ptr on the  size of the message
  * \param[in]   timeout         Timeout (1-ms of resolution)
  *                              KWAIT_INFINITY, waiting forever
@@ -446,8 +449,11 @@ int32_t kern_readQueue(mbox_t *handle, uintptr_t *message, uint32_t timeout) {
  *    status = kern_killMailbox(mailBox);
  * \endcode
  *
- * - If (mailbox still contain messages)
- *   Then return error
+ * - Messages still queued are discarded. For a mailbox that passes its
+ *   messages by reference (oDataEntrySize == 0) the kernel frees only its
+ *   own FIFO, not the buffers the messages point to: the writer must drain
+ *   and free them before the kill, or they leak
+ * - Processes waiting on the mailbox are woken with KERR_KERN_MBKIL
  *
  * \param[in]   *handle         Ptr on the handle
  * \return      KERR_KERN_NOERR OK
@@ -701,7 +707,10 @@ static  void    local_write(uint32_t core, mbox_t *handle, void *message, uint32
  *
  * \param[in]   core            Core number
  * \param[in]   *handle         Ptr on the handle
- * \param[out]  **message       Ptr on the message (return nullptr in case of error)
+ * \param[out]  **message       Ptr on the message. In reference mode it is set to
+ *                              nullptr before the transfer, so a timeout or a kill
+ *                              leaves nullptr; a guard failure (NOMBO, MBNCF, FRISR)
+ *                              and copy mode leave it as the caller had it
  * \param[out]  *size           Ptr on the size of the message
  * \param[in]   timeout         Timeout (1-ms of resolution)
  *                              KWAIT_INFINITY, waiting forever

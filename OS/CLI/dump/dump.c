@@ -5,7 +5,7 @@
  * Goal:     This tool allows to dump a memory area.
  */
 
-#include    <stdint.h>
+#include    <inttypes.h>
 #include    <stdio.h>
 #include    <stdlib.h>
 
@@ -146,11 +146,14 @@ static  void    local_printLine(const uint8_t *memory, uint32_t nbBytes) {
             char_t      ascii[(8U * 2U) + 1U], element;
     const   uint8_t     *param;
 
-    for (i = 0U; i < ((nbBytes + 16U) / 16U); i++) {
+// One line per 16 bytes, rounded up: (nbBytes + 16) / 16 printed, and read, a
+// whole line past the range, and a line for an empty one
+
+    for (i = 0U; i < ((nbBytes + 15U) / 16U); i++) {
         offset = (size_t)i * (size_t)16U;
         param  = memory + offset;
 
-        (void)dprintf(KSYST, "0x%016X: ", (uintptr_t)param);
+        (void)dprintf(KSYST, "0x%016"PRIXPTR": ", (uintptr_t)param);
         for (j = 0U; j < 15U; j++) {
             (void)dprintf(KSYST, "%02X,",  *(memory + ((size_t)i * (size_t)16U) + (size_t)j));
         }

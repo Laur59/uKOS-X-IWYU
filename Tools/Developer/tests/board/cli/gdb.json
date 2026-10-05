@@ -1,0 +1,21 @@
+{
+  "module": "gdb",
+  "note": "gdb freezes the uKernel for a debugger: a process enters a critical section and spins forever. The console is gone until a reset, so the row is terminal - run-board-tests never runs it, board-regression only with --allow-terminal, last, and resets the board afterwards through its probe. The spin (no WFI) keeps the debug port reachable even on Discovery_N657, where a running board is not.",
+
+  "tests": [
+    {
+      "id": "gdb/freeze",
+      "cmd": "gdb",
+      "expect": ["^Freeze the uKernel\\.$"],
+      "then": [
+        {"await": "target extended-remote localhost:3333", "timeout": 5},
+        {"absent": "System dead! Core DUMP", "timeout": 2},
+        {"write": "uKOS"},
+        {"absent": "^Board:", "timeout": 5}
+      ],
+      "timeout": 10,
+      "terminal": "freezes the kernel for a debugger; only a reset brings it back",
+      "note": "the instructions for the host come from the freezing process, which freezes one second later (gdb.c: kern_suspendProcess(1000U)) - hence the 2 s wait, which also asserts it froze rather than crashed. Then the console must stay silent"
+    }
+  ]
+}

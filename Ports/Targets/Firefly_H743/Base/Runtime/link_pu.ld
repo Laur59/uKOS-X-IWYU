@@ -54,12 +54,12 @@ INCLUDE     STM32H743xI.ld
 /*          Frame Buffer         0x71000000  (User)         */
 /*            └ 16384K                                      */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
 config_sizeData_u           = stm_lnSRAM123 - linker_sizeStackFirst_C0;
 config_sizeData_p           = stm_lnSRAM4 - linker_sizeStackSystem_C0;
-config_sizeHeap             = (16384K);
-config_sizeUserMemory       = (16384K);
+config_sizeHeap             = 16M;
+config_sizeUserMemory       = 16M;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -80,20 +80,20 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0x70000000;                                                   /* 0x70000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (32768K);                                                     /* Length of the external memory                            */
+linker_lnEXRAM              = 32M;                                                          /* Length of the external memory                            */
 
 linker_stLCD_F_BUFFER       = 0x71000000;                                                   /* 0x71000000: FrameBuffer, start of the graphic memory     */
-linker_lnLCD_F_BUFFER       = (16384K);                                                     /* Length of the graphic memory                             */
+linker_lnLCD_F_BUFFER       = 16M;                                                          /* Length of the graphic memory                             */
 
 linker_stUMemo              = 0x70800000;                                                   /* 0x70800000: UMemo, start of the user memory              */
-linker_lnUMemo              = (8192K);                                                      /* Length of the user memory                                */
+linker_lnUMemo              = 8M;                                                           /* Length of the user memory                                */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
 linker_stHeap               = 0x70000000;                                                   /* 0x70000000: start of the heap                            */
-linker_lnHeap               = (8192K);                                                      /* Length of the heap                                       */
+linker_lnHeap               = 8M;                                                           /* Length of the heap                                       */
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */
@@ -119,11 +119,11 @@ linker_SZ_RAM_INT_0         = 18;                                               
 
 linker_ST_RAM_INT_1         = stm_stSRAM1;                                                  /* 0x30000000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_1         = 18;                                                           /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
-hex_SZ_RAM_INT_1            = (1 << (linker_SZ_RAM_INT_1+1));                               /* 512-K                                                    */
+hex_SZ_RAM_INT_1            = 1 << (linker_SZ_RAM_INT_1 + 1);                               /* 512-K                                                    */
 
 linker_ST_RAM_INT_2_OS      = stm_stSRAM4;                                                  /* 0x38000000: Privileged RAM                               */
 linker_SZ_RAM_INT_2_OS      = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
-hex_SZ_RAM_INT_2_OS         = (1 << (linker_SZ_RAM_INT_2_OS+1));                            /* 64-K                                                     */
+hex_SZ_RAM_INT_2_OS         = 1 << (linker_SZ_RAM_INT_2_OS + 1);                            /* 64-K                                                     */
 
 linker_ST_RAM_EXT_0         = linker_stEXRAM;                                               /* 0x70000000: Privileged/User RAM                          */
 linker_SZ_RAM_EXT_0         = 23;                                                           /* 16-M = 2^(SZ + 1), SZ = log2(16-M) - 1                   */
@@ -143,9 +143,9 @@ MEMORY {
     prgm_data_u (rwx)   : ORIGIN = linker_stPrgmData_u, LENGTH = linker_lnPrgmData_u
 }
 
-ASSERT((linker_stPrgmData_p) < (linker_ST_RAM_INT_2_OS + hex_SZ_RAM_INT_2_OS), "Start address of data outside protected region")
+ASSERT(linker_stPrgmData_p < (linker_ST_RAM_INT_2_OS + hex_SZ_RAM_INT_2_OS), "Start address of data outside protected region")
 ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p) <= (linker_ST_RAM_INT_2_OS + hex_SZ_RAM_INT_2_OS), "End address of data outside protected region")
-ASSERT((linker_stPrgmData_u) >= (linker_ST_RAM_INT_1), "Start address of user data outside user region")
+ASSERT(linker_stPrgmData_u >= linker_ST_RAM_INT_1, "Start address of user data outside user region")
 ASSERT((linker_stPrgmData_u + linker_lnPrgmData_u) <= (linker_ST_RAM_INT_1 + hex_SZ_RAM_INT_1), "End address of user data outside user region")
 
 INCLUDE     system_pu.ld

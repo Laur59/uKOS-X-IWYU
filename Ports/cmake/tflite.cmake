@@ -63,4 +63,6 @@ macro(add_Tflite)
 
     # Append to the link list consumed by system.cmake
     list(APPEND UKOS_COMPONENTS ${TFLITE})
+
+    ukos_check_third_party(Tflite-micro)
 endmacro()

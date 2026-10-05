@@ -38,7 +38,7 @@
 cmake_minimum_required(VERSION 3.31)
 
 project(LVGL_Package
-    VERSION 9.5.0
+    VERSION 9.6.0
     DESCRIPTION "LVGL package with upstream source fetch"
     LANGUAGES NONE
 )
@@ -51,6 +51,10 @@ endif()
 
 # Toolchain used for every per-core archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
+
+# Stamp Library/ at install time and keep a copy in the shared cache
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+ukos_library_cache_begin(LVGL)
 
 # Include ExternalProject module for downloading and building
 include(ExternalProject)
@@ -66,8 +70,8 @@ message("")
 #------------------------------------------------------------------------
 
 # Package version and commit hash (matching build.sh)
-set(LVGL_VERSION "9.5.0")
-set(LVGL_HASH "v9.5.0")
+set(LVGL_VERSION "9.6.0")
+set(LVGL_HASH "v9.6.0")
 
 message(STATUS "Fetching LVGL version ${LVGL_VERSION} (commit ${LVGL_HASH})")
 
@@ -227,6 +231,9 @@ add_custom_target(build_all_lvgl ALL
     DEPENDS ${ALL_CORE_PROJECTS}
     COMMENT "Building LVGL for all architectures"
 )
+
+# Stamp and cache what was installed (must follow the last install() rule)
+ukos_library_cache_end(LVGL)
 
 #------------------------------------------------------------------------
 # Summary

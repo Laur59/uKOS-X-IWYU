@@ -189,11 +189,6 @@ ukos_add_cli_module_test(
     MODULE_SOURCE ${UKOS_ROOT}/OS/CLI/kill/kill.c
     TEST_SOURCE   cli/test_kill.c)
 
-ukos_add_cli_module_test(
-    NAME          ukos_tests_run
-    MODULE_SOURCE ${UKOS_ROOT}/OS/CLI/run/run.c
-    TEST_SOURCE   cli/test_run.c)
-
 # Tier 2 - against the stub port layer. Each module is built twice so both arms
 # of the real header's PRIVILEGED_USER_S guard are covered: the default target
 # carries it (as USER_MODE=ON does in production), the _nouser one does not.
@@ -239,6 +234,12 @@ ukos_add_cli_module_test(PORT_STUB
     NAME          ukos_tests_port_sloader
     MODULE_SOURCE ${UKOS_ROOT}/OS/CLI/sloader/sloader.c
     TEST_SOURCE   cli/port/test_sloader.c
+    DEFINES       PRIVILEGED_USER_S)
+
+ukos_add_cli_module_test(PORT_STUB
+    NAME          ukos_tests_port_run
+    MODULE_SOURCE ${UKOS_ROOT}/OS/CLI/run/run.c
+    TEST_SOURCE   cli/port/test_run.c
     DEFINES       PRIVILEGED_USER_S)
 
 ukos_add_cli_module_test(PORT_STUB

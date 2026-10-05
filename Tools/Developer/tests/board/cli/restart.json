@@ -1,0 +1,20 @@
+{
+  "module": "restart",
+  "note": "restart is on ukos-serial's unsafe list. It reboots the board through machine_restart(), so everything the earlier rows left behind - the clock set by date, a leaked reservation or heap block - is gone afterwards; rows that poison run after all others, so none of them is undone by accident.",
+
+  "tests": [
+    {
+      "id": "restart/reboots",
+      "cmd": "restart",
+      "expect": ["^System restart\\.$",
+                 "^uKOS-X, \\(c\\) [0-9]{4}(-[0-9]{4})?, "],
+      "then": [
+        {"send": "uKOS", "timeout": 10, "expect": ["^Board:   ${BOARD}$", "^VCS#:    ${VCS}$"]}
+      ],
+      "timeout": 30,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "the capture must hold the boot banner of the new start, then the board must still be the same firmware"
+    }
+  ]
+}

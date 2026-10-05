@@ -85,8 +85,9 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
         }
     }
 
-// Give the console back with its original priority, whatever happened
+// Give the console back with its original priority and privilege, whatever happened
 
     kern_setPriority(process, priority);
+    PRIVILEGE_RESTORE;
     return status;
 }

@@ -1,0 +1,13 @@
+{
+  "module": "process",
+
+  "tests": [
+    {
+      "id": "process/list",
+      "cmd": "process",
+      "expect": ["console"],
+      "refute": ["Freezed"],
+      "timeout": 15
+    }
+  ]
+}

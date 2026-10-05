@@ -1,0 +1,15 @@
+{
+  "module": "semaphore",
+
+  "tests": [
+    {
+      "id": "semaphore/list",
+      "cmd": "semaphore",
+      "expect": ["^List of the system semaphores\\.$",
+                 "^Semaphores used by the core 0$"],
+      "refute": ["Mutex identifier"],
+      "timeout": 15,
+      "note": "mutex and semaphore are near-identical; the wording is what says which ran"
+    }
+  ]
+}

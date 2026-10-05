@@ -1,0 +1,13 @@
+{
+  "module": "mutex",
+
+  "tests": [
+    {
+      "id": "mutex/list",
+      "cmd": "mutex",
+      "expect": ["^List of the system mutexes\\.$",
+                 "^Mutexes used by the core 0$"],
+      "timeout": 15
+    }
+  ]
+}

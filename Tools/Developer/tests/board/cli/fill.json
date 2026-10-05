@@ -1,0 +1,93 @@
+{
+  "module": "fill",
+  "note": "fill is on ukos-serial's unsafe list, so every row needs --allow-unsafe. It writes 16 bytes of the user-application memory (linker_stUMemo + 0x100, free while nothing is downloaded, clear of the header run and the loaders use) and reads them back with dump. An end below the start is refused with \"Protocol error.\" and writes nothing; before fix/fill-reversed-range it underflowed and wrote ~4 GB, so never run the reversed-range rows against an older image.",
+
+  "tests": [
+    {
+      "id": "fill/no-argument",
+      "cmd": "fill",
+      "expect": ["^Memory fill\\.$", "^Protocol error\\.$"],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"]
+    },
+    {
+      "id": "fill/unknown-flag",
+      "cmd": "fill -X 100 110 AA",
+      "expect": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "a five-argument form whose flag is not -S must write nothing"
+    },
+    {
+      "id": "fill/round-trip",
+      "cmd": "fill ${sym:linker_stUMemo+110} ${sym:linker_stUMemo+120} 00",
+      "then": [
+        {"send": "fill ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+110} AA", "timeout": 10, "unsafe": true},
+        {"send": "dump ${sym:linker_stUMemo+100} 11", "timeout": 10,
+         "expect": ["^0x0*${sym:linker_stUMemo+100}: (AA,){15}AA  ",
+                    "^0x0*${sym:linker_stUMemo+110}: 00,"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "the end address is exclusive: the byte at +0x110 stays 00. The first fill clears it, so a previous run cannot make this pass"
+    },
+    {
+      "id": "fill/privileged-round-trip",
+      "cmd": "fill -S ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+110} 55",
+      "then": [
+        {"send": "dump -S ${sym:linker_stUMemo+100} 10", "timeout": 10,
+         "expect": ["^0x0*${sym:linker_stUMemo+100}: (55,){15}55  U{16}$"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"]
+    },
+    {
+      "id": "fill/empty-range-writes-nothing",
+      "cmd": "fill ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+110} 55",
+      "then": [
+        {"send": "fill ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+100} 11", "timeout": 10, "unsafe": true},
+        {"send": "dump ${sym:linker_stUMemo+100} 10", "timeout": 10,
+         "expect": ["^0x0*${sym:linker_stUMemo+100}: (55,){15}55  "],
+         "refute": ["^0x0*${sym:linker_stUMemo+100}: 11,"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "start == end: zero bytes. The row writes its own 55 pattern first, so it holds whatever ran before it (it used to rely on fill/privileged-round-trip, and failed when -t left that row out)"
+    },
+    {
+      "id": "fill/reversed-range-refused",
+      "cmd": "fill ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+110} 55",
+      "then": [
+        {"send": "fill ${sym:linker_stUMemo+110} ${sym:linker_stUMemo+100} 11", "timeout": 10, "unsafe": true,
+         "expect": ["^Protocol error\\.$"]},
+        {"send": "dump ${sym:linker_stUMemo+100} 10", "timeout": 10,
+         "expect": ["^0x0*${sym:linker_stUMemo+100}: (55,){15}55  "],
+         "refute": ["11,"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "end below start: refused, nothing written. Against an image without the fix this row writes ~4 GB and faults the board"
+    },
+    {
+      "id": "fill/privileged-reversed-range-refused",
+      "cmd": "fill -S ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+110} 55",
+      "then": [
+        {"send": "fill -S ${sym:linker_stUMemo+110} ${sym:linker_stUMemo+100} 11", "timeout": 10, "unsafe": true,
+         "expect": ["^Protocol error\\.$"]},
+        {"send": "dump -S ${sym:linker_stUMemo+100} 10", "timeout": 10,
+         "expect": ["^0x0*${sym:linker_stUMemo+100}: (55,){15}55  "],
+         "refute": ["11,"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "the -S form refuses the same way, before elevating"
+    }
+  ]
+}

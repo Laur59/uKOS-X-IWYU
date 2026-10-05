@@ -1,0 +1,84 @@
+{
+  "module": "wkspi",
+  "note": "No row drives a GPIO: -csl/-csh on a real port set a pin that may be wired to anything. Every path that reserves the manager calls spi_configure first, which is harmless here - only wkspi uses spi0 on these boards. A transfer used to wait for its completion forever (KWAIT_INFINITY in spi0.c) and hung Discovery_N657, whose SPI4 never completes one; it is now bounded and abandoned cleanly (fixed, ../DEFECTS.md). Why the N657 transfer never completes is still open.",
+
+
+  "tests": [
+    {
+      "id": "wkspi/no-argument",
+      "cmd": "wkspi",
+      "expect": ["^wkspi operations\\.$", "^Incorrect arguments\\.$"],
+      "timeout": 10,
+      "note": "argv[1] used to be read before argc was checked: it held whatever an earlier command left there - a garbage manager name on Discovery_N657, a NULL and a HardFault on Nucleo_H743 right after restart (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "wkspi/extra-arguments",
+      "cmd": "wkspi 0 a b",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["written 0x"],
+      "timeout": 10
+    },
+    {
+      "id": "wkspi/unknown-port",
+      "cmd": "wkspi 0 -csl Z 1",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["CS set to"],
+      "timeout": 10,
+      "note": "no GPIO port Z: nothing is written"
+    },
+    {
+      "id": "wkspi/unknown-set-flag",
+      "cmd": "wkspi 0 -X 1 0 5000000",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["configured with"],
+      "timeout": 10
+    },
+    {
+      "id": "wkspi/configure",
+      "cmd": "wkspi 0 -S 1 0 1000000",
+      "expect": ["^spi0 configured with Pol 1, Pha 0 speed 1000000-Hz$"],
+      "then": [
+        {"send": "wkspi 0 -S 1 1 5000000", "timeout": 10,
+         "expect": ["^spi0 configured with Pol 1, Pha 1 speed 5000000-Hz$"]}
+      ],
+      "timeout": 10,
+      "note": "the configuration is static in wkspi, so the step puts back its default (POL 1, PHA 1, 5 MHz)"
+    },
+    {
+      "id": "wkspi/unit-above-3-refused",
+      "cmd": "wkspi 7 -S 1 1 5000000",
+      "expect": ["^spi7 does not exist\\.$"],
+      "refute": ["configured"],
+      "timeout": 10,
+      "note": "before fix/wkspi-unit-range any unit above 3 fell into the default: case and drove spi0, while the report said spi7"
+    },
+    {
+      "id": "wkspi/unit-256-refused",
+      "cmd": "wkspi 256 -S 1 1 5000000",
+      "expect": ["^spi256 does not exist\\.$"],
+      "refute": ["configured"],
+      "timeout": 10,
+      "note": "the whole value is checked: the uint8_t unit alone would turn 256 into spi0"
+    },
+    {
+      "id": "wkspi/transfer-answers-in-time",
+      "cmd": "wkspi 0 A6",
+      "expect": ["^(spi0 written 0xA6 read 0x[0-9A-F]{2}|spi0 general problem\\.)$"],
+      "then": [
+        {"send": "wkspi 0 A6", "timeout": 10,
+         "expect": ["^(spi0 written 0xA6 read 0x[0-9A-F]{2}|spi0 general problem\\.)$"],
+         "refute": ["busy"]}
+      ],
+      "timeout": 10,
+      "note": "whatever SPI does on this board, the transfer must answer within its bound (KSPI_TIMEOUT_WRITEREAD, 1 s) rather than hang the console, and a second one must not be refused as busy - the model used to leave vBusy set after a timeout. On Discovery_N657 it answers 'general problem': its SPI4 never completes a transfer (../DEFECTS.md)"
+    },
+    {
+      "id": "wkspi/loopback-transfer",
+      "cmd": "wkspi 0 A6",
+      "expect": ["^spi0 written 0xA6 read 0xA6$"],
+      "timeout": 10,
+      "requires": ["hw:spi0-loopback"],
+      "note": "needs MOSI wired to MISO on spi0, and a transfer that completes: on Discovery_N657 it hangs the board (../DEFECTS.md)"
+    }
+  ]
+}

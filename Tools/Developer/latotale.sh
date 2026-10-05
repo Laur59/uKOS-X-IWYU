@@ -74,7 +74,7 @@ fi
 tic=$(date +%s)
 print "$(date -r $tic)"
 cd "${PATH_ROOT}/Ports/Targets"
-print "${YELLOW}\ngit branch $(git branch --show-current)${NC}\n"
+print "${YELLOW}\ngit branch $(git branch --show-current) at $(git describe  --always --dirty --match=)${NC}\n"
 export NOLISTING=1
 #
 print 'Version of gcc for Arm'

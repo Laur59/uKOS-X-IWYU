@@ -88,10 +88,19 @@ extract_targets() {
     local info device_name fw_name
     for sn in "${serials[@]}"; do
         # Connect briefly (Under Reset) just to read the device info
-        info=$("${CLI}" -c port=SWD mode=UR sn="${sn}" 2>&1)
+        # A probe that does not answer (its target held in a boot mode, or
+        # wired to another board) is not this target: skip it rather than
+        # let ERR_EXIT and PIPE_FAIL end the scan silently at a failed
+        # connection or a grep that finds no "Device name"
+        info=$("${CLI}" -c port=SWD mode=UR sn="${sn}" 2>&1) || true
 
-        device_name=$(printf '%s' "${info}" | grep 'Device name' | awk -F':' '{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2}')
-        fw_name=$(printf '%s'     "${info}" | grep 'ST-LINK FW'  | awk -F':' '{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2}')
+        device_name=$(printf '%s' "${info}" | grep 'Device name' | awk -F':' '{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2}') || true
+        fw_name=$(printf '%s'     "${info}" | grep 'ST-LINK FW'  | awk -F':' '{gsub(/^[[:space:]]+|[[:space:]]+$/, "", $2); print $2}') || true
+
+        printf '  %sSN%s : %s%s%s\n'          "${BOLD}" "${NC}" "${YELLOW}" "${sn}"          "${NC}"
+        printf '  %sFW%s : %s%s%s\n'          "${BOLD}" "${NC}" "${FAINT}"  "${fw_name}"    "${NC}"
+        printf '  %sDevice name%s : %s%s%s\n' "${BOLD}" "${NC}" "${GREEN}"  "${device_name}" "${NC}"
+        printf '\n'
 
         printf '  %sSN%s : %s%s%s\n'          "${BOLD}" "${NC}" "${YELLOW}" "${sn}"          "${NC}"
         printf '  %sFW%s : %s%s%s\n'          "${BOLD}" "${NC}" "${FAINT}"  "${fw_name}"    "${NC}"

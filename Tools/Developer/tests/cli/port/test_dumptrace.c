@@ -9,13 +9,11 @@
  * pointer into the copy by pointer DIFFERENCE, and walks it nbTraceWrites times.
  * The rebase and the walk are the substance.
  *
- * ONE PATH IS DELIBERATELY NOT EXERCISED. The wrap test at dumptrace.c:135
- * compares the read pointer against &traceFifo[KRECORD_SZ_TRACE_FIFO], which is
- * one PAST the end, so a walk that runs off the end reads that element before
- * wrapping. Every test here keeps the walk inside the buffer, because provoking
- * the wrap means provoking a heap overflow that ASan would - correctly - abort
- * on, and "run-tests -s" has to stay green. The defect is recorded in
- * DEFECTS.md instead; the corrected comparison is against [SZ - 1].
+ * The wrap used to compare the read pointer against one PAST the end BEFORE
+ * advancing, so a walk that crossed the end rendered that element - a heap
+ * overflow under ASan - and ran one slot out of step. It now advances first and
+ * wraps as the writer does; the wrapped-walk tests below cross the end on
+ * purpose, and under "run-tests -s" the unfixed module aborts on them.
  */
 
 #include    <inttypes.h>
@@ -253,9 +251,8 @@ TEST(dumptrace_walk_stays_inside_the_buffer) {
     ukos_fake_addTrace(0U, (uint16_t)(KRECORD_SZ_TRACE_FIFO - 1U), 1U, 0U, NULL, "last_slot");
     ukos_fake_setTraceRead(0U, (uint16_t)(KRECORD_SZ_TRACE_FIFO - 1U), 1U);
 
-// Reading the final slot is fine; it is the ADVANCE past it that is unsound
-// (DEFECTS.md, dumptrace.c:135). One record starting at the last slot reads it
-// and stops, so this exercises the boundary without crossing it.
+// One record starting at the last slot reads it and stops: the boundary
+// without crossing it.
 
     EXPECT_EQ_I(local_runBare(), KOK);
     EXPECT_OUT_HAS("last_slot");
@@ -272,11 +269,51 @@ TEST(dumptrace_full_buffer_from_slot_zero) {
     ukos_fake_setTraceRead(0U, 0U, KRECORD_SZ_TRACE_FIFO);
 
 // A whole fifo replayed from slot 0 reads every element exactly once and
-// finishes with the pointer one past the end WITHOUT dereferencing it - the
-// largest walk that is safe under the current comparison.
+// wraps back to slot 0 without reading it again.
 
     EXPECT_EQ_I(local_runBare(), KOK);
     EXPECT_EQ_U(g_fakes.dprintfCalls, (unsigned)(KRECORD_SZ_TRACE_FIFO + 4U));
+}
+
+TEST(dumptrace_walk_wraps_from_the_last_slot_to_the_first) {
+
+    ukos_t_begin("UTC0");
+    ukos_fake_addTrace(0U, (uint16_t)(KRECORD_SZ_TRACE_FIFO - 2U), 1U, 0U, NULL, "wrap_a");
+    ukos_fake_addTrace(0U, (uint16_t)(KRECORD_SZ_TRACE_FIFO - 1U), 2U, 0U, NULL, "wrap_b");
+    ukos_fake_addTrace(0U, 0U, 3U, 0U, NULL, "wrap_c");
+    ukos_fake_addTrace(0U, 1U, 4U, 0U, NULL, "wrap_d");
+    ukos_fake_setTraceRead(0U, (uint16_t)(KRECORD_SZ_TRACE_FIFO - 2U), 4U);
+
+// Four records across the end of the ring: exactly four lines, in ring order.
+// The old wrap rendered the element past the end between wrap_b and wrap_c and
+// then dropped wrap_d.
+
+    EXPECT_EQ_I(local_runBare(), KOK);
+    EXPECT_EQ_U(g_fakes.dprintfCalls, 4U + 4U);
+    EXPECT_TRUE(local_before("wrap_a", "wrap_b"));
+    EXPECT_TRUE(local_before("wrap_b", "wrap_c"));
+    EXPECT_TRUE(local_before("wrap_c", "wrap_d"));
+}
+
+TEST(dumptrace_rolled_over_ring_is_replayed_once_across_the_wrap) {
+    uint16_t    i;
+
+    ukos_t_begin("UTC0");
+
+    for (i = 0U; i < KRECORD_SZ_TRACE_FIFO; i++) {
+        ukos_fake_addTrace(0U, i, (uint64_t)(i + 1U), (uintptr_t)(0x100U + i), NULL, "rec");
+    }
+    ukos_fake_setTraceRead(0U, 190U, KRECORD_SZ_TRACE_FIFO);
+
+// After a roll-over the writer leaves the read pointer on the oldest record
+// and the walk covers the whole ring, one line per slot. The read pointer sits
+// near the end so the wrap (slot 199 then slot 0) falls in the first lines:
+// the fake keeps only the first 8 KB of output, about 70 trace lines.
+
+    EXPECT_EQ_I(local_runBare(), KOK);
+    EXPECT_EQ_U(g_fakes.dprintfCalls, (unsigned)(KRECORD_SZ_TRACE_FIFO + 4U));
+    EXPECT_TRUE(local_before("0x00000000000001BE", "0x00000000000001C7"));
+    EXPECT_TRUE(local_before("0x00000000000001C7", "0x0000000000000100"));
 }
 
 TEST(dumptrace_copies_under_a_critical_section) {

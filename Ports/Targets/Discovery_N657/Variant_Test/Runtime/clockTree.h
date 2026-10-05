@@ -1,8 +1,9 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:        Clock tree definitions.
+ * Goal:     Clock tree definitions.
  */
 
 #pragma once

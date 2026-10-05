@@ -90,9 +90,9 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 bool            equals;
                 uint8_t         m, unit = 0U, valueW = 0U, valueR = 0U, pin = 0U, pol = 0U, pha = 0U;
                 spiManager_t    spiManager;
-                uint32_t        speed = 0U;
+                uint32_t        speed = 0U, number;
                 enum            { KCS_LOW, KCS_HIGH } mode = KCS_LOW;
-                enum            { KERR_NOT, KERR_OKX, KERR_OCS, KERR_SET, KERR_BSY, KERR_INA, KERR_GEN } error = KERR_INA;
+                enum            { KERR_NOT, KERR_OKX, KERR_OCS, KERR_SET, KERR_BSY, KERR_INA, KERR_GEN, KERR_UNI } error = KERR_INA;
     volatile    uint32_t        *port = nullptr;
     static      spiCnf_t        configure = {
                                     .oSpeed    = 5000000U,
@@ -117,194 +117,210 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Set mode
 //  wkspi 0 -set POL PHA Speed
 
-    unit = (uint8_t)strtoul(argv[1], &dummy, 10U);
-    switch (unit) {
-        default:
-        case 0U: { spiManager = KSPI0; break; }
-        case 1U: { spiManager = KSPI1; break; }
-        case 2U: { spiManager = KSPI2; break; }
-        case 3U: { spiManager = KSPI3; break; }
+// Every form names a unit or a manager and an operation, so fewer than 3
+// arguments is an error - decided before argv[1] is read: past argc it holds
+// whatever an earlier command left there, a stale pointer or, right after a
+// restart, NULL
+
+    if (argc < 3U) {
+        error = KERR_INA;
     }
+    else {
 
-    if (spi_reserve(spiManager, KMODE_READ_WRITE, 2000U) == KERR_SPI_NOERR) {
-        spi_configure(spiManager, &configure);
+// Only spi0..spi3 exist. A unit above 3 used to fall into spi0 while every
+// report printed the unit that was typed; the whole value is checked, since
+// the uint8_t unit alone would also turn 256 into spi0
 
-        switch (argc) {
+        number = (uint32_t)strtoul(argv[1], &dummy, 10U);
+        unit   = (uint8_t)number;
+        switch (number) {
+            case 0U: { spiManager = KSPI0; break; }
+            case 1U: { spiManager = KSPI1; break; }
+            case 2U: { spiManager = KSPI2; break; }
+            case 3U: { spiManager = KSPI3; break; }
+            default: { error = KERR_UNI;   break; }
+        }
+
+        if ((error != KERR_UNI) && (spi_reserve(spiManager, KMODE_READ_WRITE, 2000U) == KERR_SPI_NOERR)) {
+            spi_configure(spiManager, &configure);
+
+            switch (argc) {
 
 // Xfer mode
 //  wkspi 1 32
 
-            case 3U: {
-                valueW = (uint8_t)strtoul(argv[2], &dummy, 16U);
-                valueR = valueW;
-                status = spi_writeRead(spiManager, &valueR);
+                case 3U: {
+                    valueW = (uint8_t)strtoul(argv[2], &dummy, 16U);
+                    valueR = valueW;
+                    status = spi_writeRead(spiManager, &valueR);
 
-                switch (status) {
-                    case KERR_SPI_NOERR: { error = KERR_OKX; break; }
-                    default:             { error = KERR_GEN; break; }
+                    switch (status) {
+                        case KERR_SPI_NOERR: { error = KERR_OKX; break; }
+                        default:             { error = KERR_GEN; break; }
+                    }
+                    break;
                 }
-                break;
-            }
 
 // CS mode
 //  wkspi 3 -csl A 12
 //  wkspi 3 -csh A 12
 
-            case 5U: {
-                text_checkAsciiBuffer(argv[2], "-csl", &equals); if (equals) { mode = KCS_LOW;  }
-                text_checkAsciiBuffer(argv[2], "-csh", &equals); if (equals) { mode = KCS_HIGH; }
+                case 5U: {
+                    text_checkAsciiBuffer(argv[2], "-csl", &equals); if (equals) { mode = KCS_LOW;  }
+                    text_checkAsciiBuffer(argv[2], "-csh", &equals); if (equals) { mode = KCS_HIGH; }
 
-                #if (defined(GPIOA) || defined(GPIOA_S) || defined(GPIOA_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "A", &equals); if (equals) { port = &REG(GPIOA)->ODR; }
+                    #if (defined(GPIOA) || defined(GPIOA_S) || defined(GPIOA_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "A", &equals); if (equals) { port = &REG(GPIOA)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "A", &equals); if (equals) { port = &GPIOA->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "A", &equals); if (equals) { port = &GPIOA->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOB) || defined(GPIOB_S) || defined(GPIOB_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "B", &equals); if (equals) { port = &REG(GPIOB)->ODR; }
+                    #if (defined(GPIOB) || defined(GPIOB_S) || defined(GPIOB_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "B", &equals); if (equals) { port = &REG(GPIOB)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "B", &equals); if (equals) { port = &GPIOB->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "B", &equals); if (equals) { port = &GPIOB->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOC) || defined(GPIOC_S) || defined(GPIOC_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "C", &equals); if (equals) { port = &REG(GPIOC)->ODR; }
+                    #if (defined(GPIOC) || defined(GPIOC_S) || defined(GPIOC_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "C", &equals); if (equals) { port = &REG(GPIOC)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "C", &equals); if (equals) { port = &GPIOC->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "C", &equals); if (equals) { port = &GPIOC->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOD) || defined(GPIOD_S) || defined(GPIOD_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "D", &equals); if (equals) { port = &REG(GPIOD)->ODR; }
+                    #if (defined(GPIOD) || defined(GPIOD_S) || defined(GPIOD_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "D", &equals); if (equals) { port = &REG(GPIOD)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "D", &equals); if (equals) { port = &GPIOD->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "D", &equals); if (equals) { port = &GPIOD->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOE) || defined(GPIOE_S) || defined(GPIOE_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "E", &equals); if (equals) { port = &REG(GPIOE)->ODR; }
+                    #if (defined(GPIOE) || defined(GPIOE_S) || defined(GPIOE_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "E", &equals); if (equals) { port = &REG(GPIOE)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "E", &equals); if (equals) { port = &GPIOE->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "E", &equals); if (equals) { port = &GPIOE->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOF) || defined(GPIOF_S) || defined(GPIOF_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "F", &equals); if (equals) { port = &REG(GPIOF)->ODR; }
+                    #if (defined(GPIOF) || defined(GPIOF_S) || defined(GPIOF_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "F", &equals); if (equals) { port = &REG(GPIOF)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "F", &equals); if (equals) { port = &GPIOF->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "F", &equals); if (equals) { port = &GPIOF->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOG) || defined(GPIOG_S) || defined(GPIOG_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "G", &equals); if (equals) { port = &REG(GPIOG)->ODR; }
+                    #if (defined(GPIOG) || defined(GPIOG_S) || defined(GPIOG_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "G", &equals); if (equals) { port = &REG(GPIOG)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "G", &equals); if (equals) { port = &GPIOG->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "G", &equals); if (equals) { port = &GPIOG->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOH) || defined(GPIOH_S) || defined(GPIOH_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "H", &equals); if (equals) { port = &REG(GPIOH)->ODR; }
+                    #if (defined(GPIOH) || defined(GPIOH_S) || defined(GPIOH_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "H", &equals); if (equals) { port = &REG(GPIOH)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "H", &equals); if (equals) { port = &GPIOH->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "H", &equals); if (equals) { port = &GPIOH->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOI) || defined(GPIOI_S) || defined(GPIOI_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "I", &equals); if (equals) { port = &REG(GPIOI)->ODR; }
+                    #if (defined(GPIOI) || defined(GPIOI_S) || defined(GPIOI_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "I", &equals); if (equals) { port = &REG(GPIOI)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "I", &equals); if (equals) { port = &GPIOI->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "I", &equals); if (equals) { port = &GPIOI->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOJ) || defined(GPIOJ_S) || defined(GPIOJ_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "J", &equals); if (equals) { port = &REG(GPIOJ)->ODR; }
+                    #if (defined(GPIOJ) || defined(GPIOJ_S) || defined(GPIOJ_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "J", &equals); if (equals) { port = &REG(GPIOJ)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "J", &equals); if (equals) { port = &GPIOJ->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "J", &equals); if (equals) { port = &GPIOJ->ODR;      }
+                    #endif
+                    #endif
 
-                #if (defined(GPIOK) || defined(GPIOK_S) || defined(GPIOK_NS))
-                #ifdef REG
-                text_checkAsciiBuffer(argv[3], "K", &equals); if (equals) { port = &REG(GPIOK)->ODR; }
+                    #if (defined(GPIOK) || defined(GPIOK_S) || defined(GPIOK_NS))
+                    #ifdef REG
+                    text_checkAsciiBuffer(argv[3], "K", &equals); if (equals) { port = &REG(GPIOK)->ODR; }
 
-                #else
-                text_checkAsciiBuffer(argv[3], "K", &equals); if (equals) { port = &GPIOK->ODR;      }
-                #endif
-                #endif
+                    #else
+                    text_checkAsciiBuffer(argv[3], "K", &equals); if (equals) { port = &GPIOK->ODR;      }
+                    #endif
+                    #endif
 
-                m = (uint8_t)mode;
-                if ((port != nullptr) && ((m == (uint8_t)KCS_LOW) || (m == (uint8_t)KCS_HIGH))) {
+                    m = (uint8_t)mode;
+                    if ((port != nullptr) && ((m == (uint8_t)KCS_LOW) || (m == (uint8_t)KCS_HIGH))) {
 
-                    PRIVILEGE_ELEVATE;
-                    pin = (uint8_t)strtoul(argv[4], &dummy, 10U);
-                    if (mode == KCS_HIGH) { *port |=            (1U<<(pin & 0xFU)); }
-                    if (mode == KCS_LOW)  { *port &= (uint32_t)~(1U<<(pin & 0xFU)); }
-                    PRIVILEGE_RESTORE;
+                        PRIVILEGE_ELEVATE;
+                        pin = (uint8_t)strtoul(argv[4], &dummy, 10U);
+                        if (mode == KCS_HIGH) { *port |=            (1U<<(pin & 0xFU)); }
+                        if (mode == KCS_LOW)  { *port &= (uint32_t)~(1U<<(pin & 0xFU)); }
+                        PRIVILEGE_RESTORE;
 
-                    error = KERR_OCS;
+                        error = KERR_OCS;
+                    }
+                    else {
+                        error = KERR_INA;
+                    }
+                    break;
                 }
-                else {
-                    error = KERR_INA;
-                }
-                break;
-            }
 
 // Set mode
 //  wkspi 0 -S POL PHA Speed
 
-            case 6U: {
-                text_checkAsciiBuffer(argv[2], "-S", &equals);
-                if (equals) {
-                    pol   = (uint8_t) strtoul(argv[3], &dummy, 10U);
-                    pha   = (uint8_t) strtoul(argv[4], &dummy, 10U);
-                    speed = (uint32_t)strtoul(argv[5], &dummy, 10U);
+                case 6U: {
+                    text_checkAsciiBuffer(argv[2], "-S", &equals);
+                    if (equals) {
+                        pol   = (uint8_t) strtoul(argv[3], &dummy, 10U);
+                        pha   = (uint8_t) strtoul(argv[4], &dummy, 10U);
+                        speed = (uint32_t)strtoul(argv[5], &dummy, 10U);
 
-                    pol = pol & 0x1U; pha = pha & 0x1U;
-                    configure.oClock = 0;
+                        pol = pol & 0x1U; pha = pha & 0x1U;
+                        configure.oClock = 0;
 
-                    if (pol == 1U) { configure.oClock |= (1U<<(uint8_t)BSPI_POL); }
-                    if (pha == 1U) { configure.oClock |= (1U<<(uint8_t)BSPI_PHA); }
+                        if (pol == 1U) { configure.oClock |= (1U<<(uint8_t)BSPI_POL); }
+                        if (pha == 1U) { configure.oClock |= (1U<<(uint8_t)BSPI_PHA); }
 
-                    configure.oSpeed = speed;
-                    spi_configure(spiManager, &configure);
-                    error = KERR_SET;
+                        configure.oSpeed = speed;
+                        spi_configure(spiManager, &configure);
+                        error = KERR_SET;
+                    }
+                    else {
+                        error = KERR_INA;
+                    }
+                    break;
                 }
-                else {
+
+                default: {
                     error = KERR_INA;
+                    break;
                 }
-                break;
             }
-
-            default: {
-                error = KERR_INA;
-                break;
-            }
+        spi_release(spiManager, KMODE_READ_WRITE);
         }
-    spi_release(spiManager, KMODE_READ_WRITE);
-    }
-    else {
-        error = KERR_BSY;
+        else {
+            error = (error == KERR_UNI) ? KERR_UNI : KERR_BSY;
+        }
     }
 
     switch (error) {
@@ -314,6 +330,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERR_INA: { (void)dprintf(KSYST, "Incorrect arguments.\n\n");                                                                        status = EXIT_OS_FAILURE;     break; }
         case KERR_GEN: { (void)dprintf(KSYST, "spi%d general problem.\n\n", unit);                                                                status = EXIT_OS_FAILURE;     break; }
         case KERR_BSY: { (void)dprintf(KSYST, "spi%d busy\n\n", unit);                                                                            status = EXIT_OS_FAILURE;     break; }
+        case KERR_UNI: { (void)dprintf(KSYST, "spi%s does not exist.\n\n", argv[1]);                                                              status = EXIT_OS_FAILURE;     break; }
         default:       {                                                                                                                          status = EXIT_OS_FAILURE;     break; }
     }
     return status;

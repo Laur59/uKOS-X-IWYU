@@ -81,10 +81,13 @@ MODULE(
 // CLI tool specific
 // =================
 
+#define KNB_WRITE_RETRIES   1000U                       // 1 ms apart: about 1 s for the sender to free up
+
 // Prototypes
 
 static  void    local_setBaudRate(serialManager_t serialManager, uint8_t baudRate);
 static  void    local_getSerialManager(serialManager_t *serialManager, const char_t *string);
+static  int32_t local_writeByte(serialManager_t serialManager, const uint8_t *data);
 
 /*
  * \brief Main entry point
@@ -115,92 +118,101 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Set mode
 //  wkserial urt0 -S 460800
 
-    local_getSerialManager(&serialManager, argv[1]);
-    if (serial_reserve(serialManager, KMODE_READ_WRITE, 2000U) == KERR_SERIAL_NOERR) {
+// Every form names a unit or a manager and an operation, so fewer than 3
+// arguments is an error - decided before argv[1] is read: past argc it holds
+// whatever an earlier command left there, a stale pointer or, right after a
+// restart, NULL
 
-        switch (argc) {
+    if (argc < 3U) {
+        error = KERR_INA;
+    }
+    else {
+        local_getSerialManager(&serialManager, argv[1]);
+        if (serial_reserve(serialManager, KMODE_READ_WRITE, 2000U) == KERR_SERIAL_NOERR) {
+
+            switch (argc) {
 
 // Read mode
 //  wkserial cdc0 -R
 
-            case 3U: {
-                text_checkAsciiBuffer(argv[2], "-R", &equals);
-                if (equals) {
-                    size = 1U;
-                    status = serial_read(serialManager, (uint8_t *)&value, &size);
+                case 3U: {
+                    text_checkAsciiBuffer(argv[2], "-R", &equals);
+                    if (equals) {
+                        size = 1U;
+                        status = serial_read(serialManager, (uint8_t *)&value, &size);
 
-                    switch (status) {
-                        case KERR_SERIAL_NOERR: { error = KERR_OKR; break; }
-                        case KERR_SERIAL_RBUEM: { error = KERR_EMP; break; }
-                        default:                { error = KERR_GEN; break; }
+                        switch (status) {
+                            case KERR_SERIAL_NOERR: { error = KERR_OKR; break; }
+                            case KERR_SERIAL_RBUEM: { error = KERR_EMP; break; }
+                            default:                { error = KERR_GEN; break; }
+                        }
                     }
-                }
-                else {
-                    error = KERR_INA;
-                }
-                break;
-            }
-
-// Write mode
-//  wkserial urt1 -W 55
-
-            case 4U: {
-                text_checkAsciiBuffer(argv[2], "-W", &equals);
-                if (equals) {
-                    value = (uint32_t)strtoul(argv[3], &dummy, 16U);
-                    size = 1U;
-                    status = serial_write(serialManager, (uint8_t *)&value, size);
-
-                    switch (status) {
-                        case KERR_SERIAL_NOERR: { error = KERR_OKW; break; }
-                        default:                { error = KERR_GEN; break; }
+                    else {
+                        error = KERR_INA;
                     }
                     break;
                 }
 
+// Write mode
+//  wkserial urt1 -W 55
+
+                case 4U: {
+                    text_checkAsciiBuffer(argv[2], "-W", &equals);
+                    if (equals) {
+                        value = (uint32_t)strtoul(argv[3], &dummy, 16U);
+                        status = local_writeByte(serialManager, (const uint8_t *)&value);
+
+                        switch (status) {
+                            case KERR_SERIAL_NOERR: { error = KERR_OKW; break; }
+                            default:                { error = KERR_GEN; break; }
+                        }
+                        break;
+                    }
+
 // Set mode
 //  wkserial urt0 -S 460800
 
-                text_checkAsciiBuffer(argv[2], "-S", &equals);
-                if (equals) {
-                    value = (uint32_t)strtoul(argv[3], &dummy, 10U);
+                    text_checkAsciiBuffer(argv[2], "-S", &equals);
+                    if (equals) {
+                        value = (uint32_t)strtoul(argv[3], &dummy, 10U);
 
-                    switch (value) {
-                        case 2400U:    { baudRate = 2400U;      local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2400);    break; }
-                        case 4800U:    { baudRate = 4800U;      local_setBaudRate(serialManager, KSERIAL_BAUDRATE_4800);    break; }
-                        case 9600U:    { baudRate = 9600U;      local_setBaudRate(serialManager, KSERIAL_BAUDRATE_9600);    break; }
-                        case 19200U:   { baudRate = 19200U;     local_setBaudRate(serialManager, KSERIAL_BAUDRATE_19200);   break; }
-                        case 38400U:   { baudRate = 38400U;     local_setBaudRate(serialManager, KSERIAL_BAUDRATE_38400);   break; }
-                        case 57600U:   { baudRate = 57600U;     local_setBaudRate(serialManager, KSERIAL_BAUDRATE_57600);   break; }
-                        case 115200U:  { baudRate = 115200U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_115200);  break; }
-                        case 230400U:  { baudRate = 230400U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_230400);  break; }
-                        case 460800U:  { baudRate = 460800U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_460800);  break; }
-                        case 500000U:  { baudRate = 500000U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_500000);  break; }
-                        case 921600U:  { baudRate = 921600U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_921600);  break; }
-                        case 1000000U: { baudRate = 1000000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1000000); break; }
-                        case 1500000U: { baudRate = 1500000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1500000); break; }
-                        case 1843200U: { baudRate = 1843200U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1843200); break; }
-                        case 2000000U: { baudRate = 2000000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2000000); break; }
-                        case 2500000U: { baudRate = 2500000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2500000); break; }
-                        case 3000000U: { baudRate = 3000000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_3000000); break; }
-                        default:       { baudRate = 460800U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_460800);  break; }
+                        switch (value) {
+                            case 2400U:    { baudRate = 2400U;      local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2400);    break; }
+                            case 4800U:    { baudRate = 4800U;      local_setBaudRate(serialManager, KSERIAL_BAUDRATE_4800);    break; }
+                            case 9600U:    { baudRate = 9600U;      local_setBaudRate(serialManager, KSERIAL_BAUDRATE_9600);    break; }
+                            case 19200U:   { baudRate = 19200U;     local_setBaudRate(serialManager, KSERIAL_BAUDRATE_19200);   break; }
+                            case 38400U:   { baudRate = 38400U;     local_setBaudRate(serialManager, KSERIAL_BAUDRATE_38400);   break; }
+                            case 57600U:   { baudRate = 57600U;     local_setBaudRate(serialManager, KSERIAL_BAUDRATE_57600);   break; }
+                            case 115200U:  { baudRate = 115200U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_115200);  break; }
+                            case 230400U:  { baudRate = 230400U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_230400);  break; }
+                            case 460800U:  { baudRate = 460800U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_460800);  break; }
+                            case 500000U:  { baudRate = 500000U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_500000);  break; }
+                            case 921600U:  { baudRate = 921600U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_921600);  break; }
+                            case 1000000U: { baudRate = 1000000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1000000); break; }
+                            case 1500000U: { baudRate = 1500000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1500000); break; }
+                            case 1843200U: { baudRate = 1843200U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_1843200); break; }
+                            case 2000000U: { baudRate = 2000000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2000000); break; }
+                            case 2500000U: { baudRate = 2500000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_2500000); break; }
+                            case 3000000U: { baudRate = 3000000U;   local_setBaudRate(serialManager, KSERIAL_BAUDRATE_3000000); break; }
+                            default:       { baudRate = 460800U;    local_setBaudRate(serialManager, KSERIAL_BAUDRATE_460800);  break; }
+                        }
+                        error = KERR_OKS;
                     }
-                    error = KERR_OKS;
+                    else {
+                        error = KERR_INA;
+                    }
+                    break;
                 }
-                else {
+                default: {
                     error = KERR_INA;
+                    break;
                 }
-                break;
             }
-            default: {
-                error = KERR_INA;
-                break;
-            }
+        serial_release(serialManager, KMODE_READ_WRITE);
         }
-    serial_release(serialManager, KMODE_READ_WRITE);
-    }
-    else {
-        error = KERR_BSY;
+        else {
+            error = KERR_BSY;
+        }
     }
 
     switch (error) {
@@ -253,4 +265,27 @@ static  void    local_getSerialManager(serialManager_t *serialManager, const cha
     llsb = ((uint32_t)string[3]<<0U)  & 0x000000FFU;
 
     *serialManager = (serialManager_t)(mmsb | mlsb | lmsb | llsb);
+}
+
+/*
+ * \brief local_writeByte
+ *
+ * - Write one byte, waiting for the sender while it is still busy. The managers
+ *   answer KERR_SERIAL_SEPRO at once while an earlier transmission is in flight
+ *   - on the console, typically this tool's own banner - and a single attempt
+ *   then reported "general problem" and wrote nothing. Bounded, so that a sender
+ *   that never frees up cannot hang the console.
+ *
+ */
+static  int32_t local_writeByte(serialManager_t serialManager, const uint8_t *data) {
+    int32_t     status = KERR_SERIAL_SEPRO;
+    uint32_t    i;
+
+    for (i = 0U; (i < KNB_WRITE_RETRIES) && (status == KERR_SERIAL_SEPRO); i++) {
+        status = serial_write(serialManager, data, 1U);
+        if (status == KERR_SERIAL_SEPRO) {
+            kern_suspendProcess(1U);
+        }
+    }
+    return status;
 }

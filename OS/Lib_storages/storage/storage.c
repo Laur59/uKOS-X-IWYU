@@ -5,7 +5,6 @@
  * Goal:     storage manager.
  */
 
-
 #include    "storage.h"
 
 #include    <stdint.h>

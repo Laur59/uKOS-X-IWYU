@@ -8,8 +8,7 @@
 #   This top-level CMakeLists.txt drives the build of all TinyUSB static
 #   libraries for supported SoCs and profiles using CMake ExternalProject.
 #
-#   It is functionally equivalent to build_with_cmake.sh and provides
-#   a single, declarative CMake-based build entry point.
+#   It is the single, declarative CMake-based build entry point.
 #
 # Reproducibility:
 #   This build definition is intended to be deterministic and reproducible.
@@ -60,6 +59,10 @@ endif()
 # Toolchain used for every per-SOC archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
+# Stamp Library/ at install time and keep a copy in the shared cache
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+ukos_library_cache_begin(TinyUSB)
+
 # Include FetchContent module for downloading upstream TinyUSB
 include(FetchContent)
 # Include ExternalProject module for building libraries
@@ -75,9 +78,9 @@ message("")
 # Step 1: Fetch upstream TinyUSB repository
 #------------------------------------------------------------------------
 
-# Package version and commit hash (matching build_with_cmake.sh)
+# Package version and commit hash
 set(TINYUSB_VERSION "0.21.0")
-set(TINYUSB_HASH "84dcec43c709643f8a1b1ebbab6d08fbbc605a6d")
+set(TINYUSB_HASH "064afa3")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -159,9 +162,9 @@ if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/lib/pico-sdk/README.m
     FetchContent_Declare(
         pico_sdk_upstream
         GIT_REPOSITORY https://github.com/raspberrypi/pico-sdk.git
-        # Pinned to SDK 2.3.0 (was a floating "master", which broke the old
+        # Pinned to SDK 2.3.1 (was a floating "master", which broke the old
         # hazard3.patch on every upstream move — see removed PATCH_COMMAND).
-        GIT_TAG        98a542c1a62fb549ffb5d66a3e5892b06276b670
+        GIT_TAG        079c6f39023649b154152db30f1d781e884879bc
         SOURCE_DIR     ${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/lib/pico-sdk
         GIT_SHALLOW    OFF
         GIT_PROGRESS   TRUE
@@ -256,7 +259,7 @@ add_custom_target(TinyUSB_Fetch_Complete
 
 # Install TinyUSB stack headers from src/ only
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/src/"
-        DESTINATION "Library/Include/TinyUSB-current/src"
+        DESTINATION "Library/Include"
         FILES_MATCHING PATTERN "*.h"
 )
 
@@ -432,6 +435,9 @@ add_custom_target(build_all_tinyusb ALL
 
 # Add dependency to ensure TinyUSB is fetched before building
 add_dependencies(build_all_tinyusb TinyUSB_Fetch_Complete)
+
+# Stamp and cache what was installed (must follow the last install() rule)
+ukos_library_cache_end(TinyUSB)
 
 #------------------------------------------------------------------------
 # Step 6: Summary

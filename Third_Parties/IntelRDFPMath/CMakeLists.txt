@@ -51,6 +51,10 @@ endif()
 # Toolchain used for every per-core archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
+# Stamp Library/ at install time and keep a copy in the shared cache
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+ukos_library_cache_begin(IntelRDFPMath)
+
 # Include FetchContent module for downloading upstream IntelRDFPMath
 include(FetchContent)
 
@@ -199,6 +203,9 @@ add_custom_target(build_all_intelrdfpmath ALL
 
 # Add dependency to ensure IntelRDFPMath is fetched before building
 add_dependencies(build_all_intelrdfpmath IntelRDFPMath_Fetch_Complete)
+
+# Stamp and cache what was installed (must follow the last install() rule)
+ukos_library_cache_end(IntelRDFPMath)
 
 #------------------------------------------------------------------------
 # Summary

@@ -1,0 +1,21 @@
+{
+  "module": "list",
+
+  "tests": [
+    {
+      "id": "list/cli-family",
+      "cmd": "list X",
+      "expect": ["^uKOS-X module list\\.$",
+                 "^FLASH +[0-9]+  X[0-9]{2}_  v ?[0-9]+\\.[0-9]+   \\S+"],
+      "refute": ["does not exist"],
+      "timeout": 15
+    },
+    {
+      "id": "list/unknown-family",
+      "cmd": "list W",
+      "expect": ["^This family does not exist\\.$"],
+      "timeout": 10,
+      "note": "W is not a family letter at all (modules.h defines A U X F Q D L K N P T Z C G S M), so this cannot start passing because a manager was added"
+    }
+  ]
+}

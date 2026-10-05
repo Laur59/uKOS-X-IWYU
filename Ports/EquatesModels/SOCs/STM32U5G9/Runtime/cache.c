@@ -8,6 +8,9 @@
 #include    "cache.h"
 #include    "model_I_D_cache.c_inc"
 
+#define KEXT_MEMORY_START   0x60000000U     // First address served by DCACHE1
+#define KEXT_MEMORY_END     0x9FFFFFFFU     // Last address served by DCACHE1
+
 /*
  * \brief cache_D_Enable
  *
@@ -93,5 +96,23 @@ void    cache_I_Disable(void) {
  */
 void    cache_I_Invalidate(void) {
 
+    model_cache_I_Invalidate();
+}
+
+/*
+ * \brief cache_I_D_Sync_Add
+ *
+ * - Make a memory area that was written as data executable
+ *   - clean the data cache by address, so the memory holds what was written;
+ *     DCACHE1 serves only the external memories, the internal RAMs are not cached
+ *   - invalidate the instruction cache, which may hold what ran there before
+ *
+ */
+void    cache_I_D_Sync_Add(const void *address, int32_t size) {
+    uintptr_t   start = (uintptr_t)address;
+
+    if ((size > 0) && (start <= KEXT_MEMORY_END) && ((start + (uintptr_t)size) > KEXT_MEMORY_START)) {
+        model_cache_D_Clean_Add(0U, address, size);
+    }
     model_cache_I_Invalidate();
 }

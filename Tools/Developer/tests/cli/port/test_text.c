@@ -85,7 +85,7 @@ static  void    local_readArgs(const char_t *line) {
     (void)memset(&vBuffer[0], 'Z', sizeof(vBuffer));
     (void)strcpy(&vBuffer[0], line);
 
-    EXPECT_EQ_I(text_readArgs(&vBuffer[0], (uint32_t)sizeof(vBuffer), &vArgv[0], &vArgc), KERR_TEXT_NOERR);
+    EXPECT_EQ_I(text_readArgs(&vBuffer[0], (uint32_t)sizeof(vBuffer), &vArgv[0], KMAX_ARGS, &vArgc), KERR_TEXT_NOERR);
 }
 
 // text_readArgs
@@ -95,7 +95,7 @@ TEST(text_an_empty_line_yields_no_arguments) {
     local_setup();
 
     vBuffer[0] = '\0';
-    EXPECT_EQ_I(text_readArgs(&vBuffer[0], (uint32_t)sizeof(vBuffer), &vArgv[0], &vArgc), KERR_TEXT_NOERR);
+    EXPECT_EQ_I(text_readArgs(&vBuffer[0], (uint32_t)sizeof(vBuffer), &vArgv[0], KMAX_ARGS, &vArgc), KERR_TEXT_NOERR);
 
 // The early return happens BEFORE either pass, so argv is left exactly as the
 // caller had it - not even argv[0] is written.
@@ -164,23 +164,27 @@ TEST(text_a_trailing_separator_adds_no_argument) {
     EXPECT_EQ_STR(vArgv[0], "date");
 }
 
-TEST(text_a_leading_separator_produces_an_empty_first_argument) {
+TEST(text_leading_blanks_are_skipped) {
     local_setup();
 
-// The early return only fires when the FIRST byte is already a terminator, and
-// a leading space is not - it becomes one during pass 1, after the check. So
-// argv[0] is set to the buffer unconditionally and ends up pointing at an empty
-// string, with the real command in argv[1].
-//
-// That matters: console.c dispatches on argv[0], so a line the user opened with
-// a space is not the command they typed. Pinned as current behaviour; see
-// DEFECTS.md.
+// console.c dispatches on argv[0]. It used to be the buffer itself - an empty
+// string after a leading blank, with the command in argv[1] - so a line the
+// user opened with a space was not the command they typed.
 
-    local_readArgs(" date");
+    local_readArgs("   date 5");
 
-    QUIRK("text-readArgs-leading-space-empty-argv0", (vArgc == 2U));
-    EXPECT_EQ_STR(vArgv[0], "");
-    EXPECT_EQ_STR(vArgv[1], "date");
+    EXPECT_EQ_U(vArgc, 2U);
+    EXPECT_EQ_STR(vArgv[0], "date");
+    EXPECT_EQ_STR(vArgv[1], "5");
+}
+
+TEST(text_a_line_of_blanks_has_no_argument) {
+    local_setup();
+
+    local_readArgs("    ");
+
+    EXPECT_EQ_U(vArgc, 0U);
+    EXPECT_EQ_PTR(vArgv[0], nullptr);
 }
 
 TEST(text_quotes_protect_spaces_but_are_not_removed) {
@@ -226,28 +230,108 @@ TEST(text_the_buffer_is_zero_filled_past_the_line) {
     }
 }
 
-TEST(text_readArgs_does_not_bound_the_argument_vector) {
+// The capacity of argv is a parameter, and no pointer is ever stored past it.
+// Each test below hands text_readArgs FEWER slots than vArgv really has, so a
+// write past the capacity lands in vArgv - where the test sees it - instead of
+// past the end of an array, where only ASan would.
+
+#define KCAP                4U
+
+static  int32_t local_readArgsCap(const char_t *line, uint32_t capacity) {
+
+    (void)memset(&vBuffer[0], 'Z', sizeof(vBuffer));
+    (void)strcpy(&vBuffer[0], line);
+    return text_readArgs(&vBuffer[0], (uint32_t)sizeof(vBuffer), &vArgv[0], capacity, &vArgc);
+}
+
+TEST(text_readArgs_fills_argv_exactly_to_its_capacity) {
+    local_setup();
+
+    EXPECT_EQ_I(local_readArgsCap("a b c d", KCAP), KERR_TEXT_NOERR);
+    EXPECT_EQ_U(vArgc, KCAP);
+    EXPECT_EQ_STR(vArgv[3], "d");
+    EXPECT_EQ_PTR(vArgv[KCAP], nullptr);
+}
+
+TEST(text_readArgs_refuses_one_argument_too_many) {
+    local_setup();
+
+    EXPECT_EQ_I(local_readArgsCap("a b c d e", KCAP), KERR_TEXT_TMARG);
+    EXPECT_EQ_U(vArgc, KCAP);
+    EXPECT_EQ_STR(vArgv[3], "d");
+    EXPECT_EQ_PTR(vArgv[KCAP], nullptr);                   // "e" was not stored
+}
+
+TEST(text_readArgs_refuses_many_arguments_too_many) {
     uint32_t    i;
-    char_t      line[KBUF];
 
     local_setup();
 
-// Nine tokens into a vector the function was never told the size of. It fits
-// here only because this test made it fit: the capacity of argv is not a
-// parameter, so text_readArgs cannot check it and does not.
-//
-// console.c:253 passes a KLN_CMD_LINE_BUF-sized array, so a line with more
-// tokens than that overflows the caller's stack. A genuine out-of-bounds write,
-// recorded in DEFECTS.md and NOT provoked here - a test that overflowed on
-// purpose would turn `run-tests -s` red.
+    EXPECT_EQ_I(local_readArgsCap("a b c d e f g h i j k l", KCAP), KERR_TEXT_TMARG);
+    EXPECT_EQ_U(vArgc, KCAP);
+    for (i = KCAP; i < KMAX_ARGS; i++) {
+        EXPECT_EQ_PTR(vArgv[i], nullptr);
+    }
+}
 
-    line[0] = '\0';
-    for (i = 0U; i < 9U; i++) { (void)strcat(&line[0], "x "); }
+TEST(text_readArgs_leading_blanks_take_no_slot) {
+    local_setup();
 
-    local_readArgs(&line[0]);
+// Leading blanks are skipped, so they cost no slot of the capacity.
 
-    EXPECT_EQ_U(vArgc, 9U);
-    EXPECT_TRUE(vArgc <= KMAX_ARGS);
+    EXPECT_EQ_I(local_readArgsCap("  a b c d", KCAP), KERR_TEXT_NOERR);
+    EXPECT_EQ_U(vArgc, KCAP);
+    EXPECT_EQ_STR(vArgv[0], "a");
+    EXPECT_EQ_I(local_readArgsCap("  a b c d e", KCAP), KERR_TEXT_TMARG);
+    EXPECT_EQ_PTR(vArgv[KCAP], nullptr);
+}
+
+TEST(text_readArgs_with_no_capacity_stores_nothing) {
+    local_setup();
+
+    EXPECT_EQ_I(local_readArgsCap("date", 0U), KERR_TEXT_TMARG);
+    EXPECT_EQ_U(vArgc, 0U);
+    EXPECT_EQ_PTR(vArgv[0], nullptr);
+}
+
+TEST(text_readArgs_empty_line_needs_no_capacity) {
+    local_setup();
+
+    vBuffer[0] = '\0';
+    EXPECT_EQ_I(text_readArgs(&vBuffer[0], (uint32_t)sizeof(vBuffer), &vArgv[0], 0U, &vArgc), KERR_TEXT_NOERR);
+    EXPECT_EQ_U(vArgc, 0U);
+}
+
+// The console's own sizes: a KLN_CMD_LINE_BUF (2048) buffer, of which the line
+// editor fills at most 2047 characters, and KNB_PARAMETERS (1024) pointers. The
+// densest line it can receive - 1024 one-letter words, blanks between - needs
+// exactly 1024 slots, so the console is bounded by construction; the rpn
+// application (256 characters, 10 pointers) was not.
+
+#define KCON_LINE           2048U
+#define KCON_ARGS           1024U
+
+static  char_t          vConLine[KCON_LINE + 1U];
+static  const char_t    *vConArgv[KCON_ARGS + 1U];
+
+TEST(text_readArgs_the_densest_console_line_fits_its_argv) {
+    uint32_t    i, argc = 0U;
+
+    local_setup();
+    (void)memset(&vConLine[0], 0, sizeof(vConLine));
+    (void)memset(&vConArgv[0], 0, sizeof(vConArgv));
+
+    for (i = 0U; i < 1024U; i++) {
+        vConLine[2U * i] = 'x';
+        if (i < 1023U) {
+            vConLine[(2U * i) + 1U] = ' ';
+        }
+    }
+    vConLine[KCON_LINE - 1U] = '\0';                        // 2047 characters, as the editor stores
+
+    EXPECT_EQ_I(text_readArgs(&vConLine[0], KCON_LINE, &vConArgv[0], KCON_ARGS, &argc), KERR_TEXT_NOERR);
+    EXPECT_EQ_U(argc, KCON_ARGS);
+    EXPECT_EQ_PTR(vConArgv[KCON_ARGS], nullptr);
 }
 
 // text_copyAsciiBufferZ / N
@@ -259,7 +343,7 @@ TEST(text_copyZ_appends_a_terminator) {
     local_setup();
 
     (void)memset(&dest[0], 'Z', sizeof(dest));
-    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], "abc"), KERR_TEXT_NOERR);
+    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], sizeof(dest), "abc"), KERR_TEXT_NOERR);
 
     EXPECT_EQ_STR(&dest[0], "abc");
     EXPECT_EQ_I(dest[3], 0);
@@ -272,7 +356,7 @@ TEST(text_copyN_does_not_append_a_terminator) {
     local_setup();
 
     (void)memset(&dest[0], 'Z', sizeof(dest));
-    EXPECT_EQ_I(text_copyAsciiBufferN(&dest[0], "abc"), KERR_TEXT_NOERR);
+    EXPECT_EQ_I(text_copyAsciiBufferN(&dest[0], sizeof(dest), "abc"), KERR_TEXT_NOERR);
 
 // The whole difference between the two functions. N is for patching text into
 // the middle of an existing buffer, so terminating would truncate it.
@@ -283,22 +367,21 @@ TEST(text_copyN_does_not_append_a_terminator) {
     EXPECT_EQ_I(dest[3], 'Z');
 }
 
-TEST(text_copyZ_leaves_the_destination_untouched_for_an_empty_source) {
+TEST(text_copyZ_terminates_an_empty_source) {
     char_t  dest[16];
 
     local_setup();
 
     (void)memset(&dest[0], 'Z', sizeof(dest));
-    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], ""), KERR_TEXT_NOERR);
+    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], sizeof(dest), ""), KERR_TEXT_NOERR);
 
-// Every other input writes the terminator; this one returns before it. So
-// copying an empty string into a dirty buffer leaves the OLD contents, and a
-// caller reading dest as a C string gets whatever was there before.
-//
-// console.c:139 copies argv[2] straight into commandLine, so an empty argument
-// leaves the previous command in place. See DEFECTS.md.
+// An empty source writes its terminator like every other one. It used to return
+// before it, so a dirty buffer kept its old contents - console.c copies argv[2]
+// straight into commandLine, so an empty argument left the previous command.
+// Only the terminator is written: the rest of the buffer is untouched.
 
-    QUIRK("text-copyZ-empty-source-no-terminator", (dest[0] == 'Z'));
+    EXPECT_EQ_I(dest[0], '\0');
+    EXPECT_EQ_I(dest[1], 'Z');
 }
 
 TEST(text_copyN_is_a_no_op_for_an_empty_source) {
@@ -307,7 +390,7 @@ TEST(text_copyN_is_a_no_op_for_an_empty_source) {
     local_setup();
 
     (void)memset(&dest[0], 'Z', sizeof(dest));
-    EXPECT_EQ_I(text_copyAsciiBufferN(&dest[0], ""), KERR_TEXT_NOERR);
+    EXPECT_EQ_I(text_copyAsciiBufferN(&dest[0], sizeof(dest), ""), KERR_TEXT_NOERR);
 
 // Consistent for N, because N never writes a terminator anyway.
 
@@ -320,13 +403,97 @@ TEST(text_both_copies_handle_a_single_character) {
     local_setup();
 
     (void)memset(&dest[0], 'Z', sizeof(dest));
-    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], "x"), KERR_TEXT_NOERR);
+    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], sizeof(dest), "x"), KERR_TEXT_NOERR);
     EXPECT_EQ_STR(&dest[0], "x");
 
     (void)memset(&dest[0], 'Z', sizeof(dest));
-    EXPECT_EQ_I(text_copyAsciiBufferN(&dest[0], "x"), KERR_TEXT_NOERR);
+    EXPECT_EQ_I(text_copyAsciiBufferN(&dest[0], sizeof(dest), "x"), KERR_TEXT_NOERR);
     EXPECT_EQ_I(dest[0], 'x');
     EXPECT_EQ_I(dest[1], 'Z');
+}
+
+// The bound. console.c copies a command of up to KLN_CMD_LINE_BUF characters
+// into a KLN_INIT_CMD_LINE_BUF + 1 stack buffer; neither copy took the
+// destination size, so a long command overflowed the console's stack. See
+// DEFECTS.md.
+
+TEST(text_copyZ_fills_the_destination_exactly) {
+    char_t  dest[8];
+
+    local_setup();
+
+    (void)memset(&dest[0], 'Z', sizeof(dest));
+    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], 4U, "abc"), KERR_TEXT_NOERR);   // 3 + terminator
+    EXPECT_EQ_STR(&dest[0], "abc");
+    EXPECT_EQ_I(dest[4], 'Z');
+}
+
+TEST(text_copyZ_truncates_and_terminates_a_source_that_does_not_fit) {
+    char_t  dest[8];
+
+    local_setup();
+
+    (void)memset(&dest[0], 'Z', sizeof(dest));
+    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], 4U, "abcd"), KERR_TEXT_TOLNG);  // one too many
+    EXPECT_EQ_STR(&dest[0], "abc");
+    EXPECT_EQ_I(dest[4], 'Z');                          // nothing past sizeD
+
+    (void)memset(&dest[0], 'Z', sizeof(dest));
+    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], 4U, "abcdefghijklmnop"), KERR_TEXT_TOLNG);
+    EXPECT_EQ_STR(&dest[0], "abc");
+    EXPECT_EQ_I(dest[4], 'Z');
+}
+
+TEST(text_copyZ_writes_nothing_into_a_zero_sized_destination) {
+    char_t  dest[4];
+
+    local_setup();
+
+    (void)memset(&dest[0], 'Z', sizeof(dest));
+    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], 0U, ""), KERR_TEXT_TOLNG);
+    EXPECT_EQ_I(dest[0], 'Z');                          // not even the terminator
+}
+
+TEST(text_copyZ_a_single_byte_destination_takes_only_the_terminator) {
+    char_t  dest[4];
+
+    local_setup();
+
+    (void)memset(&dest[0], 'Z', sizeof(dest));
+    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], 1U, ""), KERR_TEXT_NOERR);
+    EXPECT_EQ_I(dest[0], '\0');
+
+    (void)memset(&dest[0], 'Z', sizeof(dest));
+    EXPECT_EQ_I(text_copyAsciiBufferZ(&dest[0], 1U, "x"), KERR_TEXT_TOLNG);
+    EXPECT_EQ_I(dest[0], '\0');
+    EXPECT_EQ_I(dest[1], 'Z');
+}
+
+TEST(text_copyN_fills_the_destination_exactly) {
+    char_t  dest[8];
+
+    local_setup();
+
+    (void)memset(&dest[0], 'Z', sizeof(dest));
+    EXPECT_EQ_I(text_copyAsciiBufferN(&dest[0], 3U, "abc"), KERR_TEXT_NOERR);   // no terminator: 3 fit in 3
+    EXPECT_EQ_I(dest[2], 'c');
+    EXPECT_EQ_I(dest[3], 'Z');
+}
+
+TEST(text_copyN_truncates_a_source_that_does_not_fit) {
+    char_t  dest[8];
+
+    local_setup();
+
+    (void)memset(&dest[0], 'Z', sizeof(dest));
+    EXPECT_EQ_I(text_copyAsciiBufferN(&dest[0], 3U, "abcd"), KERR_TEXT_TOLNG);
+    EXPECT_EQ_I(dest[0], 'a');
+    EXPECT_EQ_I(dest[2], 'c');
+    EXPECT_EQ_I(dest[3], 'Z');                          // nothing past sizeD
+
+    (void)memset(&dest[0], 'Z', sizeof(dest));
+    EXPECT_EQ_I(text_copyAsciiBufferN(&dest[0], 0U, "a"), KERR_TEXT_TOLNG);
+    EXPECT_EQ_I(dest[0], 'Z');
 }
 
 // text_checkAsciiBuffer, against the REAL function

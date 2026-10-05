@@ -17,7 +17,7 @@ cd "${PROJECT_ROOT}"
 JLinkExe -if swd -speed 8000 <<EOF
 device STM32H743II
 r h
-loadfile Variant_Test/System/FLASH.hex
+loadfile Variant_Test/Artefacts/FLASH.hex
 r
 g
 q

@@ -1,8 +1,9 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:        Some common routines used in many modules.
+ * Goal:     Some common routines used in many modules.
  */
 
 #include    "cmns.h"
@@ -22,6 +23,14 @@
 // ==================================
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
+
+// Bound for the TX FIFO wait. cmns_send() is the only way an exception can report
+// itself, and it is reachable before cmns_init() has enabled USART1 - a fault in
+// init_init() gets there with the peripheral still off. An unbounded wait then
+// hangs the core mid-report, with no character sent and no LED blink: the failure
+// becomes completely invisible. Giving up is always better than never returning.
+
+#define KCMNS_TX_RETRIES            100000U
 
 STRG_LOC_CONST(aStrApplication[]) = "cmns         Minimal I/O (not under uKOS-X).           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "Cmns\n"
@@ -71,9 +80,15 @@ void    cmns_init(void) {
  */
 void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
             uint8_t     data;
+            uint32_t    retry;
     const   char_t      *wkAscii = ascii;
 
     if (ascii == nullptr) { return; }
+
+// Nothing can leave the chip while the device is disabled, and TXFNF never
+// sets in that state. Drop the text rather than wait for it forever.
+
+    if ((REG(USART1)->CR1_FIFO & USART_CR1_FIFO_UE) == 0U) { return; }
 
     switch (serialManager) {
 
@@ -82,7 +97,11 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
         default:
         case KURT0: {
             while (true) {
-                while ((REG(USART1)->ISR_FIFO & USART_ISR_FIFO_TXFNF) == 0U) { ; }
+                retry = KCMNS_TX_RETRIES;
+                while (((REG(USART1)->ISR_FIFO & USART_ISR_FIFO_TXFNF) == 0U) && (retry != 0U)) {
+                    retry--;
+                }
+                if (retry == 0U) { return; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -106,6 +125,12 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
  *
  */
 void    cmns_receive(serialManager_t serialManager, char_t *data) {
+
+// Same hazard as cmns_send(): RXFNE never sets while the device is disabled.
+// The wait below stays unbounded on purpose - this is a blocking read - but it
+// must not be entered when nothing can ever arrive.
+
+    if ((REG(USART1)->CR1_FIFO & USART_CR1_FIFO_UE) == 0U) { *data = '\0'; return; }
 
     switch (serialManager) {
 

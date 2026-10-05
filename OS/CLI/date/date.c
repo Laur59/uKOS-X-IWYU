@@ -66,88 +66,6 @@ static  bool    local_checkLocation(const char_t *location);
 static  bool    local_showTime(const char_t *origin, uint64_t unixTime);
 
 /*
- * \brief Convert one fully consumed decimal field and range check it
- *
- * strtoul() alone accepts "31abc" as 31 and "" as 0, and wraps a leading '-'
- * into a huge unsigned value. The end pointer and the range are both checked
- * here so that only a complete, plausible field is accepted.
- *
- */
-static  bool local_getField(const char_t *ascii, long minimum, long maximum, int *value) {
-    char_t      *end;
-    long        parsed;
-
-    parsed = strtol(ascii, &end, 10);
-
-// Reject an empty field and any unconsumed remainder
-
-    if ((end == ascii) || (*end != '\0')) {
-        return false;
-    }
-
-    if ((parsed < minimum) || (parsed > maximum)) {
-        return false;
-    }
-
-    *value = (int)parsed;
-    return true;
-}
-
-/*
- * \brief Check that a UTC location is long enough for the calendar manager
- *
- * calendar_setUTCLocation() copies the string and then overwrites index 3 to
- * invert the POSIX sign convention, so anything shorter than 4 characters
- * would lose its terminator.
- *
- */
-static  bool local_checkLocation(const char_t *location) {
-
-    return (strlen(location) >= 4U);
-}
-
-/*
- * \brief Display one Unix time as UTC and as local time
- *
- * Both renderings are derived from the Unix time that was just read, never
- * from a second clock, so the printed epoch and the printed date always
- * describe the same instant - including for the RTC, which may well disagree
- * with the system timer.
- *
- */
-static  bool local_showTime(const char_t *origin, uint64_t unixTime) {
-    time_t          seconds;
-    tm_t            utcTime, localTime;
-    const char_t    *ascii;
-
-    seconds = (time_t)(unixTime / (uint64_t)CLOCKS_PER_SEC);
-
-    if (gmtime_r(&seconds, &utcTime) == nullptr) {
-        return false;
-    }
-
-    ascii = asctime(&utcTime);
-    if (ascii == nullptr) {
-        return false;
-    }
-    (void)dprintf(KSYST, "%s Epoch = %"PRIu64", UTC time:    %s", origin, unixTime, ascii);
-
-// asctime() hands back a pointer to its own static buffer, so the second
-// conversion has to happen after the first one has been printed
-
-    if (localtime_r(&seconds, &localTime) == nullptr) {
-        return false;
-    }
-
-    ascii = asctime(&localTime);
-    if (ascii == nullptr) {
-        return false;
-    }
-    (void)dprintf(KSYST, "%s Epoch = %"PRIu64", Local time:  %s", origin, unixTime, ascii);
-    return true;
-}
-
-/*
  * \brief Main entry point
  *
  */
@@ -299,4 +217,97 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         default:       {                                                    status = EXIT_OS_FAILURE;     break; }
     }
     return status;
+}
+
+// Local routines
+// ==============
+
+/*
+ * \brief local_getField
+ *
+ * Convert one fully consumed decimal field and range check it
+ *
+ * strtoul() alone accepts "31abc" as 31 and "" as 0, and wraps a leading '-'
+ * into a huge unsigned value. The end pointer and the range are both checked
+ * here so that only a complete, plausible field is accepted.
+ *
+ */
+static  bool local_getField(const char_t *ascii, long minimum, long maximum, int *value) {
+    char_t      *end;
+    long        parsed;
+
+    parsed = strtol(ascii, &end, 10);
+
+// Reject an empty field and any unconsumed remainder
+
+    if ((end == ascii) || (*end != '\0')) {
+        return false;
+    }
+
+    if ((parsed < minimum) || (parsed > maximum)) {
+        return false;
+    }
+
+    *value = (int)parsed;
+    return true;
+}
+
+/*
+ * \brief local_checkLocation
+ *
+ * Check that a UTC location is long enough for the calendar manager
+ *
+ * calendar_setUTCLocation() copies the string and then overwrites index 3 to
+ * invert the POSIX sign convention, so anything shorter than 4 characters
+ * would lose its terminator.
+ *
+ */
+static  bool local_checkLocation(const char_t *location) {
+
+    return (strlen(location) >= 4U);
+}
+
+/*
+ * \brief local_showTime
+ *
+ * Display one Unix time as UTC and as local time
+ *
+ * Both renderings are derived from the Unix time that was just read, never
+ * from a second clock, so the printed epoch and the printed date always
+ * describe the same instant - including for the RTC, which may well disagree
+ * with the system timer.
+ *
+ */
+static  bool local_showTime(const char_t *origin, uint64_t unixTime) {
+    time_t          seconds;
+    tm_t            utcTime, localTime;
+    const char_t    *ascii;
+
+    seconds = (time_t)(unixTime / (uint64_t)CLOCKS_PER_SEC);
+
+    if (gmtime_r(&seconds, &utcTime) == nullptr) {
+        return false;
+    }
+
+    ascii = asctime(&utcTime);
+    if (ascii == nullptr) {
+        return false;
+    }
+
+    (void)dprintf(KSYST, "%s Epoch = %"PRIu64", UTC time:    %s", origin, unixTime, ascii);
+
+// asctime() hands back a pointer to its own static buffer, so the second
+// conversion has to happen after the first one has been printed
+
+    if (localtime_r(&seconds, &localTime) == nullptr) {
+        return false;
+    }
+
+    ascii = asctime(&localTime);
+    if (ascii == nullptr) {
+        return false;
+    }
+
+    (void)dprintf(KSYST, "%s Epoch = %"PRIu64", Local time:  %s", origin, unixTime, ascii);
+    return true;
 }

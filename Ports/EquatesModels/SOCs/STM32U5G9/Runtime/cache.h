@@ -72,3 +72,14 @@ extern  void    cache_I_Disable(void);
  *
  */
 extern  void    cache_I_Invalidate(void);
+
+/*
+ * \brief cache_I_D_Sync_Add
+ *
+ * - Make a memory area that was written as data executable
+ *   - clean the data cache by address, so the memory holds what was written;
+ *     DCACHE1 serves only the external memories, the internal RAMs are not cached
+ *   - invalidate the instruction cache, which may hold what ran there before
+ *
+ */
+extern  void    cache_I_D_Sync_Add(const void *address, int32_t size);

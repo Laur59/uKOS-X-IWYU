@@ -7,10 +7,10 @@
  * Tier 2, same shape as the dump suite: the module is handed hex addresses of a
  * host buffer and the buffer is inspected afterwards.
  *
- * SAFETY: fill.c:85 computes (uint32_t)(endAdd - startAdd) with NO reversed
- * range handling - unlike dump.c:96, which reinterprets it as a length. A
- * reversed range therefore underflows and writes roughly four gigabytes. No
- * test here may pass one; see DEFECTS.md.
+ * A reversed range (end below start) is refused with "Protocol error." and
+ * writes nothing. It used to underflow endAdd - startAdd and write roughly four
+ * gigabytes, so against the unfixed module the reversed-range tests crash the
+ * suite rather than fail it.
  */
 
 #include    <inttypes.h>
@@ -214,6 +214,47 @@ TEST(fill_unknown_flag_is_rejected_and_writes_nothing) {
     EXPECT_OUT_IS(KBANNER KPROTO);
     EXPECT_TRUE(local_untouchedOutside(0U, 0U));
     EXPECT_EQ_U(g_kern.elevates, 0U);
+}
+
+// ============================================================================
+// Reversed range  -  refused, nothing written, no elevation
+// ============================================================================
+
+// vStart and vEnd swapped: the end is 16 bytes below the start.
+
+static void local_reversed(void) {
+
+    local_fixture(16U, 16U);
+    (void)snprintf(&vStart[0], sizeof vStart, "%" PRIXPTR, (uintptr_t)&vFixture[32U]);
+    (void)snprintf(&vEnd[0],   sizeof vEnd,   "%" PRIXPTR, (uintptr_t)&vFixture[16U]);
+}
+
+TEST(fill_reversed_range_is_refused) {
+    const char_t    *argv[] = { "fill", &vStart[0], &vEnd[0], "5A" };
+    int32_t         status;
+
+    local_reversed();
+    status = local_run(4U, argv);
+
+    ukos_t_commonInvariants(status, KBANNER);
+    EXPECT_EQ_I(status, KFAIL);
+    EXPECT_OUT_IS(KBANNER KPROTO);
+    EXPECT_TRUE(local_untouchedOutside(0U, 0U));
+}
+
+TEST(fill_supervisor_reversed_range_is_refused_without_elevating) {
+    const char_t    *argv[] = { "fill", "-S", &vStart[0], &vEnd[0], "5A" };
+    int32_t         status;
+
+    local_reversed();
+    status = local_run(5U, argv);
+
+    ukos_t_commonInvariants(status, KBANNER);
+    EXPECT_EQ_I(status, KFAIL);
+    EXPECT_OUT_IS(KBANNER KPROTO);
+    EXPECT_TRUE(local_untouchedOutside(0U, 0U));
+    EXPECT_EQ_U(g_kern.elevates, 0U);
+    EXPECT_TRUE(ukos_fake_privilegeBalanced());
 }
 
 // ============================================================================

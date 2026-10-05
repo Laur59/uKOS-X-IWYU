@@ -1,0 +1,24 @@
+{
+  "module": "kill",
+
+  "tests": [
+    {
+      "id": "kill/unknown-module",
+      "cmd": "kill nosuchmodule",
+      "expect": ["^The module does not exist\\.$"],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "kill is on ukos-serial's unsafe list; this argument cannot kill anything"
+    },
+    {
+      "id": "kill/no-argument",
+      "cmd": "kill",
+      "expect": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "kill is the only CLI module that validates its argument count"
+    }
+  ]
+}

@@ -330,6 +330,9 @@ target_link_options(${TARGET_ELF} PRIVATE
 #     precede it on the link line.
 # target_link_options() emits before the objects, target_link_libraries() after,
 # hence the placement here.
+include(${PATH_UKOS}/Ports/cmake/third-party-check.cmake)
+ukos_check_third_party_archives(${MYLIB})
+
 target_link_libraries(${TARGET_ELF} PRIVATE
     ${MYLIB}
     -Wl,--just-symbols=${SYSTEM_ELF_PATH}

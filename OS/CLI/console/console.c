@@ -103,6 +103,7 @@ static  const   console_t   aTabConsole[] = {
 // Prototypes
 
 static  int32_t     local_execute(uint32_t argc, const char_t *argv[]);
+static  void        local_readArgs(char_t *commandLine, const char_t *argv[], uint32_t *argc);
 static  void        local_process(const void *argument);
 static  uint16_t    local_getIndex(serialManager_t serialManager);
 
@@ -111,7 +112,7 @@ static  uint16_t    local_getIndex(serialManager_t serialManager);
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    enum                { KERR_NOT, KERR_INA, KERR_PRO } error = KERR_NOT;
+    enum                { KERR_NOT, KERR_INA, KERR_PRO, KERR_LNG } error = KERR_NOT;
     int32_t             status;
     serialManager_t     serialManager = KDEF0;
     char_t              commandLine[KLN_INIT_CMD_LINE_BUF + 1U];
@@ -136,7 +137,14 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 
         switch (argc) {
             case 3: {
-                text_copyAsciiBufferZ(commandLine, argv[2]);
+
+// commandLine holds KLN_INIT_CMD_LINE_BUF characters, but argv[2] comes from a
+// line of up to KLN_CMD_LINE_BUF: a longer one used to overflow the stack.
+// Refuse it rather than start a console on a truncated command
+
+                if (text_copyAsciiBufferZ(commandLine, (KLN_INIT_CMD_LINE_BUF + 1U), argv[2]) != KERR_TEXT_NOERR) {
+                    error = KERR_LNG;
+                }
                 break;
             }
             default: {
@@ -179,13 +187,17 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         );
         #undef KLOCAL_SZ_STACK_CONSOLE
 
-        if (kern_createProcess(&specification, &pack, &process) != KERR_KERN_NOERR) { error  = KERR_PRO; }
+// kern_createProcess() does not release a stack it refuses: give it back here,
+// otherwise every refused console ("already active") leaks one console stack
+
+        if (kern_createProcess(&specification, &pack, &process) != KERR_KERN_NOERR) { memo_free(vStack_0); error  = KERR_PRO; }
     }
 
     switch (error) {
         case KERR_NOT: {                                                                                    status = EXIT_OS_SUCCESS_CLI; break; }
         case KERR_PRO: { (void)dprintf(KSYST, "Console already active for this communication device.\n\n"); status = EXIT_OS_FAILURE;     break; }
         case KERR_INA: { (void)dprintf(KSYST, "Incorrect arguments.\n\n");                                  status = EXIT_OS_FAILURE;     break; }
+        case KERR_LNG: { (void)dprintf(KSYST, "Command line too long.\n\n");                                status = EXIT_OS_FAILURE;     break; }
         default:       {                                                                                    status = EXIT_OS_FAILURE;     break; }
     }
 
@@ -240,7 +252,7 @@ static void local_process(const void *argument) {
     pack = (const consolePack_t *)argument;
 
     serialManager = pack->oSerialManager;
-    text_copyAsciiBufferZ(commandLine, (const char_t *)pack->oCommandLine);
+    (void)text_copyAsciiBufferZ(commandLine, (KLN_CMD_LINE_BUF + 1U), (const char_t *)pack->oCommandLine);
     serial_flush(serialManager);
     releasePack  = pack->oReleasePack;
     *releasePack = true;
@@ -250,7 +262,7 @@ static void local_process(const void *argument) {
     (void)dprintf(KSYST, "Console core %1"PRIu32".\n", core);
     (void)dprintf(KSYST, __DATE__"  "__TIME__" (c) EFr-2026\n\n");
 
-    text_readArgs(commandLine, KLN_CMD_LINE_BUF, argv, &argc);
+    local_readArgs(commandLine, argv, &argc);
 
     if (argc != 0U) {
         local_execute(argc, argv);
@@ -264,7 +276,7 @@ static void local_process(const void *argument) {
 // Execute the command
 
         text_waitString(KSYST, commandLine, KLN_CMD_LINE_BUF);
-        text_readArgs(commandLine, KLN_CMD_LINE_BUF, argv, &argc);
+        local_readArgs(commandLine, argv, &argc);
 
         if (argc > 0U) {
             switch (local_execute(argc, argv)) {
@@ -345,4 +357,20 @@ static  uint16_t    local_getIndex(serialManager_t serialManager) {
 
     }
     return 0U;
+}
+
+/*
+ * \brief local_readArgs
+ *
+ * - Split the command line into argv, which holds KNB_PARAMETERS pointers
+ * - A line with more arguments than that is refused: argc is 0, so nothing
+ *   runs, rather than a command acting on a truncated line
+ *
+ */
+static  void    local_readArgs(char_t *commandLine, const char_t *argv[], uint32_t *argc) {
+
+    if (text_readArgs(commandLine, KLN_CMD_LINE_BUF, argv, KNB_PARAMETERS, argc) != KERR_TEXT_NOERR) {
+        (void)dprintf(KSYST, "Too many arguments.\n\n");
+        *argc = 0U;
+    }
 }

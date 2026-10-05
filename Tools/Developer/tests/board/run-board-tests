@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2026 Laurent von Allmen
 
-"""Run a table of console commands against a flashed uKOS-X board.
+"""Run console tests against a flashed uKOS-X board.
 
 The host suite (Tools/Developer/bin/run-tests) proves a CLI module's logic with
 no hardware. This proves that the firmware on a real board still behaves, which
@@ -11,9 +11,13 @@ is a different question: roughly half the error strings in these modules need a
 manager to fail and are unreachable here, a module's exit status is invisible
 because the console collapses success and failure into the same break, and the
 values - timestamps, addresses, uptimes, the VCS# - all move between builds.
-Every assertion is therefore about the SHAPE of the output.
+Every assertion is therefore about the SHAPE of the output, unless a
+placeholder pins it to the variant under test.
 
-The table is data, so another board is a new JSON file rather than new code.
+The tests are one spec per CLI module (cli/<module>.json), and the CLIs to
+run are the ones the variant's CMakeLists.txt compiles. Each CLI the variant
+declares must also be registered on the board, or the firmware was not built
+from this tree.
 
 This never opens the serial port itself and never starts a session: re-opening
 the device toggles DTR, which resets some targets. Start one with
@@ -26,15 +30,13 @@ unreachable mid-run, 3 at least one assertion failed.
 import argparse
 import json
 import os
-import re
-import subprocess
 import sys
 
-# realpath, not abspath: this is reached through Tools/Developer/bin, and the
-# shell tools resolve their own symlink the same way with ${0:A}.
-KHERE   = os.path.dirname(os.path.realpath(__file__))
-KSERIAL = os.path.normpath(os.path.join(KHERE, "..", "..", "ukos-serial"))
-KTABLES = os.path.join(KHERE, "tables")
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from ukos_board import (KSERIAL, KSPECS, Refusal, describe,  # noqa: E402
+                        identify, only_session, prepare, send_row,
+                        skip_reason)
 
 RED = GREEN = YELLOW = BOLD = DIM = NC = ""
 
@@ -46,55 +48,32 @@ def colours(enable):
         BOLD, DIM, NC = "\033[1m", "\033[2m", "\033[0m"
 
 
-def serial(args, name=None):
-    """Run one ukos-serial subcommand. Returns (exit code, stdout, stderr)."""
-
-    cmd = [sys.executable, KSERIAL]
-    if name:
-        cmd += ["--name", name]
-    cmd += args
-    done = subprocess.run(cmd, capture_output=True, text=True)
-    return done.returncode, done.stdout, done.stderr
-
-
-def send_json(command, name, timeout, unsafe=False, expect=None, refute=None):
-    args = ["send", command, "--timeout", str(timeout), "--json"]
-    if unsafe:
-        args.append("--unsafe")
-    for pattern in (expect or []):
-        args += ["--expect", pattern]
-    for pattern in (refute or []):
-        args += ["--refute", pattern]
-
-    rc, out, err = serial(args, name)
-    try:
-        return rc, json.loads(out)
-    except ValueError:
-        return rc, {"pass": False, "error": (err or out).strip()}
-
-
-RX_IDENT = re.compile(r"^\s*(Board|Variant|SoC|Core|VCS#)\s*:\s*(\S+)\s*$",
-                      re.M)
-# "FLASH  36  X08_  v 1.1   date         Set / display ..." - the module name is
-# the first word of the application string.
-RX_MODULE = re.compile(r"^FLASH\s+\d+\s+\S+\s+v\s*\S+\s+(\S+)", re.M)
-
-
 def main():
     ap = argparse.ArgumentParser(
         prog="run-board-tests",
-        description="Run a command table against a flashed uKOS-X board.")
+        description="Run the per-CLI console specs against a flashed "
+                    "uKOS-X board.")
     ap.add_argument("--name", help="ukos-serial session name")
-    ap.add_argument("--table", help="table file (default: by board name)")
+    ap.add_argument("--variant", metavar="DIR",
+                    help="variant directory (default: the one the board "
+                         "names in its 'uKOS' answer)")
+    ap.add_argument("--specs", metavar="DIR", default=KSPECS,
+                    help="per-CLI spec directory (default: %(default)s)")
+    ap.add_argument("--expect-sha", metavar="SHA",
+                    help="pin ${VCS} to this firmware revision instead of "
+                         "its shape")
     ap.add_argument("-t", "--filter", help="only ids containing this substring")
     ap.add_argument("-l", "--list", action="store_true",
-                    help="list the table's ids and exit")
+                    help="list the test ids and exit")
     ap.add_argument("-n", "--dry-run", action="store_true",
                     help="print what would be sent, send nothing")
     ap.add_argument("--have", action="append", default=[], metavar="TAG",
                     help="declare an available hw: tag; repeatable")
     ap.add_argument("--allow-unsafe", action="store_true",
                     help="run rows that need ukos-serial's --unsafe")
+    ap.add_argument("--allow-poison", action="store_true",
+                    help="run rows that leave the board changed until reset "
+                         "(they run last)")
     ap.add_argument("-v", "--verbose", action="store_true",
                     help="print the capture for every row, not only failures")
     ap.add_argument("--json", action="store_true")
@@ -107,91 +86,84 @@ def main():
         sys.stderr.write("error: ukos-serial not found next to this script\n")
         return 1
 
-    # --list and --dry-run must work with no board attached, so the table has to
-    # be resolvable without asking the hardware what it is.
-    ident, modules = {}, set()
-    if not (args.list or args.dry_run):
-        rc, _, err = serial(["status"], args.name)
-        if rc != 0:
-            sys.stderr.write("error: no usable session (%s)\n"
-                             "start one with: ukos-serial start --port "
-                             "/dev/cu.usbmodemXXXX\n" % err.strip())
-            return 1
-
-        rc, rep = send_json("uKOS", args.name, 10)
-        if rc == 2:
-            sys.stderr.write("error: the board did not answer 'uKOS'\n")
-            return 2
-        if rc != 0:
-            sys.stderr.write("error: %s\n" % rep.get("error", "unknown"))
-            return 1
-        ident = dict(RX_IDENT.findall(rep.get("text", "")))
-
-        rc, rep = send_json("list", args.name, 15)
-        if rc == 2:
-            sys.stderr.write("error: the board did not answer 'list'\n")
-            return 2
-        modules = set(RX_MODULE.findall(rep.get("text", "")))
-
-    path = args.table
-    if path is None:
-        board = ident.get("Board")
-        if board is None:
-            sys.stderr.write("error: --table is required without a board\n")
-            return 1
-        path = os.path.join(KTABLES, board + ".json")
-    if not os.path.exists(path):
-        sys.stderr.write("error: no table at %s\n" % path)
+    try:
+        return run(args)
+    except Refusal as exc:
+        sys.stderr.write("error: %s\n" % exc)
         return 1
 
-    with open(path) as handle:
-        try:
-            table = json.load(handle)
-        except ValueError as exc:
-            sys.stderr.write("error: %s is not valid JSON: %s\n" % (path, exc))
-            return 1
 
-    tests = table.get("tests", [])
+def run(args):
+    offline = args.list or args.dry_run
+
+    # --list and --dry-run must work with no board attached, so the tests have
+    # to be resolvable without asking the hardware what it is.
+    ident, modules = {}, {}
+    if not offline:
+        # The rows read the session log by name, so the fallback ukos-serial
+        # applies without --name has to be made here: a None name crashed the
+        # first row instead of running it.
+        if not args.name:
+            args.name = only_session()
+            if args.name is None:
+                sys.stderr.write("error: no single ukos-serial session; start "
+                                 "one, or pick one with --name\n")
+                return 1
+        rc, ident, modules = identify(args.name)
+        if rc == 2:
+            sys.stderr.write("error: the board did not answer 'uKOS' / 'list'\n")
+            return 2
+
+    ctx = prepare(ident, modules, args.variant, args.specs, args.expect_sha)
+    variant, facts, tests = ctx["variant"], ctx["facts"], ctx["tests"]
+    uncovered, inventory, extra = ctx["uncovered"], ctx["inventory"], ctx["extra"]
+
     if args.list:
         for test in tests:
             print(test["id"])
         return 0
-
-    # Refuse to run the wrong table against the wrong board. Without this an
-    # H743 table would half-pass on a Pico2 and the failures would look like
-    # firmware bugs.
-    if ident and (table.get("board") != ident.get("Board")):
-        sys.stderr.write("error: table is for %s, the board says %s\n"
-                         % (table.get("board"), ident.get("Board")))
-        return 1
 
     print("%sBoard%s" % (BOLD, NC))
     if ident:
         print("  board      %s" % " / ".join(
             ident.get(k, "?") for k in ("Board", "Variant", "SoC", "Core")))
         print("  firmware   VCS# %s" % ident.get("VCS#", "?"))
-    print("  table      %s  (%d tests)" % (os.path.relpath(path), len(tests)))
-    print("\n%sRun%s" % (BOLD, NC))
+    print("  variant    %s" % os.path.relpath(variant["path"]))
+    print("  expects    %s / %s  (%d CLIs)"
+          % (facts["SOC"], facts["CORE"], len(variant["clis"])))
+    print("  specs      %s  (%d tests)" % (os.path.relpath(args.specs), len(tests)))
 
     passed = failed = skipped = 0
     results = []
+
+    print("\n%sInventory%s" % (BOLD, NC))
+    for cli, present in inventory:
+        if present:
+            continue
+        failed += 1
+        results.append({"id": "inventory/" + cli, "result": "fail"})
+        print("  %sFAIL%s  %-34s declared by the variant, not registered "
+              "on the board" % (RED, NC, "inventory/" + cli))
+    if inventory and all(present for _, present in inventory):
+        print("  %sok%s    all %d CLIs of the variant are registered"
+              % (GREEN, NC, len(inventory)))
+    for cli in extra:
+        print("  %swarn%s  %-34s registered on the board, not declared "
+              "by the variant" % (YELLOW, NC, "inventory/" + cli))
+    covered = len(variant["clis"]) - len(uncovered)
+    print("  %scover%s %d/%d CLIs have a spec; none for: %s"
+          % (DIM, NC, covered, len(variant["clis"]),
+             ", ".join(uncovered) or "-"))
+
+    print("\n%sRun%s" % (BOLD, NC))
 
     for test in tests:
         tid = test["id"]
         if args.filter and (args.filter not in tid):
             continue
 
-        skip = None
-        for need in test.get("requires", []):
-            if need.startswith("module:") and not (args.dry_run or args.list):
-                if need[7:] not in modules:
-                    skip = "%s not built into this variant" % need
-            elif need.startswith("hw:") and (need[3:] not in args.have):
-                skip = "%s not available (pass --have %s)" % (need, need[3:])
-            elif need == "unsafe" and not args.allow_unsafe:
-                skip = "needs --allow-unsafe"
-            if skip:
-                break
+        skip = skip_reason(test, modules, args.have, args.allow_unsafe,
+                           offline, args.allow_poison)
 
         if skip:
             skipped += 1
@@ -201,12 +173,28 @@ def main():
 
         if args.dry_run:
             print("  %ssend%s  %-34s %s" % (DIM, NC, tid, test["cmd"]))
+            if args.verbose:
+                for pattern in test.get("expect", []):
+                    print("          expect %s" % pattern)
+                for pattern in test.get("refute", []):
+                    print("          refute %s" % pattern)
+            for step in test.get("then", []):
+                if "send" in step:
+                    print("        then send  %s" % step["send"])
+                elif "write" in step:
+                    print("        then write %s" % step["write"])
+                elif "absent" in step:
+                    print("        then absent %s" % step["absent"])
+                else:
+                    print("        then await %s" % step["await"])
+                if args.verbose:
+                    for pattern in step.get("expect", []):
+                        print("          expect %s" % pattern)
+                    for pattern in step.get("refute", []):
+                        print("          refute %s" % pattern)
             continue
 
-        rc, rep = send_json(test["cmd"], args.name, test.get("timeout", 10),
-                            unsafe=test.get("unsafe", False),
-                            expect=test.get("expect"),
-                            refute=test.get("refute"))
+        rc, rep = send_row(test, args.name)
 
         if rc == 2:
             # The prompt never came back; every later verdict would be noise.
@@ -230,11 +218,7 @@ def main():
                         "error": rep.get("error")})
         print("  %sFAIL%s  %s" % (RED, NC, tid))
         for failure in rep.get("failures", []):
-            if failure["kind"] == "expect":
-                print("          expect %s  did not hold" % failure["pattern"])
-            else:
-                print("          refute %s  matched %r"
-                      % (failure["pattern"], failure.get("at", "")))
+            print("          %s" % describe(failure))
         if rep.get("error"):
             print("          %s" % rep["error"])
         if test.get("note"):
@@ -251,7 +235,8 @@ def main():
     print("\n%d passed, %d failed, %d skipped" % (passed, failed, skipped))
     if args.json:
         print(json.dumps({"pass": failed == 0, "board": ident,
-                          "results": results}, indent=2))
+                          "results": results, "uncovered": uncovered},
+                         indent=2))
     return 3 if failed else 0
 
 

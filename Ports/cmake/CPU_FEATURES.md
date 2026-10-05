@@ -156,7 +156,7 @@ The base ISA and the ABI are fixed per core; `CPU_FEATURES` adds ISA extensions 
 | RV32IMAFDC | `rv32imafdc` | `ilp32d` | `-gdwarf-4` | `riscv32-unknown-elf` |
 | RV32EMAC | `rv32emac` | `ilp32e` | `-gdwarf-4` | `riscv32-unknown-elf` |
 | RV64IMAFC | `rv64imafc` | `lp64f` | `-mcmodel=medany -gdwarf-4` | `riscv64-unknown-elf` |
-| RV64IMAFDC | `rv64imafdc` | `lp64d` | `-mcmodel=medany -gdwarf-4 -ffast-math -fno-math-errno -fno-zero-initialized-in-bss -Wno-format -Wno-format-security` (GCC also: `-fstrict-volatile-bitfields -ffunction-sections -fdata-sections`) | `riscv64-unknown-elf` |
+| RV64IMAFDC | `rv64imafdc` | `lp64d` | `-mcmodel=medany -gdwarf-4 -ffast-math -fno-math-errno -fno-zero-initialized-in-bss -Wno-format -Wno-format-security` (GCC also: `-fstrict-volatile-bitfields -ffunction-sections -fdata-sections`; Clang also: `-mllvm=--riscv-lower-fpimm-cost=0` for the K210 FPU defect, see `Tools/Developer/tests/DEFECTS.md`) | `riscv64-unknown-elf` |
 
 **`z...`** - Any RISC-V Z-extension (`zicsr`, `zifencei`, `zba`, `zbb`, `zbs`, `zbkb`, `zca`, `zcb`, `zcmp`, ...)
 - Every token matching `z[0-9a-z]+` is appended to `-march` as `_<ext>`, in the listed order, identically for GCC and Clang

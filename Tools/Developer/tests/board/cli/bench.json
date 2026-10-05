@@ -1,0 +1,27 @@
+{
+  "module": "bench",
+  "note": "Timings move with every build and board; only the shape of each sub-bench is asserted. bench raises the console to KKERN_PRIORITY_HIGH_01 for the duration and restores it.",
+
+  "tests": [
+    {
+      "id": "bench/all",
+      "cmd": "bench",
+      "expect": ["^System bench\\.$",
+                 "^Bench 00: Fill a small 2D array \\(50 x 50\\) elements in$",
+                 "^          Histogram +t = +[0-9]+ \\[us\\]$",
+                 "^Bench 01: Fill a small 2D array \\(200 x 200\\) elements$",
+                 "^Bench 02: Fill a small 1D array \\(1000\\) elements in$",
+                 "^Bench 03: Fill a big 1D array \\(50000\\) elements in$",
+                 "^          Min / Max +t = +[0-9]+ \\[us\\]$",
+                 "^Bench 04: Compute the integer atan2 using the CORDIC$",
+                 "^          1000 x atan2\\(y, x\\) +t = +[0-9]+ \\[us\\]$",
+                 "^Bench 05: (not available for this target|Execute a tight nop loop and pulse the)$"],
+      "refute": ["^Not enough memory\\.$"],
+      "then": [
+        {"send": "uKOS", "timeout": 10, "expect": ["^Board:   ${BOARD}$"]}
+      ],
+      "timeout": 60,
+      "note": "bench_05 runs only on Nucleo_H743 and Nucleo_N657 (#if in bench_05.c); every other board prints 'not available'. 'Not enough memory.' means a sub-bench's memo_malloc failed. The uKOS step checks that bench hands the console back from KKERN_PRIORITY_HIGH_01. bench must also hand back user mode: it used to leave the console privileged, which hid the known Discovery_N657 test_ram crash (a user-mode fault) - a regression there shows up as test_ram 'passing'"
+    }
+  ]
+}

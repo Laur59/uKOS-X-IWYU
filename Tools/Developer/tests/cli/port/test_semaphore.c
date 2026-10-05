@@ -217,6 +217,51 @@ TEST(semaphore_waiter_chain_is_followed_not_assumed) {
 // Several entries
 // ============================================================================
 
+TEST(semaphore_waiter_count_is_bounded_by_the_name_buffer) {
+    proc_t      *owner, *waiters[1];
+    const char  *at;
+    unsigned    nb = 0U;
+
+    ukos_t_begin("UTC0");
+    owner      = ukos_fake_addProcess("owner1");
+    waiters[0] = ukos_fake_addProcess("loop");
+    ukos_fake_addSemaphore(0U, 0U, "Sema_x", 0, owner);
+    ukos_fake_attachWaiters(&vKern_sema[0][0].oList, &waiters[0], 1U);
+
+// A waiter chained to itself and a count past the buffer: the walk used to
+// store one name per counted element into idBuffer[core][KKERN_NB_PROCESSES],
+// past its end. Now it stops at the capacity.
+
+    waiters[0]->oObject.oForward       = waiters[0];
+    vKern_sema[0][0].oList.oNbElements = (uint16_t)(KKERN_NB_PROCESSES + 5U);
+
+    (void)local_run();
+
+    for (at = &g_fakes.out[0]; (at = strstr(at, "loop\n")) != NULL; at += 5) {
+        nb++;
+    }
+    EXPECT_EQ_U(nb, (unsigned)KKERN_NB_PROCESSES);
+}
+
+TEST(semaphore_waiter_walk_stops_at_the_end_of_the_chain) {
+    proc_t      *owner, *waiters[1];
+
+    ukos_t_begin("UTC0");
+    owner      = ukos_fake_addProcess("owner1");
+    waiters[0] = ukos_fake_addProcess("only");
+    ukos_fake_addSemaphore(0U, 0U, "Sema_x", 0, owner);
+    ukos_fake_attachWaiters(&vKern_sema[0][0].oList, &waiters[0], 1U);
+
+// A count longer than the chain: the walk used to follow the NULL oForward of
+// the last waiter.
+
+    vKern_sema[0][0].oList.oNbElements = 3U;
+
+    (void)local_run();
+
+    EXPECT_OUT_HAS("only\n");
+}
+
 TEST(semaphore_entries_appear_in_slot_order) {
 
     ukos_t_begin("UTC0");

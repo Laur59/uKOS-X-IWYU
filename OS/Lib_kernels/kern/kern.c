@@ -160,7 +160,7 @@
 #include    "modules.h"
 #include    "os_errors.h"
 
-#define KKERN_VERSION   " 1.2"
+#define KKERN_VERSION   " 1.3"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -423,7 +423,7 @@ int32_t kern_setSerialForProcess(proc_t *handle, serialManager_t serialManager) 
  * - This function gets the default communication device of a process
  *
  * \param[in]   *handle         Ptr on the handle
- * \param[out]  *serialManager  Ptr on the Serial Communication Manager
+ * \param[in]   *serialManager  Ptr on the Serial Communication Manager
  * \return      KERR_KERN_NOERR OK
  * \return      KERR_KERN_NOPRO The process does not exist
  *

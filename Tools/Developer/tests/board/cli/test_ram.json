@@ -1,0 +1,26 @@
+{
+  "module": "test_ram",
+
+  "tests": [
+    {
+      "id": "test_ram/one-pass",
+      "cmd": "test_ram 1",
+      "expect": ["^Test passed$"],
+      "refute": ["Memory error:",
+                 "Hardware problem\\.",
+                 "^Protocol error\\.$"],
+      "timeout": 120,
+      "requires": ["sym:linker_lnEXRAM"],
+      "note": "includes a 60 s retention phase, hence the long timeout. It sweeps the whole external RAM privileged; on Discovery_N657 it used to fault 16 MB in, where the user MPU region ends (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "test_ram/no-external-ram",
+      "cmd": "test_ram 1",
+      "expect": ["^No external RAM to test\\.$"],
+      "refute": ["^Test passed$"],
+      "timeout": 10,
+      "requires": ["!sym:linker_lnEXRAM"],
+      "note": "a board with no external RAM (Nucleo_H743) used to run empty sweeps and a 60 s wait, then report \"Test passed\""
+    }
+  ]
+}

@@ -229,11 +229,11 @@ int32_t kern_readMailbox([[maybe_unused]] mbox_t *handle, void **message,
     g_kern.readMailboxCalls++;
     g_kern.lastMailboxTimeout = timeout;
 
-// The contract the caller depends on: nullptr on ANY error, never a stale or
-// uninitialised pointer.
+// No promise about *message on an error: the kernel leaves it as the caller
+// had it on a guard failure, and in copy mode. The double takes that weakest
+// case, so a caller that reads the message after an error is caught.
 
     if (g_kern.readMailboxRc != KERR_KERN_NOERR) {
-        *message = NULL;
         return g_kern.readMailboxRc;
     }
 
@@ -324,6 +324,12 @@ int32_t system_reserve([[maybe_unused]] reserveMode_t mode, [[maybe_unused]] uin
 
     g_kern.systemReserveCalls++;
     return g_kern.systemReserveRc;
+}
+
+int32_t system_release([[maybe_unused]] reserveMode_t mode) {
+
+    g_kern.systemReleaseCalls++;
+    return KERR_SYSTEM_NOERR;
 }
 
 int32_t system_getSystemSignature(const char_t **signature) {

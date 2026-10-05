@@ -44,10 +44,10 @@ INCLUDE     STM32H743xI.ld
 /*           Frame Buffer        0x71000000                 */
 /*            └ 16384K                                      */
 
-linker_sizeStackSystem_C0   = (4K);                                                 /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                 /* Length of the First stack                                */
+linker_sizeStackSystem_C0   = 4K;                                                   /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                   /* Length of the First stack                                */
 config_sizeData             = stm_lnSRAM123 - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0;
-config_sizeHeap             = (8192K);
+config_sizeHeap             = 8M;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -68,20 +68,20 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0x70000000;                                           /* 0x70000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (32768K);                                             /* Length of the external memory                            */
+linker_lnEXRAM              = 32M;                                                  /* Length of the external memory                            */
 
 linker_stLCD_F_BUFFER       = 0x71000000;                                           /* 0x71000000: FrameBuffer, start of the graphic memory     */
-linker_lnLCD_F_BUFFER       = (16384K);                                             /* Length of the graphic memory                             */
+linker_lnLCD_F_BUFFER       = 16M;                                                  /* Length of the graphic memory                             */
 
 linker_stUMemo              = 0x70800000;                                           /* 0x70800000: UMemo, start of the user memory              */
-linker_lnUMemo              = (8192K);                                              /* Length of the user memory                                */
+linker_lnUMemo              = 8M;                                                   /* Length of the user memory                                */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
 linker_stHeap               = 0x70000000;                                           /* 0x70000000: start of the heap                            */
-linker_lnHeap               = (8192K);                                              /* Length of the heap                                       */
+linker_lnHeap               = 8M;                                                   /* Length of the heap                                       */
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */

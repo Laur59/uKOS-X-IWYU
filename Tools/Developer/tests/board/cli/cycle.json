@@ -1,0 +1,58 @@
+{
+  "module": "cycle",
+  "note": "cycle creates a process that runs another CLI periodically on ${CONSOLE}; it answers 'Process launched.' at once and the output arrives after the prompt, hence the await steps. Every row leaves no cycle process behind.",
+
+  "tests": [
+    {
+      "id": "cycle/no-argument",
+      "cmd": "cycle",
+      "expect": ["^Run cyclically\\.$", "^Incorrect arguments\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "cycle/stop-when-idle",
+      "cmd": "cycle -stop",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["^Cycle terminated\\.$"],
+      "timeout": 10,
+      "note": "nothing to stop is reported as incorrect arguments"
+    },
+    {
+      "id": "cycle/unknown-manager",
+      "cmd": "cycle 2 1000 xxxx date",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["^Process launched\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "cycle/unknown-program",
+      "cmd": "cycle 2 1000 ${CONSOLE} nosuchcmd",
+      "expect": ["^The selected program does not exist\\.$"],
+      "refute": ["^Process launched\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "cycle/two-repetitions",
+      "cmd": "cycle 2 1000 ${CONSOLE} date",
+      "expect": ["^Run cyclically\\.$", "^Process launched\\.$"],
+      "then": [
+        {"await": "(?s)Set/display the date\\..*Set/display the date\\..*^Cycle terminated\\.$", "timeout": 10},
+        {"send": "process", "timeout": 15, "refute": ["Process cycle"]}
+      ],
+      "timeout": 10,
+      "note": "the cycle process runs date twice, one second apart, then terminates and disappears from the process list. If nothing is printed at all, run 'mutex': a Reserve_<console>_T held by the console (the echo defect in ../DEFECTS.md) blocks every other writer until a reset"
+    },
+    {
+      "id": "cycle/in-use-then-stop",
+      "cmd": "cycle -1 5000 ${CONSOLE} rnd",
+      "expect": ["^Process launched\\.$"],
+      "then": [
+        {"send": "cycle -1 5000 ${CONSOLE} rnd", "timeout": 10, "expect": ["^Cycle already in use\\.$"]},
+        {"send": "cycle -stop ${CONSOLE}", "timeout": 10, "expect": ["^Cycle terminated\\.$"]},
+        {"send": "process", "timeout": 15, "refute": ["Process cycle"]}
+      ],
+      "timeout": 10,
+      "note": "the 'already in use' refusal used to leak one cycle stack (fixed, ../DEFECTS.md). An endless cycle, stopped before its first 5 s period: exercises process creation, the per-manager slot and kern_killProcess of a suspended process"
+    }
+  ]
+}

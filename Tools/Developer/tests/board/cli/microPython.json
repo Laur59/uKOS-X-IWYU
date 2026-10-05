@@ -1,0 +1,91 @@
+{
+  "module": "microPython",
+  "note": "A session on ${CONSOLE} takes the console over until 'quit'. The REPL prompt is '>>> ', not the console's, so inputs are written ('write') and answers awaited in the log; every print is labelled. Integer arithmetic only: float parsing and printing are broken on MAiXDUiNO_K210. 50000 bytes of workspace; Pico2's RISC-V heap could not give 90000.",
+
+  "tests": [
+    {
+      "id": "microPython/no-argument",
+      "cmd": "microPython",
+      "expect": ["^MicroPython launcher\\.$", "^Incorrect arguments\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "microPython/workspace-too-large",
+      "cmd": "microPython ${CONSOLE} 100000000",
+      "expect": ["^Not enough memory\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "microPython/repl-session",
+      "cmd": "microPython ${CONSOLE} 50000",
+      "prompt": false,
+      "then": [
+        {"await": "^uKOS interface for MicroPython", "timeout": 10},
+        {"write": "print('P_mul', 6*7)"},
+        {"await": "P_mul 42$", "timeout": 5},
+        {"write": "print('P_str', 'ab'*3)"},
+        {"await": "P_str ababab$", "timeout": 5},
+        {"write": "quit"},
+        {"await": "^>>> Terminated$", "timeout": 5},
+        {"send": "uKOS", "timeout": 10, "expect": ["^Board:   ${BOARD}$"]}
+      ],
+      "timeout": 10,
+      "note": "start, two evaluations, quit, and the console must be back"
+    },
+    {
+      "id": "microPython/survives-garbage-collection",
+      "cmd": "microPython ${CONSOLE} 50000",
+      "prompt": false,
+      "then": [
+        {"await": "^uKOS interface for MicroPython", "timeout": 10},
+        {"write": "print('P_gc', sum(len(str(i)*20) for i in range(3000)))"},
+        {"await": "P_gc 217800$", "timeout": 30},
+        {"write": "print('P_after', 6*7)"},
+        {"await": "P_after 42$", "timeout": 5},
+        {"write": "quit"},
+        {"await": "^>>> Terminated$", "timeout": 5},
+        {"send": "uKOS", "timeout": 10, "expect": ["^Board:   ${BOARD}$"]}
+      ],
+      "timeout": 10,
+      "note": "217800 bytes of short-lived strings in a 50000-byte workspace force several collections while a generator is running. gc_collect() used to take oStack for the top of the stack, traced almost nothing and freed live objects: a BusFault at the first collection (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "microPython/recursion-raises-instead-of-halting",
+      "cmd": "microPython ${CONSOLE} 50000",
+      "prompt": false,
+      "then": [
+        {"await": "^uKOS interface for MicroPython", "timeout": 10},
+        {"write": "def r(n): return r(n+1)"},
+        {"write": "r(0)"},
+        {"await": "^RuntimeError: maximum recursion depth exceeded$", "timeout": 10},
+        {"write": "def p(n): print('P_d', n, 1.5); return p(n+1)"},
+        {"write": "p(0)"},
+        {"await": "^RuntimeError: maximum recursion depth exceeded$", "timeout": 20},
+        {"write": "print('P_alive', 6*7)"},
+        {"await": "P_alive 42$", "timeout": 5},
+        {"write": "quit"},
+        {"await": "^>>> Terminated$", "timeout": 5},
+        {"send": "uKOS", "timeout": 10, "expect": ["^Board:   ${BOARD}$"]}
+      ],
+      "timeout": 10,
+      "note": "unbounded recursion must end in an exception, not in the kernel's 'stack underflow' halt. The second function prints a float from every frame, so the deepest one runs the whole print chain below the last stack check: that is what MICROPY_STACK_CHECK_MARGIN has to cover (../DEFECTS.md)"
+    },
+    {
+      "id": "microPython/only-quit-ends-the-session",
+      "cmd": "microPython ${CONSOLE} 50000",
+      "prompt": false,
+      "then": [
+        {"await": "^uKOS interface for MicroPython", "timeout": 10},
+        {"write": "7"},
+        {"await": "^>>> 7$", "timeout": 5},
+        {"write": "qx"},
+        {"await": "NameError", "timeout": 5},
+        {"write": "quit"},
+        {"await": "^>>> Terminated$", "timeout": 5},
+        {"send": "uKOS", "timeout": 10, "expect": ["^Board:   ${BOARD}$"]}
+      ],
+      "timeout": 10,
+      "note": "a one-character line is evaluated, a line that merely starts like 'quit' is Python (a NameError here), and only 'quit' ends the session. The quit test used to compare only the first strlen-1 characters, so '7', 'q' and 'qx' all ended it (fixed, ../DEFECTS.md)"
+    }
+  ]
+}

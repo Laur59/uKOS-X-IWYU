@@ -493,7 +493,7 @@ TEST(mutexes_kill_releases_every_waiter) {
     EXPECT_TRUE(ukos_fake_interruptsBalanced());
 }
 
-TEST(mutexes_the_release_loop_only_remembers_the_last_waiter) {
+TEST(mutexes_kill_preempts_for_any_higher_priority_waiter) {
     mutx_t  *handle;
 
     local_setup();
@@ -505,11 +505,24 @@ TEST(mutexes_the_release_loop_only_remembers_the_last_waiter) {
     EXPECT_EQ_I(kern_killMutex(handle), KERR_KERN_NOERR);
     EXPECT_EQ_U(vKern_listExec[0].oNbElements, 2U);
 
-// The same defect as semaphores.c, in the same shape, at mutexes.c:251 and
-// :308: the loop assigns preemption instead of accumulating it, so only the
-// last process released is considered. See DEFECTS.md.
+// The loop used to assign preemption instead of accumulating it, so only the
+// last process released was considered. See DEFECTS.md.
 
-    KNOWN_BUG("kern-release-loop-preemption-overwritten", (g_kernenv.oNbPreemption == 0U));
+    EXPECT_EQ_U(g_kernenv.oNbPreemption, 1U);
+}
+
+TEST(mutexes_restart_preempts_for_any_higher_priority_waiter) {
+    mutx_t  *handle;
+
+    local_setup();
+
+    handle = local_mutex("Reset");
+    local_addWaiter(handle, &vWaiter[0], KPRIO_HIGH);
+    local_addWaiter(handle, &vWaiter[1], KPRIO_LOW);
+
+    EXPECT_EQ_I(kern_restartMutex(handle), KERR_KERN_NOERR);
+    EXPECT_EQ_U(vKern_listExec[0].oNbElements, 2U);
+    EXPECT_EQ_U(g_kernenv.oNbPreemption, 1U);
 }
 
 TEST(mutexes_restart_frees_the_mutex_and_keeps_it_installed) {

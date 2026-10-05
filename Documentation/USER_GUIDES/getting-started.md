@@ -168,6 +168,58 @@ cd Third_Parties/esp32
 ./build.sh
 ```
 
+### Keeping the built libraries across checkouts
+
+`Third_Parties/<package>/Library/` is ignored by git. Without more, it stays as it is when
+you check out another commit, and the archives of the previous commit are linked against
+the headers of the new one. Two things take care of that.
+
+**A stamp.** Installing a package writes `Library/.ukos-stamp`, which names the sources the
+archives were built from and the compiler that built them. The target and application
+builds compare it with the checkout at configure time and print a CMake warning when the
+library was built from other sources (`-DTHIRD_PARTY_CHECK=OFF` turns the comparison off).
+
+**A cache outside the repository.** Installing also copies `Library/` to
+`<parent of the checkout>/.cache/ukos-third-parties/<package>/<sources>-<compiler>/`, so
+every checkout and worktree placed side by side shares it. `UKOS_THIRD_PARTIES_CACHE`
+selects another directory. After moving to another commit:
+
+```bash
+Tools/Developer/bin/third-parties-cache status     # what Library/ holds, what is cached
+Tools/Developer/bin/third-parties-cache restore    # bring back the builds of this checkout
+```
+
+`restore` replaces a `Library/` only by a build of exactly the sources now checked out, and
+reports the packages it has no build for; those have to be built as above. It saves a
+stamped `Library/` before replacing it, and leaves an unstamped one alone unless `--force`
+is given. `--gcc` and `--llvm` choose between the two when both are cached.
+
+What "the sources" means: every file under `Third_Parties/<package>` that git does not
+ignore (documentation excepted), plus the files listed in
+`Third_Parties/cmake/cache-inputs-common.txt` and `Third_Parties/<package>/cache-inputs.txt`
+— the headers under `OS/` and `Ports/` the package compiles against. A commit that touches
+none of them keeps the same key, so most checkouts reuse the same build. Four points follow
+from that definition:
+
+- The key is taken from the working tree, so it is the same before and after a commit, and
+  an uncommitted edit to an input makes the library stale like a commit would.
+- The lists are checked, not trusted: installing compares them with the dependencies ninja
+  recorded during the build and leaves the library unstamped when the build read a file
+  that no list covers. `third-parties-cache audit` runs the same check on its own. A build
+  with another generator has no such record and is stamped without it.
+- The upstream tree (`<package>-current`) is not part of the key; the reference it is
+  checked out at is, because the build files pin it. A build of another reference
+  (`MicroPython/build_with_cmake.sh <ref>`) is therefore never stamped.
+- The module date (`"Module built on ..."`) is the commit date of the checkout that *built*
+  the library. A restored library keeps that date, so two checkouts with the same key share
+  archives that a rebuild would make differ in that one string.
+
+A `Library/` built before the stamp existed is reported as *not stamped*, never as stale.
+If you know it was built from the sources now checked out,
+`third-parties-cache adopt <package>` stamps and caches it on your word. The cache only
+grows; entries are plain directories and can be deleted at any time
+(`third-parties-cache list` shows them with their size).
+
 ## Building all the targets of the package
 
 This command will build all the targets of the package. It requires that the above

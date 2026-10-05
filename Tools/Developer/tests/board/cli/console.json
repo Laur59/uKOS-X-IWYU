@@ -1,0 +1,49 @@
+{
+  "module": "console",
+  "note": "The console runs every other row, so its happy path is tested everywhere; these rows cover its own arguments and the dispatch errors. ${CONSOLE} is the serial manager of the console running the tests.",
+
+  "tests": [
+    {
+      "id": "console/no-argument",
+      "cmd": "console",
+      "expect": ["^Incorrect arguments\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "console/already-active",
+      "cmd": "console ${CONSOLE}",
+      "expect": ["^Console already active for this communication device\\.$"],
+      "timeout": 10,
+      "note": "a second console on the device the tests run on must be refused, never started. It used to leak the 5632 B stack allocated for it (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "console/command-too-long",
+      "cmd": "console ${CONSOLE} xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "expect": ["^Command line too long\\.$"],
+      "refute": ["^Console already active"],
+      "timeout": 10,
+      "note": "the initial command (140 characters) does not fit the console's 128-character buffer: it is refused before anything else is checked. It used to be copied without a bound onto the console's stack (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "console/unknown-module",
+      "cmd": "nosuchcmd",
+      "expect": ["^Module not found or user memory busy by a running application\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "console/module-name-is-case-sensitive",
+      "cmd": "UKOS",
+      "expect": ["^Module not found or user memory busy by a running application\\.$"],
+      "refute": ["^Target:$"],
+      "timeout": 10
+    },
+    {
+      "id": "console/leading-spaces-skipped",
+      "cmd": "   uKOS",
+      "expect": ["^Target:$"],
+      "refute": ["^Module not found"],
+      "timeout": 10,
+      "note": "leading blanks are skipped. Before fix/text-readargs-leading-blanks the command name was empty and the lookup failed"
+    }
+  ]
+}

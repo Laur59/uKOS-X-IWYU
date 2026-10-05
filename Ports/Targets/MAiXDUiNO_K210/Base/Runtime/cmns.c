@@ -24,6 +24,23 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
+// Bound for the TX wait. cmns_send() is the only way an exception can report
+// itself, and it is reachable before cmns_init() has enabled the device - a
+// fault inside init_init() gets there with the peripheral still off. The
+// ready flag never comes in that state, so an unbounded wait hangs the core
+// mid-report: no character sent, and cb_signal() never reached, so not even
+// its LED blink. Giving up on the text is always better than never returning.
+
+#define KCMNS_TX_RETRIES            100000U
+
+// The console of this board runs at 115200, and it is the only board where
+// that differs from KSERIAL_DEFAULT_BAUDRATE (460800). cmns_init() used the
+// default, so everything cmns_send() emits - panics, stack smashing, the core
+// dump - came out at the wrong rate and was unreadable. Nobody saw it because
+// the banner and the prompt go through urt0, which sets its own baud later.
+
+#define KCMNS_BAUDRATE              115200
+
 STRG_LOC_CONST(aStrApplication[]) = "cmns         Minimal I/O (not under uKOS-X).           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "Cmns\n"
                                     "====\n\n"
@@ -58,7 +75,7 @@ void    cmns_init(void) {
     sysctl->clk_en_peri.uart1_clk_en = 1U;
     uart1->LCR |= 1U<<7U;
 
-    BAUDRATE(KFREQUENCY_APB0, KSERIAL_DEFAULT_BAUDRATE, uart1->DLH, uart1->DLL, uart1->DLF);
+    BAUDRATE(KFREQUENCY_APB0, KCMNS_BAUDRATE, uart1->DLH, uart1->DLL, uart1->DLF);
 
     uart1->LCR  = 0U;
     uart1->LCR  = UART_LCR_NBBIT8 | UART_LCR_STBIT1 | UART_LCR_PARITYNONE;
@@ -71,7 +88,7 @@ void    cmns_init(void) {
     sysctl->clk_en_peri.uart2_clk_en = 1U;
     uart2->LCR |= 1U<<7U;
 
-    BAUDRATE(KFREQUENCY_APB0, KSERIAL_DEFAULT_BAUDRATE, uart2->DLH, uart2->DLL, uart2->DLF);
+    BAUDRATE(KFREQUENCY_APB0, KCMNS_BAUDRATE, uart2->DLH, uart2->DLL, uart2->DLF);
 
     uart2->LCR  = 0U;
     uart2->LCR  = UART_LCR_NBBIT8 | UART_LCR_STBIT1 | UART_LCR_PARITYNONE;
@@ -91,6 +108,7 @@ void    cmns_init(void) {
  */
 void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *ascii) {
             uint8_t     data;
+            uint32_t    retry;
             uint32_t    core;
     const   char_t      *wkAscii = ascii;
 
@@ -103,7 +121,11 @@ void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *
         default:
         case KCORE_0: {
             while (true) {
-                while ((uart2->LSR & UART_LSR_TEMT) != 0U) { ; }
+                retry = KCMNS_TX_RETRIES;
+                while (((uart2->LSR & UART_LSR_TEMT) != 0U) && (retry != 0U)) {
+                    retry--;
+                }
+                if (retry == 0U) { return; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -120,7 +142,11 @@ void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *
 
         case KCORE_1: {
             while (true) {
-                while ((uart1->LSR & UART_LSR_TEMT) != 0U) { ; }
+                retry = KCMNS_TX_RETRIES;
+                while (((uart1->LSR & UART_LSR_TEMT) != 0U) && (retry != 0U)) {
+                    retry--;
+                }
+                if (retry == 0U) { return; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;

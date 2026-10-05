@@ -106,26 +106,27 @@ TEST(object_summary_lists_every_kind) {
 #endif
 }
 
-TEST(object_two_arguments_fall_through_to_the_summary) {
+TEST(object_two_arguments_are_incorrect) {
     const char_t    *argv[] = { "object", "-proc" };
 
     ukos_t_begin("UTC0");
 
-// Only argc 3 and 4 select an object; the default arm precedes case 1U and
-// falls into it, so an incomplete request silently prints the summary instead
-// of reporting a bad argument.
+// Only 1, 3 and 4 arguments are forms of the command. An incomplete request
+// used to fall into the summary, so "Incorrect arguments." never printed.
 
-    EXPECT_EQ_I(local_run(2U, argv), KOK);
-    EXPECT_OUT_HAS("Objects used by the core 0\n\n");
+    EXPECT_EQ_I(local_run(2U, argv), KFAIL);
+    EXPECT_OUT_HAS("Incorrect arguments.\n\n");
+    EXPECT_OUT_LACKS("Objects used by the core");
 }
 
-TEST(object_five_arguments_fall_through_to_the_summary) {
+TEST(object_five_arguments_are_incorrect) {
     const char_t    *argv[] = { "object", "0", "-proc", "5", "junk" };
 
     ukos_t_begin("UTC0");
 
-    EXPECT_EQ_I(local_run(5U, argv), KOK);
-    EXPECT_OUT_HAS("Objects used by the core 0\n\n");
+    EXPECT_EQ_I(local_run(5U, argv), KFAIL);
+    EXPECT_OUT_HAS("Incorrect arguments.\n\n");
+    EXPECT_OUT_LACKS("Objects used by the core");
 }
 
 // ============================================================================
@@ -193,39 +194,36 @@ TEST(object_long_form_selects_each_kind) {
     ukos_t_begin("UTC0"); (void)local_run(4U, argvSign); EXPECT_OUT_HAS("Signal group 00:");
 }
 
-TEST(object_long_form_mutx_is_rejected) {
+TEST(object_long_form_mutx_works) {
     const char_t    *argv[] = { "object", "0", "-mutx", "2" };
     int32_t         status;
 
     ukos_t_begin("UTC0");
     ukos_fake_addMutex(0U, 2U, "Mutx_test", 5, NULL);
 
-// DEFECT (DEFECTS.md): object.c:138 tests argv[1] for "-mutx" inside the
-// argc == 4 arm, where all six sibling lines test argv[2]. argv[1] is the core
-// number here, so the flag never matches and a perfectly well-formed request is
-// refused. Pinned as CURRENT behaviour; correcting the module turns this red.
+// The argc == 4 arm tests argv[2] for every flag. -mutx used to test argv[1] -
+// the core number - so this well-formed request was refused.
 
     status = local_run(4U, argv);
 
     ukos_t_commonInvariants(status, KBANNER);
-    EXPECT_EQ_I(status, KFAIL);
-    EXPECT_OUT_IS(KBANNER KNOOBJECT);
-    EXPECT_OUT_LACKS("Mutx_test");
+    EXPECT_EQ_I(status, KOK);
+    EXPECT_OUT_HAS("Mutex 02:\n");
+    EXPECT_OUT_HAS("   Identifier:           Mutx_test\n");
 }
 
-TEST(object_long_form_mutx_works_in_the_wrong_order) {
+TEST(object_long_form_mutx_in_the_core_position_is_rejected) {
     const char_t    *argv[] = { "object", "-mutx", "ignored", "2" };
 
     ukos_t_begin("UTC0");
     ukos_fake_addMutex(0U, 2U, "Mutx_test", 5, NULL);
 
-// The mirror image of the defect: because argv[1] is what is compared, putting
-// the flag where the core belongs DOES select the mutex. strtoul("-mutx")
-// yields 0, which happens to be a valid core, so nothing rejects it.
+// The mirror image: with argv[1] compared, the flag where the core belongs
+// selected the mutex (strtoul("-mutx") is 0, a valid core). Now argv[2] is
+// "ignored", which is no flag.
 
-    EXPECT_EQ_I(local_run(4U, argv), KOK);
-    EXPECT_OUT_HAS("Mutex 02:\n");
-    EXPECT_OUT_HAS("   Identifier:           Mutx_test\n");
+    EXPECT_EQ_I(local_run(4U, argv), KFAIL);
+    EXPECT_OUT_IS(KBANNER KNOOBJECT);
 }
 
 TEST(object_long_form_unknown_flag) {
@@ -362,23 +360,45 @@ TEST(object_mutex_detail_describes_the_owner_kind) {
     EXPECT_OUT_HAS("Process owner\n");
 }
 
-TEST(object_unused_slot_prints_a_null_identifier) {
-    const char_t    *argv[] = { "object", "-mutx", "7" };
+TEST(object_unused_slots_print_no_null_identifier) {
+    const char_t    *argvProc[] = { "object", "-proc", "7" };
+    const char_t    *argvSema[] = { "object", "-sema", "7" };
+    const char_t    *argvMutx[] = { "object", "-mutx", "7" };
+    const char_t    *argvMbox[] = { "object", "-mbox", "7" };
+    const char_t    *argvSign[] = { "object", "-sign", "7" };
+    const char_t    **argvs[]   = { argvProc, argvSema, argvMutx, argvMbox, argvSign };
+    size_t          i;
+
+// An unused slot has oIdentifier == NULL. It used to reach dprintf("%s")
+// unchanged - undefined behaviour, rendered "(null)" by this host's libc and by
+// nothing that a target libc promises. Querying an unused object is an ordinary
+// thing to do, so every kind is checked.
+
+    for (i = 0U; i < (sizeof argvs / sizeof argvs[0]); i++) {
+        ukos_t_begin("UTC0");
+        ukos_t_poisonStack();
+
+        EXPECT_EQ_I(local_run(3U, argvs[i]), KOK);
+        EXPECT_OUT_HAS("   Identifier:           (none)\n");
+        EXPECT_OUT_LACKS("(null)");
+    }
+}
+
+TEST(object_a_process_without_a_text_prints_no_null) {
+    const char_t    *argv[] = { "object", "-proc", "3" };
 
     ukos_t_begin("UTC0");
 
-// DEFECT (DEFECTS.md): an unused slot has oIdentifier == NULL, and the printer
-// hands it straight to dprintf("%s"). Passing NULL to %s is undefined; this
-// host prints "(null)" but a target libc need not. Querying an unused object is
-// an ordinary thing for a user to do, so this path is reachable in normal use.
-// Pinned as CURRENT behaviour, and only by shape - the exact rendering is a
-// property of the libc, not of the module.
+// oText may be nullptr for a real, named process - the kernel's own first
+// process has none (processes.c) - so the Text line needs the same care.
 
-    ukos_t_poisonStack();
+    vKern_proc[0][3].oSpecification.oIdentifier = "Proc_named";
+    vKern_proc[0][3].oSpecification.oText       = NULL;
 
     EXPECT_EQ_I(local_run(3U, argv), KOK);
-    EXPECT_OUT_HAS("Mutex 07:\n");
-    EXPECT_OUT_HAS("   Identifier:           ");
+    EXPECT_OUT_HAS("   Identifier:           Proc_named\n");
+    EXPECT_OUT_HAS("   Text:                 (none)\n");
+    EXPECT_OUT_LACKS("(null)");
 }
 
 TEST(object_uninstalled_slot_says_so) {

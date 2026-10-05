@@ -37,7 +37,6 @@
 cmake_minimum_required(VERSION 3.31)
 
 project(decnumber_Package
-    VERSION 3.68
     DESCRIPTION "decnumber filesystem package with upstream source fetch"
     LANGUAGES NONE
 )
@@ -50,6 +49,10 @@ endif()
 
 # Toolchain used for every per-core archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
+
+# Stamp Library/ at install time and keep a copy in the shared cache
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+ukos_library_cache_begin(decnumber)
 
 # Include FetchContent module for downloading upstream decnumber
 include(FetchContent)
@@ -65,10 +68,9 @@ message("")
 #------------------------------------------------------------------------
 
 # Package version and commit hash (matching build.sh)
-set(DECNUMBER_VERSION "3.68")
-set(DECNUMBER_HASH "a941bd3")
+set(DECNUMBER_HASH "f8d97fcb")
 
-message(STATUS "Fetching decnumber version ${DECNUMBER_VERSION} (commit ${DECNUMBER_HASH})")
+message(STATUS "Fetching decnumber (commit ${DECNUMBER_HASH})")
 
 FetchContent_Declare(
     decnumber_Upstream
@@ -208,6 +210,9 @@ add_custom_target(build_all_decnumber ALL
 # Add dependency to ensure decnumber is fetched before building
 add_dependencies(build_all_decnumber decnumber_Fetch_Complete)
 
+# Stamp and cache what was installed (must follow the last install() rule)
+ukos_library_cache_end(decnumber)
+
 #------------------------------------------------------------------------
 # Summary
 #------------------------------------------------------------------------
@@ -216,8 +221,7 @@ message("")
 message("══════════════════════════════════════════════════════════════")
 message("Configuration complete.")
 message("")
-message("decnumber version:   ${DECNUMBER_VERSION}")
-message("Git commit:      ${DECNUMBER_HASH}")
+message("Git decnumber commit:      ${DECNUMBER_HASH}")
 if(USE_LLVM)
     message("Toolchain:       Clang/LLVM")
 else()

@@ -71,10 +71,12 @@ KSETTLE = 0.025
 KEOL = {"cr": b"\r", "lf": b"\n", "crlf": b"\r\n"}
 
 # Console commands that reset the board, kill processes or write memory.
-# Refused unless the caller passes --unsafe.
+# Refused unless the caller passes --unsafe. memory (section layout and heap
+# statistics) and power (battery gauge readings) only read, despite their
+# names, and are not on the list.
 
 KUNSAFE = frozenset({
-    "restart", "kill", "power", "fill", "memory", "sloader", "hexloader",
+    "restart", "kill", "fill", "sloader", "hexloader",
 })
 
 # USB CDC ACM device nodes, by platform naming.  CDC consoles need DTR asserted

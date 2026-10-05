@@ -197,6 +197,15 @@ function(configure_riscv_core)
             "-Wno-format-security"
         )
         set(EXTRA_FLAGS_GNU "-fstrict-volatile-bitfields")
+        # K210 FPU (the only RV64IMAFDC part): a single-precision value written by
+        # fmv.w.x - or copied from one with fmv.s - is stored as 0 by fsd, while one
+        # loaded by flw or produced by arithmetic survives fsd/fld. The ABI saves the
+        # callee-saved fs registers, and the trap entry every ft/fa register, with
+        # fsd/fld, so such a value is lost across any call that uses its register and
+        # across any interrupt. Clang builds every float constant with lui + fmv.w.x;
+        # this makes it load them from the constant pool with flw, as GCC does. Doubles
+        # (fmv.d.x) are not affected. Measured on the board; see Tools/Developer/tests/DEFECTS.md.
+        set(EXTRA_FLAGS_CLANG "-mllvm=--riscv-lower-fpimm-cost=0")
     else()
         message(FATAL_ERROR "Unsupported RISC-V core: ${CORE}")
     endif()
@@ -221,6 +230,9 @@ function(configure_riscv_core)
     endif()
     if(DEFINED EXTRA_FLAGS_GNU)
         list(APPEND COMPILE_FLAGS "$<$<C_COMPILER_ID:GNU>:${EXTRA_FLAGS_GNU}>")
+    endif()
+    if(DEFINED EXTRA_FLAGS_CLANG)
+        list(APPEND COMPILE_FLAGS "$<$<C_COMPILER_ID:Clang>:${EXTRA_FLAGS_CLANG}>")
     endif()
 
     # Build link flags

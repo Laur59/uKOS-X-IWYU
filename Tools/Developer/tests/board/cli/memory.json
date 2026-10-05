@@ -1,0 +1,24 @@
+{
+  "module": "memory",
+  "note": "memory is read-only, despite its name. The layout differs between the privileged-only and privileged/user builds (data vs data_p/data_u) and on two cores (C0/C1 stacks); the patterns accept both.",
+
+  "tests": [
+    {
+      "id": "memory/sections",
+      "cmd": "memory",
+      "expect": ["^Memory information\\.$",
+                 "^uKOS code: +addr = 0x[0-9A-F]{16}, size = 0x[0-9A-F]{16} \\[Bytes\\], used: +[0-9]+\\.[0-9]{2} \\[%\\]$",
+                 "^uKOS data(_p)?: +addr = 0x[0-9A-F]{16}, size = 0x[0-9A-F]{16} \\[Bytes\\], used: +[0-9]+\\.[0-9]{2} \\[%\\]$",
+                 "^(C0 )?Stack first: +addr = 0x[0-9A-F]{16}, size = 0x[0-9A-F]{16} \\[Bytes\\]$",
+                 "^(C0 )?Stack system: +addr = 0x[0-9A-F]{16}, size = 0x[0-9A-F]{16} \\[Bytes\\]$",
+                 "^Section text: +addr = 0x[0-9A-F]{16}, used = 0x[0-9A-F]{16} \\[Bytes\\]$",
+                 "^Section rodata: +addr = 0x[0-9A-F]{16}, used = 0x[0-9A-F]{16} \\[Bytes\\]$",
+                 "^Section bss(_p)?: +addr = 0x[0-9A-F]{16}, used = 0x[0-9A-F]{16} \\[Bytes\\]$",
+                 "^Heap: +addr = 0x[0-9A-F]{16}$",
+                 "^ +total size +[0-9]+ \\[Bytes\\]$",
+                 "^ +total used blocks: +[0-9]+ \\[-\\]$"],
+      "timeout": 15,
+      "note": "addresses and sizes are board specific; only the shape is asserted"
+    }
+  ]
+}

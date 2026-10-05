@@ -43,14 +43,14 @@ INCLUDE     rp2350.ld
 /*           Share               0x20072000                 */
 /*            └ 64K                                         */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
-linker_sizeStackSystem_C1   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C1    = (2K);                                                         /* Length of the First stack                                */
-config_sizeData             = (180K);
-config_sizeHeap             = (128K);
-config_sizeUserMemory       = (136K);
-config_sizeShare            = (64K);
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
+linker_sizeStackSystem_C1   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C1    = 2K;                                                           /* Length of the First stack                                */
+config_sizeData             = 180K;
+config_sizeHeap             = 128K;
+config_sizeUserMemory       = 136K;
+config_sizeShare            = 64K;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -81,12 +81,12 @@ ASSERT((linker_topStackFirst_C1 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
-linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x20050000: UMemo, start of the user memory              */
+linker_stUMemo              = linker_stHeap + linker_lnHeap;                                /* 0x20050000: UMemo, start of the user memory              */
 linker_lnUMemo              = config_sizeUserMemory;                                        /* Length of the user memory                                */
 
-linker_stShare              = (linker_stUMemo + linker_lnUMemo);                            /* 0x20072000: Share, start of the multicore shared memory  */
+linker_stShare              = linker_stUMemo + linker_lnUMemo;                              /* 0x20072000: Share, start of the multicore shared memory  */
 linker_lnShare              = config_sizeShare;                                             /* Length of the user multicore shared memory               */
 
 /* IMPORTANT:                                               */
@@ -110,10 +110,10 @@ linker_lnPrgmData           = config_sizeData;                                  
 /* for the arm_v8 MPU the regions have to be 32-B aligned   */
 
 linker_ST_FLASH_INT_0       = rp_stINTFLASH;                                                /* 0x10000000: Privileged/User FLASH                        */
-linker_EN_FLASH_INT_0       = (rp_stINTFLASH + rp_lnINTFLASH - 1);                          /* 0x103FFFFF: 4-M                                          */
+linker_EN_FLASH_INT_0       = rp_stINTFLASH + rp_lnINTFLASH - 1;                            /* 0x103FFFFF: 4-M                                          */
 
 linker_ST_RAM_INT_0         = rp_stSRAM;                                                    /* 0x20000000: Privileged/User RAM                          */
-linker_EN_RAM_INT_0         = (rp_stSRAM + rp_lnSRAM1 - 1);                                 /* 0x20081FFF: 520-K                                        */
+linker_EN_RAM_INT_0         = rp_stSRAM + rp_lnSRAM1 - 1;                                   /* 0x20081FFF: 520-K                                        */
 
 MEMORY {
     prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode

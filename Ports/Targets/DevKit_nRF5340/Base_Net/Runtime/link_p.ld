@@ -42,9 +42,9 @@ INCLUDE     nRF5340xx.ld
 /*           Share               0x20078000                 */
 /*            └ 32K                                         */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
-config_sizeHeap             = (32K);
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
+config_sizeHeap             = 32K;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -65,16 +65,16 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
 linker_stUMemo              = 0;                                                            /* 0x00000000: UMemo, start of the user memory              */
-linker_lnUMemo              = (0);                                                          /* Length of the user memory                                */
+linker_lnUMemo              = 0;                                                            /* Length of the user memory                                */
 
 linker_stFoNet              = 0x20070000;                                                   /* 0x20070000: Share, start of the multicore shared memory  */
-linker_lnFNet               = (32K);                                                        /* Length of the user multicore shared memory               */
+linker_lnFNet               = 32K;                                                          /* Length of the user multicore shared memory               */
 
-linker_stShare              = (linker_stFoNet + linker_lnFNet);                             /* 0x20078000: Share, start of the multicore shared memory  */
-linker_lnShare              = (32K);                                                        /* Length of the user multicore shared memory               */
+linker_stShare              = linker_stFoNet + linker_lnFNet;                               /* 0x20078000: Share, start of the multicore shared memory  */
+linker_lnShare              = 32K;                                                          /* Length of the user multicore shared memory               */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
@@ -98,16 +98,16 @@ linker_lnPrgmData           = nrf_lnSRAM_NET - linker_sizeStackSystem_C0
 /* for the arm_v8 MPU the regions have to be 32-B aligned   */
 
 linker_ST_FLASH_INT_0       = nrf_stINTFLASH_NET;                                           /* 0x01000000: Privileged/User FLASH                        */
-linker_EN_FLASH_INT_0       = ((nrf_stINTFLASH_NET + nrf_lnINTFLASH_NET) - 1);              /* 0x0103FFFF: 256-K                                        */
+linker_EN_FLASH_INT_0       = nrf_stINTFLASH_NET + nrf_lnINTFLASH_NET - 1;                  /* 0x0103FFFF: 256-K                                        */
 
 linker_ST_RAM_INT_0         = nrf_stSRAM_NET;                                               /* 0x21000000: Privileged RAM                               */
-linker_EN_RAM_INT_0         = (nrf_stSRAM_NET + nrf_lnSRAM_NET - 1);                        /* 0x2100FFFF: 64-K                                         */
+linker_EN_RAM_INT_0         = nrf_stSRAM_NET + nrf_lnSRAM_NET - 1;                          /* 0x2100FFFF: 64-K                                         */
 
 linker_ST_RAM_INT_1         = linker_stFoNet;                                               /* 0x20070000: Privileged/User RAM                          */
-linker_EN_RAM_INT_1         = (linker_stFoNet + linker_lnFNet - 1);                         /* 0x20077FFF: 32-K                                         */
+linker_EN_RAM_INT_1         = linker_stFoNet + linker_lnFNet - 1;                           /* 0x20077FFF: 32-K                                         */
 
 linker_ST_RAM_INT_1_SHARED  = linker_stShare;                                               /* 0x20078000: Privileged/User RAM                          */
-linker_EN_RAM_INT_1_SHARED  = (linker_stShare + linker_lnShare - 1);                        /* 0x2007FFFF: 32-K                                         */
+linker_EN_RAM_INT_1_SHARED  = linker_stShare + linker_lnShare - 1;                          /* 0x2007FFFF: 32-K                                         */
 
 MEMORY {
     prgm_code (rx)  : ORIGIN = linker_stPrgmCode, LENGTH = linker_lnPrgmCode

@@ -1,0 +1,54 @@
+{
+  "module": "echo",
+  "note": "echo reads one serial manager and writes what it gets to another. The rows loop the console onto itself (${CONSOLE} ${CONSOLE}), which needs no hardware. echo stops 10 s after it starts if nothing comes, or 5 s after the last character.",
+
+  "tests": [
+    {
+      "id": "echo/no-argument",
+      "cmd": "echo",
+      "expect": ["^Communication echo\\.$", "^Incorrect arguments\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "echo/one-argument",
+      "cmd": "echo ${CONSOLE}",
+      "expect": ["^Incorrect arguments\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "echo/unknown-input-manager",
+      "cmd": "echo xxxx ${CONSOLE}",
+      "expect": ["^Bad Serial Communication Manager: xxxx$"],
+      "then": [
+        {"send": "mutex", "timeout": 15,
+         "refute": ["Reserve_${CONSOLE}_T +-[0-9]"]}
+      ],
+      "timeout": 10,
+      "note": "a failed input manager must not leave the output one reserved: it used to stay held by the console until a reset, and every other writer - a cycle process - then blocked forever (fixed, ../DEFECTS.md). Fails on images built before the fix. Only _T is refuted: on a multi-core image (MAiXDUiNO_K210) the idle console of the other core holds its own _R while it waits for a line; board-regression's health check still catches an _R left on the console's core"
+    },
+    {
+      "id": "echo/unknown-output-manager",
+      "cmd": "echo ${CONSOLE} xxxx",
+      "expect": ["^Bad Serial Communication Manager: xxxx$"],
+      "timeout": 10
+    },
+    {
+      "id": "echo/console-loopback",
+      "cmd": "echo ${CONSOLE} ${CONSOLE}",
+      "prompt": false,
+      "then": [
+        {"await": "^Communication echo\\.$", "timeout": 5},
+        {"send": "Hi!", "timeout": 20, "expect": ["^Hi!$"], "refute": ["\\x00"]}
+      ],
+      "note": "the text comes back, then echo ends 5 s later - and writes nothing more. Before fix/echo-trailing-nul it wrote the zeroed read buffer after the timeout: one NUL byte"
+    },
+    {
+      "id": "echo/no-input-times-out",
+      "cmd": "echo ${CONSOLE} ${CONSOLE}",
+      "expect": ["^Communication echo\\.$"],
+      "refute": ["Incorrect arguments", "Bad Serial", "busy"],
+      "timeout": 20,
+      "note": "nothing is typed: echo must give the console back after its 10 s first-character timeout"
+    }
+  ]
+}

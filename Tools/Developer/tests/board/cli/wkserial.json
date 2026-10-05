@@ -1,0 +1,65 @@
+{
+  "module": "wkserial",
+  "note": "Writes and reads a byte on the console's own serial manager, which needs no wiring. -S is exercised only on cdc1, a USB CDC port with no console behind it where a baud rate means nothing: -S on the console's manager reconfigures it 8N1 at another rate and would cut the session.",
+
+  "tests": [
+    {
+      "id": "wkserial/no-argument",
+      "cmd": "wkserial",
+      "expect": ["^wkserial operations\\.$", "^Incorrect arguments\\.$"],
+      "refute": ["busy or not existent"],
+      "timeout": 10,
+      "note": "argv[1] used to be read before argc was checked: it held whatever an earlier command left there - a garbage manager name on Discovery_N657, a NULL and a HardFault on Nucleo_H743 right after restart (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "wkserial/manager-without-operation",
+      "cmd": "wkserial ${CONSOLE}",
+      "expect": ["^Incorrect arguments\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "wkserial/unknown-manager",
+      "cmd": "wkserial xxxx -R",
+      "expect": ["^xxxx busy or not existent$"],
+      "timeout": 10
+    },
+    {
+      "id": "wkserial/unknown-mode",
+      "cmd": "wkserial ${CONSOLE} -X",
+      "expect": ["^Incorrect arguments\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "wkserial/write-without-value",
+      "cmd": "wkserial ${CONSOLE} -W",
+      "expect": ["^Incorrect arguments\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "wkserial/write-console",
+      "cmd": "wkserial ${CONSOLE} -W 41",
+      "expect": ["^A${CONSOLE} written 0x41$"],
+      "refute": ["general problem", "^Incorrect arguments\\.$", "busy or not existent"],
+      "timeout": 10,
+      "note": "the byte 0x41 goes out on the console itself, so 'A' lands just before the report. -W used to try once and report 'general problem' when the UART was still sending wkserial's own banner - an intermittent failure, 7 in 20 on Discovery_N657 after a reset (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "wkserial/read-console-empty",
+      "cmd": "wkserial ${CONSOLE} -R",
+      "expect": ["^${CONSOLE} receiver is empty$"],
+      "timeout": 10,
+      "note": "the console has consumed the command line, so nothing is waiting"
+    },
+    {
+      "id": "wkserial/set-rate-on-cdc1",
+      "cmd": "wkserial cdc1 -S 115200",
+      "expect": ["^cdc1 set to 115200-b/s$"],
+      "then": [
+        {"send": "mutex", "timeout": 15, "refute": ["Reserve_cdc1_[RT] +-[0-9]"]}
+      ],
+      "timeout": 10,
+      "requires": ["module:cdc1"],
+      "note": "the reservation taken for the change must be released again"
+    }
+  ]
+}

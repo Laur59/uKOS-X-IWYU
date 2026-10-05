@@ -504,7 +504,7 @@ TEST(semaphores_restart_releases_the_waiters_and_resets_the_counters) {
     EXPECT_EQ_U(vKern_nbSema[0], 1U);
 }
 
-TEST(semaphores_the_release_loop_only_remembers_the_last_waiter) {
+TEST(semaphores_kill_preempts_for_any_higher_priority_waiter) {
     sema_t  *handle;
 
     local_setup();
@@ -521,13 +521,40 @@ TEST(semaphores_the_release_loop_only_remembers_the_last_waiter) {
 
     EXPECT_EQ_U(vKern_listExec[0].oNbElements, 2U);
 
-// It does not. The loop ASSIGNS preemption on each pass instead of accumulating
-// it (semaphores.c:248, and identically at :305, mutexes.c:251 and :308), so
-// only the last process released has a say. Here the last one is low priority,
-// so the high-priority process it just made runnable does not get the CPU until
-// something else happens to yield. See DEFECTS.md.
+// The loop used to ASSIGN preemption on each pass, so only the last process
+// released had a say - here a low-priority one, and the high-priority process
+// it had just made runnable waited for something else to yield. It accumulates
+// now. See DEFECTS.md.
 
-    KNOWN_BUG("kern-release-loop-preemption-overwritten", (g_kernenv.oNbPreemption == 0U));
+    EXPECT_EQ_U(g_kernenv.oNbPreemption, 1U);
+}
+
+TEST(semaphores_restart_preempts_for_any_higher_priority_waiter) {
+    sema_t  *handle;
+
+    local_setup();
+
+    handle = local_semaphore("Reset", 0, 5);
+    local_addWaiter(handle, &vWaiter[0], KPRIO_HIGH);
+    local_addWaiter(handle, &vWaiter[1], KPRIO_LOW);
+
+    EXPECT_EQ_I(kern_restartSemaphore(handle), KERR_KERN_NOERR);
+    EXPECT_EQ_U(vKern_listExec[0].oNbElements, 2U);
+    EXPECT_EQ_U(g_kernenv.oNbPreemption, 1U);
+}
+
+TEST(semaphores_release_does_not_preempt_for_lower_priority_waiters) {
+    sema_t  *handle;
+
+    local_setup();
+
+    handle = local_semaphore("Doomed", 0, 5);
+    local_addWaiter(handle, &vWaiter[0], KPRIO_LOW);
+    local_addWaiter(handle, &vWaiter[1], KPRIO_LOW);
+
+    EXPECT_EQ_I(kern_killSemaphore(handle), KERR_KERN_NOERR);
+    EXPECT_EQ_U(vKern_listExec[0].oNbElements, 2U);
+    EXPECT_EQ_U(g_kernenv.oNbPreemption, 0U);
 }
 
 // Lookup and accounting

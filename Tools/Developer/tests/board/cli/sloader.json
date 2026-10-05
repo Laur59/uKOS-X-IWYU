@@ -1,0 +1,69 @@
+{
+  "module": "sloader",
+  "note": "sloader reads Motorola S-records from the console and never times out - every download ends with a terminator (S9030000FC: 16-bit, address 0, checksum FC), and a second loader is written, not sent. It is on ukos-serial's unsafe list. The terminator's address 0 is rebased onto the start of the user memory; both run and sloader's own run path used to jump there unchecked (fixed, ../DEFECTS.md), and a row asserts the refusal.",
+
+  "tests": [
+    {
+      "id": "sloader/two-downloads-in-a-row",
+      "cmd": "sloader -norun",
+      "prompt": false,
+      "then": [
+        {"await": "^S format Motorola loader mode; waiting for the code\\.$", "timeout": 5},
+        {"send": "S9030000FC", "timeout": 10, "expect": ["^S: download terminated\\.$"]},
+        {"write": "sloader -norun", "unsafe": true},
+        {"send": "S9030000FC", "timeout": 10,
+         "expect": ["^S: download terminated\\.$"], "refute": ["user memory is busy"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "the second download must be accepted: sloader used to keep the user memory reserved after every download, refusing all later ones - and every hexloader - until a reset (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "sloader/wrong-checksum-then-download",
+      "cmd": "sloader -norun",
+      "prompt": false,
+      "then": [
+        {"await": "^S format Motorola loader mode; waiting for the code\\.$", "timeout": 5},
+        {"send": "S9030000FB", "timeout": 10, "expect": ["^S: wrong checksum\\.$"]},
+        {"write": "sloader -norun", "unsafe": true},
+        {"send": "S9030000FC", "timeout": 10,
+         "expect": ["^S: download terminated\\.$"], "refute": ["user memory is busy"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "the terminator's checksum is the ones' complement FC; FB must be refused, and the failed download must give the user memory back"
+    },
+    {
+      "id": "sloader/hexloader-after-sloader",
+      "cmd": "sloader -norun",
+      "prompt": false,
+      "then": [
+        {"await": "^S format Motorola loader mode; waiting for the code\\.$", "timeout": 5},
+        {"send": "S9030000FC", "timeout": 10, "expect": ["^S: download terminated\\.$"]},
+        {"write": "hexloader -norun", "unsafe": true},
+        {"send": ":00000001FF", "timeout": 10,
+         "expect": ["^Hex: download terminated\\.$"], "refute": ["user memory is busy"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe", "module:hexloader"],
+      "note": "the two loaders share the one user-memory reservation"
+    },
+    {
+      "id": "sloader/run-refuses-a-terminator-alone",
+      "cmd": "sloader",
+      "prompt": false,
+      "then": [
+        {"await": "^S format Motorola loader mode; waiting for the code\\.$", "timeout": 5},
+        {"send": "S9030000FC", "timeout": 10,
+         "expect": ["^S: download terminated\\.$", "^S: failed to find the application signature!$"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "without -norun, a terminator alone publishes the start of the user memory and must be refused. It used to jump there whenever an earlier download had left this system's signature in the user memory - a HardFault (fixed, ../DEFECTS.md)"
+    }
+  ]
+}

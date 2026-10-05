@@ -1,8 +1,9 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:        stub for the "led" manager module.
+ * Goal:     stub for the "led" manager module.
  */
 
 #include    "led/led.h"
@@ -13,6 +14,10 @@
 #include    "macros_core.h"
 #include    "os_errors.h"
 #include    "soc_reg.h"
+
+// LED 2 was LD6 (green, active high) on PE15, which is also Arduino D13 and
+// now carries SPI5_SCK for spi0: LD6 shows the SPI clock instead. LED 2 is
+// accepted and ignored, so code written for three LEDs still runs.
 
 static  bool    vMute;
 
@@ -30,7 +35,6 @@ int32_t stub_led_init(void) {
 
     REG(GPIOO)->ODR &= (uint32_t)~(1U<<BLED_0);
     REG(GPIOG)->ODR |=            (1U<<BLED_1);
-    REG(GPIOE)->ODR &= (uint32_t)~(1U<<BLED_2);
     RETURN_INT_RESTORE(KERR_LED_NOERR);
 }
 
@@ -47,7 +51,7 @@ int32_t stub_led_on(uint8_t ledNb) {
     switch (ledNb) {
         case 0U: { REG(GPIOO)->ODR |=            (1U<<BLED_0); break; }
         case 1U: { REG(GPIOG)->ODR &= (uint32_t)~(1U<<BLED_1); break; }
-        case 2U: { REG(GPIOE)->ODR |=            (1U<<BLED_2); break; }
+        case 2U: {                                             break; }
         default: { RETURN_INT_RESTORE(KERR_LED_NODEV);         break; }
     }
 
@@ -67,7 +71,7 @@ int32_t stub_led_off(uint8_t ledNb) {
     switch (ledNb) {
         case 0U: { REG(GPIOO)->ODR &= (uint32_t)~(1U<<BLED_0); break; }
         case 1U: { REG(GPIOG)->ODR |=            (1U<<BLED_1); break; }
-        case 2U: { REG(GPIOE)->ODR &= (uint32_t)~(1U<<BLED_2); break; }
+        case 2U: {                                             break; }
         default: { RETURN_INT_RESTORE(KERR_LED_NODEV);         break; }
     }
 
@@ -87,7 +91,7 @@ int32_t stub_led_toggle(uint8_t ledNb) {
     switch (ledNb) {
         case 0U: { REG(GPIOO)->ODR ^= (1U<<BLED_0);    break; }
         case 1U: { REG(GPIOG)->ODR ^= (1U<<BLED_1);    break; }
-        case 2U: { REG(GPIOE)->ODR ^= (1U<<BLED_2);    break; }
+        case 2U: {                                     break; }
         default: { RETURN_INT_RESTORE(KERR_LED_NODEV); break; }
     }
 
@@ -109,6 +113,5 @@ int32_t stub_led_mute(bool mute) {
 
     REG(GPIOO)->ODR &= (uint32_t)~(1U<<BLED_0);
     REG(GPIOG)->ODR |=            (1U<<BLED_1);
-    REG(GPIOE)->ODR &= (uint32_t)~(1U<<BLED_2);
     RETURN_INT_RESTORE(KERR_LED_NOERR);
 }

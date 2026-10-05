@@ -1,0 +1,32 @@
+{
+  "module": "run",
+
+  "tests": [
+    {
+      "id": "run/nothing-downloaded",
+      "cmd": "run",
+      "expect": ["^No application in the memory!$"],
+      "timeout": 10,
+      "note": "assumes nothing has been loaded; a preceding hexloader/sloader row would invalidate it"
+    },
+    {
+      "id": "run/refuses-a-download-that-is-not-an-application",
+      "cmd": "hexloader -norun",
+      "prompt": false,
+      "then": [
+        {"await": "^Hex format Intel loader mode; waiting for the code\\.$", "timeout": 5},
+        {"write": ":020000040000FA"},
+        {"write": ":01000000AB54"},
+        {"send": ":00000001FF", "timeout": 10, "expect": ["^Hex: download terminated\\.$"]},
+        {"send": "run", "timeout": 10,
+         "expect": ["^The downloaded code is not an application for this system!$"],
+         "refute": ["^Run the downloaded application"]}
+      ],
+      "stop_on_fail": true,
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe", "module:hexloader"],
+      "note": "one byte (AB) at the start of the user memory publishes that address, like an S-record terminator alone, and breaks any application header left there. run used to jump to it and HardFault (fixed, ../DEFECTS.md); it must refuse. stop_on_fail: if the download itself goes wrong, run is not called"
+    }
+  ]
+}

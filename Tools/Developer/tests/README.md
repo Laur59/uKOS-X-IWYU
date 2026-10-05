@@ -78,8 +78,8 @@ and they print `[kern: …]` under the suite name. Note `run-tests -t kern_` is
 
 | Tier | Modules |
 |---|---|
-| 1 | `date` `kill` `list` `man` `mlpn` `rnd` `run` `uKOS` |
-| 2 | `dump` `dumplog` `dumptrace` `fill` `hexloader` `mutex` `object` `semaphore` `sloader` `szkern` `text` `X` |
+| 1 | `date` `kill` `list` `man` `mlpn` `rnd` `uKOS` |
+| 2 | `dump` `dumplog` `dumptrace` `fill` `hexloader` `mutex` `object` `run` `semaphore` `sloader` `szkern` `text` `X` |
 | 3 | `identifier` `lists` `mailboxes` `mutexes` `pools` `semaphores` `signals` `statistics`, plus `kernenv` for the fakes' own contracts |
 
 Several modules are built twice, so the covered modules produce more executables

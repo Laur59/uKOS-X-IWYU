@@ -31,7 +31,7 @@
  * _end              +-----------------+
  */
 
-_lnApplication  = (linker_enDATA - linker_stTEXT);  /* Length of the application    */
+_lnApplication  = linker_enDATA - linker_stTEXT;  /* Length of the application    */
 
 SECTIONS {
     .text : {

@@ -285,7 +285,7 @@ int32_t kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, u
 // mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH
 // If the ready process has a higher priority, then preemption occurs
 
-                        preemption = ((mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH) && (vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority));
+                        if ((mode == KSIGN_SIGNALE_WITH_CONTEXT_SWITCH) && (vKern_proc[core][i].oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority)) { preemption = true; }
                     }
                 }
             }
@@ -552,7 +552,7 @@ int32_t kern_killSignalGroup(sign_t *handle) {
     uint16_t    i, j, nbElements;
     uint32_t    core;
     bool        preemption = false;
-    proc_t      *process;
+    proc_t      *process, *next;
 
     DEBUG_KERN_TRACE("entry: ");
     core = GET_RUNNING_CORE;
@@ -564,12 +564,15 @@ int32_t kern_killSignalGroup(sign_t *handle) {
     if ((handle->oState & (1U<<BSIGN_INSTALLED)) == 0U) { DEBUG_KERN_TRACE("exit: KO 2"); INTERRUPTION_RESTORE; PRIVILEGE_RESTORE; return KERR_KERN_NOGRO; }
 
 // Disconnect the waiting processes from the signal list
-// Do not use the "while (vKern_listSign[core].oNbElements > 0) { ... }"
+// Do not use the "while (vKern_listSign[core].oNbElements > 0) { ... }":
+// the list also holds processes waiting on other groups, which stay.
+// Walk it instead, taking the forward link before a disconnect clears it
 
     nbElements = vKern_listSign[core].oNbElements;
+    process    = vKern_listSign[core].oFirst;
     if (nbElements > 0U) {
-        for (i = 0U; i < nbElements; i++) {
-            process = vKern_listSign[core].oFirst;
+        for (i = 0U; (i < nbElements) && (process != nullptr); i++) {
+            next = process->oObject.oForward;
             j = (uint16_t)(((uintptr_t)process - (uintptr_t)&vKern_proc[core][0]) / sizeof(proc_t));
 
             if (handle->oSynchro[j].oSignalBitGenerate != 0U) {
@@ -579,8 +582,9 @@ int32_t kern_killSignalGroup(sign_t *handle) {
 
 // If the ready process has a higher priority, then preemption occurs
 
-                preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
+                if (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) { preemption = true; }
             }
+            process = next;
         }
     }
 

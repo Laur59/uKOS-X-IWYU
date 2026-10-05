@@ -52,9 +52,9 @@ INCLUDE     STM32F207xx.ld
 /*            ├  6K                                         */
 /* RAM2:      └ 16K              0x2001C000  (User)         */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
-config_sizeData_p           = (28K);
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
+config_sizeData_p           = 28K;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -76,17 +76,17 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
-linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x2001A800: UMemo, start of the user memory              */
-linker_lnUMemo              = (22K);                                                        /* Length of the user memory                                */
+linker_stUMemo              = linker_stHeap + linker_lnHeap;                                /* 0x2001A800: UMemo, start of the user memory              */
+linker_lnUMemo              = 22K;                                                          /* Length of the user memory                                */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
-linker_stHeap               = (linker_stPrgmData_u + linker_lnPrgmData_u);                  /* 0x20014000: start of the heap                            */
-linker_lnHeap               = (26K);                                                        /* Length of the heap                                       */
+linker_stHeap               = linker_stPrgmData_u + linker_lnPrgmData_u;                    /* 0x20014000: start of the heap                            */
+linker_lnHeap               = 26K;                                                          /* Length of the heap                                       */
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */
@@ -98,7 +98,7 @@ linker_stPrgmData_p         = linker_lowStackSystem_C0 + linker_sizeStackSystem_
 linker_lnPrgmData_p         = config_sizeData_p;                                            /* Length_p of the RAM                                      */
 
 linker_stPrgmData_u         = linker_lowStackFirst_C0 + linker_sizeStackFirst_C0;           /* 0x20008800: PrgmData_u, start of the RAM                 */
-linker_lnPrgmData_u         = (46K);                                                        /* Length_u of the RAM                                      */
+linker_lnPrgmData_u         = 46K;                                                          /* Length_u of the RAM                                      */
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v7 MPU regions             */
@@ -109,11 +109,11 @@ linker_SZ_FLASH_INT_0       = 19;                                               
 
 linker_ST_RAM_INT_0         = stm_stSRAM1;                                                  /* 0x20000000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_0         = 16;                                                           /* 128-K = 2^(SZ + 1), SZ = log2(128-K) - 1                 */
-hex_SZ_RAM_INT_0            = (1 << (linker_SZ_RAM_INT_0+1));                               /* 128-K                                                    */
+hex_SZ_RAM_INT_0            = 1 << (linker_SZ_RAM_INT_0 + 1);                               /* 128-K                                                    */
 
 linker_ST_RAM_INT_0_OS      = stm_stSRAM1;                                                  /* 0x20000000: Privileged RAM                               */
 linker_SZ_RAM_INT_0_OS      = 14;                                                           /* 32-K = 2^(SZ + 1), SZ = log2(32-K) - 1                   */
-hex_SZ_RAM_INT_0_OS         = (1 << (linker_SZ_RAM_INT_0_OS+1));                            /* 32-K                                                     */
+hex_SZ_RAM_INT_0_OS         = 1 << (linker_SZ_RAM_INT_0_OS + 1);                            /* 32-K                                                     */
 
 linker_ST_PERIPH_SOC        = stm_stPERIPH;                                                 /* 0x40000000: Privileged PERIPHERALS                       */
 linker_SZ_PERIPH_SOC        = 28;                                                           /* 512-M = 2^(SZ + 1), SZ = log2(512-M) - 1                 */
@@ -127,9 +127,9 @@ MEMORY {
     prgm_data_u (rwx)   : ORIGIN = linker_stPrgmData_u, LENGTH = linker_lnPrgmData_u
 }
 
-ASSERT((linker_stPrgmData_p) < (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "Start address of data outside protected region")
+ASSERT(linker_stPrgmData_p < (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "Start address of data outside protected region")
 ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p) <= (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "End address of data outside protected region")
-ASSERT((linker_stPrgmData_u) >= (linker_ST_RAM_INT_0), "Start address of user data outside user region")
+ASSERT(linker_stPrgmData_u >= linker_ST_RAM_INT_0, "Start address of user data outside user region")
 ASSERT((linker_stPrgmData_u + linker_lnPrgmData_u) <= (linker_ST_RAM_INT_0 + hex_SZ_RAM_INT_0), "End address of user data outside user region")
 
 INCLUDE     system_pu.ld

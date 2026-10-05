@@ -24,6 +24,15 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
+// Bound for the TX wait. cmns_send() is the only way an exception can report
+// itself, and it is reachable before cmns_init() has enabled the device - a
+// fault inside init_init() gets there with the peripheral still off. The
+// ready flag never comes in that state, so an unbounded wait hangs the core
+// mid-report: no character sent, and cb_signal() never reached, so not even
+// its LED blink. Giving up on the text is always better than never returning.
+
+#define KCMNS_TX_RETRIES            100000U
+
 STRG_LOC_CONST(aStrApplication[]) = "cmns         Minimal I/O (not under uKOS-X).           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "Cmns\n"
                                     "====\n\n"
@@ -70,9 +79,13 @@ void    cmns_init(void) {
  */
 void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
             uint8_t     data;
+            uint32_t    retry;
     const   char_t      *wkAscii = ascii;
 
     if (ascii == nullptr) { return; }
+
+// Nothing can leave the chip while the device is disabled, and the TX flag
+// never sets in that state. Drop the text rather than wait for it forever.
 
     switch (serialManager) {
 
@@ -80,8 +93,14 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
 
         default:
         case KURT0: {
+            if ((USART6->CR1 & USART_CR1_UE) == 0U) { return; }
+
             while (true) {
-                while ((USART6->ISR & USART_ISR_TXE) == 0U) { ; }
+                retry = KCMNS_TX_RETRIES;
+                while (((USART6->ISR & USART_ISR_TXE) == 0U) && (retry != 0U)) {
+                    retry--;
+                }
+                if (retry == 0U) { return; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -106,12 +125,18 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
  */
 void    cmns_receive(serialManager_t serialManager, char_t *data) {
 
+// Same hazard as cmns_send(): the RX flag never sets while the device is
+// disabled. The waits below stay unbounded on purpose - this is a blocking
+// read - but they must not be entered when nothing can ever arrive.
+
     switch (serialManager) {
 
 // UART 0 device
 
         default:
         case KURT0: {
+            if ((USART6->CR1 & USART_CR1_UE) == 0U) { *data = '\0'; return; }
+
             while ((USART6->ISR & USART_ISR_RXNE) == 0U) { ; }
 
             *data = (uint8_t)USART6->RDR;

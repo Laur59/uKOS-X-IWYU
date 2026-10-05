@@ -26,6 +26,7 @@
 #include    "kern/kern.h"
 #include    "py/nlr.h"
 #include    "py/compile.h"
+#include    "py/cstack.h"
 #include    "py/runtime.h"
 #include    "py/repl.h"
 #include    "py/gc.h"
@@ -44,6 +45,7 @@ STRG_LOC_CONST(aStrTerminated[]) = "quit";
 // Prototypes
 
 static  void    local_init(void);
+static  void    local_setStackLimit(void);
 static  void    local_commandLine(const char_t *src, mp_parse_input_kind_t input_kind);
 
 /*
@@ -80,6 +82,7 @@ int32_t microPython_configure(microPythonCnf_t *configure) {
 
     gc_init(configure->oMemory, (uint8_t *)((uintptr_t)configure->oMemory + (uintptr_t)configure->oSize));
     mp_init();
+    local_setStackLimit();
 
     return (KERR_MICROPYTHON_NOERR);
 }
@@ -105,17 +108,16 @@ int32_t microPython_configure(microPythonCnf_t *configure) {
  */
 int32_t microPython_exchangeData(const char_t *pyProgram) {
     char_t              ascii[KSZ_INPUT + 1];
-    uint32_t            i, size;
+    uint32_t            size;
     serialManager_t     serialManager;
-    ioChannel_t         ioChannel;
     bool                terminate = false;
     proc_t              *process;
 
     local_init();
+    local_setStackLimit();
 
     kern_getProcessRun(&process);
-    kern_getSerialForProcess(process, &ioChannel);
-    serialManager = (serialManager_t)ioChannel;
+    kern_getSerialForProcess(process, &serialManager);
 
     if (pyProgram == nullptr) {
 
@@ -126,18 +128,15 @@ int32_t microPython_exchangeData(const char_t *pyProgram) {
             (void)dprintf(KSYST, ">>> ");
             text_waitString(serialManager, ascii, (KSZ_INPUT - 4));
 
-            size = strlen(ascii);
-            ascii[size] = '\r'; ascii[size + 1] = '\n'; ascii[size + 2] = '\0';
+// Check the "quit": the whole line, before the line end is appended. Comparing
+// only the first strlen - 1 characters ended the session on "q", "qx", "7" and
+// every other one-character line instead of evaluating it
 
-// Check the "quit"
-
-            terminate = true;
-            for (i = 0U; i < (uint32_t)(size - 1U); i++) {
-                if (ascii[i] != aStrTerminated[i]) {
-                    terminate = false;
-                    local_commandLine(ascii, MP_PARSE_SINGLE_INPUT);
-                    break;
-                }
+            terminate = (strcmp(ascii, aStrTerminated) == 0);
+            if (!terminate) {
+                size = strlen(ascii);
+                ascii[size] = '\r'; ascii[size + 1] = '\n'; ascii[size + 2] = '\0';
+                local_commandLine(ascii, MP_PARSE_SINGLE_INPUT);
             }
         }
         mp_deinit();
@@ -164,6 +163,22 @@ int32_t microPython_exchangeData(const char_t *pyProgram) {
 static  void    local_init(void) {
 
     kern_setPrivilegeMode(KPROC_PRIVILEGED);
+}
+
+/*
+ * \brief local_setStackLimit
+ *
+ * - Give MicroPython the stack of the running process, so that mp_cstack_check()
+ *   can raise RecursionError before it is exhausted. Done on every entry: the
+ *   session may be configured by one process and run by another
+ *
+ */
+static  void    local_setStackLimit(void) {
+    proc_t      *process;
+
+    kern_getProcessRun(&process);
+    mp_cstack_init_with_top(process->oSpecification.oStackStart + process->oSpecification.oStackSize,
+                            (size_t)process->oSpecification.oStackSize * sizeof(uintptr_t));
 }
 
 /*
@@ -207,12 +222,10 @@ static  void    local_commandLine(const char_t *ascii, mp_parse_input_kind_t inp
 void    mp_hal_stdout_tx_strn(const uint8_t *ascii, mp_uint_t size) {
     int16_t             i;
     serialManager_t     serialManager;
-    ioChannel_t         ioChannel;
     proc_t              *process;
 
     kern_getProcessRun(&process);
-    kern_getSerialForProcess(process, &ioChannel);
-    serialManager = (serialManager_t)ioChannel;
+    kern_getSerialForProcess(process, &serialManager);
 
     for (i = 0U; i < size; i++) {
         (void)dprintf(serialManager, "%c", ascii[i]);
@@ -230,12 +243,10 @@ char_t  mp_hal_stdin_rx_chr(void) {
     int32_t             status;
     uint32_t            size;
     serialManager_t     serialManager;
-    ioChannel_t         ioChannel;
     proc_t              *process;
 
     kern_getProcessRun(&process);
-    kern_getSerialForProcess(process, &ioChannel);
-    serialManager = (serialManager_t)ioChannel;
+    kern_getSerialForProcess(process, &serialManager);
 
     do {
         kern_suspendProcess(1U);
@@ -267,10 +278,12 @@ void    gc_collect(void) {
 
     kern_getProcessRun(&process);
 
-// oStack is the initial stack pointer of the process, that is the top of its
-// stack; the stack grows down, so the live area is [stack, stackTop).
+// The top of the stack is oStackStart + oStackSize words; the stack grows down,
+// so the live area is [stack, stackTop). oStack cannot be used: it is the top
+// only until the first context switch, after which the scheduler keeps the
+// saved stack pointer of the process in it.
 
-    stackTop = (uintptr_t)process->oSpecification.oStack;
+    stackTop = (uintptr_t)(process->oSpecification.oStackStart + process->oSpecification.oStackSize);
 
     gc_collect_start();
     stack = gc_helper_get_regs_and_sp(regs);

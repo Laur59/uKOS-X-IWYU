@@ -42,8 +42,8 @@ INCLUDE     STM32H747xI.ld
 /* RAM4:     Share               0x38000000                 */
 /*            └ 64K                                         */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* 0x00001000: Length of the System stack                   */
-linker_sizeStackFirst_C0    = (2K);                                                         /* 0x00000800: Length of the First stack                    */
+linker_sizeStackSystem_C0   = 4K;                                                           /* 0x00001000: Length of the System stack                   */
+linker_sizeStackFirst_C0    = 2K;                                                           /* 0x00000800: Length of the First stack                    */
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -64,10 +64,10 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
 linker_stUMemo              = 0;                                                            /* 0x00000000: UMemo, start of the user memory              */
-linker_lnUMemo              = (0);                                                          /* Length of the user memory                                */
+linker_lnUMemo              = 0;                                                            /* Length of the user memory                                */
 
 linker_stShare              = stm_stSRAM4;                                                  /* 0x38000000: Share, start of the multicore shared memory  */
 linker_lnShare              = stm_lnSRAM4;                                                  /* 0x00010000: Length of the user multicore shared memory   */
@@ -77,7 +77,7 @@ linker_lnShare              = stm_lnSRAM4;                                      
 /* on a boundary of 8-bytes                                 */
 
 linker_stHeap               = stm_stSRAM2;                                                  /* 0x30020000: start of the heap                            */
-linker_lnHeap               = (stm_lnSRAM2 + stm_lnSRAM3);                                  /* 0x00028000: Length of the heap                           */
+linker_lnHeap               = stm_lnSRAM2 + stm_lnSRAM3;                                    /* 0x00028000: Length of the heap                           */
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */

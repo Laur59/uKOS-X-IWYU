@@ -161,7 +161,6 @@ target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 # CLI components (user) -> libtool_u.a
 add_library(tool_u)
 target_sources(tool_u PRIVATE
-    ${PATH_OSYS}/CLI/bangla/BaNgLa.c
     ${PATH_OSYS}/CLI/console/console.c
     ${PATH_OSYS}/CLI/cycle/cycle.c
     ${PATH_OSYS}/CLI/date/date.c

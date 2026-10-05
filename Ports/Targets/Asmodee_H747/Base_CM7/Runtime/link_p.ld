@@ -43,10 +43,10 @@ INCLUDE     STM32H747xI.ld
 /*           User Memory         0x70200000                 */
 /*            └ 6144K                                       */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
-config_sizeData             = (250K);
-config_sizeHeap             = (2048K);
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
+config_sizeData             = 250K;
+config_sizeHeap             = 2M;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -67,9 +67,9 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0x70000000;                                                   /* 0x70000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (8192K);                                                      /* Length of the external memory                            */
+linker_lnEXRAM              = 8M;                                                           /* Length of the external memory                            */
 
-linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x70200000: UMemo, start of the user memory              */
+linker_stUMemo              = linker_stHeap + linker_lnHeap;                                /* 0x70200000: UMemo, start of the user memory              */
 linker_lnUMemo              = linker_lnEXRAM - config_sizeHeap;                             /* Length of the user memory                                */
 
 linker_stShare              = stm_stSRAM4;                                                  /* 0x38000000: Share, start of the multicore shared memory  */

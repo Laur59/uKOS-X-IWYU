@@ -68,7 +68,7 @@
 #define KKERN_SZ_STACK_XLIB         (400U + 1000U)
 #endif
 #if (!defined(KKERN_SZ_STACK_MPY))
-#define KKERN_SZ_STACK_MPY          (400U + 1000U)
+#define KKERN_SZ_STACK_MPY          (800U + 2000U)
 #endif
 
 // Stack frame macros

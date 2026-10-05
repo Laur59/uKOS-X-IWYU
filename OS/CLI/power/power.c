@@ -53,6 +53,11 @@ MODULE(
     0                                           // Execution cores
 );
 
+// CLI tool specific
+// =================
+
+#define KNB_READ_TRIES      10U                 // Battery reads before giving up (a good one takes ~150 ms)
+
 /*
  * \brief Main entry point
  *
@@ -66,7 +71,12 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
     (void)dprintf(KSYST, "Battery information.\n");
 
     RESERVE(BATTERY, KMODE_READ_WRITE);
-    do { status = battery_read(&batteryInfo); i2cTries++; } while (status != KERR_BATTERY_NOERR);
+
+// A read can fail now and then, hence the retries - but a gauge that never
+// answers used to keep this loop, and the console, spinning forever, and
+// the "Battery manager problem!" report below was unreachable
+
+    do { status = battery_read(&batteryInfo); i2cTries++; } while ((status != KERR_BATTERY_NOERR) && (i2cTries < KNB_READ_TRIES));
     RELEASE(BATTERY, KMODE_READ_WRITE);
 
     maxI2cTries = (i2cTries > maxI2cTries) ? i2cTries : maxI2cTries;

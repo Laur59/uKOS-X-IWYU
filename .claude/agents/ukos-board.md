@@ -46,7 +46,7 @@ assertion failure, because a truncated capture cannot support any verdict.
 ## Safety
 
 These console commands reset the board, kill processes, or write memory:
-`restart`, `kill`, `power`, `fill`, `memory`, `sloader`, `hexloader`. The tool
+`restart`, `kill`, `fill`, `sloader`, `hexloader`. The tool
 refuses them unless `--unsafe` is passed.
 
 **Never pass `--unsafe` on your own initiative.** Only when the dispatch that
@@ -102,7 +102,7 @@ Useful, non-destructive commands:
 | `process` | process/daemon states, CPU share, PC |
 | `dumplog` | the log buffer — severity, process, function, line |
 | `dumptrace` | the trace buffer |
-| `memory`, `szkern` | memory sections and kernel footprint (read-only despite the name of `memory`, but it is on the guarded list — do not use it unless authorised) |
+| `memory`, `szkern` | memory sections and kernel footprint (read-only despite the name of `memory`) |
 | `test_ram`, `bench` | on-board RAM test and CPU benches |
 
 How to judge health:

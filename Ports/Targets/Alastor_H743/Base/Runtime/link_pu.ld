@@ -53,11 +53,11 @@ INCLUDE     STM32H743xI.ld
 /*           User Memory         0x72000000  (User)         */
 /*            └ 32768K                                      */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of stack 'System'                                 */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of stack 'First'                                  */
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of stack 'System'                                 */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of stack 'First'                                  */
 config_sizeData_u           = stm_lnSRAM123 - linker_sizeStackFirst_C0;
 config_sizeData_p           = stm_lnSRAM4 - linker_sizeStackSystem_C0;
-config_sizeHeap             = (32768K);
+config_sizeHeap             = 32M;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -78,7 +78,7 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0x70000000;                                                   /* 0x70000000: EXRAM, start of external memory              */
-linker_lnEXRAM              = (65536K);                                                     /* Length of external memory IS42S16320F                    */
+linker_lnEXRAM              = 64M;                                                          /* Length of external memory IS42S16320F                    */
 
 linker_stUMemo              = linker_stEXRAM + config_sizeHeap;                             /* 0x72000000: UMemo, start of user memory                  */
 linker_lnUMemo              = linker_lnEXRAM - config_sizeHeap;                             /* Length of user memory                                    */
@@ -114,11 +114,11 @@ linker_SZ_RAM_INT_0         = 18;                                               
 
 linker_ST_RAM_INT_1         = stm_stSRAM1;                                                  /* 0x30000000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_1         = 18;                                                           /* 512-K = 2^(SZ + 1), SZ = log2(512-K) - 1                 */
-hex_SZ_RAM_INT_1            = (1 << (linker_SZ_RAM_INT_1+1));                               /* 512-K                                                    */
+hex_SZ_RAM_INT_1            = 1 << (linker_SZ_RAM_INT_1 + 1);                               /* 512-K                                                    */
 
 linker_ST_RAM_INT_2_OS      = stm_stSRAM4;                                                  /* 0x38000000: Privileged RAM                               */
 linker_SZ_RAM_INT_2_OS      = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
-hex_SZ_RAM_INT_2_OS         = (1 << (linker_SZ_RAM_INT_2_OS+1));                            /* 64-K                                                     */
+hex_SZ_RAM_INT_2_OS         = 1 << (linker_SZ_RAM_INT_2_OS + 1);                            /* 64-K                                                     */
 
 linker_ST_RAM_EXT_0         = linker_stEXRAM;                                               /* 0x70000000: Privileged/User RAM                          */
 linker_SZ_RAM_EXT_0         = 25;                                                           /* 8-M = 2^(SZ + 1), SZ = log2(8-M) - 1                     */
@@ -136,9 +136,9 @@ MEMORY {
 }
 
 ASSERT((linker_sizeStackFirst_C0 + linker_sizeStackSystem_C0 + linker_lnPrgmData_p + linker_lnPrgmData_u) == (stm_lnSRAM123 + stm_lnSRAM4), "Check RAM mapping: over/under usage")
-ASSERT((linker_stPrgmData_p) < (linker_ST_RAM_INT_2_OS + hex_SZ_RAM_INT_2_OS), "Start address of data outside protected region")
+ASSERT(linker_stPrgmData_p < (linker_ST_RAM_INT_2_OS + hex_SZ_RAM_INT_2_OS), "Start address of data outside protected region")
 ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p) <= (linker_ST_RAM_INT_2_OS + hex_SZ_RAM_INT_2_OS), "End address of data outside protected region")
-ASSERT((linker_stPrgmData_u) >= (linker_ST_RAM_INT_1), "Start address of user data outside user region")
+ASSERT(linker_stPrgmData_u >= linker_ST_RAM_INT_1, "Start address of user data outside user region")
 ASSERT((linker_stPrgmData_u + linker_lnPrgmData_u) <= (linker_ST_RAM_INT_1 + hex_SZ_RAM_INT_1), "End address of user data outside user region")
 
 INCLUDE     system_pu.ld

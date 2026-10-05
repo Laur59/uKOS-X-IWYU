@@ -1,0 +1,70 @@
+{
+  "module": "X",
+  "note": "X prints one message of the getTemp process: 128 samples in kelvin x 100. The host suite (Tools/Developer/tests/cli/port/test_x.c) owns the error paths - a missing, killed or failing producer - which the board can reach only by killing getTemp, and that cannot be undone without a reset. These rows prove what the real producer and the real kernel mailbox deliver.",
+
+  "tests": [
+    {
+      "id": "X/samples",
+      "cmd": "X",
+      "expect": ["^x(,[0-9]+){128}$"],
+      "refute": ["Process Temperature not installed",
+                 "was killed",
+                 "mbox problem"],
+      "timeout": 15,
+      "note": "exactly KNB_SAMPLES (128) values after the 'x' tag, on one line; X waits up to 10 s for a message and getTemp sends one every 200 ms"
+    },
+    {
+      "id": "X/simulated-range",
+      "cmd": "X",
+      "expect": ["^x(,29(3(19|[2-9][0-9])|[4-8][0-9]{2}|9[0-4][0-9])){128}$"],
+      "timeout": 15,
+      "requires": ["!sym:temperature_read"],
+      "note": "every sample in 29319..29949: getTemp's simulated table (20.03..23.78 degC + 273.16) x 100 plus 0..255 of noise. getTemp simulates wherever the variant builds no temperature manager"
+    },
+    {
+      "id": "X/sensor-range",
+      "cmd": "X",
+      "expect": ["^x(,(27[89][0-9]{2}|2[89][0-9]{3}|3[0-2][0-9]{3}|33[0-2][0-9]{2})){128}$"],
+      "timeout": 15,
+      "refute": ["^x(,29809){128}$"],
+      "requires": ["sym:temperature_read"],
+      "note": "with a temperature manager (Alastor_H743: the LSM9DS1) getTemp reads the sensor: kelvin x 100, every sample in 27800..33299 (4.8..60.1 degC). A value near 57000 or 0 means the kelvin offset was added twice or the history holds heap garbage. 128 x 29809 is raw -1 (-1/16 + 25 + 273.16 K): the SPI read returned all ones, i.e. the chip did not answer"
+    },
+    {
+      "id": "X/extra-arguments-ignored",
+      "cmd": "X foo bar",
+      "expect": ["^x(,[0-9]+){128}$"],
+      "refute": ["Incorrect arguments", "Protocol error"],
+      "timeout": 15,
+      "note": "pins CURRENT behaviour: prgm() never looks at argc, so the console's three tokens are ignored. The host test x_takes_no_arguments cannot see the console's split"
+    },
+    {
+      "id": "X/repeated-reads",
+      "cmd": "X",
+      "expect": ["^x(,[0-9]+){128}$"],
+      "then": [
+        {"send": "X", "expect": ["^x(,[0-9]+){128}$"], "refute": ["mbox problem"], "timeout": 15},
+        {"send": "X", "expect": ["^x(,[0-9]+){128}$"], "refute": ["mbox problem"], "timeout": 15},
+        {"send": "X", "expect": ["^x(,[0-9]+){128}$"], "refute": ["mbox problem"], "timeout": 15}
+      ],
+      "timeout": 15,
+      "note": "the mailbox handle is looked up once per core and cached; each read frees the producer's buffer. A lost handle answers 'mbox problem', a leak shows up in health-after once the heap runs out"
+    },
+    {
+      "id": "X/producer-killed",
+      "cmd": "kill getTemp",
+      "expect": ["^Module getTemp killed$"],
+      "then": [
+        {"absent": "mbox problem", "timeout": 1},
+        {"send": "X", "expect": ["^(The process Temperature was killed!|Process Temperature not installed!)$"], "refute": ["mbox problem", "^x,"], "timeout": 15},
+        {"send": "X", "expect": ["^Process Temperature not installed!$"], "refute": ["mbox problem"], "timeout": 15},
+        {"send": "process", "refute": ["Process get temp"], "timeout": 10}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "poisons": "getTemp is gone until the next reset; X answers 'not installed'",
+      "note": "getTemp must exit on its own within two sample periods even with a full mailbox (it used to block in kern_writeMailbox until a reader drained a message), and X must report the producer gone without logging an error. The one-second pause lets it exit before X asks; a cached handle then answers 'was killed', an uncached one 'not installed'"
+    }
+  ]
+}

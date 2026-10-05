@@ -44,9 +44,19 @@ readonly FAINT=$'\033[2m'
 readonly ITALIC=$'\033[3m'
 readonly NC=$'\033[0m' # No Color
 
+# Library/ stamp and shared cache. The sources are identified now, so that a
+# file edited while the build runs leaves the library unstamped rather than
+# stamped with sources it was not built from. A reference given on the command
+# line is not the one the checkout pins: such a build is never stamped.
+
+readonly CACHE_TOOL="${PATH_PRG:h:h}/Tools/Developer/third-parties-cache.sh"
+readonly BUILT_FROM="$("${CACHE_TOOL}" sources-key MicroPython)"
+readonly CUSTOM_REF=$#
+"${CACHE_TOOL}" unstamp MicroPython
+
 # Package version / commit / tag and directories
 
-MICROPY_REF="${1:-v1.28.0}"   # default tag v1.27.0 if none passed
+MICROPY_REF="${1:-v1.29.0}"   # default tag if none passed
 MICROPY_DIR="${PATH_PRG}/MicroPython-current"
 MICROPY_LIBRARY_DIR="${PATH_PRG}/Construction"
 MICROPY_URL="https://github.com/micropython/micropython.git"
@@ -111,13 +121,27 @@ build_core() {
     echo "End of building ${CORE}: $(date)" >> libMicroPython_temp.log
     mv libMicroPython_temp.log "${PATH_PRG}/Library/${CORE}/libMicroPython_ready.txt"
     cd "${PATH_PRG}"
-    rm -r "${BUILD_DIR}"
 }
 
 # Build all cores
 
-for core in CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_M85 RV32IMAC RV64IMAFDC; do
+readonly -a CORES=(CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_M85 RV32IMAC RV64IMAFDC)
+
+for core in ${CORES}; do
     build_core "${core}"
+done
+
+# Stamp and cache the result. The build trees are removed only afterwards:
+# the stamp checks the dependencies ninja recorded in them.
+
+if (( CUSTOM_REF )); then
+    echo -e "\n${YELLOW}Built from ${MICROPY_REF}, not the pinned reference: Library/ is left unstamped${NC}"
+else
+    "${CACHE_TOOL}" stamp MicroPython --built-from "${BUILT_FROM}" --save || true
+fi
+
+for core in ${CORES}; do
+    rm -r "${MICROPY_LIBRARY_DIR}/${core}/build"
 done
 
 echo -e "\n${GREEN}All MicroPython libraries built successfully!${NC}"

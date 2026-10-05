@@ -352,16 +352,25 @@ TEST(sloader_reports_a_truncated_stream) {
     EXPECT_OUT_HAS("\nS: framing error.\n\n");
 }
 
-TEST(sloader_non_hex_digit_reads_as_zero) {
+TEST(sloader_non_hex_digit_is_rejected) {
 
     local_begin();
 
-// Same weakness as hexloader (DEFECTS.md): a character that is not a hex digit
-// contributes 0 with no error, so only the checksum stands between a corrupt
-// stream and a silent bad load.
+// A character that is not a hex digit used to contribute 0 with no error, so
+// only the checksum stood between a corrupt stream and a bad load. Now the
+// digit itself is refused, before any checksum.
 
     EXPECT_EQ_I(local_run("S1070000DEADBEEGC0" KS9), KFAIL);
-    EXPECT_OUT_HAS("\nS: wrong checksum.\n\n");
+    EXPECT_OUT_HAS("\nS: not a hex digit.\n\n");
+    EXPECT_OUT_LACKS("wrong checksum");
+}
+
+TEST(sloader_non_hex_high_nibble_is_rejected) {
+
+    local_begin();
+
+    EXPECT_EQ_I(local_run("S1070000DEADBEZFC0" KS9), KFAIL);
+    EXPECT_OUT_HAS("\nS: not a hex digit.\n\n");
 }
 
 // ============================================================================
@@ -380,6 +389,46 @@ TEST(sloader_refuses_a_busy_user_memory) {
     EXPECT_EQ_I(status, KFAIL);
     EXPECT_OUT_HAS("The user memory is busy");
     EXPECT_EQ_U(g_kern.serialReserveCalls, 0U);
+
+// The reservation belongs to whoever holds it: releasing it here would hand the
+// user memory to a second download while the first one still writes it.
+
+    EXPECT_EQ_U(g_kern.systemReleaseCalls, 0U);
+}
+
+// The user memory is reserved for the download and must be given back on every
+// path that starts nothing: kept, it refused every later download until a reset.
+// The path that starts an application keeps it on purpose - its processes run
+// from the user memory - and cannot be reached here (it would execute the blob).
+
+TEST(sloader_gives_the_user_memory_back_after_a_download) {
+
+    local_begin();
+
+    EXPECT_EQ_I(local_run(KS1_AT0 KS9), KOK);
+    EXPECT_EQ_U(g_kern.systemReserveCalls, 1U);
+    EXPECT_EQ_U(g_kern.systemReleaseCalls, 1U);
+}
+
+TEST(sloader_gives_the_user_memory_back_after_a_bad_checksum) {
+
+    local_begin();
+
+    EXPECT_EQ_I(local_run("S1070000DEADBEEFC1" KS9), KFAIL);
+    EXPECT_OUT_HAS("\nS: wrong checksum.\n\n");
+    EXPECT_EQ_U(g_kern.systemReleaseCalls, 1U);
+}
+
+TEST(sloader_gives_the_user_memory_back_after_a_failed_signature_check) {
+    const char_t    *argv[] = { "sloader" };
+
+    local_begin();
+    g_kern.systemSignature = "no-such-signature-in-the-buffer";
+    ukos_fake_feedSerialText(KS1_AT0 KS9);
+
+    (void)aSloader_Specifications.oExecution(1U, argv);
+    EXPECT_OUT_HAS("\nS: failed to find the application signature!\n");
+    EXPECT_EQ_U(g_kern.systemReleaseCalls, 1U);
 }
 
 TEST(sloader_reserves_and_releases_the_console) {
@@ -405,7 +454,7 @@ TEST(sloader_publishes_the_download_address) {
     EXPECT_TRUE(g_fakes.download.lastSet != NULL);
 }
 
-TEST(sloader_reports_success_after_a_failed_signature_check) {
+TEST(sloader_reports_failure_after_a_failed_signature_check) {
     const char_t    *argv[] = { "sloader" };
     int32_t         status;
 
@@ -413,15 +462,13 @@ TEST(sloader_reports_success_after_a_failed_signature_check) {
     g_kern.systemSignature = "no-such-signature-in-the-buffer";
     ukos_fake_feedSerialText(KS1_AT0 KS9);
 
-// DEFECT (DEFECTS.md): the signature check fails, the module says so - and then
-// falls through to "return EXIT_OS_SUCCESS_CLI". hexloader sets
-// EXIT_OS_FAILURE on the same path. Pinned as CURRENT behaviour; the two
-// loaders disagree and one of them is wrong.
+// The signature check fails and nothing runs, so the status is a failure - as
+// in hexloader. It used to fall through to EXIT_OS_SUCCESS_CLI.
 
     status = aSloader_Specifications.oExecution(1U, argv);
 
     EXPECT_OUT_HAS("\nS: failed to find the application signature!\n");
-    EXPECT_EQ_I(status, KOK);
+    EXPECT_EQ_I(status, KFAIL);
 }
 
 TEST(sloader_burst_reads_decode_identically) {
@@ -432,4 +479,69 @@ TEST(sloader_burst_reads_decode_identically) {
     EXPECT_EQ_I(local_run(KS1_AT0 KS9), KOK);
     EXPECT_EQ_U(vUMemo[0], 0xDEU);
     EXPECT_EQ_U(vUMemo[3], 0xEFU);
+}
+
+// ============================================================================
+// The run path jumps only to an application built for this system
+// ============================================================================
+//
+// Without -norun the module jumps to the terminator's address. It used to
+// require only the system signature somewhere in the user memory - which SRAM
+// keeps across resets - so a terminator alone, which publishes the start of the
+// user memory, executed whatever an earlier download had left there. A low
+// terminator address is an offset into the window, so S9030011EB publishes
+// vUMemo + 0x11. Each case below would jump into the host buffer too, where a
+// wrong acceptance is a crash.
+
+#define KSIGNATURE      "sig-0123456789abcdef"
+#define KSIG_AT         64U
+#define KS9_AT11        "S9030011EB"                // terminator, offset 0x11
+#define KS9_AT21        "S9030021DB"                // terminator, offset 0x21
+
+static void local_placeImage(uintptr_t entryOffset, uintptr_t length) {
+    uKOS_header_t   header;
+
+    header.oMemLocation   = KMEMU;
+    header.oStart         = (int32_t (*)(uint32_t argc, const char_t *argv[]))(void *)&vUMemo[entryOffset];
+    header.oLnApplication = length;
+    header.oModule        = NULL;
+    (void)memcpy(&vUMemo[0], &header, sizeof header);
+    (void)memcpy(&vUMemo[KSIG_AT], KSIGNATURE, sizeof KSIGNATURE);
+}
+
+static int32_t local_runDefault(const char *stream) {
+    const char_t    *argv[] = { "sloader" };
+
+    ukos_fake_feedSerialText(stream);
+    return aSloader_Specifications.oExecution(1U, argv);
+}
+
+TEST(sloader_does_not_run_a_terminator_alone) {
+
+    local_begin();
+    g_kern.systemSignature = KSIGNATURE;
+    (void)memcpy(&vUMemo[KSIG_AT], KSIGNATURE, sizeof KSIGNATURE);   // stale, no header
+
+    (void)local_runDefault(KS9);
+    EXPECT_OUT_HAS("\nS: failed to find the application signature!\n");
+}
+
+TEST(sloader_does_not_jump_to_an_entry_other_than_the_headers) {
+
+    local_begin();
+    g_kern.systemSignature = KSIGNATURE;
+    local_placeImage(0x11U, 128U);
+
+    (void)local_runDefault(KS9_AT21);
+    EXPECT_OUT_HAS("\nS: failed to find the application signature!\n");
+}
+
+TEST(sloader_ignores_a_signature_beyond_the_application) {
+
+    local_begin();
+    g_kern.systemSignature = KSIGNATURE;
+    local_placeImage(0x11U, KSIG_AT);                        // ends before the signature
+
+    (void)local_runDefault(KS9_AT11);
+    EXPECT_OUT_HAS("\nS: failed to find the application signature!\n");
 }

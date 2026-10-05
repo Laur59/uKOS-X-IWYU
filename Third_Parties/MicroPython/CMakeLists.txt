@@ -33,7 +33,7 @@
 cmake_minimum_required(VERSION 3.31)
 
 project(MicroPython_Package
-    VERSION 1.28.0
+    VERSION 1.29.0
     DESCRIPTION "MicroPython library package for all supported Cortex-M cores"
     LANGUAGES NONE
 )
@@ -46,6 +46,10 @@ endif()
 
 # Toolchain used for every per-core archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
+
+# Stamp Library/ at install time and keep a copy in the shared cache
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+ukos_library_cache_begin(MicroPython)
 
 # Include FetchContent module for downloading upstream MicroPython
 include(FetchContent)
@@ -63,7 +67,7 @@ message("")
 #------------------------------------------------------------------------
 
 # Package version and tag (matching build_with_cmake.sh default)
-set(MICROPYTHON_VERSION "1.28.0")
+set(MICROPYTHON_VERSION "1.29.0")
 set(MICROPYTHON_TAG "v${MICROPYTHON_VERSION}")
 
 message(STATUS "Fetching MicroPython version ${MICROPYTHON_VERSION} (tag ${MICROPYTHON_TAG})")
@@ -231,6 +235,9 @@ add_custom_target(build_all_micropython ALL
 
 # Add dependency to ensure MicroPython is fetched before building
 add_dependencies(build_all_micropython MicroPython_Fetch_Complete)
+
+# Stamp and cache what was installed (must follow the last install() rule)
+ukos_library_cache_end(MicroPython)
 
 #------------------------------------------------------------------------
 # Summary

@@ -43,11 +43,11 @@ INCLUDE     STM32H743xI.ld
 /*           Program Data        0x38001800                 */
 /*            └ 58K                                         */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
 config_sizeData             = stm_lnSRAM4 - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0;
 config_sizeHeap             = stm_lnSRAM123;
-config_sizeUserMemory       = (512K);
+config_sizeUserMemory       = 512K;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -68,7 +68,7 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
 linker_stUMemo              = stm_stAXISRAM;                                                /* 0x24000000: UMemo, start of the user memory              */
 linker_lnUMemo              = stm_lnAXISRAM;                                                /* Length of the user memory                                */

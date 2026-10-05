@@ -90,10 +90,11 @@ typedef struct {
     int32_t         serialRc, serialRcExhausted;
     unsigned        serialReserveCalls, serialReleaseCalls, serialFlushCalls;
 
-// system_reserve() / system_getSystemSignature()
+// system_reserve() / system_release() / system_getSystemSignature()
 
     unsigned    systemReserveCalls;
     int32_t     systemReserveRc;
+    unsigned    systemReleaseCalls;
     const char  *systemSignature;
 
 // led / scheduler no-ops, counted only

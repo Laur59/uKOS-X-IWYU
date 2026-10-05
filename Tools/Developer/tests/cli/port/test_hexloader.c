@@ -228,32 +228,50 @@ TEST(hexloader_start_address_record_is_accepted) {
 // Malformed input
 // ============================================================================
 
-TEST(hexloader_non_hex_digit_reads_as_zero) {
+TEST(hexloader_non_hex_digit_is_rejected) {
 
     local_begin();
 
-// DEFECT (DEFECTS.md): local_getHexValue has an "else { ; }" for anything that
-// is not a hex digit, so a corrupt character contributes 0 and is not reported.
-// Here the final data nibble is 'G', which makes the byte 0xE0 instead of 0xEF;
-// with a checksum computed for the CORRUPTED value the record is accepted
-// outright. Only the checksum stands between a mangled stream and a silent bad
-// load. Pinned as CURRENT behaviour.
+// The final data nibble is 'G', with a checksum computed as if it read 0: the
+// byte would be 0xE0 instead of 0xEF. It used to be accepted outright - a
+// character that is not a hex digit contributed 0 - so only a checksum that
+// happened to disagree caught a corrupt stream. Now the digit itself is refused
+// and the byte is never stored.
 
-    EXPECT_EQ_I(local_run(KREC_EXT0 ":04000000DEADBEEGD3" KREC_EOF), KOK);
+    EXPECT_EQ_I(local_run(KREC_EXT0 ":04000000DEADBEEGD3" KREC_EOF), KFAIL);
 
-    EXPECT_EQ_U(vUMemo[3], 0xE0U);
-    EXPECT_OUT_HAS(KDONE);
+    EXPECT_OUT_HAS("\nHex: not a hex digit.\n\n");
+    EXPECT_OUT_LACKS(KDONE);
+    EXPECT_EQ_U(vUMemo[3], 0xCDU);
 }
 
-TEST(hexloader_a_corrupt_digit_usually_trips_the_checksum) {
+TEST(hexloader_non_hex_digit_is_rejected_before_the_checksum) {
 
     local_begin();
 
-// The saving grace of the above: unless the corruption is compensated, the
-// checksum catches it.
+// Even when the checksum would disagree, the digit is what gets reported.
 
     EXPECT_EQ_I(local_run(KREC_EXT0 ":04000000DEADBEEGC4" KREC_EOF), KFAIL);
-    EXPECT_OUT_HAS("\nHex: wrong checksum.\n\n");
+    EXPECT_OUT_HAS("\nHex: not a hex digit.\n\n");
+    EXPECT_OUT_LACKS("wrong checksum");
+}
+
+TEST(hexloader_non_hex_high_nibble_is_rejected) {
+
+    local_begin();
+
+// The first digit of a byte goes through its own branch.
+
+    EXPECT_EQ_I(local_run(KREC_EXT0 ":04000000DEADBEZFC4" KREC_EOF), KFAIL);
+    EXPECT_OUT_HAS("\nHex: not a hex digit.\n\n");
+}
+
+TEST(hexloader_lower_case_digits_are_accepted) {
+
+    local_begin();
+
+    EXPECT_EQ_I(local_run(KREC_EXT0 ":04000000deadbeefc4" KREC_EOF), KOK);
+    EXPECT_EQ_U(vUMemo[3], 0xEFU);
 }
 
 TEST(hexloader_reports_a_truncated_stream) {
@@ -315,6 +333,46 @@ TEST(hexloader_refuses_a_busy_user_memory) {
     EXPECT_EQ_I(status, KFAIL);
     EXPECT_OUT_IS(KBANNER "\nHex: The user memory is busy.\n\n");
     EXPECT_EQ_U(g_kern.serialReserveCalls, 0U);
+
+// The reservation belongs to whoever holds it: releasing it here would hand the
+// user memory to a second download while the first one still writes it.
+
+    EXPECT_EQ_U(g_kern.systemReleaseCalls, 0U);
+}
+
+// The user memory is reserved for the download and must be given back on every
+// path that starts nothing: kept, it refused every later download until a reset.
+// The path that starts an application keeps it on purpose - its processes run
+// from the user memory - and cannot be reached here (it would execute the blob).
+
+TEST(hexloader_gives_the_user_memory_back_after_a_download) {
+
+    local_begin();
+
+    EXPECT_EQ_I(local_run(KREC_EXT0 KREC_DATA4 KREC_EOF), KOK);
+    EXPECT_EQ_U(g_kern.systemReserveCalls, 1U);
+    EXPECT_EQ_U(g_kern.systemReleaseCalls, 1U);
+}
+
+TEST(hexloader_gives_the_user_memory_back_after_a_bad_checksum) {
+
+    local_begin();
+
+    EXPECT_EQ_I(local_run(KREC_EXT0 ":04000000DEADBEEFC5" KREC_EOF), KFAIL);
+    EXPECT_OUT_HAS("\nHex: wrong checksum.\n\n");
+    EXPECT_EQ_U(g_kern.systemReleaseCalls, 1U);
+}
+
+TEST(hexloader_gives_the_user_memory_back_after_a_failed_signature_check) {
+    const char_t    *argv[] = { "hexloader" };
+
+    local_begin();
+    g_kern.systemSignature = "no-such-signature-in-the-buffer";
+    ukos_fake_feedSerialText(KREC_EXT0 KREC_DATA4 KREC_EOF);
+
+    EXPECT_EQ_I(aHexloader_Specifications.oExecution(1U, argv), KFAIL);
+    EXPECT_OUT_HAS("\nHex: failed to find the application signature!\n");
+    EXPECT_EQ_U(g_kern.systemReleaseCalls, 1U);
 }
 
 TEST(hexloader_reserves_and_releases_the_console) {
@@ -408,4 +466,65 @@ TEST(hexloader_burst_reads_decode_identically) {
     EXPECT_EQ_I(local_run(KREC_EXT0 KREC_DATA4 KREC_EOF), KOK);
     EXPECT_EQ_U(vUMemo[0], 0xDEU);
     EXPECT_EQ_U(vUMemo[3], 0xEFU);
+}
+
+// ============================================================================
+// The run path jumps only to an application built for this system
+// ============================================================================
+//
+// Without -norun the module jumps to the download's start address. It used to
+// require only the system signature somewhere in the user memory - which SRAM
+// keeps across resets - so an end-of-file record alone jumped to a NULL start
+// address: a HardFault (IACCVIOL, PC = 0) on Nucleo_H743. Each case below
+// would jump on the host too, where a wrong acceptance is a crash.
+
+#define KSIGNATURE      "sig-0123456789abcdef"
+#define KSIG_AT         64U
+
+static void local_placeImage(uintptr_t entry, uintptr_t length) {
+    uKOS_header_t   header;
+
+    header.oMemLocation   = KMEMU;
+    header.oStart         = (int32_t (*)(uint32_t argc, const char_t *argv[]))entry;
+    header.oLnApplication = length;
+    header.oModule        = NULL;
+    (void)memcpy(&vUMemo[0], &header, sizeof header);
+    (void)memcpy(&vUMemo[KSIG_AT], KSIGNATURE, sizeof KSIGNATURE);
+}
+
+static int32_t local_runDefault(const char *stream) {
+    const char_t    *argv[] = { "hexloader" };
+
+    ukos_fake_feedSerialText(stream);
+    return aHexloader_Specifications.oExecution(1U, argv);
+}
+
+TEST(hexloader_does_not_jump_to_a_null_start_address) {
+
+    local_begin();
+    g_kern.systemSignature = KSIGNATURE;
+    (void)memcpy(&vUMemo[KSIG_AT], KSIGNATURE, sizeof KSIGNATURE);   // stale, no header
+
+    EXPECT_EQ_I(local_runDefault(KREC_EOF), KFAIL);
+    EXPECT_OUT_HAS("\nHex: failed to find the application signature!\n");
+}
+
+TEST(hexloader_does_not_jump_to_an_entry_other_than_the_headers) {
+
+    local_begin();
+    g_kern.systemSignature = KSIGNATURE;
+    local_placeImage(0x24000011U, 128U);
+
+    EXPECT_EQ_I(local_runDefault(":0400000524000021B2" KREC_EOF), KFAIL);
+    EXPECT_OUT_HAS("\nHex: failed to find the application signature!\n");
+}
+
+TEST(hexloader_ignores_a_signature_beyond_the_application) {
+
+    local_begin();
+    g_kern.systemSignature = KSIGNATURE;
+    local_placeImage(0x24000011U, KSIG_AT);                   // ends before the signature
+
+    EXPECT_EQ_I(local_runDefault(":0400000524000011C2" KREC_EOF), KFAIL);
+    EXPECT_OUT_HAS("\nHex: failed to find the application signature!\n");
 }

@@ -9,6 +9,9 @@ include(tinyusb)
 # TensorFlow Lite Micro integration (add_Tflite)
 include(tflite)
 
+# Prebuilt third-party libraries against this checkout (ukos_check_third_party)
+include(third-party-check)
+
 set(CMAKE_C_OUTPUT_EXTENSION_REPLACE 1)
 set(CMAKE_ASM_OUTPUT_EXTENSION_REPLACE 1)
 
@@ -486,6 +489,15 @@ function(configure_riscv_core)
             "-Wno-format"
             "-Wno-format-security"
         )
+        # K210 FPU (the only RV64IMAFDC part): a single-precision value written by
+        # fmv.w.x - or copied from one with fmv.s - is stored as 0 by fsd, while one
+        # loaded by flw or produced by arithmetic survives fsd/fld. The ABI saves the
+        # callee-saved fs registers, and the trap entry every ft/fa register, with
+        # fsd/fld, so such a value is lost across any call that uses its register and
+        # across any interrupt. Clang builds every float constant with lui + fmv.w.x;
+        # this makes it load them from the constant pool with flw, as GCC does. Doubles
+        # (fmv.d.x) are not affected. Measured on the board; see Tools/Developer/tests/DEFECTS.md.
+        set(EXTRA_FLAGS_CLANG "-mllvm=--riscv-lower-fpimm-cost=0")
         # GCC only, and only for this core: gcc_system_RV64IMAFDC.mk adds the section
         # flags that no other GCC configuration uses. Clang gets them above, for every
         # RISC-V core, which is what the llvm_system_RV*.mk files do.
@@ -550,6 +562,9 @@ function(configure_riscv_core)
     endif()
     if(DEFINED EXTRA_FLAGS_GNU)
         list(APPEND COMPILE_FLAGS "$<$<C_COMPILER_ID:GNU>:${EXTRA_FLAGS_GNU}>")
+    endif()
+    if(DEFINED EXTRA_FLAGS_CLANG)
+        list(APPEND COMPILE_FLAGS "$<$<C_COMPILER_ID:Clang>:${EXTRA_FLAGS_CLANG}>")
     endif()
 
     # Privileged/user split (_pu): privileged and user small-data sit farther apart than
@@ -633,6 +648,7 @@ endmacro()
 macro(add_MicroPython)
     add_compile_definitions(CONFIG_MAN_MICROPYTHON_S)
     find_library(MICROPYTHON MicroPython ${PATH_UKOS}/Third_Parties/MicroPython/Library/${CORE})
+    ukos_check_third_party(MicroPython)
     file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_MICROPYTHON_S ")
     list(APPEND UKOS_COMPONENTS ${MICROPYTHON})
 endmacro()
@@ -655,6 +671,7 @@ macro(add_FatFs)
 
     add_compile_definitions(CONFIG_MAN_FATFS_S)
     find_library(FATFS FatFs ${PATH_UKOS}/Third_Parties/FatFs/Library/${CORE}/${FATFS_STORAGE})
+    ukos_check_third_party(FatFs)
     file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DCONFIG_MAN_FATFS_S ")
     list(APPEND UKOS_COMPONENTS ${FATFS})
 endmacro()
@@ -670,6 +687,7 @@ macro(add_LVGL)
 
     add_compile_definitions(SYSTEM_LVGL_S)
     find_library(LVGL LVGL ${PATH_UKOS}/Third_Parties/LVGL/Library/${LVGL_DISPLAY}/${CORE})
+    ukos_check_third_party(LVGL)
     file(APPEND "${ARTEFACTS_DIR}/FLASH.cnf" "-DSYSTEM_LVGL_S ")
     list(APPEND UKOS_COMPONENTS ${LVGL})
 endmacro()

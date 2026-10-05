@@ -39,18 +39,18 @@ INCLUDE     rp2350.ld
 /*           Share               0x20072000  (User)         */
 /*            └ 64K                                         */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
-linker_sizeStackSystem_C1   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C1    = (2K);                                                         /* Length of the First stack                                */
-config_sizeData_p           = (120K);
-config_sizeData_u           = (60K);
-config_sizeHeap             = (128K);
-config_sizeUserMemory       = (136K);
-config_sizeShare            = (64K);
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
+linker_sizeStackSystem_C1   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C1    = 2K;                                                           /* Length of the First stack                                */
+config_sizeData_p           = 120K;
+config_sizeData_u           = 60K;
+config_sizeHeap             = 128K;
+config_sizeUserMemory       = 136K;
+config_sizeShare            = 64K;
 
 /* PMP NAPOT domain split (consumed by the PMP setup). */
-config_sizePrivDomain       = (128K);
+config_sizePrivDomain       = 128K;
 
 /* Privileged domain: System stacks (M-mode trap stacks) then prgm_data_p. */
 
@@ -81,12 +81,12 @@ ASSERT((linker_topStackFirst_C1 & 7)  == 0, "First stack must be 8-byte aligned"
 /* External memory, user (download application) and shared. */
 
 linker_stEXRAM              = 0;                                                            /* No external memory                                       */
-linker_lnEXRAM              = (0);
+linker_lnEXRAM              = 0;
 
-linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x20050000: UMemo, start of the user memory              */
+linker_stUMemo              = linker_stHeap + linker_lnHeap;                                /* 0x20050000: UMemo, start of the user memory              */
 linker_lnUMemo              = config_sizeUserMemory;                                        /* 0x00022000: Length of the user memory                    */
 
-linker_stShare              = (linker_stUMemo + linker_lnUMemo);                            /* 0x20072000: Share, start of the multicore shared memory  */
+linker_stShare              = linker_stUMemo + linker_lnUMemo;                              /* 0x20072000: Share, start of the multicore shared memory  */
 linker_lnShare              = config_sizeShare;                                             /* 0x00010000: Length of the user multicore shared memory   */
 
 linker_stHeap               = linker_stPrgmData_u + config_sizeData_u;                      /* 0x20030000: start of the heap                            */
@@ -109,16 +109,16 @@ linker_lnPrgmData_u         = config_sizeData_u;                                
    region and is U-inaccessible by default. */
 
 linker_ST_USER_RAM_0        = linker_lowStackFirst_C0;                                      /* 0x20020000: 128 KiB */
-linker_ST_USER_RAM_1        = linker_lowStackFirst_C0 + (128K);                             /* 0x20040000: 256 KiB */
-linker_ST_USER_RAM_2        = linker_lowStackFirst_C0 + (384K);                             /* 0x20080000: 8 KiB   */
+linker_ST_USER_RAM_1        = linker_lowStackFirst_C0 + 128K;                               /* 0x20040000: 256 KiB */
+linker_ST_USER_RAM_2        = linker_lowStackFirst_C0 + 384K;                               /* 0x20080000: 8 KiB   */
 linker_ST_FLASH_INT_0       = rp_stINTFLASH;                                                /* 0x10000000: 4 MiB   */
 
 ASSERT((linker_ST_USER_RAM_0 & (128K - 1)) == 0, "PMP user region 0 must be 128K NAPOT-aligned")
 ASSERT((linker_ST_USER_RAM_1 & (256K - 1)) == 0, "PMP user region 1 must be 256K NAPOT-aligned")
 ASSERT((linker_ST_USER_RAM_2 & (8K - 1))   == 0, "PMP user region 2 must be 8K NAPOT-aligned")
 ASSERT((linker_ST_FLASH_INT_0 & (4M - 1))  == 0, "PMP flash region must be 4M NAPOT-aligned")
-ASSERT((linker_ST_USER_RAM_0) == (linker_stPrgmData_p + linker_lnPrgmData_p), "PMP user regions must start at the user-domain boundary")
-ASSERT((linker_ST_USER_RAM_2 + (8K)) == (rp_stSRAM + rp_lnSRAM1), "PMP user regions must cover the user domain up to end of SRAM")
+ASSERT(linker_ST_USER_RAM_0 == (linker_stPrgmData_p + linker_lnPrgmData_p), "PMP user regions must start at the user-domain boundary")
+ASSERT((linker_ST_USER_RAM_2 + 8K) == (rp_stSRAM + rp_lnSRAM1), "PMP user regions must cover the user domain up to end of SRAM")
 
 MEMORY {
     prgm_code   (rx)    : ORIGIN = linker_stPrgmCode,   LENGTH = linker_lnPrgmCode

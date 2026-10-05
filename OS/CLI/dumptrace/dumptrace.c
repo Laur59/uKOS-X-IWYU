@@ -129,9 +129,14 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     for (i = 0; i < nbTraceWrites; i++) {
         identifier = (rTraceFifo->oProcess == nullptr) ? "From ISR" : rTraceFifo->oProcess->oSpecification.oIdentifier;
         local_compose(identifier, &idSpacer);
-        (void)dprintf(KSYST, "%12lld-us   0x%016"PRIXPTR"   %s%s  %s\n", rTraceFifo->oTimeStamp, rTraceFifo->oParameter, identifier, idSpacer, rTraceFifo->oMessage);
+        (void)dprintf(KSYST, "%12"PRIu64"-us   0x%016"PRIXPTR"   %s%s  %s\n", rTraceFifo->oTimeStamp, rTraceFifo->oParameter, identifier, idSpacer, rTraceFifo->oMessage);
 
-        rTraceFifo = (rTraceFifo == &traceFifo[KRECORD_SZ_TRACE_FIFO]) ? traceFifo : (rTraceFifo + 1U);
+// Advance, then wrap at one past the end, as the writer (record.c) and
+// recordDump.c do. Testing before advancing stepped onto the element past the
+// end, rendered it, and left the walk one slot out of step
+
+        rTraceFifo++;
+        rTraceFifo = (rTraceFifo == &traceFifo[KRECORD_SZ_TRACE_FIFO]) ? traceFifo : rTraceFifo;
     }
     (void)dprintf(KSYST, "\n");
     memo_delayedFree(traceFifo);

@@ -1,0 +1,14 @@
+{
+  "module": "dumptrace",
+
+  "tests": [
+    {
+      "id": "dumptrace/header",
+      "cmd": "dumptrace",
+      "expect": ["^Trace dump\\.$",
+                 "^Trace provided by the core 0$",
+                 "^ +Time \\[us\\]   Parameter "],
+      "timeout": 15
+    }
+  ]
+}

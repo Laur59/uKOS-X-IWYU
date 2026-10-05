@@ -15,6 +15,7 @@
 
 #include    "exit_codes.h"
 #include    "ip.h"
+#include    "macros.h"
 #include    "modules.h"
 #include    "types.h"
 #include    "ukos_fakes.h"
@@ -34,7 +35,8 @@ extern  const uKOS_module_t     aUKOS_Specifications;
                             "Board:   Nucleo_H743\n"         \
                             "Variant: Variant_Test\n"        \
                             "SoC:     STM32H743\n"           \
-                            "Core:    CORTEX_M7\n\n"         \
+                            "Core:    CORTEX_M7\n"           \
+                            "Compiler: " uKOS_COMPILER "\n\n" \
                             "VCS#:    " SW_VERSION "\n\n"
 
 static int32_t local_run(uint32_t argc, const char_t *argv[]) {
@@ -113,6 +115,17 @@ TEST(ukos_target_reports_the_firmware_revision) {
 // The same string ukos-serial verify matches against --expect-sha.
 
     EXPECT_OUT_HAS("VCS#:    " SW_VERSION "\n");
+}
+
+TEST(ukos_target_reports_the_compiler) {
+    const char_t    *argv[] = { "uKOS" };
+
+    ukos_t_begin("UTC0");
+    (void)local_run(1U, argv);
+
+// board-regression reads this line to tell a Clang image from a GCC one.
+
+    EXPECT_OUT_HAS("Compiler: " uKOS_COMPILER "\n\n");
 }
 
 TEST(ukos_target_prints_the_notice_once) {

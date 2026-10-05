@@ -1,56 +1,14 @@
 /*
-; lv_conf.
-; ========
-
-; SPDX-License-Identifier: MIT
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-
-;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2026-01-01
-; Modifs:
-;
-; Project:  uKOS-X
-; Goal:     Basic LVGL configuration
-;           Set 16 & 26 pixel fonts.
-;           Internal memory allocator
-;
-;           Configuration file for LVGL v9.5.x
-;           (based on lv_conf_template.h v9.5.0)
-;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
-;                                              __ ______  _____
-;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
-;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
-;   CH 1400 Cheseaux-Noréaz           / /_/ / /| / /_/ /___/ /
-;                                     \__,_/_/ |_\____//____/
-;   edo.franzi@ukos.ch
-;
-;   Description: Lightweight, real-time multitasking operating
-;   system for embedded microcontroller and DSP-based systems.
-;
-;   Permission is hereby granted, free of charge, to any person
-;   obtaining a copy of this software and associated documentation
-;   files (the "Software"), to deal in the Software without restriction,
-;   including without limitation the rights to use, copy, modify,
-;   merge, publish, distribute, sublicense, and/or sell copies of the
-;   Software, and to permit persons to whom the Software is furnished
-;   to do so, subject to the following conditions:
-;
-;   The above copyright notice and this permission notice shall be
-;   included in all copies or substantial portions of the Software.
-;
-;   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-;   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-;   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-;   NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
-;   BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
-;   ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-;   CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-;   SOFTWARE.
-;
-;------------------------------------------------------------------------
-*/
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Goal:     Basic LVGL configuration
+ *           Set 16 & 26 pixel fonts.
+ *           Internal memory allocator
+ *
+ *           Configuration file for LVGL v9.6.x
+ *           (based on lv_conf_template.h v9.6.0)
+ */
 
 #if 1
 
@@ -62,7 +20,7 @@
 
 // Color depth: 1 (I1), 8 (L8), 16 (RGB565), 24 (RGB888), 32 (XRGB8888)
 //
-#define LV_COLOR_DEPTH                                  32
+#define LV_COLOR_FORMAT_DEFAULT                         LV_COLOR_FORMAT_XRGB8888
 
 // STDLIB WRAPPER SETTINGS
 // -----------------------
@@ -113,11 +71,6 @@
 // Default Dots Per Inch.[px/inch]
 //
 #define LV_DPI_DEF                                      130
-
-// Resolution
-//
-#define LV_HOR_RES_MAX                                  800
-#define LV_VER_RES_MAX                                  480
 
 // OPERATING SYSTEM
 // ----------------
@@ -179,7 +132,6 @@
 #define LV_USE_ASSERT_MEM_INTEGRITY                     0
 #define LV_USE_ASSERT_OBJ                               0
 
-#define LV_ASSERT_HANDLER_INCLUDE                       <stdint.h>
 #define LV_ASSERT_HANDLER                               while(1);
 
 // Others
@@ -259,12 +211,6 @@
 #define LV_USE_CALENDAR                                 1
 #if LV_USE_CALENDAR
     #define LV_CALENDAR_WEEK_STARTS_MONDAY              0
-    #if LV_CALENDAR_WEEK_STARTS_MONDAY
-        #define LV_CALENDAR_DEFAULT_DAY_NAMES           { "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su" }
-    #else
-        #define LV_CALENDAR_DEFAULT_DAY_NAMES           { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" }
-    #endif
-    #define LV_CALENDAR_DEFAULT_MONTH_NAMES             { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
     #define LV_USE_CALENDAR_HEADER_ARROW                1
     #define LV_USE_CALENDAR_HEADER_DROPDOWN             1
     #define LV_USE_CALENDAR_CHINESE                     0

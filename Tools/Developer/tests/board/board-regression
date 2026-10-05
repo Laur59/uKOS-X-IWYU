@@ -1,0 +1,678 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+
+"""Regression run of the CLI specs on one flashed uKOS-X board.
+
+Flash the board yourself, then run this. It answers one question: does this
+firmware still behave as it did?
+
+1. Find the board: --port, --board NAME, or the only ST-Link console that
+   answers. Reuse a ukos-serial session already holding the port, or start one
+   at the console's baud rate (the variant's, see console_bauds()) and stop it
+   again on exit. A board behind a UART bridge (MAiXDUiNO_K210) has no ST-Link,
+   so it needs --port; --board then checks it is the right one.
+2. Check the firmware: its VCS# must be HEAD (a stale image would otherwise
+   pass), and `ukos-serial verify` must find a healthy console.
+3. Run every per-CLI spec row the variant compiles (cli/<module>.json, the
+   same specs as run-board-tests).
+4. Survive a crash: a row whose prompt never comes back is a CRASH when the
+   core dump banner is in the capture and a HANG when the console is silent.
+   Either way the board is reset over SWD - through its own probe, found by the
+   serial number of its console port, so no other attached board is touched -
+   and the run continues.
+5. Compare with KNOWN-FAILURES, so an old defect is reported as known and only
+   a change in behaviour fails the run.
+
+Exit codes: 0 no regression, 1 setup error or refusal, 2 the board was lost
+(a reset did not bring the console back), 3 regression.
+"""
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from ukos_board import (KHERE, KROOT, KSERIAL, KSPECS, Refusal,  # noqa: E402
+                        console_answers, console_bauds, describe, identify,
+                        log_mark, log_since, per_core, RX_MUTEX_CORE,
+                        parse_dump, prepare, probe_for_port, reset_board,
+                        send_json, send_row, serial, session_for_port,
+                        skip_reason, stlink_ports, symbolize)
+
+KKNOWN = os.path.join(KHERE, "KNOWN-FAILURES")
+# " 8  Reserve_urt0_T     -1     Console_urt0" - a negative counter is held.
+RX_HELD = re.compile(r"^\s*\d+\s+(Reserve_\w+)\s+(-\d+)\s+(\S+)", re.M)
+KFAILING = ("fail", "crash", "hang")
+
+RED = GREEN = YELLOW = BOLD = DIM = NC = ""
+
+
+def colours(enable):
+    global RED, GREEN, YELLOW, BOLD, DIM, NC
+    if enable:
+        RED, GREEN, YELLOW = "\033[0;31m", "\033[0;32m", "\033[0;33m"
+        BOLD, DIM, NC = "\033[1m", "\033[2m", "\033[0m"
+
+
+# Sessions
+# ========
+
+class Sessions:
+    """The ukos-serial sessions this run started, so they can all be stopped -
+    and only those: a session somebody else started is left running."""
+
+    def __init__(self, baud):
+        self.baud = baud
+        self.started = []
+
+    def open(self, port, baud=None):
+        name = session_for_port(port)
+        if name:
+            return name, False
+        name = "regression-" + os.path.basename(port).replace("cu.", "")
+        args = ["start", "--port", port]
+        if baud or self.baud:
+            args += ["--baud", str(baud or self.baud)]
+        rc, _, err = serial(args, name)
+        if rc != 0:
+            raise Refusal("cannot open %s: %s" % (port, err.strip()))
+        self.started.append(name)
+        return name, True
+
+    def close(self, name):
+        if name in self.started:
+            serial(["stop"], name)
+            self.started.remove(name)
+
+    def close_all(self):
+        for name in list(self.started):
+            self.close(name)
+
+
+def board_on(name):
+    """The Board a console reports, or None if it does not answer."""
+
+    # Twice when the console answers without a Board line: a probe at another
+    # baud rate can leave garbage on the line, which the first CR turns into
+    # an unknown command.
+    for _ in range(2):
+        rc, rep = send_json("uKOS", name, 6)
+        if rc != 0:
+            return None
+        for line in rep.get("text", "").splitlines():
+            if line.startswith("Board:"):
+                return line.split(":", 1)[1].strip()
+    return None
+
+
+def open_port(args, sessions):
+    """(port, session name) for --port, at the console's own baud rate."""
+
+    if args.baud:
+        bauds = [args.baud]
+    elif args.board:
+        bauds = console_bauds(args.board)
+        if not bauds:
+            raise Refusal("no variant of %s declares its console baud rate; "
+                          "pass --baud" % args.board)
+    else:
+        # Unknown board: every rate a variant uses, the most common first.
+        bauds = console_bauds() or [None]
+
+    for baud in bauds:
+        name, started = sessions.open(args.port, baud)
+        board = board_on(name)
+        if board:
+            if args.board not in (None, board):
+                raise Refusal("the board on %s is %s, not %s"
+                              % (args.port, board, args.board))
+            return args.port, name
+        if not started:
+            raise Refusal("the board on %s did not answer 'uKOS' in the "
+                          "running ukos-serial session %s (wrong baud rate? "
+                          "stop it and let this tool start its own)"
+                          % (args.port, name))
+        sessions.close(name)
+    raise Refusal("the board on %s did not answer 'uKOS' at %s bit/s"
+                  % (args.port, ", ".join(str(b) for b in bauds if b)
+                     or "the default rate"))
+
+
+def select_board(args, sessions):
+    """(port, session name) of the board under test."""
+
+    if args.port:
+        return open_port(args, sessions)
+
+    # Ask every ST-Link console. Reading `uKOS` is harmless, and an ST-Link
+    # virtual COM port does not reset its target when it is opened.
+    answering = []
+    for port, _sn in stlink_ports():
+        name, started = sessions.open(port)
+        board = board_on(name)
+        if board and (args.board in (None, board)):
+            answering.append((port, name, board))
+        elif started:
+            sessions.close(name)
+
+    if len(answering) == 1:
+        return answering[0][0], answering[0][1]
+    for _, name, _ in answering:
+        sessions.close(name)
+    if not answering:
+        raise Refusal("no ST-Link console answers%s; pass --port (a board "
+                      "behind a UART bridge, like MAiXDUiNO_K210, is only "
+                      "reached that way)"
+                      % (" as %s" % args.board if args.board else ""))
+    raise Refusal("several boards answer; pick one with --board or --port:\n"
+                  + "\n".join("  %s  %s" % (b, p) for p, _, b in answering))
+
+
+# Firmware
+# ========
+
+def git(*args):
+    done = subprocess.run(["git", "-C", KROOT] + list(args),
+                          capture_output=True, text=True)
+    return done.returncode, done.stdout.strip()
+
+
+def firmware_check(vcs):
+    """(matches HEAD, dirty, explanation)."""
+
+    dirty = vcs.endswith("-dirty")
+    sha = vcs[:-6] if dirty else vcs
+    _, head = git("rev-parse", "HEAD")
+    if sha and head.startswith(sha):
+        return True, dirty, "HEAD"
+
+    if git("cat-file", "-e", sha + "^{commit}")[0] != 0:
+        return False, dirty, "not a commit of this repository"
+    _, behind = git("rev-list", "--count", "%s..HEAD" % sha)
+    touched = git("diff", "--quiet", sha, "HEAD", "--",
+                  "OS", "Ports", "Applications")[0] != 0
+    return False, dirty, ("%s commit(s) behind HEAD; %s" % (
+        behind, "OS/, Ports/ or Applications/ changed since"
+        if touched else "none of them touch OS/, Ports/ or Applications/"))
+
+
+def health(name, label, ident):
+    """`ukos-serial verify` as result rows, plus the C library it found."""
+
+    rc, out, err = serial(["verify", "--json"], name)
+    try:
+        report = json.loads(out)
+    except ValueError:
+        return [{"id": label + "/verify", "cli": label, "result": "fail",
+                 "error": (err or out).strip() or "no answer"}], None
+    rows, clib = [], None
+    for check in report.get("checks", []):
+        if check["check"] == "firmware":
+            continue                        # judged by firmware_check()
+        if check["check"] == "c library":
+            clib = check["detail"].split()[0]
+        rows.append({"id": "%s/%s" % (label, check["check"].replace(" ", "-")),
+                     "cli": label,
+                     "result": "pass" if check["ok"] else "fail",
+                     "error": None if check["ok"] else check["detail"]})
+    for finding in report.get("findings", []):
+        rows.append({"id": label + "/finding", "cli": label, "result": "fail",
+                     "error": finding})
+
+    # Between commands no serial manager may be reserved: a held reservation
+    # is a leak (echo.c:114 left one), and every other writer to that manager
+    # blocks forever - it hung a whole run once. On a multi-core image the
+    # console of another core, idle, holds its own receiver while it waits for
+    # a line (MAiXDUiNO_K210 core 1); that one is expected.
+    rc, rep = send_json("mutex", name, 15)
+    held = []
+    for core, text in (per_core(rep.get("text", ""), RX_MUTEX_CORE)
+                       if rc == 0 else []):
+        for mutex, count, owner in RX_HELD.findall(text):
+            console = ident.get("Console")
+            idle = (core is not None and ident.get("ConsoleCore") is not None
+                    and core != ident["ConsoleCore"] and console
+                    and mutex == "Reserve_%s_R" % console
+                    and owner == "Console_%s" % console)
+            if not idle:
+                held.append((mutex, count, owner))
+    rows.append({"id": label + "/reservations", "cli": label,
+                 "result": "fail" if (rc != 0 or held) else "pass",
+                 "error": ("mutex did not answer" if rc != 0 else
+                           ", ".join("%s held by %s (%s)" % (m, o, c)
+                                     for m, c, o in held) or None)})
+    return rows, clib
+
+
+# Known failures
+# ==============
+
+def load_known(path, board):
+    """{row id: (kind, reference)} for this board."""
+
+    known = {}
+    if not os.path.exists(path):
+        return known
+    with open(path) as handle:
+        for number, line in enumerate(handle, 1):
+            line = line.split("#", 1)[0].strip()
+            if not line:
+                continue
+            fields = line.split(None, 3)
+            if len(fields) < 3 or fields[2] not in KFAILING:
+                raise Refusal("%s:%d: expected '<Board> <row id> "
+                              "<fail|crash|hang> [reference]'" % (path, number))
+            if fields[0] == board:
+                known[fields[1]] = (fields[2],
+                                    fields[3] if len(fields) > 3 else "")
+    return known
+
+
+def judge(results, known):
+    """Mark each result known / regression / fixed. Returns the regressions."""
+
+    regressions = []
+    for res in results:
+        entry = known.get(res["id"])
+        if res["result"] in KFAILING:
+            if entry and entry[0] == res["result"]:
+                res["verdict"] = "known"
+                res["reference"] = entry[1]
+            else:
+                res["verdict"] = "regression"
+                regressions.append(res)
+        elif res["result"] == "pass" and entry:
+            # The defect is gone, or the row no longer reaches it. Either way
+            # the list is now wrong, and a stale entry would hide the next
+            # regression of that row.
+            res["verdict"] = "fixed"
+            res["reference"] = entry[1]
+            regressions.append(res)
+    return regressions
+
+
+# Run
+# ===
+
+def run(args, sessions):
+    port, name = select_board(args, sessions)
+    sn = probe_for_port(port)
+
+    rc, ident, modules = identify(name)
+    if rc == 2:
+        raise Refusal("the board on %s did not answer 'uKOS' / 'list'" % port)
+    vcs = ident.get("VCS#", "?")
+    matches, dirty, why = firmware_check(vcs)
+    if not matches and not args.any_firmware:
+        raise Refusal("the board runs %s, which is not HEAD (%s).\n"
+                      "Flash the current tree, or pass --any-firmware to test "
+                      "it anyway." % (vcs, why))
+
+    ctx = prepare(ident, modules, args.variant, args.specs,
+                  vcs if matches else None)
+    variant, tests = ctx["variant"], ctx["tests"]
+    known = load_known(args.known, ident.get("Board"))
+
+    results, clib = health(name, "health", ident)
+    unclean = [r for r in results if r["result"] != "pass"]
+    if unclean and not args.allow_dirty:
+        # A board left changed by an earlier run tests something else, and
+        # takes rows that would pass down with it; start from a fresh boot.
+        raise Refusal("the board is not in a clean state:\n%s\nReset it "
+                      "(or run 'restart'), or pass --allow-dirty."
+                      % "\n".join("  %s: %s" % (r["id"], r.get("error"))
+                                   for r in unclean))
+    if args.expect_libc and (clib != args.expect_libc):
+        # The wrong image, not a change in behaviour.
+        raise Refusal("the board runs %s, expected %s" % (clib,
+                                                          args.expect_libc))
+
+    print("%sBoard%s" % (BOLD, NC))
+    print("  board      %s" % " / ".join(
+        ident.get(k, "?") for k in ("Board", "Variant", "SoC", "Core")))
+    print("  firmware   %s  %s%s" % (
+        vcs, "= HEAD" if matches else "%s!= HEAD%s (%s)" % (YELLOW, NC, why),
+        "  %s(built from a modified tree)%s" % (YELLOW, NC) if dirty else ""))
+    print("  c library  %s" % (clib or "?"))
+    print("  compiler   %s" % ident.get(
+        "Compiler", "? (the firmware's uKOS does not report it)"))
+    print("  console    %s on %s  session %s%s" % (
+        ident.get("Console", "?"), port, name,
+        "" if name in sessions.started else " (reused)"))
+    print("  probe      %s" % (sn or "none - a crash cannot be recovered"))
+    print("  specs      %d rows for %d/%d CLIs"
+          % (len(tests), len(variant["clis"]) - len(ctx["uncovered"]),
+             len(variant["clis"])))
+    sys.stdout.flush()
+
+    for cli, present in ctx["inventory"]:
+        if not present:
+            results.append({"id": "inventory/" + cli, "cli": "inventory",
+                            "result": "fail",
+                            "error": "declared by the variant, not registered "
+                                     "on the board"})
+
+    lost = None
+
+    def finish_ordinary():
+        """The final health check, then the rows that end the console, each
+        followed by a reset through the board's own probe. That reset leaves a
+        clean board for the poisoning rows, which run after this."""
+        nonlocal lost
+        if not lost:
+            after, _ = health(name, "health-after", ident)
+            results.extend(after)
+
+        for test in [t for t in tests if t.get("terminal")]:
+            tid = test["id"]
+            if args.filter and (args.filter not in tid):
+                continue
+            res = {"id": tid, "cli": test["cli"], "cmd": test["cmd"]}
+            results.append(res)
+            skip = skip_reason(test, modules, args.have, args.allow_unsafe,
+                               False, args.allow_poison, args.allow_terminal)
+            if not skip and (args.no_reset or not sn):
+                skip = "needs a reset afterwards: %s" % (
+                    "--no-reset" if args.no_reset else "no ST-Link probe")
+            if skip:
+                res.update(result="skip", error=skip)
+                continue
+            if lost:
+                res.update(result="notrun", error=lost)
+                continue
+
+            rc, rep = send_row(test, name)
+            if rc == 0:
+                res["result"] = "pass"
+            else:
+                res.update(result="fail", failures=rep.get("failures", []),
+                           error=rep.get("error"), note=test.get("note"),
+                           text=rep.get("text", ""))
+            revived, seconds, detail = reset_board(ident.get("Board"), sn,
+                                                   name)
+            res["recovery"] = ("reset over SWD, console back after %.0f s"
+                               % seconds if revived else
+                               "reset over SWD: %s" % detail)
+            if not revived:
+                lost = "the board was lost after %s" % tid
+
+    ordinary = [t for t in tests if not (t.get("terminal") or t.get("poisons"))]
+    poisoning = [t for t in tests if t.get("poisons")]
+    finished = False
+    for test in ordinary + poisoning:
+        if test.get("poisons") and not finished:
+            finish_ordinary()
+            finished = True
+        tid = test["id"]
+        if args.filter and (args.filter not in tid):
+            continue
+        res = {"id": tid, "cli": test["cli"], "cmd": test["cmd"],
+               "poisons": test.get("poisons")}
+        results.append(res)
+
+        skip = skip_reason(test, modules, args.have, args.allow_unsafe, False,
+                           args.allow_poison)
+        if skip:
+            res.update(result="skip", error=skip)
+            continue
+        if lost:
+            res.update(result="notrun", error=lost)
+            continue
+
+        if args.verbose:
+            print("  %s... %s%s" % (DIM, tid, NC))
+            sys.stdout.flush()
+        mark = log_mark(name)
+        rc, rep = send_row(test, name)
+
+        if rc == 0:
+            res["result"] = "pass"
+            continue
+
+        # A row can fail because the board died under it even when a prompt
+        # came back first (an asynchronous cycle process, say), so look for a
+        # core dump whatever the exit code.
+        dump = parse_dump(log_since(name, mark))
+        if rc != 2 and dump is None:
+            res.update(result="fail", failures=rep.get("failures", []),
+                       error=rep.get("error"), note=test.get("note"),
+                       text=rep.get("text", ""))
+            continue
+
+        # The prompt never came back. Tell a slow command from a dead board.
+        if dump is None and console_answers(name):
+            res.update(result="fail", error="no prompt within %ss, but the "
+                       "console still answers" % test.get("timeout", 10),
+                       note=test.get("note"))
+            continue
+
+        res["result"] = "crash" if dump else "hang"
+        if dump:
+            res["dump"] = dump
+            res["symbol"], res["symbol_note"] = symbolize(
+                dump.get("pc"), variant["path"], vcs)
+
+        if args.no_reset or not sn:
+            res["recovery"] = "none (%s)" % ("--no-reset" if args.no_reset
+                                            else "no ST-Link probe")
+            lost = "the board %s at %s" % (
+                "crashed" if dump else "hung", tid)
+            continue
+        revived, seconds, detail = reset_board(ident.get("Board"), sn, name)
+        res["recovery"] = ("reset over SWD, console back after %.0f s" % seconds
+                           if revived else "reset over SWD: %s" % detail)
+        if not revived:
+            lost = "the board was lost at %s" % tid
+
+    if not finished:
+        finish_ordinary()
+
+    regressions = judge(results, known)
+    report(results, ctx, known, regressions, lost, args)
+
+    if args.json:
+        print(json.dumps({"board": ident, "port": port, "probe": sn,
+                          "firmware": {"vcs": vcs, "head": matches,
+                                       "dirty": dirty, "detail": why},
+                          "c_library": clib,
+                          "compiler": ident.get("Compiler"),
+                          "results": results,
+                          "uncovered": ctx["uncovered"],
+                          "verdict": verdict(regressions, lost)}, indent=2))
+
+    if lost and "lost" in lost:
+        return 2
+    return 3 if (regressions or lost) else 0
+
+
+def verdict(regressions, lost):
+    if lost and "lost" in lost:
+        return "BOARD LOST"
+    if regressions or lost:
+        return "REGRESSION"
+    return "PASS"
+
+
+# Display
+# =======
+
+KTAG = {"pass": "pass", "skip": "skip", "notrun": "not run", "fail": "FAIL",
+        "crash": "CRASH", "hang": "HANG"}
+
+
+def report(results, ctx, known, regressions, lost, args):
+    print("\n%sResults%s" % (BOLD, NC))
+
+    groups = {}
+    for res in results:
+        groups.setdefault(res["cli"], []).append(res)
+
+    for cli, rows in groups.items():
+        counts = {}
+        for res in rows:
+            counts[res["result"]] = counts.get(res["result"], 0) + 1
+        summary = "  ".join("%d %s" % (n, KTAG[k]) for k, n in
+                            sorted(counts.items(),
+                                   key=lambda kv: list(KTAG).index(kv[0])))
+        bad = [r for r in rows if r["result"] != "pass"]
+        colour = GREEN
+        if any(r.get("verdict") in ("regression", "fixed") for r in rows):
+            colour = RED
+        elif any(r["result"] in KFAILING for r in rows):
+            colour = YELLOW
+        print("  %s%-13s%s %s" % (colour, cli, NC, summary))
+
+        for res in bad:
+            show_row(res, args.verbose)
+        for res in rows:
+            if res.get("recovery") and res["result"] == "pass":
+                print("      %sreset%s  %s: %s" % (DIM, NC, res["id"],
+                                                   res["recovery"]))
+            if res.get("verdict") == "fixed":
+                print("      %sPASS%s  %s  listed in KNOWN-FAILURES as %s - "
+                      "remove the line (%s)" % (RED, NC, res["id"],
+                                               known[res["id"]][0],
+                                               res.get("reference") or "-"))
+
+    ran = {r["id"] for r in results if r["result"] not in ("skip", "notrun")}
+    for tid, (kind, ref) in sorted(known.items()):
+        if tid not in ran:
+            print("  %snote%s  known %s %s was not exercised in this run"
+                  % (DIM, NC, kind, tid))
+
+    total = {}
+    for res in results:
+        total[res["result"]] = total.get(res["result"], 0) + 1
+    nknown = sum(1 for r in results if r.get("verdict") == "known")
+    print("\n  %s" % ", ".join("%d %s" % (total[k], KTAG[k])
+                               for k in KTAG if k in total)
+          + ("  (%d known)" % nknown if nknown else ""))
+    print("  %d/%d CLIs have a spec%s" % (
+        len(ctx["variant"]["clis"]) - len(ctx["uncovered"]),
+        len(ctx["variant"]["clis"]),
+        "; none for: " + ", ".join(ctx["uncovered"]) if ctx["uncovered"] else ""))
+    for cli in ctx["extra"]:
+        print("  %swarn%s  %s is registered on the board, not declared by "
+              "the variant" % (YELLOW, NC, cli))
+    if lost:
+        print("  %s%s%s" % (RED, lost, NC))
+    poisoned = [r for r in results if r.get("poisons")
+                and r["result"] not in ("skip", "notrun")]
+    for res in poisoned:
+        print("  %sreset the board before the next run: %s ran (%s)%s"
+              % (YELLOW, res["id"], res["poisons"], NC))
+
+    word = verdict(regressions, lost)
+    print("\n%sVERDICT  %s%s%s" % (BOLD, GREEN if word == "PASS" else RED,
+                                   word, NC))
+
+
+def show_row(res, verbose):
+    kind = res["result"]
+    tag = KTAG[kind]
+    known = res.get("verdict") == "known"
+    colour = (DIM if kind in ("skip", "notrun") else
+              YELLOW if known else RED)
+    head = "      %s%-6s%s %s" % (colour, tag, NC, res["id"])
+
+    if kind in ("skip", "notrun"):
+        print("%s  %s%s%s" % (head, DIM, res.get("error") or "", NC))
+        return
+
+    tail = "   %sknown: %s%s" % (DIM, res.get("reference") or "-", NC) \
+        if known else ""
+    if kind in ("crash", "hang"):
+        dump = res.get("dump") or {}
+        parts = [p for p in (dump.get("exception"),
+                             dump.get("mmfar") and "MMFAR " + dump["mmfar"],
+                             dump.get("pc") and "pc " + dump["pc"]) if p]
+        print("%s  %s%s" % (head, ", ".join(parts) or "no core dump, "
+                            "the console is silent", tail))
+        if res.get("symbol"):
+            print("             at %s" % res["symbol"])
+        elif res.get("symbol_note") and dump:
+            print("             %s(not symbolized: %s)%s"
+                  % (DIM, res["symbol_note"], NC))
+        print("             %s%s%s" % (DIM, res.get("recovery", ""), NC))
+        return
+
+    print("%s%s" % (head, tail))
+    for failure in res.get("failures") or []:
+        print("             %s" % describe(failure))
+    if res.get("error"):
+        print("             %s" % res["error"])
+    if res.get("note"):
+        print("             %snote: %s%s" % (DIM, res["note"], NC))
+    if res.get("text") and (verbose or not known):
+        lines = [l for l in res["text"].splitlines() if l.strip()][:8]
+        for line in lines:
+            print("             | %s" % line)
+
+
+def main():
+    ap = argparse.ArgumentParser(
+        prog="board-regression",
+        description="Run the per-CLI specs on one flashed uKOS-X board and "
+                    "report whether its behaviour changed.")
+    ap.add_argument("--port", help="console port, e.g. /dev/cu.usbmodem21103")
+    ap.add_argument("--board", help="board name, e.g. Nucleo_H743; found "
+                                    "among the ST-Link consoles, or checked "
+                                    "against the one on --port")
+    ap.add_argument("--baud", type=int,
+                    help="console baud rate when a session is started "
+                         "(default: the rate the board's variants declare, "
+                         "each of them tried with --port alone)")
+    ap.add_argument("--variant", metavar="DIR",
+                    help="variant directory (default: the board's own)")
+    ap.add_argument("--specs", metavar="DIR", default=KSPECS,
+                    help="per-CLI spec directory (default: %(default)s)")
+    ap.add_argument("--known", metavar="FILE", default=KKNOWN,
+                    help="known failures (default: %(default)s)")
+    ap.add_argument("--any-firmware", action="store_true",
+                    help="test a board whose firmware is not HEAD")
+    ap.add_argument("--expect-libc", choices=("newlib", "picolibc", "llvmlibc"))
+    ap.add_argument("--have", action="append", default=[], metavar="TAG",
+                    help="declare an available hw: tag; repeatable")
+    ap.add_argument("--allow-unsafe", action="store_true",
+                    help="run rows that need ukos-serial's --unsafe")
+    ap.add_argument("--allow-poison", action="store_true",
+                    help="run rows that leave the board changed until reset "
+                         "(they run last)")
+    ap.add_argument("--allow-terminal", action="store_true",
+                    help="run rows that end the console (they run last, "
+                         "each followed by an SWD reset)")
+    ap.add_argument("-t", "--filter", help="only ids containing this substring")
+    ap.add_argument("--allow-dirty", action="store_true",
+                    help="run even when the first health check fails")
+    ap.add_argument("--no-reset", action="store_true",
+                    help="after a crash, leave the board dead and stop")
+    ap.add_argument("-v", "--verbose", action="store_true")
+    ap.add_argument("--json", action="store_true")
+    args = ap.parse_args()
+
+    colours(sys.stdout.isatty() and os.environ.get("NO_COLOR") is None)
+    if not os.path.exists(KSERIAL):
+        sys.stderr.write("error: ukos-serial not found\n")
+        return 1
+
+    sessions = Sessions(args.baud)
+    try:
+        return run(args, sessions)
+    except Refusal as exc:
+        sys.stderr.write("error: %s\n" % exc)
+        return 1
+    except KeyboardInterrupt:
+        sys.stderr.write("\ninterrupted\n")
+        return 130
+    finally:
+        sessions.close_all()
+
+
+if __name__ == "__main__":
+    sys.exit(main())

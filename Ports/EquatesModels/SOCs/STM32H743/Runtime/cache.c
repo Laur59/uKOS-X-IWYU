@@ -121,3 +121,17 @@ void    cache_I_Invalidate_Add(const void *address, int32_t size) {
 
     model_cache_I_Invalidate_Add(address, size);
 }
+
+/*
+ * \brief cache_I_D_Sync_Add
+ *
+ * - Make a memory area that was written as data executable
+ *   - clean the data cache by address, so the memory holds what was written
+ *   - invalidate the instruction cache, which may hold what ran there before
+ *
+ */
+void    cache_I_D_Sync_Add(const void *address, int32_t size) {
+
+    model_cache_D_Clean_Add(address, size);
+    model_cache_I_Invalidate();
+}

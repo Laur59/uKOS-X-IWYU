@@ -53,7 +53,7 @@ fi
 # Packages
 # --------
 
-readonly hash=f8c117b
+readonly hash=90b983c
 
 printf '\n%bDownload the Tflite-micro package ...%b\n\n' "${BOLD}" "${NC}"
 
@@ -87,6 +87,10 @@ cd "${PATH_PRG}"
 # The exporter writes over an existing tree, so clear it first.
 
 printf '\n%bExport the Tflite-micro source trees ...%b\n\n' "${BOLD}" "${NC}"
+
+# Library/ changes from here on, so its stamp no longer describes it; the
+# install step at the end writes a new one.
+"${PATH_PRG:h:h}/Tools/Developer/third-parties-cache.sh" unstamp Tflite-micro
 
 rm -fr Library/Generic/CORTEX_M_generic Library/Generic/RISCV64_generic
 cd Tflite-micro-current

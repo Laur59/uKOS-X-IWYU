@@ -218,9 +218,11 @@ mkdir build && cd build
 cmake ..      # Téléchargera automatiquement nrfx et CMSIS_5 si nécessaire
 cmake --build .
 
-# Ou utiliser le script automatique
+# Ou construire et installer toutes les bibliothèques
 cd Third_Parties/TinyUSB
-./build_with_cmake.sh
+cmake -S . -B build
+cmake --build build
+cmake --install build
 ```
 
 **Note :** La première compilation nécessite une connexion Internet pour télécharger les dépendances. Les builds suivants réutiliseront les dépendances déjà téléchargées.

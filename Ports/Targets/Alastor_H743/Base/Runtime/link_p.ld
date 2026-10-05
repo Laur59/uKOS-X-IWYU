@@ -43,10 +43,10 @@ INCLUDE     STM32H743xI.ld
 /*           User Memory         0x72000000                 */
 /*            └ 32768K                                      */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
 config_sizeData             = stm_lnSRAM123 - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0;
-config_sizeHeap             = (32768K);
+config_sizeHeap             = 32M;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -67,7 +67,7 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0x70000000;                                                   /* 0x70000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (65536K);                                                     /* Length of the external memory                            */
+linker_lnEXRAM              = 64M;                                                          /* Length of the external memory                            */
 
 linker_stUMemo              = 0x72000000;                                                   /* 0x72000000: UMemo, start of the user memory              */
 linker_lnUMemo              = linker_lnEXRAM - config_sizeHeap;                             /* Length of the user memory                                */

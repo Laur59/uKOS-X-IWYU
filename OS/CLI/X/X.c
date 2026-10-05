@@ -88,7 +88,13 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
             break;
         }
         case KERR_KERN_TIMEO:
-        case KERR_KERN_MBKIL: {
+        case KERR_KERN_MBKIL:
+
+// The cached handle outlives the mailbox: once getTemp has exited, reading
+// through it answers KERR_KERN_NOMBO. That is the producer gone, not a fault,
+// so it must not log an error either.
+
+        case KERR_KERN_NOMBO: {
             (void)dprintf(KSYST, "The process Temperature was killed!\n");
             vInitialised[core] = false;
             return EXIT_OS_FAILURE;
@@ -115,8 +121,9 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
     }
 
 // Past this point the read succeeded, so bufRec is a real message. Neither error case
-// above may fall through to it: kern_readMailbox() stores nullptr in bufRec whenever it
-// returns an error, and the memcpy below would read from address 0.
+// above may fall through to it: kern_readMailbox() does not promise what bufRec holds
+// after an error - nullptr, or whatever it held before - and the memcpy below would
+// read from it.
 
 // Copy it into the temperature buffer before to "free" the memory
 

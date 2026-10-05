@@ -111,4 +111,6 @@ function(add_TinyUSB)
     )
 
     set(TINYUSB TinyUSB::${TUSB_SPEED} PARENT_SCOPE)
+
+    ukos_check_third_party(TinyUSB)
 endfunction()

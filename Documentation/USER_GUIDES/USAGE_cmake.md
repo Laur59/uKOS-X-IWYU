@@ -84,6 +84,7 @@ the preset, for example `cmake --preset llvm -DWITH_LISTING=ON`.
 | `-DARTEFACTS_DIR=<dir>` | `$PWD/Artefacts` | Where the final images are copied |
 | `-DLINKS_LD=<file>` | `${PATH_BASE}/Runtime/link${MODE}.ld` | Linker script |
 | `-DLLVMLIBC_CONFIG=<file>` | — | `--config=` file for overlay LLVM-libc installs |
+| `-DTHIRD_PARTY_CHECK=ON/OFF` | ON | Warn when a prebuilt third-party library was built from other sources than this checkout (see *Keeping the built libraries across checkouts* in [getting-started.md](getting-started.md)) |
 
 The first four are what the presets set; the rest have no preset and are passed by hand.
 

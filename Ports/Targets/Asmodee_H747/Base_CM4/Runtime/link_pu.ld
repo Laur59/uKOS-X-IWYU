@@ -51,9 +51,9 @@ INCLUDE     STM32H747xI.ld
 /* RAM4:     Share               0x38000000  (User)         */
 /*            └ 64K                                         */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
-config_sizeData_p           = (60k);
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
+config_sizeData_p           = 60K;
 config_sizeData_u           = stm_lnSRAM1 - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0 - config_sizeData_p;
 
 /* IMPORTANT:                                               */
@@ -76,10 +76,10 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
 linker_stUMemo              = 0;                                                            /* 0x00000000: UMemo, start of the user memory              */
-linker_lnUMemo              = (0);                                                          /* Length of the user memory                                */
+linker_lnUMemo              = 0;                                                            /* Length of the user memory                                */
 
 linker_stShare              = stm_stSRAM4;                                                  /* 0x38000000: Share, start of the multicore shared memory  */
 linker_lnShare              = stm_lnSRAM4;                                                  /* Length of the user multicore shared memory               */
@@ -112,11 +112,11 @@ linker_SZ_FLASH_INT_0       = 19;                                               
 
 linker_ST_RAM_INT_0         = stm_stSRAM1;                                                  /* 0x30000000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_0         = 16;                                                           /* 128-K = 2^(SZ + 1), SZ = log2(128-K) - 1                 */
-hex_SZ_RAM_INT_0            = (1 << (linker_SZ_RAM_INT_0+1));                               /* 128-K                                                    */
+hex_SZ_RAM_INT_0            = 1 << (linker_SZ_RAM_INT_0 + 1);                               /* 128-K                                                    */
 
 linker_ST_RAM_INT_0_OS      = stm_stSRAM1;                                                  /* 0x30000000: Privileged                                   */
 linker_SZ_RAM_INT_0_OS      = 15;                                                           /* 64-K = 2^(SZ + 1), SZ = log2(64-K) - 1                   */
-hex_SZ_RAM_INT_0_OS         = (1 << (linker_SZ_RAM_INT_0_OS+1));                            /* 64-K                                                     */
+hex_SZ_RAM_INT_0_OS         = 1 << (linker_SZ_RAM_INT_0_OS + 1);                            /* 64-K                                                     */
 
 linker_ST_RAM_INT_1         = stm_stSRAM2;                                                  /* 0x30020000: Privileged/User RAM                          */
 linker_SZ_RAM_INT_1         = 16;                                                           /* 128-K = 2^(SZ + 1), SZ = log2(128-K) - 1                 */
@@ -137,9 +137,9 @@ MEMORY {
 }
 
 ASSERT((linker_sizeStackFirst_C0 + linker_sizeStackSystem_C0 + linker_lnPrgmData_p + linker_lnPrgmData_u + linker_lnHeap + linker_lnUMemo) <= stm_lnSRAM123, "Check RAM mapping: over/under usage")
-ASSERT((linker_stPrgmData_p) < (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "Start address of data outside protected region")
+ASSERT(linker_stPrgmData_p < (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "Start address of data outside protected region")
 ASSERT((linker_stPrgmData_p + linker_lnPrgmData_p) <= (linker_ST_RAM_INT_0_OS + hex_SZ_RAM_INT_0_OS), "End address of data outside protected region")
-ASSERT((linker_stPrgmData_u) >= (linker_ST_RAM_INT_0), "Start address of user data outside user region")
+ASSERT(linker_stPrgmData_u >= linker_ST_RAM_INT_0, "Start address of user data outside user region")
 ASSERT((linker_stPrgmData_u + linker_lnPrgmData_u) <= (linker_ST_RAM_INT_0 + hex_SZ_RAM_INT_0), "End address of user data outside user region")
 
 INCLUDE     system_pu.ld

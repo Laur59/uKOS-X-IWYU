@@ -1,0 +1,84 @@
+{
+  "module": "object",
+
+  "tests": [
+    {
+      "id": "object/summary",
+      "cmd": "object",
+      "expect": ["^uKOS-X object information\\.$",
+                 "^Objects used by the core 0$",
+                 "^Available processes      = +[0-9]+, max\\. used processes      = +[0-9]+, used processes      = +[0-9]+$"],
+      "timeout": 15
+    },
+    {
+      "id": "object/long-form-mutx",
+      "cmd": "object 0 -mutx 0",
+      "expect": ["^Mutex 00:$"],
+      "refute": ["^The object does not exist\\.$"],
+      "timeout": 10,
+      "note": "before fix/object-mutx-argument the argc == 4 arm tested argv[1] (the core) for -mutx, where every sibling tests argv[2], and refused this"
+    },
+    {
+      "id": "object/mutx-in-the-core-position-refused",
+      "cmd": "object -mutx x 0",
+      "expect": ["^The object does not exist\\.$"],
+      "refute": ["^Mutex "],
+      "timeout": 10,
+      "note": "the mirror image: the flag where the core belongs used to select the mutex"
+    },
+    {
+      "id": "object/unused-process-has-no-identifier",
+      "cmd": "object -proc 47",
+      "expect": ["^Process 47:$", "^   Identifier: +\\(none\\)$"],
+      "refute": ["\\(null\\)"],
+      "timeout": 10,
+      "note": "the last slot of the table, unused on a test image. Its identifier is NULL, which used to reach %s unchanged"
+    },
+    {
+      "id": "object/unused-semaphore-has-no-identifier",
+      "cmd": "object -sema 47",
+      "expect": ["^Semaphore 47:$", "^   Identifier: +\\(none\\)$"],
+      "refute": ["\\(null\\)"],
+      "timeout": 10,
+      "note": "the last slot of the table, unused on a test image. Its identifier is NULL, which used to reach %s unchanged"
+    },
+    {
+      "id": "object/unused-mutex-has-no-identifier",
+      "cmd": "object -mutx 47",
+      "expect": ["^Mutex 47:$", "^   Identifier: +\\(none\\)$"],
+      "refute": ["\\(null\\)"],
+      "timeout": 10,
+      "note": "the last slot of the table, unused on a test image. Its identifier is NULL, which used to reach %s unchanged"
+    },
+    {
+      "id": "object/unused-mailbox-has-no-identifier",
+      "cmd": "object -mbox 47",
+      "expect": ["^Mailbox 47:$", "^   Identifier: +\\(none\\)$"],
+      "refute": ["\\(null\\)"],
+      "timeout": 10,
+      "note": "the last slot of the table, unused on a test image. Its identifier is NULL, which used to reach %s unchanged"
+    },
+    {
+      "id": "object/unused-signal-group-has-no-identifier",
+      "cmd": "object -sign 7",
+      "expect": ["^Signal group 07:$", "^   Identifier: +\\(none\\)$"],
+      "refute": ["\\(null\\)"],
+      "timeout": 10,
+      "note": "the last slot of the table, unused on a test image. Its identifier is NULL, which used to reach %s unchanged"
+    },
+    {
+      "id": "object/wrong-argument-count",
+      "cmd": "object -proc",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["^Objects used by the core"],
+      "timeout": 10,
+      "note": "only 1, 3 and 4 arguments are forms of the command; any other count used to fall into the summary, leaving \"Incorrect arguments.\" unreachable"
+    },
+    {
+      "id": "object/bad-core",
+      "cmd": "object 9 -proc 0",
+      "expect": ["^The core does not exist\\.$"],
+      "timeout": 10
+    }
+  ]
+}

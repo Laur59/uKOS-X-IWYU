@@ -1,0 +1,16 @@
+{
+  "module": "szkern",
+
+  "tests": [
+    {
+      "id": "szkern/footprint",
+      "cmd": "szkern",
+      "expect": ["^uKernel memory footprint information\\.$",
+                 "^uKernel objects - statistics (on|off)$",
+                 "^Number of daemons          +[0-9]+$",
+                 "^Section text:      addr = 0x[0-9A-F]{16}, size = 0x[0-9A-F]{8} "],
+      "timeout": 15,
+      "note": "sizes and addresses are board specific; only the shape is asserted"
+    }
+  ]
+}

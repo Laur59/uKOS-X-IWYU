@@ -220,12 +220,17 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
                 KKERN_PRIORITY_NORMAL_01                    // KKERN_PRIORITY_HIGH < Priority < KKERN_PRIORITY_LOW_14. KKERN_PRIORITY_LOW_15 is reserved for the idle process
             );
 
+// The stack is allocated above, before it is known whether a process will use
+// it: give it back on both refusals, otherwise each one leaks a cycle stack
+
             if (vProcess[core][indexSerialManager] == nullptr) {
                 if (kern_createProcess(&specification, &pack, &vProcess[core][indexSerialManager]) != KERR_KERN_NOERR) {
+                    memo_free(vStack_0);
                     error = KERR_PRO;
                 }
             }
             else {
+                memo_free(vStack_0);
                 error = KERR_CAU;
             }
             break;

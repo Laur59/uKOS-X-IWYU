@@ -214,8 +214,6 @@
 extern  "C" {
 #endif
 
-extern  bool    is_exception(void);
-
 /*!
  * \brief Initialise the manager
  *

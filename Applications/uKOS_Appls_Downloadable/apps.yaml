@@ -545,7 +545,13 @@ p_Specials:
     - Pico2_rp2350
 
 q_LVGL:
+  banner:
+    - Discovery_N657
+    - Firefly_H743
+
   basic:
+    - Discovery_N657
+    - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_N657
 
@@ -554,6 +560,8 @@ q_LVGL:
     - Firefly_H743
 
   team:
+    - Discovery_N657
+    - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_N657
 

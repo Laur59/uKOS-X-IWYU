@@ -1,0 +1,33 @@
+{
+  "module": "test_sdcard",
+  "note": "test_sdcard starts Process_SDCard and returns at once; the process writes and reads back 100 sectors per loop, forever, until 'kill test_sdcard' raises its kill request. It writes raw sectors from sector 0 upward, so it destroys the partition table and file system of the card in the slot.",
+
+  "tests": [
+    {
+      "id": "test_sdcard/kill-when-idle",
+      "cmd": "kill test_sdcard",
+      "expect": ["^Module test_sdcard killed$"],
+      "refute": ["^The module cannot be killed\\.$"],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "with no test running, the clean function only raises a kill request that the next launch clears; kill is on ukos-serial's unsafe list"
+    },
+    {
+      "id": "test_sdcard/write-read-then-kill",
+      "cmd": "test_sdcard",
+      "expect": ["^sdcard tests\\.$"],
+      "refute": ["^Error: cannot launch the process!$"],
+      "then": [
+        {"await": "(?s)^Card type             sdcard V\\.[12]$.*^Card size \\[Bytes\\]     [1-9][0-9]*$.*^Read  time for 100 sectors: +[0-9]+-us, sector nb +0$.*^Read  time for 100 sectors: +[0-9]+-us, sector nb +100$", "timeout": 30},
+        {"send": "kill test_sdcard", "unsafe": true, "timeout": 10, "expect": ["^Module test_sdcard killed$"]},
+        {"absent": "^Error: ", "timeout": 3},
+        {"send": "process", "timeout": 15, "refute": ["Process sdcard"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe", "hw:sdcard-scratch"],
+      "note": "OVERWRITES the first sectors of the card: pass --have sdcard-scratch only with a card whose contents you do not need. Two write/read/compare rounds (sectors 0-99 and 100-199), then kill; the process must leave the list and release the sdcard reservation (checked by health-after). A missing or unreadable card prints 'Error: status = ...' and logs a fatal record, which also fails health-after"
+    }
+  ]
+}

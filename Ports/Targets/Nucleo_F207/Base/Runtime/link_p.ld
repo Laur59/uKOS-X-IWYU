@@ -42,8 +42,8 @@ INCLUDE     STM32F207xx.ld
 /*            ├  4K                                         */
 /* RAM2:      └ 16K              0x2001C000                 */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -64,17 +64,17 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
-linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x2001B000: UMemo, start of the user memory              */
-linker_lnUMemo              = (20K);                                                        /* Length of the user memory                                */
+linker_stUMemo              = linker_stHeap + linker_lnHeap;                                /* 0x2001B000: UMemo, start of the user memory              */
+linker_lnUMemo              = 20K;                                                          /* Length of the user memory                                */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
-linker_stHeap               = (linker_stPrgmData + linker_lnPrgmData);                      /* 0x20014000: start of the heap                            */
-linker_lnHeap               = (28K);                                                        /* Length of the heap                                       */
+linker_stHeap               = linker_stPrgmData + linker_lnPrgmData;                        /* 0x20014000: start of the heap                            */
+linker_lnHeap               = 28K;                                                          /* Length of the heap                                       */
 
 /* IMPORTANT:                                               */
 /* uKOS OS Flash + memory                                   */
@@ -83,7 +83,7 @@ linker_stPrgmCode           = stm_stINTFLASH;                                   
 linker_lnPrgmCode           = stm_lnINTFLASH;                                               /* Length of the the Flash                                  */
 
 linker_stPrgmData           = linker_lowStackSystem_C0 + linker_sizeStackSystem_C0;         /* 0x20001800: PrgmData, start of the RAM                   */
-linker_lnPrgmData           = (74K);                                                        /* Length of the RAM                                        */
+linker_lnPrgmData           = 74K;                                                          /* Length of the RAM                                        */
 
 /* IMPORTANT:                                               */
 /* equates necessary for the arm_v7 MPU regions             */

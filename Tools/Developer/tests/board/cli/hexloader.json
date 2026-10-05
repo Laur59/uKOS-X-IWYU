@@ -1,0 +1,71 @@
+{
+  "module": "hexloader",
+  "note": "hexloader reads Intel hex from the console and never times out - every download ends with an end-of-file record (:00000001FF), and a second hexloader is written, not sent: it waits for code and prints no prompt. It is on ukos-serial's unsafe list. The default (run) path used to jump to a NULL start address when a stale signature sat in the user memory (fixed, ../DEFECTS.md); a row asserts it now refuses.",
+
+  "tests": [
+    {
+      "id": "hexloader/two-downloads-in-a-row",
+      "cmd": "hexloader -norun",
+      "prompt": false,
+      "then": [
+        {"await": "^Hex format Intel loader mode; waiting for the code\\.$", "timeout": 5},
+        {"send": ":00000001FF", "timeout": 10, "expect": ["^Hex: download terminated\\.$"]},
+        {"write": "hexloader -norun", "unsafe": true},
+        {"send": ":00000001FF", "timeout": 10,
+         "expect": ["^Hex: download terminated\\.$"], "refute": ["user memory is busy"]},
+        {"send": "run", "timeout": 10, "expect": ["^No application in the memory!$"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "an end-of-file record alone is a complete, empty download. The second one must be accepted: hexloader used to keep the user memory reserved after every download, refusing all later ones until a reset (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "hexloader/wrong-checksum-then-download",
+      "cmd": "hexloader -norun",
+      "prompt": false,
+      "then": [
+        {"await": "^Hex format Intel loader mode; waiting for the code\\.$", "timeout": 5},
+        {"send": ":00000001FE", "timeout": 10, "expect": ["^Hex: wrong checksum\\.$"]},
+        {"write": "hexloader -norun", "unsafe": true},
+        {"send": ":00000001FF", "timeout": 10,
+         "expect": ["^Hex: download terminated\\.$"], "refute": ["user memory is busy"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "the end-of-file record's checksum is FF; FE must be refused, and the failed download must give the user memory back"
+    },
+    {
+      "id": "hexloader/non-hex-digit-rejected",
+      "cmd": "hexloader -norun",
+      "prompt": false,
+      "then": [
+        {"await": "^Hex format Intel loader mode; waiting for the code\\.$", "timeout": 5},
+        {"send": ":00000001FG", "timeout": 10,
+         "expect": ["^Hex: not a hex digit\\.$"], "refute": ["download terminated", "wrong checksum"]},
+        {"write": "hexloader -norun", "unsafe": true},
+        {"send": ":00000001FF", "timeout": 10,
+         "expect": ["^Hex: download terminated\\.$"], "refute": ["user memory is busy"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "the last checksum digit is G, so only the line end follows the refused character. A character that is not a hex digit used to read as 0 (fixed, ../DEFECTS.md); the next download must still be accepted"
+    },
+    {
+      "id": "hexloader/run-refuses-a-download-without-an-application",
+      "cmd": "hexloader",
+      "prompt": false,
+      "then": [
+        {"await": "^Hex format Intel loader mode; waiting for the code\\.$", "timeout": 5},
+        {"send": ":00000001FF", "timeout": 10,
+         "expect": ["^Hex: download terminated\\.$", "^Hex: failed to find the application signature!$"]}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe"],
+      "note": "without -norun, an end-of-file record alone leaves no start address: it must be refused. It used to jump to NULL whenever an earlier download had left a signature in the user memory, which SRAM keeps across resets - a HardFault (fixed, ../DEFECTS.md)"
+    }
+  ]
+}

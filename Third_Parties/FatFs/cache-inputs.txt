@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+#
+# Repository paths the FatFs build reads besides Third_Parties/FatFs and the
+# common list in Third_Parties/cmake/cache-inputs-common.txt. One path per line,
+# relative to the root of the checkout; a directory stands for everything
+# under it, and '*' matches across directories ('OS/Lib_storages/*.h' is every
+# header below OS/Lib_storages). Check the list with 'third-parties-cache audit FatFs'.
+
+OS/Includes
+OS/Lib_storages/*.h

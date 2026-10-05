@@ -20,8 +20,8 @@ behaves. Neither subsumes the other — see §7 and §8.
 
 `Tools/Developer/bin/` holds symlinks to the scripts, so putting that directory on your
 `PATH` gives you `checkiwyu`, `run-analyser`, `clangd-target`, `latotale`, `regression`,
-`run-tests` and `run-board-tests` as plain commands. The examples below use the symlink
-names.
+`run-tests`, `run-board-tests` and `third-parties-cache` as plain commands. The examples
+below use the symlink names.
 
 The result of the last full sweep is recorded in `../analysis-baseline.md`, one section per
 variant. Compare a new run against it: a finding that is not listed there is a regression,
@@ -217,6 +217,11 @@ for pass in 1 2; do
 done
 diff /tmp/pass1.txt /tmp/pass2.txt      # no output
 ```
+
+This is what lets a built `Library/` be reused instead of rebuilt: `third-parties-cache`
+keeps each one outside the repository under a key made of its sources and its compiler,
+and restores it when the checkout comes back to the same sources — see *Keeping the built
+libraries across checkouts* in [getting-started.md](getting-started.md).
 
 Scope is the third-party libraries. The system image and the downloadable applications
 are **not** covered: the same two settings would extend to a target variant, and the

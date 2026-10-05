@@ -1,0 +1,22 @@
+{
+  "module": "rnd",
+
+  "tests": [
+    {
+      "id": "rnd/single",
+      "cmd": "rnd",
+      "expect": ["^Give random number\\(s\\)\\.$",
+                 "^[0-9]+$"],
+      "refute": ["^Protocol error\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "rnd/hardware-generator",
+      "cmd": "rnd -hard 2",
+      "expect": ["^[0-9]+$"],
+      "refute": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "note": "boards without a TRNG link the generic stub_random.c; only the shape is assertable, never a value"
+    }
+  ]
+}

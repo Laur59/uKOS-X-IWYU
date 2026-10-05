@@ -42,6 +42,11 @@
 #include    "text/text.h"
 #include    "types.h"
 
+#if (defined(CACHE_D_S))
+#include    "cache.h"
+#include    "macros_core.h"
+#endif
+
 // uKOS-X specific (see the module.h)
 // ==================================
 
@@ -87,6 +92,7 @@ enum {
         KERR_S_LOADER_FRA,
         KERR_S_LOADER_PAR,
         KERR_S_LOADER_OUM,
+        KERR_S_LOADER_HEX,
 };
 
 enum {
@@ -101,7 +107,8 @@ static  int32_t     local_getAddress(uint8_t **address, uint8_t *counter, uint8_
 static  int32_t     local_getData(const uint8_t *counter, uint8_t *checksum, uint8_t *address, uint32_t *size);
 static  int32_t     local_getHexValue(uint8_t *value);
 static  int32_t     local_getByte(uint8_t *byte);
-static  bool        local_checkSignature(void);
+static  bool        local_isApplication(int32_t (*code)(uint32_t argc, const char_t *argv[]));
+static  void        local_syncCode(void);
 
 /*
  * \brief Main entry point
@@ -111,7 +118,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
     [[maybe_unused]]
     char_t          *dummy;
     uint8_t         *address = nullptr, byte = 0U, checksum, counter;
-    int32_t         error = KERR_S_LOADER_NOT, (*code)(uint32_t argc, const char_t *argv[]);
+    int32_t         status, error = KERR_S_LOADER_NOT, (*code)(uint32_t argc, const char_t *argv[]);
     bool            terminate = false, equals;
     uint8_t         run = KRUN;
     uint32_t        size = 0U;
@@ -223,32 +230,51 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             system_getDownloadCodeAddress((void **)&code);
             if (run == KRUN) {
 
+// Jump only to an application built for this system: a terminator alone
+// publishes the start of the user memory, and a signature left there by an
+// earlier download used to be enough to jump to it anyway.
 // Invalidate the header to prevent another execution, like after the reset
 // if the automatic execution from a debugger is installed.
 
-                if (local_checkSignature()) {
+                if (local_isApplication(code)) {
                     ramHeader.oMemLocation    = KNO_MEM;
                     ramHeader.oStart          = nullptr;
                     ramHeader.oLnApplication  = 0U;
                     ramHeader.oModule         = nullptr;
                     memcpy((void *)linker_stUMemo, (const void *)&ramHeader, sizeof(ramHeader));
+                    local_syncCode();
 
                     return (*code)(argc, argv);
                 }
 
-                (void)dprintf(KSYST, "\nS: failed to find the application signature!\n");
-            }
-            return EXIT_OS_SUCCESS_CLI;
+// Refused: nothing ran, so this is a failure, as in hexloader - it used to fall
+// through and report success
 
+                (void)dprintf(KSYST, "\nS: failed to find the application signature!\n");
+                status = EXIT_OS_FAILURE;
+                break;
+            }
+            status = EXIT_OS_SUCCESS_CLI;
+            break;
         }
-        case KERR_S_LOADER_OUM: { (void)dprintf(KSYST, "\nS: Download address out of memory.\n\n"); return EXIT_OS_FAILURE; }
-        case KERR_S_LOADER_CHK: { (void)dprintf(KSYST, "\nS: wrong checksum.\n\n");                 return EXIT_OS_FAILURE; }
-        case KERR_S_LOADER_BFU: { (void)dprintf(KSYST, "\nS: buffer full error.\n\n");              return EXIT_OS_FAILURE; }
-        case KERR_S_LOADER_NOI: { (void)dprintf(KSYST, "\nS: noise error.\n\n");                    return EXIT_OS_FAILURE; }
-        case KERR_S_LOADER_FRA: { (void)dprintf(KSYST, "\nS: framing error.\n\n");                  return EXIT_OS_FAILURE; }
-        case KERR_S_LOADER_PAR: { (void)dprintf(KSYST, "\nS: parity error.\n\n");                   return EXIT_OS_FAILURE; }
-        default:                {                                                                   return EXIT_OS_FAILURE; }
+        case KERR_S_LOADER_OUM: { (void)dprintf(KSYST, "\nS: Download address out of memory.\n\n"); status = EXIT_OS_FAILURE; break; }
+        case KERR_S_LOADER_CHK: { (void)dprintf(KSYST, "\nS: wrong checksum.\n\n");                 status = EXIT_OS_FAILURE; break; }
+        case KERR_S_LOADER_BFU: { (void)dprintf(KSYST, "\nS: buffer full error.\n\n");              status = EXIT_OS_FAILURE; break; }
+        case KERR_S_LOADER_NOI: { (void)dprintf(KSYST, "\nS: noise error.\n\n");                    status = EXIT_OS_FAILURE; break; }
+        case KERR_S_LOADER_FRA: { (void)dprintf(KSYST, "\nS: framing error.\n\n");                  status = EXIT_OS_FAILURE; break; }
+        case KERR_S_LOADER_PAR: { (void)dprintf(KSYST, "\nS: parity error.\n\n");                   status = EXIT_OS_FAILURE; break; }
+        case KERR_S_LOADER_HEX: { (void)dprintf(KSYST, "\nS: not a hex digit.\n\n");               status = EXIT_OS_FAILURE; break; }
+        default:                {                                                                   status = EXIT_OS_FAILURE; break; }
     }
+
+// Nothing runs from the user memory on any path that reaches here - a failed
+// download, a -norun one, a refused signature - so give it back; kept, it refused
+// every later download until a reset. The path that starts the application has
+// returned above and keeps it: the processes the application created may still
+// be running from it after its aStart returns
+
+    system_release(KMODE_READ_WRITE);
+    return status;
 }
 
 // Local routines
@@ -326,14 +352,17 @@ static  int32_t local_getHexValue(uint8_t *value) {
         return status;
     }
 
+// A character that is not a hex digit is an error: it used to contribute 0,
+// so only the record checksum stood between a corrupt stream and a bad load
+
     if       ((byte >= '0') && (byte <= '9'))                                      { *value = (uint8_t)(aTabAB[byte - (uint8_t)'0']<<4U);                            }
     else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value = (uint8_t)(aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']<<4U);      }
-    else { ; }
+    else                                                                             { return KERR_S_LOADER_HEX; }
 
     status = local_getByte(&byte);  if (status != KERR_S_LOADER_NOT) { return status; }
     if       ((byte >= '0') && (byte <= '9'))                                      { *value = *value + (uint8_t)aTabAB[byte - (uint8_t)'0'];                       }
     else if (((byte >= 'A') && (byte <= 'F')) || ((byte >= 'a') && (byte <= 'f'))) { *value = *value + (uint8_t)aTabAB[(byte & (uint8_t)(~0x20U)) - (uint8_t)'0']; }
-    else { ; }
+    else                                                                             { return KERR_S_LOADER_HEX; }
 
     return KERR_S_LOADER_NOT;
 }
@@ -446,22 +475,56 @@ static  int32_t local_getData(const uint8_t *counter, uint8_t *checksum, uint8_t
 }
 
 /*
- * \brief local_checkSignature
+ * \brief local_syncCode
  *
- * Search for the signature string, which should also be within the loaded application.
- * If the application has the same signature, launching it may be dangerous, as the
- * function entry-points will no longer be matching.
+ * - Make the memory hold the code that is about to run
+ *   - the code was written through the data cache, where part of it may
+ *     still sit, while its instructions are fetched from the memory behind
+ *   - the instruction cache may still hold an application that ran earlier
+ *     from the same addresses
  *
  */
-static  bool    local_checkSignature(void) {
-            size_t      ln, i = 0U;
-    const   uint8_t     *ptr = (uint8_t *)linker_stUMemo;
-    const   char_t      *signature;
+static  void    local_syncCode(void) {
+
+#if (defined(CACHE_D_S))
+    PRIVILEGE_ELEVATE;
+    cache_I_D_Sync_Add((const void *)linker_stUMemo, (int32_t)(uintptr_t)linker_lnUMemo);
+    PRIVILEGE_RESTORE;
+#endif
+}
+
+/*
+ * \brief local_isApplication
+ *
+ * - Verify that the user memory holds the application the download announced
+ *   (the same check as the run tool and hexloader make)
+ *   - the header at the start of the user memory is marked KMEMU
+ *   - the entry point it declares is the address of the terminator record
+ *   - its length fits in the user memory
+ *   - the system signature lies inside the application itself: a signature
+ *     from another system means the entry points no longer match, and SRAM
+ *     keeps its content across resets, so a stale copy may sit anywhere else
+ *
+ */
+static  bool    local_isApplication(int32_t (*code)(uint32_t argc, const char_t *argv[])) {
+            uKOS_header_t   header;
+            size_t          ln, i = 0U;
+    const   uint8_t         *ptr = (const uint8_t *)linker_stUMemo;
+    const   char_t          *signature;
+
+    memcpy(&header, (const void *)linker_stUMemo, sizeof(header));
+
+    if ((code == nullptr) || (header.oMemLocation != KMEMU) || (header.oStart != code)) {
+        return false;
+    }
+    if ((header.oLnApplication == 0U) || (header.oLnApplication > (uintptr_t)linker_lnUMemo)) {
+        return false;
+    }
 
     system_getSystemSignature(&signature);
 
-    for (ln = (size_t)linker_lnUMemo; ln > 0U; --ln ) {
-        if (*ptr == signature[i]) {
+    for (ln = (size_t)header.oLnApplication; ln > 0U; --ln) {
+        if (*ptr == (uint8_t)signature[i]) {
             i++;
             if (*ptr == 0U) {
                 return true;
@@ -469,7 +532,10 @@ static  bool    local_checkSignature(void) {
 
         }
         else {
-            i = 0U;
+
+// A mismatch may still be the first character of the signature
+
+            i = (*ptr == (uint8_t)signature[0]) ? 1U : 0U;
         }
         ptr++;
     }

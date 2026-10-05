@@ -88,3 +88,13 @@ extern  void    cache_I_Invalidate(void);
  *
  */
 extern  void    cache_I_Invalidate_Add(const void *address, int32_t size);
+
+/*
+ * \brief cache_I_D_Sync_Add
+ *
+ * - Make a memory area that was written as data executable
+ *   - clean the data cache by address, so the memory holds what was written
+ *   - invalidate the instruction cache, which may hold what ran there before
+ *
+ */
+extern  void    cache_I_D_Sync_Add(const void *address, int32_t size);

@@ -1,8 +1,9 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:        Board mapping.
+ * Goal:     Board mapping.
  */
 
 #pragma once
@@ -20,18 +21,17 @@
 
 #define LED_GREEN_ON        (REG(GPIOO)->ODR |=            (1<<BLED_0))     //
 #define LED_GREEN_OFF       (REG(GPIOO)->ODR &= (uint32_t)~(1<<BLED_0))     //
-#define LED_GREEN_TOGGLE    (REG(GPIOO)->ODR ^=            (1<<BLED_1))     //
-#define LED_RED_ON          (REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_2))     //
-#define LED_RED_OFF         (REG(GPIOG)->ODR |=            (1<<BLED_2))     //
-#define LED_RED_TOGGLE      (REG(GPIOG)->ODR ^=            (1<<BLED_2))     //
+#define LED_GREEN_TOGGLE    (REG(GPIOO)->ODR ^=            (1<<BLED_0))     //
+#define LED_RED_ON          (REG(GPIOG)->ODR &= (uint32_t)~(1<<BLED_1))     //
+#define LED_RED_OFF         (REG(GPIOG)->ODR |=            (1<<BLED_1))     //
+#define LED_RED_TOGGLE      (REG(GPIOG)->ODR ^=            (1<<BLED_1))     //
 
 #define KNB_LED             3U                                              // Number of LEDs
 
 // PORTs
 
-#define BLED_0              1U                                              // PORT O 1, LED
-#define BLED_1              10U                                             // PORT G 10, LED
-#define BLED_2              15U                                             // PORT E 15, LED
+#define BLED_0              1U                                              // PORT O 1, LD1 green, active high
+#define BLED_1              10U                                             // PORT G 10, LD2 red, active low
 #define BSW_0               13U                                             // PORT C 13, SW1
 #define BLCD_NRST           1U                                              // PORT E 1, LCD reset
 #define BLCD_POWER          3U                                              // PORT Q 3, LCD power

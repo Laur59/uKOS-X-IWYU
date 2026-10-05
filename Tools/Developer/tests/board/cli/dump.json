@@ -1,0 +1,76 @@
+{
+  "module": "dump",
+  "note": "Reads the user-application memory (linker_stUMemo + 0x100): free while nothing is downloaded, readable in user mode on every board, and away from the header that run and the loaders use at its start. ${sym:...} comes from the variant's FLASH.elf and only when that ELF is the build on the board; otherwise these rows skip. The content is whatever is there - fill's round trip asserts values.",
+
+  "tests": [
+    {
+      "id": "dump/no-argument",
+      "cmd": "dump",
+      "expect": ["^Memory dump\\.$", "^Protocol error\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "dump/one-argument",
+      "cmd": "dump 100",
+      "expect": ["^Protocol error\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "dump/unknown-flag",
+      "cmd": "dump -X 100 110",
+      "expect": ["^Protocol error\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "dump/too-many-arguments",
+      "cmd": "dump -S 100 110 120",
+      "expect": ["^Protocol error\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "dump/sixteen-bytes-print-one-line",
+      "cmd": "dump ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+110}",
+      "expect": ["^0x0*${sym:linker_stUMemo+100}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$"],
+      "refute": ["^0x0*${sym:linker_stUMemo+110}:", "^Protocol error\\.$"],
+      "timeout": 10,
+      "note": "the end address is excluded: 16 bytes are one line. Before fix/dump-extra-line they printed two and read 16 bytes more ((nbBytes + 16) / 16)"
+    },
+    {
+      "id": "dump/seventeen-bytes-print-two-lines",
+      "cmd": "dump ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+111}",
+      "expect": ["^0x0*${sym:linker_stUMemo+100}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$",
+                 "^0x0*${sym:linker_stUMemo+110}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$"],
+      "refute": ["^0x0*${sym:linker_stUMemo+120}:"],
+      "timeout": 10,
+      "note": "a partial line is rounded up to a whole one"
+    },
+    {
+      "id": "dump/empty-range-prints-nothing",
+      "cmd": "dump ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+100}",
+      "refute": ["^0x0*${sym:linker_stUMemo+100}:", "^Protocol error\\.$"],
+      "timeout": 10
+    },
+    {
+      "id": "dump/one-byte-prints-one-line",
+      "cmd": "dump ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+101}",
+      "expect": ["^0x0*${sym:linker_stUMemo+100}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$"],
+      "refute": ["^0x0*${sym:linker_stUMemo+110}:"],
+      "timeout": 10
+    },
+    {
+      "id": "dump/end-below-start-is-a-length",
+      "cmd": "dump ${sym:linker_stUMemo+100} 10",
+      "expect": ["^0x0*${sym:linker_stUMemo+100}: "],
+      "refute": ["^0x0*${sym:linker_stUMemo+110}: "],
+      "timeout": 10,
+      "note": "an end address below the start is read as a length (dump.c: endAdd += startAdd): 0x10 bytes, one line"
+    },
+    {
+      "id": "dump/privileged",
+      "cmd": "dump -S ${sym:linker_stUMemo+100} 10",
+      "expect": ["^0x0*${sym:linker_stUMemo+100}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$"],
+      "refute": ["^Protocol error\\.$"],
+      "timeout": 10
+    }
+  ]
+}

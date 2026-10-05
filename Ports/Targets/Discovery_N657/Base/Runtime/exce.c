@@ -1,8 +1,9 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:        Exceptions for the Nucleo_U5A5 module.
+ * Goal:     Exceptions for the Nucleo_U5A5 module.
  */
 
 #include    "exce.h"
@@ -100,7 +101,7 @@ void    exce_init(void) {
  *
  */
 [[noreturn]]
-static  void    cb_signal(uint8_t mode) {
+static void cb_signal(uint8_t mode) {
 
     switch (mode) {
         default:

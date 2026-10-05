@@ -1,0 +1,21 @@
+{
+  "module": "man",
+
+  "tests": [
+    {
+      "id": "man/known-module",
+      "cmd": "man date",
+      "expect": ["^Set/display the date$",
+                 "date -gmt \\[GMT\\[\\+/-n\\]\\]"],
+      "refute": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "requires": ["module:date"]
+    },
+    {
+      "id": "man/unknown-module",
+      "cmd": "man nosuchmodule",
+      "expect": ["^Protocol error\\.$"],
+      "timeout": 10
+    }
+  ]
+}

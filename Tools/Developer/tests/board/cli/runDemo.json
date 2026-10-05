@@ -1,0 +1,19 @@
+{
+  "module": "runDemo",
+  "note": "runDemo copies a demo from external flash (linker_stExtFlash + 0x300400) into the user memory and runs it - and a demo need never return. So the row first reads that header with dump -S and goes no further unless the flash is erased; only then is runDemo safe to call.",
+
+  "tests": [
+    {
+      "id": "runDemo/no-demo-installed",
+      "cmd": "dump -S ${sym:linker_stExtFlash+300400} 10",
+      "expect": ["^0x0*${sym:linker_stExtFlash+300400}: (FF,){15}FF  "],
+      "then": [
+        {"send": "runDemo", "timeout": 10, "expect": ["^Execute the flash demo application\\.$", "^No demo in the flash!$"]}
+      ],
+      "stop_on_fail": true,
+      "timeout": 10,
+      "requires": ["module:dump"],
+      "note": "if a demo is installed, the header is not erased, the guard fails and runDemo is never started"
+    }
+  ]
+}

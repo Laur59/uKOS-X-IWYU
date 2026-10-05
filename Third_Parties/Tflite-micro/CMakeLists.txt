@@ -45,6 +45,10 @@ endif()
 # Toolchain used for every per-core archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
+# Stamp Library/ at install time and keep a copy in the shared cache
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+ukos_library_cache_begin(Tflite-micro)
+
 foreach(TREE CORTEX_M_generic RISCV64_generic)
     if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Library/Generic/${TREE}/tensorflow/lite/micro")
         message(FATAL_ERROR "Missing Library/Generic/${TREE}: run ./build.sh, which exports it.")
@@ -98,6 +102,9 @@ add_custom_target(build_all_tflite ALL
     DEPENDS ${ALL_CORE_PROJECTS}
     COMMENT "Building Tflite-micro for all cores"
 )
+
+# Stamp and cache what was installed (must follow the last install() rule)
+ukos_library_cache_end(Tflite-micro)
 
 message("")
 message("══════════════════════════════════════════════════════════════")

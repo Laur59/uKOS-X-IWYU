@@ -201,6 +201,17 @@ TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_deinit([[maybe_unused]
 }
 
 /*
+ * \brief osal_spin_deinit
+ *
+ * - De-init the spinlock
+ *
+ */
+TU_ATTR_ALWAYS_INLINE   static  inline  void    osal_spin_deinit(osal_spinlock_t *ctx) {
+
+    UNUSED(ctx);
+}
+
+/*
  * \brief osal_spin_lock
  *
  * - Lock the spinlock

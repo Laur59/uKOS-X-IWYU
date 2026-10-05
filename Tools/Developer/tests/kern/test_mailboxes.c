@@ -696,19 +696,15 @@ TEST(mailboxes_read_clears_the_message_only_in_reference_mode) {
     EXPECT_EQ_I(kern_readMailbox(handle, &received, &size, 0U), KERR_KERN_TIMEO);
     EXPECT_EQ_PTR(received, nullptr);
 
-// But NOT on the guards that precede it. A read against an unconfigured mailbox
-// returns with *message exactly as the caller left it.
-//
-// This matters beyond this file: the tier-2 fake (fakes/ukos_fakes_kern.c)
-// promises nullptr on ANY error, and the comment in OS/CLI/X/X.c says the same.
-// Production is narrower than both. X.c is safe because it returns on the error
-// rather than relying on the pointer - but the stated reason is wrong, and a
-// future caller trusting it would not be. See DEFECTS.md.
+// But not on the guards that precede it: a read against an unconfigured
+// mailbox returns with *message exactly as the caller left it - the mode is not
+// known yet, and in copy mode *message is the caller's own buffer. That is the
+// documented contract (mailboxes.h), which the tier-2 fake and X.c now follow.
 
     handle->oState &= (uint16_t)~(1U << BMBOX_CONFIGURED);
     received = &marker;
     EXPECT_EQ_I(kern_readMailbox(handle, &received, &size, 0U), KERR_KERN_MBNCF);
-    QUIRK("mailbox-read-message-not-cleared-on-guards", (received == &marker));
+    EXPECT_EQ_PTR(received, &marker);
 }
 
 // Destruction, lookup, accounting

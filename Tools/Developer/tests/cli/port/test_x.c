@@ -10,10 +10,10 @@
  * process. Tests therefore run in a deliberate order-independent way - see
  * local_dropCache() below - rather than assuming a fresh module each time.
  *
- * The module's own comments state the contract it depends on: kern_readMailbox
- * stores nullptr in the message pointer on ANY error, because the memcpy that
- * follows would otherwise read from address 0. x_fake_mailbox_contract pins
- * that, because if the claim is wrong the whole suite is fiction.
+ * kern_readMailbox promises nothing about the message pointer on an error: it
+ * may be nullptr or whatever the caller had in it. The module must therefore
+ * never read the message after an error, and the double hands back the stale
+ * pointer so that doing so is caught. x_fake_mailbox_contract pins the double.
  */
 
 #include    <inttypes.h>
@@ -93,18 +93,19 @@ TEST(x_fake_mailbox_contract) {
     EXPECT_EQ_I(kern_readMailbox(handle, &message, &size, 10U), KERR_KERN_NOERR);
     EXPECT_EQ_PTR(message, (void *)(uintptr_t)0x1234U);
 
-// On EVERY error it is nullptr, never stale. This is the claim X.c:117-120
-// makes about the kernel and relies on to avoid a memcpy from address 0.
+// On an error the pointer is left as the caller had it - the weakest case the
+// kernel allows (a guard failure, or copy mode). It used to be cleared, which
+// promised callers more than the kernel does.
 
     message = (void *)(uintptr_t)0xDEADBEEFU;
     g_kern.readMailboxRc = KERR_KERN_TIMEO;
     EXPECT_TRUE(kern_readMailbox(handle, &message, &size, 10U) != KERR_KERN_NOERR);
-    EXPECT_TRUE(message == NULL);
+    EXPECT_EQ_PTR(message, (void *)(uintptr_t)0xDEADBEEFU);
 
     message = (void *)(uintptr_t)0xDEADBEEFU;
     g_kern.readMailboxRc = -99;
     EXPECT_TRUE(kern_readMailbox(handle, &message, &size, 10U) != KERR_KERN_NOERR);
-    EXPECT_TRUE(message == NULL);
+    EXPECT_EQ_PTR(message, (void *)(uintptr_t)0xDEADBEEFU);
 }
 
 // ============================================================================
@@ -284,6 +285,25 @@ TEST(x_reports_a_killed_producer) {
     EXPECT_EQ_U(g_kern.logCalls, 0U);
 }
 
+TEST(x_reports_a_vanished_mailbox_as_a_killed_producer) {
+    int32_t     status;
+
+    local_dropCache();
+    local_offerSamples(0U);
+    (void)local_run();                                  // caches the handle
+
+// getTemp has exited since: the cached handle now names a free mailbox slot.
+
+    ukos_t_begin("UTC0");
+    g_kern.readMailboxRc = KERR_KERN_NOMBO;
+    status = local_run();
+
+    EXPECT_EQ_I(status, KFAIL);
+    EXPECT_OUT_IS("The process Temperature was killed!\n");
+    EXPECT_EQ_U(g_kern.freeCalls, 0U);
+    EXPECT_EQ_U(g_kern.logCalls, 0U);
+}
+
 TEST(x_reports_an_unexpected_status_and_logs_it) {
     int32_t     status;
 
@@ -311,8 +331,8 @@ TEST(x_never_reads_the_message_on_a_failure) {
 
     ukos_t_poisonStack();
 
-// The contract test above proves the fake hands back nullptr on error; this
-// proves the module does not reach the memcpy that would dereference it.
+// The double hands back the caller's stale pointer on an error; this proves the
+// module does not reach the memcpy that would dereference it.
 
     EXPECT_EQ_I(local_run(), KFAIL);
     EXPECT_EQ_U(g_kern.freeCalls, 0U);

@@ -63,7 +63,17 @@
 #define MICROPY_PY_SYS                          (1)
 #define MICROPY_MODULE_FROZEN_MPY               (0)
 #define MICROPY_CPYTHON_COMPAT                  (0)
-#define MICROPY_LONGINT_IMPL                    (MICROPY_LONGINT_IMPL_LONGLONG)
+
+// Raise RecursionError before the stack of the process is exhausted, instead of
+// letting the kernel halt on a stack underflow. The margin is what may still be
+// used below the last check: the print chain down to dprintf() (newlib's
+// _vdprintf_r alone holds a 512-byte buffer), a collection and a trap frame.
+#define MICROPY_STACK_CHECK                     (1)
+#define MICROPY_STACK_CHECK_MARGIN              (512U * sizeof(uintptr_t))
+
+// Arbitrary precision: the long long implementation is for 32-bit targets only
+// (py/objint_longlong.c asserts sizeof(mp_uint_t) == 4 since v1.29.0).
+#define MICROPY_LONGINT_IMPL                    (MICROPY_LONGINT_IMPL_MPZ)
 #define MICROPY_FLOAT_IMPL                      (MICROPY_FLOAT_IMPL_FLOAT)
 #define MICROPY_PY_UBINASCII                    (1)
 #define MICROPY_PY_BUILTINS_HELP_MODULES        (1)
@@ -106,7 +116,7 @@ typedef long            mp_off_t;
 #define MICROPY_HW_BOARD_NAME                   "uKOS-X uKernel"
 
 #define MICROPY_HW_MCU_NAME                     "RV64IMAFDC"
-#define UKOS_INT_BUILD                          "int on 64-bits"
+#define UKOS_INT_BUILD                          "int on arbitrary precision"
 #define UKOS_FLOAT_BUILD                        "float on simple precision"
 #define UKOS_PACK_NAME                          "Package "MICROPY_VERSION_STRING" for uKOS-X (RV64IMAFDC)"
 

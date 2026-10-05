@@ -124,8 +124,10 @@ target_sources(kern_p PRIVATE
     ${PATH_BASE}/Lib_kernels/kern/stub_kern_kernel.c
 )
 target_link_libraries(kern_p PUBLIC system_compiler_flags)
+# Table sizes are unsigned, like their defaults in kern_types.h: the code
+# that prints and compares them expects unsigned int
 add_compile_definitions(
-    KKERN_NB_PRECISE_SIGNALS=0
+    KKERN_NB_PRECISE_SIGNALS=0U
 )
 
 # uKernel components (user) -> libkern_u.a
@@ -196,7 +198,6 @@ target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 # CLI components (user) -> libtool_u.a
 add_library(tool_u)
 target_sources(tool_u PRIVATE
-    ${PATH_OSYS}/CLI/bangla/BaNgLa.c
     ${PATH_OSYS}/CLI/console/console.c
     ${PATH_OSYS}/CLI/cycle/cycle.c
     ${PATH_OSYS}/CLI/date/date.c

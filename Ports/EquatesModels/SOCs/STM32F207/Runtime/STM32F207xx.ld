@@ -9,16 +9,16 @@
  */
 
 stm_stINTFLASH          = 0x08000000;                                               /* 0x08000000: starting address of internal flash of SOC    */
-stm_lnINTFLASH          = (1024K);                                                  /* Size of internal flash                                   */
+stm_lnINTFLASH          = 1M;                                                       /* Size of internal flash                                   */
 
 stm_stSRAM1             = 0x20000000;                                               /* 0x20000000: Starting address of SRAM1                    */
-stm_lnSRAM1             = (112K);                                                   /* Length of internal memory SRAM1                          */
+stm_lnSRAM1             = 112K;                                                     /* Length of internal memory SRAM1                          */
 
 stm_stSRAM2             = 0x2001C000;                                               /* 0x2001C000: Starting address of SRAM2                    */
-stm_lnSRAM2             = (16K);                                                    /* Length of internal memory SRAM2                          */
-stm_lnSRAM12            = (stm_lnSRAM1 + stm_lnSRAM2);
+stm_lnSRAM2             = 16K;                                                      /* Length of internal memory SRAM2                          */
+stm_lnSRAM12            = stm_lnSRAM1 + stm_lnSRAM2;
 
 stm_stPERIPH            = 0x40000000;                                               /*                                                          */
-stm_lnPERIPH            = 0x20000000;                                               /*                                                          */
+stm_lnPERIPH            = 512M;                                                     /*                                                          */
 stm_stCORE              = 0xE0000000;                                               /*                                                          */
-stm_lnCORE              = 0x20000000;                                               /* Defined by the ARM cortex-M specification                */
+stm_lnCORE              = 512M;                                                     /* Defined by the ARM cortex-M specification                */

@@ -63,6 +63,14 @@
 #define MICROPY_PY_SYS                          (1)
 #define MICROPY_MODULE_FROZEN_MPY               (0)
 #define MICROPY_CPYTHON_COMPAT                  (0)
+
+// Raise RecursionError before the stack of the process is exhausted, instead of
+// letting the kernel halt on a stack underflow. The margin is what may still be
+// used below the last check: the print chain down to dprintf() (newlib's
+// _vdprintf_r alone holds a 512-byte buffer), a collection and a trap frame.
+#define MICROPY_STACK_CHECK                     (1)
+#define MICROPY_STACK_CHECK_MARGIN              (512U * sizeof(uintptr_t))
+
 #define MICROPY_LONGINT_IMPL                    (MICROPY_LONGINT_IMPL_LONGLONG)
 #define MICROPY_FLOAT_IMPL                      (MICROPY_FLOAT_IMPL_FLOAT)
 #define MICROPY_PY_UBINASCII                    (1)

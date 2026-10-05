@@ -112,7 +112,8 @@ static  void    local_displayTarget(void) {
     (void)dprintf(KSYST, "Board:   %s\n",   STRG(BOARD));
     (void)dprintf(KSYST, "Variant: %s\n",   STRG(VARIANT));
     (void)dprintf(KSYST, "SoC:     %s\n",   STRG(SOC));
-    (void)dprintf(KSYST, "Core:    %s\n\n", STRG(CORE));
+    (void)dprintf(KSYST, "Core:    %s\n",   STRG(CORE));
+    (void)dprintf(KSYST, "Compiler: %s\n\n", uKOS_COMPILER);
     (void)dprintf(KSYST, "VCS#:    %s\n\n", aStrShowRev);
 }
 

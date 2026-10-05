@@ -222,3 +222,42 @@ Unless there is a good reason to do otherwise, use this template:
  * Short file description.
  */
 ```
+
+
+## Linker script expressions
+
+Linker scripts are read by both GNU ld and LLVM lld. Write expressions as plain C
+expressions, in the subset that both linkers read the same way.
+
+| Rule | Write | Not |
+|---|---|---|
+| No parentheses around a whole right-hand side | `linker_lnHeap = stm_lnSRAM2 + stm_lnSRAM3;` | `linker_lnHeap = (stm_lnSRAM2 + stm_lnSRAM3);` |
+| No parentheses around a single number or symbol | `= 4K;` `a + 128K` `ASSERT(a >= b, "…")` | `= (4K);` `a + (128K)` `ASSERT((a) >= (b), "…")` |
+| Inside `+ - * /`, rely on C precedence | `a + b - 1` | `((a + b) - 1)` |
+| Parentheses around a compound operand of a shift, bitwise or comparison operator | `1 << (n + 1)` `(x & 7) == 0` `(a + b) <= (c + d)` | `1 << n + 1` `x & 7 == 0` |
+| One space on each side of `=` and of every binary operator | `n + 1` | `n+1` |
+| Sizes in decimal with an uppercase `K` or `M`, in the largest exact unit; a length is a size | `60K` `16M` `2048M` `1500K` `stm_lnPERIPH = 512M;` | `60k` `16384K` `32 * 1024K` `stm_lnPERIPH = 0x20000000;` |
+| Addresses as `0x` followed by 8 uppercase hexadecimal digits | `0x2000C000` | `0x2000c000` |
+
+Assignments are aligned in columns: when editing a line, keep the column of its `=` and of
+its trailing comment.
+
+Why:
+
+- Parentheses around a whole expression are a C macro habit. A linker symbol is a value,
+  not a text substitution, so they protect nothing.
+- Both linkers use the C precedence table. `==` binds tighter than `&`, so `(x & 7) == 0`
+  needs its parentheses; the others in that rule are there for the reader.
+- Outside an expression both linkers accept `-`, `+` and `=` as part of a name: `A-B` is one
+  symbol. Spaces remove the ambiguity.
+- `K` and `M` multiply by 1024 and 1024 × 1024. Neither linker has a `G` suffix.
+
+Do not use the forms on which the two linkers disagree:
+
+- a leading zero: `010` is 8 for GNU ld and 10 for lld
+- the base suffixes `h`, `o`, `b`, `d` and the `$` prefix: lld reads only `h`
+- `K` or `M` on a hexadecimal number: GNU ld only
+
+The board scripts (`Ports/Targets/*/Base*/Runtime/link_*.ld`) and the SoC memory maps
+(`Ports/EquatesModels/SOCs/*/Runtime/<SOC>.ld`) follow these rules. Apply them to the other
+linker scripts when you touch them.

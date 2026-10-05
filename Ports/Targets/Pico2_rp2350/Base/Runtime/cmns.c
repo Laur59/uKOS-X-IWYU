@@ -22,6 +22,15 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
+// Bound for the TX wait. cmns_send() is the only way an exception can report
+// itself, and it is reachable before cmns_init() has enabled the device - a
+// fault inside init_init() gets there with the peripheral still off. The
+// ready flag never comes in that state, so an unbounded wait hangs the core
+// mid-report: no character sent, and cb_signal() never reached, so not even
+// its LED blink. Giving up on the text is always better than never returning.
+
+#define KCMNS_TX_RETRIES            100000U
+
 STRG_LOC_CONST(aStrApplication[]) = "cmns         Minimal I/O (not under uKOS-X).           (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "Cmns\n"
                                     "====\n\n"
@@ -94,6 +103,7 @@ void    cmns_init(void) {
  */
 void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *ascii) {
             uint8_t     data;
+            uint32_t    retry;
             uint32_t    core;
     const   char_t      *wkAscii = ascii;
 
@@ -108,7 +118,11 @@ void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *
         default:
         case KCORE_0: {
             while (true) {
-                while ((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0U) { ; }
+                retry = KCMNS_TX_RETRIES;
+                while (((REG(UART0)->UARTFR & UART_UARTFR_TXFF) != 0U) && (retry != 0U)) {
+                    retry--;
+                }
+                if (retry == 0U) { return; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;
@@ -126,7 +140,11 @@ void    cmns_send([[maybe_unused]] serialManager_t serialManager, const char_t *
 
         case KCORE_1: {
             while (true) {
-                while ((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0U) { ; }
+                retry = KCMNS_TX_RETRIES;
+                while (((REG(UART1)->UARTFR & UART_UARTFR_TXFF) != 0U) && (retry != 0U)) {
+                    retry--;
+                }
+                if (retry == 0U) { return; }
 
                 data = (uint8_t)*wkAscii;
                 wkAscii++;

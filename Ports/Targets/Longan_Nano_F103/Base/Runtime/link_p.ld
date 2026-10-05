@@ -43,10 +43,10 @@ INCLUDE     GD32VF103CBT.ld
 /*           User Memory         0x20007400                 */
 /*            └ 3K                                          */
 
-linker_sizeStackSystem_C0   = (0);                                                          /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (768);                                                        /* Length of the First stack                                */
-config_sizeData             = (15616);
-config_sizeHeap             = (13K);
+linker_sizeStackSystem_C0   = 0;                                                            /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 768;                                                          /* Length of the First stack                                */
+config_sizeData             = 15616;
+config_sizeHeap             = 13K;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -65,9 +65,9 @@ ASSERT((linker_topStackFirst_C0 & 15)  == 0, "Stack user must be 16-byte aligned
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
-linker_stUMemo              = (linker_stHeap + linker_lnHeap);                              /* 0x20007400: UMemo, start of the user memory              */
+linker_stUMemo              = linker_stHeap + linker_lnHeap;                                /* 0x20007400: UMemo, start of the user memory              */
 linker_lnUMemo              = gd_lnSRAM - linker_sizeStackFirst_C0
                                 - config_sizeData - config_sizeHeap;                        /* Length of the user memory                                */
 
@@ -75,7 +75,7 @@ linker_lnUMemo              = gd_lnSRAM - linker_sizeStackFirst_C0
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
-linker_stHeap               = (linker_stPrgmData + linker_lnPrgmData);                      /* 0x20004000: start of the heap                            */
+linker_stHeap               = linker_stPrgmData + linker_lnPrgmData;                        /* 0x20004000: start of the heap                            */
 linker_lnHeap               = config_sizeHeap;                                              /* Length of the heap                                       */
 
 /* IMPORTANT:                                               */

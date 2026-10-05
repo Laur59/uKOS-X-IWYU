@@ -8,7 +8,7 @@
  */
 
 gd_stINTFLASH           = 0x08000000;                                               /* 0x08000000: starting address of internal flash of SOC    */
-gd_lnINTFLASH           = (128K);                                                   /* Size of internal flash                                   */
+gd_lnINTFLASH           = 128K;                                                     /* Size of internal flash                                   */
 
 gd_stSRAM               = 0x20000000;                                               /* 0x20000000: Starting address of SRAM1                    */
-gd_lnSRAM               = (32K);                                                    /* Length of internal memory SRAM1                          */
+gd_lnSRAM               = 32K;                                                      /* Length of internal memory SRAM1                          */

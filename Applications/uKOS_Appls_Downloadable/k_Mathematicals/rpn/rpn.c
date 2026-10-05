@@ -174,9 +174,22 @@ static void aProcess([[maybe_unused]] const void *argument) {
 
     while (!vTerminate) {
         text_waitString(KSYST, commandLine, KLN_CMD_LINE_BUF);
-        text_readArgs(commandLine, KLN_CMD_LINE_BUF, argv, &argc);
 
-        memcpy((void *)parameters, (const void *)argv, KNB_PARAMETERS);
+// argv holds KNB_PARAMETERS pointers: a longer line is refused rather than
+// written past the end of the array
+
+        if (text_readArgs(commandLine, KLN_CMD_LINE_BUF, argv, KNB_PARAMETERS, &argc) != KERR_TEXT_NOERR) {
+            (void)dprintf(KSYST, "Too many arguments.\n");
+            continue;
+        }
+
+// A line of blanks has no argument: parameters[0] would be the previous line's
+
+        if (argc == 0U) {
+            continue;
+        }
+
+        memcpy((void *)parameters, (const void *)argv, (KNB_PARAMETERS * sizeof(char_t *)));
 
         vSet.status = 0U;
         decNumberFromString(&x, parameters[0], &vSet);

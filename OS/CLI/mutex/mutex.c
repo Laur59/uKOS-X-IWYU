@@ -64,7 +64,6 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
             int32_t     status, counter;
             uint32_t    core;
             uint16_t    i, j, k, nbAttached;
-            enum        { KERR_NOT, KERR_MEM } error = KERR_NOT;
             proc_t      *process;
     const   char_t      *idBuffer[KNB_CORES][KKERN_NB_PROCESSES], *identifier, *idSpacerI, *owner, *idSpacerO;
 
@@ -98,8 +97,13 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
                 nbAttached = 0U;
                 if (vKern_mutx[core][i].oList.oNbElements > 0U) {
                     process = vKern_mutx[core][i].oList.oFirst;
+
+// idBuffer holds KKERN_NB_PROCESSES names per core: never more than that, and
+// never past the end of the chain, whatever oNbElements says
+
                     k = vKern_mutx[core][i].oList.oNbElements;
-                    for (j = 0U; j < k; j++) {
+                    k = (k > KKERN_NB_PROCESSES) ? (uint16_t)KKERN_NB_PROCESSES : k;
+                    for (j = 0U; (j < k) && (process != nullptr); j++) {
 
 // Save the names of all the attached
 // processes
@@ -108,7 +112,7 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
                         process = process->oObject.oForward;
                     }
                     nbAttached = j;
-                    }
+                }
                 kern_criticalSection(KEXIT_CRITICAL);
 
                 (void)dprintf(KSYST, "%2"PRIu16"  %s%s   %3"PRId32"", i, identifier, idSpacerI, counter);
@@ -128,11 +132,11 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
         }
     }
 
-    switch (error) {
-        case KERR_NOT: { (void)dprintf(KSYST, "\n");                     status = EXIT_OS_SUCCESS_CLI; break; }
-        case KERR_MEM: { (void)dprintf(KSYST, "Not enough memory.\n\n"); status = EXIT_OS_FAILURE;     break; }
-        default:       {                                                 status = EXIT_OS_FAILURE;     break; }
-    }
+// Nothing here allocates or can fail: the former "Not enough memory." arm
+// was never reachable
+
+    (void)dprintf(KSYST, "\n");
+    status = EXIT_OS_SUCCESS_CLI;
 
     PRIVILEGE_RESTORE;
     return status;

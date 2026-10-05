@@ -270,6 +270,7 @@ rm -fr "${PATH_ARTEFACTS}"
 
 emit "%bStarting Regression Test%b\n" "${BOLD}${BLUE}" "${NC}"
 emit "Source:    %s\n" "${PATH_ROOT}"
+emit "Revision:  %s (branch %s)\n" "$(git describe  --always --dirty --match=)" "$(git branch --show-current)"
 emit "Artefacts: %s\n" "${PATH_ARTEFACTS}"
 emit "Compiler:  %s (LLVM=%s)\n" "${COMPILER}" "${USE_LLVM}"
 emit "C library: %s\n" "${C_LIB}"

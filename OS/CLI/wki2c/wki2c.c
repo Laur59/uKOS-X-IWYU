@@ -82,11 +82,12 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                     char_t          *dummy;
                     int32_t         status;
                     uint16_t        i, number = 0U;
+                    uint32_t        unitNumber;
                     uint8_t         unit = 0U, address = 0U, chipRegister = 0U, buffer8[KNB_PARAMETERS];
                     bool            equals;
                     i2cManager_t    i2cManager;
                     enum            { KWRITE, KREAD } mode = KREAD;
-                    enum            { KOKWRITE, KOKREAD, KERRBUSY, KERRINA, KERRGEN } error = KERRINA;
+                    enum            { KOKWRITE, KOKREAD, KERRBUSY, KERRINA, KERRGEN, KERRUNI } error = KERRINA;
     static  const   i2cCnf_t        aConfigure = {
                                         .oTimeout  = 1000U,
                                         .oSpeed    = KI2C_100KBPS,
@@ -108,59 +109,75 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
 // Read mode (with write register)
 //  wki2c 1 -R address register nbBytes
 
-    unit = (uint8_t)strtoul(argv[1], &dummy, 10U);
-    switch (unit) {
-        default:
-        case 0U: { i2cManager = KI2C0; break; }
-        case 1U: { i2cManager = KI2C1; break; }
-        case 2U: { i2cManager = KI2C2; break; }
-        case 3U: { i2cManager = KI2C3; break; }
-    }
+// Every form names a unit or a manager and an operation, so fewer than 3
+// arguments is an error - decided before argv[1] is read: past argc it holds
+// whatever an earlier command left there, a stale pointer or, right after a
+// restart, NULL
 
-    if (i2c_reserve(i2cManager, KMODE_READ_WRITE, 2000U) == KERR_I2C_NOERR) {
-        i2c_configure(i2cManager, &aConfigure);
-
-        if (argc > 5U) {
-            address = (uint8_t)strtoul(argv[3], &dummy, 16U);
-
-            text_checkAsciiBuffer(argv[2], "-W", &equals); if (equals) { mode = KWRITE; }
-            text_checkAsciiBuffer(argv[2], "-R", &equals); if (equals) { mode = KREAD;  }
-
-            switch (mode) {
-                case KWRITE: {
-                    number = (uint16_t)(argc - 4U);
-                    for (i = 0U; i < number; i++) {
-                        buffer8[i] = (uint8_t)strtoul(argv[4 + i], &dummy, 16U);
-                    }
-                    status = i2c_write(i2cManager, address, &buffer8[0], number);
-                    switch (status) {
-                        case KERR_I2C_NOERR: { error = KOKWRITE; break; }
-                        default:             { error = KERRGEN;  break; }
-                    }
-                    break;
-                }
-                case KREAD: {
-                    number       = (uint16_t)strtoul(argv[5], &dummy, 10U);
-                    chipRegister = (uint8_t) strtoul(argv[4], &dummy, 16U);
-                    buffer8[0]   = chipRegister;
-
-                    status = i2c_read(i2cManager, address, &buffer8[0], number);
-                    switch (status) {
-                        case KERR_I2C_NOERR: { error = KOKREAD; break; }
-                        default:             { error = KERRGEN; break; }
-                    }
-                    break;
-                }
-                default: {
-                    error = KERRINA;
-                    break;
-                }
-            }
-        }
-        i2c_release(i2cManager, KMODE_READ_WRITE);
+    if (argc < 3U) {
+        error = KERRINA;
     }
     else {
-        error = KERRBUSY;
+
+// Only i2c0..i2c3 exist. A unit above 3 used to fall into i2c0 while every
+// report printed the unit that was typed; the whole value is checked, since
+// the uint8_t unit alone would also turn 256 into i2c0
+
+        unitNumber = (uint32_t)strtoul(argv[1], &dummy, 10U);
+        unit       = (uint8_t)unitNumber;
+        switch (unitNumber) {
+            case 0U: { i2cManager = KI2C0; break; }
+            case 1U: { i2cManager = KI2C1; break; }
+            case 2U: { i2cManager = KI2C2; break; }
+            case 3U: { i2cManager = KI2C3; break; }
+            default: { error = KERRUNI;    break; }
+        }
+
+        if ((error != KERRUNI) && (i2c_reserve(i2cManager, KMODE_READ_WRITE, 2000U) == KERR_I2C_NOERR)) {
+            i2c_configure(i2cManager, &aConfigure);
+
+            if (argc > 5U) {
+                address = (uint8_t)strtoul(argv[3], &dummy, 16U);
+
+                text_checkAsciiBuffer(argv[2], "-W", &equals); if (equals) { mode = KWRITE; }
+                text_checkAsciiBuffer(argv[2], "-R", &equals); if (equals) { mode = KREAD;  }
+
+                switch (mode) {
+                    case KWRITE: {
+                        number = (uint16_t)(argc - 4U);
+                        for (i = 0U; i < number; i++) {
+                            buffer8[i] = (uint8_t)strtoul(argv[4 + i], &dummy, 16U);
+                        }
+                        status = i2c_write(i2cManager, address, &buffer8[0], number);
+                        switch (status) {
+                            case KERR_I2C_NOERR: { error = KOKWRITE; break; }
+                            default:             { error = KERRGEN;  break; }
+                        }
+                        break;
+                    }
+                    case KREAD: {
+                        number       = (uint16_t)strtoul(argv[5], &dummy, 10U);
+                        chipRegister = (uint8_t) strtoul(argv[4], &dummy, 16U);
+                        buffer8[0]   = chipRegister;
+
+                        status = i2c_read(i2cManager, address, &buffer8[0], number);
+                        switch (status) {
+                            case KERR_I2C_NOERR: { error = KOKREAD; break; }
+                            default:             { error = KERRGEN; break; }
+                        }
+                        break;
+                    }
+                    default: {
+                        error = KERRINA;
+                        break;
+                    }
+                }
+            }
+            i2c_release(i2cManager, KMODE_READ_WRITE);
+        }
+        else {
+            error = (error == KERRUNI) ? KERRUNI : KERRBUSY;
+        }
     }
 
     switch (error) {
@@ -175,6 +192,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
         case KERRINA:  { (void)dprintf(KSYST, "Incorrect arguments.\n\n");                              status = EXIT_OS_FAILURE;     break; }
         case KERRGEN:  { (void)dprintf(KSYST, "i2c%d general problem.\n\n", unit);                      status = EXIT_OS_FAILURE;     break; }
         case KERRBUSY: { (void)dprintf(KSYST, "i2c%d busy or not existent\n\n", unit);                  status = EXIT_OS_FAILURE;     break; }
+        case KERRUNI:  { (void)dprintf(KSYST, "i2c%s does not exist.\n\n", argv[1]);                    status = EXIT_OS_FAILURE;     break; }
         default:       {                                                                                status = EXIT_OS_FAILURE;     break; }
     }
     return status;

@@ -47,6 +47,22 @@ MODULE(
 
 #define KCMNS_SZ_TX_BUF             128U
 
+// Bound for the TX wait. cmns_send() is the only way an exception can report
+// itself, and it is reachable before cmns_init() has enabled the device - a
+// fault inside init_init() gets there with the peripheral still off. ENDTX
+// never arrives in that state, so an unbounded wait hangs the core mid-report:
+// no character sent, and cb_signal() never reached, so not even its LED blink.
+// Giving up on the text is always better than never returning.
+//
+// This board needs a far larger bound than the others. Everywhere else the wait
+// is per character; here EasyDMA sends the whole buffer and ENDTX only arrives
+// at the end of it, so the wait has to outlast a full block: 128 bytes at
+// 460800 bit/s is 2.8-ms. At 128-MHz a tight loop would give up after 3.1-ms,
+// which would truncate the report rather than protect it. This value leaves
+// roughly a tenfold margin and is still finite, which is the whole point.
+
+#define KCMNS_TX_RETRIES            1000000U
+
 static  char_t  vTxBuffer_0[KCMNS_SZ_TX_BUF];
 
 /*
@@ -73,7 +89,8 @@ void    cmns_init(void) {
  *
  */
 void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
-    size_t  length;
+    size_t      length;
+    uint32_t    retry;
 
     if (ascii == nullptr) { return; }
 
@@ -91,7 +108,10 @@ void    cmns_send(serialManager_t serialManager, const char_t *ascii) {
             REG(UARTE0)->TXD_MAXCNT    = (uint32_t)length;
             REG(UARTE0)->TASKS_STARTTX = 1U;
 
-            while ((REG(UARTE0)->EVENTS_ENDTX & 1U) == 0U) { ; }
+            retry = KCMNS_TX_RETRIES;
+            while (((REG(UARTE0)->EVENTS_ENDTX & 1U) == 0U) && (retry != 0U)) {
+                retry--;
+            }
             REG(UARTE0)->EVENTS_ENDTX  = 0U;
             break;
         }

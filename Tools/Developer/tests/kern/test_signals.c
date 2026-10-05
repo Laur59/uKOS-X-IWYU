@@ -578,7 +578,7 @@ TEST(signals_a_broadcast_still_honours_each_waiters_own_mask) {
     EXPECT_EQ_U(vKern_listSign[0].oNbElements, 1U);
 }
 
-TEST(signals_the_broadcast_loop_only_remembers_the_last_waiter) {
+TEST(signals_a_broadcast_preempts_for_any_higher_priority_waiter) {
     sign_t  *handle;
 
     local_setup();
@@ -596,12 +596,11 @@ TEST(signals_the_broadcast_loop_only_remembers_the_last_waiter) {
 
     EXPECT_EQ_U(vKern_listExec[0].oNbElements, 2U);
 
-// Same shape as the release loops in semaphores.c and mutexes.c: preemption is
-// ASSIGNED on every pass instead of accumulated (signals.c:280), so the
-// high-priority process woken first is forgotten. A fifth site for the same
-// defect. See DEFECTS.md.
+// Preemption used to be ASSIGNED on every pass, as in the release loops of
+// semaphores.c and mutexes.c, so the high-priority process woken first was
+// forgotten. See DEFECTS.md.
 
-    KNOWN_BUG("kern-release-loop-preemption-overwritten", (g_kernenv.oNbPreemption == 0U));
+    EXPECT_EQ_U(g_kernenv.oNbPreemption, 1U);
 }
 
 // The mask accessors
@@ -695,6 +694,91 @@ TEST(signals_kill_releases_the_group) {
     EXPECT_EQ_U(vKern_nbSign[0], 0U);
     EXPECT_EQ_I(kern_getSignalGroupById("Doomed", &found), KERR_KERN_NOGRO);
     EXPECT_TRUE(ukos_fake_interruptsBalanced());
+}
+
+TEST(signals_kill_preempts_for_any_higher_priority_waiter) {
+    sign_t  *handle;
+
+    local_setup();
+
+    handle = local_group("Doomed");
+    (void)local_waiter(KTARGET, handle, KSIG_A, KKERN_HANDLE_BROADCAST, KPRIO_HIGH);
+    (void)local_waiter(KOTHER,  handle, KSIG_A, KKERN_HANDLE_BROADCAST, KPRIO_LOW);
+
+    EXPECT_EQ_I(kern_killSignalGroup(handle), KERR_KERN_NOERR);
+
+    EXPECT_EQ_U(vKern_listExec[0].oNbElements, 2U);
+    EXPECT_EQ_I(vKern_proc[0][KTARGET].oInternal.oStatus, KERR_KERN_SIKIL);
+    EXPECT_EQ_I(vKern_proc[0][KOTHER].oInternal.oStatus,  KERR_KERN_SIKIL);
+
+// The loop used to assign preemption instead of accumulating it (the same
+// defect as the broadcast loop), so the high-priority waiter released first
+// was forgotten. See DEFECTS.md.
+
+    EXPECT_EQ_U(g_kernenv.oNbPreemption, 1U);
+}
+
+TEST(signals_kill_releases_waiters_behind_a_process_of_another_group) {
+    sign_t  *doomed;
+    sign_t  *other;
+
+    local_setup();
+
+    doomed = local_group("Doomed");
+    other  = local_group("Other");
+
+// KTARGET waits on ANOTHER group and is first on vKern_listSign; KOTHER waits
+// on the group being killed and is behind it.
+
+    (void)local_waiter(KTARGET, other,  KSIG_A, KKERN_HANDLE_BROADCAST, KPRIO_LOW);
+    (void)local_waiter(KOTHER,  doomed, KSIG_A, KKERN_HANDLE_BROADCAST, KPRIO_LOW);
+
+    EXPECT_EQ_I(kern_killSignalGroup(doomed), KERR_KERN_NOERR);
+
+// KTARGET must stay asleep - it is not a waiter of this group.
+
+    EXPECT_EQ_U(vKern_proc[0][KTARGET].oInternal.oState & (1U << BPROC_SUSP_SIGN), (1U << BPROC_SUSP_SIGN));
+
+    EXPECT_EQ_U(vKern_listSign[0].oNbElements, 1U);
+    EXPECT_EQ_PTR(vKern_listSign[0].oFirst, &vKern_proc[0][KTARGET]);
+
+// KOTHER is released with KERR_KERN_SIKIL. The loop used to take
+// vKern_listSign.oFirst on every pass; a head belonging to another group was
+// never disconnected, so every pass looked at KTARGET again and KOTHER stayed
+// suspended on a group that no longer existed. See DEFECTS.md.
+
+    EXPECT_EQ_U(vKern_proc[0][KOTHER].oInternal.oState & (1U << BPROC_SUSP_SIGN), 0U);
+    EXPECT_EQ_I(vKern_proc[0][KOTHER].oInternal.oStatus, KERR_KERN_SIKIL);
+    EXPECT_EQ_U(vKern_listExec[0].oNbElements, 1U);
+    EXPECT_TRUE(ukos_fake_interruptsBalanced());
+}
+
+TEST(signals_kill_releases_every_waiter_of_the_group_around_others) {
+    sign_t  *doomed;
+    sign_t  *other;
+
+    local_setup();
+
+    doomed = local_group("Doomed");
+    other  = local_group("Other");
+
+// Waiters of the killed group before, between and after a process of another
+// group: the walk must release all three and keep the stranger.
+
+    (void)local_waiter(1U, doomed, KSIG_A, KKERN_HANDLE_BROADCAST, KPRIO_LOW);
+    (void)local_waiter(2U, other,  KSIG_A, KKERN_HANDLE_BROADCAST, KPRIO_LOW);
+    (void)local_waiter(3U, doomed, KSIG_B, KKERN_HANDLE_BROADCAST, KPRIO_LOW);
+    (void)local_waiter(4U, doomed, KSIG_A, KKERN_HANDLE_BROADCAST, KPRIO_LOW);
+
+    EXPECT_EQ_I(kern_killSignalGroup(doomed), KERR_KERN_NOERR);
+
+    EXPECT_EQ_U(vKern_listSign[0].oNbElements, 1U);
+    EXPECT_EQ_PTR(vKern_listSign[0].oFirst, &vKern_proc[0][2]);
+    EXPECT_EQ_U(vKern_listExec[0].oNbElements, 3U);
+    EXPECT_EQ_I(vKern_proc[0][1].oInternal.oStatus, KERR_KERN_SIKIL);
+    EXPECT_EQ_I(vKern_proc[0][3].oInternal.oStatus, KERR_KERN_SIKIL);
+    EXPECT_EQ_I(vKern_proc[0][4].oInternal.oStatus, KERR_KERN_SIKIL);
+    EXPECT_EQ_U(vKern_proc[0][2].oInternal.oState & (1U << BPROC_SUSP_SIGN), (1U << BPROC_SUSP_SIGN));
 }
 
 TEST(signals_lookup_finds_by_identifier) {

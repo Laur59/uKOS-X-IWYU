@@ -1,0 +1,20 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+#
+# Repository paths that every third-party library build reads, besides its own
+# directory. One path per line, relative to the root of the checkout; a
+# directory stands for everything under it, and '*' matches across directories.
+#
+# Tools/Developer/third-parties-cache hashes these, together with
+# Third_Parties/<lib> and Third_Parties/<lib>/cache-inputs.txt, into the key
+# that identifies a prebuilt Library/. 'third-parties-cache audit' reports a
+# file the build reads that no list covers.
+
+Ports/cmake/select-arm-toolchain.cmake
+Ports/cmake/select-riscv-toolchain.cmake
+Ports/cmake/gcc-arm.cmake
+Ports/cmake/llvm-arm.cmake
+Ports/cmake/gcc-riscv.cmake
+Ports/cmake/llvm-riscv.cmake
+Ports/cmake/check-picolibc-default.cmake
+Ports/cmake/reproducible.cmake

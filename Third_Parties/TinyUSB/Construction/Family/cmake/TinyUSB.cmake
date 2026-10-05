@@ -556,10 +556,9 @@ endif()
 set(TINYUSB_INTERFACE_INCLUDES
     \${PATH_TINYUSB}/Library/Include
     \${PATH_TINYUSB}/Library/Include/Interface/OSAL
-    \${PATH_TINYUSB}/Library/Include/TinyUSB-current/src
-    \${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/common
-    \${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/device
-    \${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/class
+    \${PATH_TINYUSB}/Library/Include/common
+    \${PATH_TINYUSB}/Library/Include/device
+    \${PATH_TINYUSB}/Library/Include/class
     \${CMAKE_CURRENT_LIST_DIR}
 )
 ")
@@ -588,7 +587,7 @@ list(APPEND TINYUSB_INTERFACE_INCLUDES
         file(APPEND "${CONFIG_FILE}" "\
 list(APPEND TINYUSB_INTERFACE_INCLUDES
     \${PATH_TINYUSB}/Library/Include/Interface/Includes/mcu/raspberrypi
-    \${PATH_TINYUSB}/Library/Include/TinyUSB-current/src/portable/raspberrypi/rp2040
+    \${PATH_TINYUSB}/Library/Include/portable/raspberrypi/rp2040
 )
 ")
     endif()

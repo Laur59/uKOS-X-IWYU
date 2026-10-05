@@ -1,0 +1,36 @@
+{
+  "module": "wki2c",
+
+  "tests": [
+    {
+      "id": "wki2c/no-argument",
+      "cmd": "wki2c",
+      "expect": ["^wki2c operations\\.$", "^Incorrect arguments\\.$"],
+      "timeout": 10,
+      "note": "argv[1] used to be read before argc was checked: it held whatever an earlier command left there, a stale pointer or, right after restart, NULL (fixed, ../DEFECTS.md)"
+    },
+    {
+      "id": "wki2c/unit-above-3-refused",
+      "cmd": "wki2c 7 -R 50 -1 1",
+      "expect": ["^i2c7 does not exist\\.$"],
+      "refute": ["^i2c7 (address|general|busy)"],
+      "timeout": 10,
+      "note": "before fix/wki2c-unit-range any unit above 3 fell into the default: case and drove i2c0, while the report said i2c7"
+    },
+    {
+      "id": "wki2c/unit-256-refused",
+      "cmd": "wki2c 256 -R 50 -1 1",
+      "expect": ["^i2c256 does not exist\\.$"],
+      "timeout": 10,
+      "note": "the whole value is checked: the uint8_t unit alone would turn 256 into i2c0"
+    },
+    {
+      "id": "wki2c/read",
+      "cmd": "wki2c 0 -R 50 1",
+      "refute": ["^Protocol error\\.$"],
+      "timeout": 10,
+      "requires": ["hw:i2c-device"],
+      "note": "needs a device answering at a known address"
+    }
+  ]
+}

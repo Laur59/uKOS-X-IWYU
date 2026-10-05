@@ -404,9 +404,9 @@ static  void    local_GPIO_Configuration(void) {
 // PE09, OU,  50-MHz, Push_pull GPIO_0      AF15    CN15    31
 // PE10, OU,  50-MHz, Push_pull GPIO_1      AF15    CN15    27
 // PE11, OU,  50-MHz, Push_pull GPIO_2      AF15    CN15    23
-// PE12, AL,  50-MHz, Push_pull SPI4_SCK    AF15    CN15    1
-// PE13, AL,  50-MHz, Pull-up   SPI4_MISO   AF15    CN15    28
-// PE14, AL,  50-MHz, Push_pull SPI4_MOSI   AF15    CN15    26
+// PE12, AL,  50-MHz, Push_pull SPI4_SCK    AF05    CN15    1
+// PE13, AL,  50-MHz, Pull-up   SPI4_MISO   AF05    CN15    28
+// PE14, AL,  50-MHz, Push_pull SPI4_MOSI   AF05    CN15    26
 // PE15, OU,  50-MHz, Push_pull GPIO        AF15    Led 0
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0

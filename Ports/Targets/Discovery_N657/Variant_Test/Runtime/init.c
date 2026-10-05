@@ -1,12 +1,13 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:    Low level init for the uKOS-X Discovery_N657_Cortex-M55 module.
+ * Goal:     Low level init for the uKOS-X Discovery_N657_Cortex-M55 module.
  *
- *          !!! This code HAS not to contain static data.
- *          !!! It is called before to copy and to initialise
- *          !!! the variable into the RAM.
+ *           !!! This code HAS not to contain static data.
+ *           !!! It is called before to copy and to initialise
+ *           !!! the variable into the RAM.
  */
 
 #include    "init.h"
@@ -66,6 +67,10 @@ extern  uint32_t                    linker_lnLCD_F_BUFFER[];
 #define APSRAM_WRITE_REGISTER
 #define XSPI_UNIT                   REG(XSPI1)
 #define xspi_apsram_init            model_xspi_apsram_init
+
+// Bound for the NPU / CACHEAXI reset release poll (see local_RCC_Configuration)
+
+#define KNPU_RESET_RETRIES          1000U
 
 // Prototypes
 
@@ -529,13 +534,13 @@ static  void    local_GPIO_Configuration(void) {
 // PE12, IN,  50-MHz, Pull-down --------    AF15
 // PE13, IN,  50-MHz, Pull-down --------    AF15
 // PE14, IN,  50-MHz, Pull-down --------    AF15
-// PE15, OU,  50-MHz, Push-pull GPIO        AF15    Led 0
+// PE15, AL,  50-MHz, Push-pull SPI5_SCK    AF05    Arduino D13, LD6
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-    CNFGPIO(E,KOU,KIN,KIN,KIN,KAL,KIN,KIN,KIN,KIN,KAL,KAL,KAL,KIN,KIN,KOU,KIN,
+    CNFGPIO(E,KAL,KIN,KIN,KIN,KAL,KIN,KIN,KIN,KIN,KAL,KAL,KAL,KIN,KIN,KOU,KIN,
               K50,K50,K50,K50,K99,K50,K50,K50,K50,K50,K50,K99,K50,K50,K50,K50,
               KNO,KPD,KPD,KPD,KNO,KPD,KPD,KPD,KPD,KPU,KNO,KPU,KPD,KPD,KNO,KPD,
-              A15,A15,A15,A15,A14,A15,A15,A15,A15,A07,A07,A11,A15,A15,A15,A15,
+              A05,A15,A15,A15,A14,A15,A15,A15,A15,A07,A07,A11,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
               0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
@@ -566,7 +571,7 @@ static  void    local_GPIO_Configuration(void) {
 
 // PG00, AL,  99-MHz, Push-pull RGB.R0      AF14
 // PG01, AL,  99-MHz, Push-pull RGB.G1      AF14
-// PG02, IN,  50-MHz, Pull-down --------    AF15
+// PG02, AL,  50-MHz, Push-pull SPI5_MOSI   AF05    Arduino D11
 // PG03, IN,  50-MHz, Pull-down --------    AF15
 // PG04, IN,  50-MHz, Pull-down --------    AF15
 // PG05, IN,  50-MHz, Pull-down --------    AF15
@@ -582,10 +587,10 @@ static  void    local_GPIO_Configuration(void) {
 // PG15, AL,  99-MHz, Push-pull RGB.B0      AF14
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-    CNFGPIO(G,KAL,KIN,KOU,KAL,KAL,KOU,KIN,KAL,KIN,KAL,KIN,KIN,KIN,KIN,KAL,KAL,
+    CNFGPIO(G,KAL,KIN,KOU,KAL,KAL,KOU,KIN,KAL,KIN,KAL,KIN,KIN,KIN,KAL,KAL,KAL,
               K99,K50,K99,K99,K99,K50,K50,K99,K50,K99,K50,K50,K50,K50,K99,K99,
-              KNO,KPD,KNO,KNO,KNO,KNO,KPD,KNO,KPD,KNO,KPD,KPD,KPD,KPD,KNO,KNO,
-              A14,A15,A15,A14,A14,A15,A15,A14,A15,A14,A15,A15,A15,A15,A14,A14,
+              KNO,KPD,KNO,KNO,KNO,KNO,KPD,KNO,KPD,KNO,KPD,KPD,KPD,KNO,KNO,KNO,
+              A14,A15,A15,A14,A14,A15,A15,A14,A15,A14,A15,A15,A15,A05,A14,A14,
               KPP,KPP,KPP,KPP,KPP,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
               0U, 0U, 1U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
@@ -597,7 +602,7 @@ static  void    local_GPIO_Configuration(void) {
 // PH05, IN,  50-MHz, Pull-down --------    AF15
 // PH06, AL,  99-MHz, Push-pull RGB.B5      AF14
 // PH07, IN,  50-MHz, Pull-down --------    AF15
-// PH08, IN,  50-MHz, Pull-down --------    AF15
+// PH08, AL,  50-MHz, Pull-up   SPI5_MISO   AF05    Arduino D12
 // PH09, AL,  50-MHz, Open-D    I2C1_SCL    AF04
 // PH10, IN,  50-MHz, Pull-down --------    AF15
 // PH11, IN,  50-MHz, Pull-down --------    AF15
@@ -607,10 +612,10 @@ static  void    local_GPIO_Configuration(void) {
 // PH15, IN,  50-MHz, Pull-down --------    AF15
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-    CNFGPIO(H,KIN,KIN,KIN,KIN,KIN,KIN,KAL,KIN,KIN,KAL,KIN,KAL,KAL,KIN,KIN,KIN,
+    CNFGPIO(H,KIN,KIN,KIN,KIN,KIN,KIN,KAL,KAL,KIN,KAL,KIN,KAL,KAL,KIN,KIN,KIN,
               K50,K50,K50,K50,K50,K50,K50,K50,K50,K99,K50,K99,K99,K50,K50,K50,
-              KPD,KPD,KPD,KPD,KPD,KPD,KPU,KPD,KPD,KNO,KPD,KNO,KNO,KPD,KPD,KPD,
-              A15,A15,A15,A15,A15,A15,A04,A15,A15,A14,A15,A14,A14,A15,A15,A15,
+              KPD,KPD,KPD,KPD,KPD,KPD,KPU,KPU,KPD,KNO,KPD,KNO,KNO,KPD,KPD,KPD,
+              A15,A15,A15,A15,A15,A15,A04,A05,A15,A14,A15,A14,A14,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
               0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
@@ -719,6 +724,7 @@ static  void    local_GPIO_Configuration(void) {
  *
  */
 static  void    local_RCC_Configuration(void) {
+            uint32_t    retry;
 
     #ifdef KCALENDAR_WITH_HW_RTC_S
 
@@ -985,6 +991,22 @@ static  void    local_RCC_Configuration(void) {
     DATA_SYNC_BARRIER;
 
     REG(RCC)->AHB5RSTCR = RCC_AHB5RSTCR_NPUCACHERSTC | RCC_AHB5RSTCR_NPURSTC;
+    DATA_SYNC_BARRIER;
+
+// Wait for the reset release to reach the AHB5 domain before touching CACHEAXI.
+// The barriers only order the accesses of the CPU; they do not wait for the RCC
+// to deassert the reset. Reading CR1 while the block is still held in reset
+// raises a precise bus fault (BFAR = CACHEAXI_S), and that fault is silent:
+// it happens in step 6 of init_init(), before cmns_init(), so the core dump
+// spins forever in cmns_send() on a USART1 that is not configured yet.
+// The enable above is already covered by its AHB5ENR read back; the release
+// was not, which made the boot depend on code placement.
+
+    retry = KNPU_RESET_RETRIES;
+    while (((REG(RCC)->AHB5RSTR & (RCC_AHB5RSTR_NPUCACHERST | RCC_AHB5RSTR_NPURST)) != 0U)
+        && (retry != 0U)) {
+        retry--;
+    }
     DATA_SYNC_BARRIER;
     INST_SYNC_BARRIER;
 

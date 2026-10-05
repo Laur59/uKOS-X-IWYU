@@ -3,11 +3,11 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
  * Goal:    Basic LVGL configuration
- *      Set 16 & 26 pixel fonts.
- *      Internal memory allocator
+ *          Set 16 & 26 pixel fonts.
+ *          Internal memory allocator
  *
- *      Configuration file for LVGL v9.5.x
- *      (based on lv_conf_template.h v9.5.0)
+ *          Configuration file for LVGL v9.6.x
+ *          (based on lv_conf_template.h v9.6.0)
  */
 
 #if 1
@@ -16,14 +16,15 @@
 #define LV_CONF_H
 
 // COLOR SETTINGS
-// ==============
+// --------------
 
-// Color depth: 1 (I1), 8 (L8), 16 (RGB565), 24 (RGB888), 32 (XRGB8888)
+// Default color format: LV_COLOR_FORMAT_I1, _L8, _RGB565, _RGB888, _XRGB8888, ...
+// (LV_COLOR_DEPTH is derived from it)
 //
-#define LV_COLOR_DEPTH                                  32
+#define LV_COLOR_FORMAT_DEFAULT                         LV_COLOR_FORMAT_XRGB8888
 
 // STDLIB WRAPPER SETTINGS
-// =======================
+// -----------------------
 
 // Possible values
 // - LV_STDLIB_BUILTIN: LVGL's built in implementation
@@ -62,7 +63,7 @@
 #define LV_STDARG_INCLUDE                               <stdarg.h>
 
 // HAL SETTINGS
-// ============
+// ------------
 
 // Default display refresh, input device read and animation step period i ms
 //
@@ -78,14 +79,14 @@
 #define LV_VER_RES_MAX                                  480
 
 // OPERATING SYSTEM
-// ================
+// ----------------
 
 // Select operating system to use
 //
 #define LV_USE_OS                                       LV_OS_NONE
 
 // RENDERING CONFIGURATION
-// =======================
+// -----------------------
 
 #define LV_DRAW_BUF_STRIDE_ALIGN                        1
 #define LV_DRAW_BUF_ALIGN                               4
@@ -123,7 +124,7 @@
 #endif
 
 // FEATURE CONFIGURATION
-// =====================
+// ---------------------
 
 // Logging
 //
@@ -137,7 +138,6 @@
 #define LV_USE_ASSERT_MEM_INTEGRITY                     0
 #define LV_USE_ASSERT_OBJ                               0
 
-#define LV_ASSERT_HANDLER_INCLUDE                       <stdint.h>
 #define LV_ASSERT_HANDLER                               while(1);
 
 // Others
@@ -154,7 +154,7 @@
 #define LV_USE_OBJ_PROPERTY_NAME                        1
 
 // FONT USAGE
-// ==========
+// ----------
 
 #define LV_FONT_MONTSERRAT_8                            0
 #define LV_FONT_MONTSERRAT_10                           0
@@ -192,7 +192,7 @@
 #define LV_USE_FONT_PLACEHOLDER                         1
 
 // TEXT SETTINGS
-// =============
+// -------------
 
 #define LV_TXT_ENC                                      LV_TXT_ENC_UTF8
 #define LV_TXT_BREAK_CHARS                              " ,.;:-_)]}"
@@ -205,7 +205,7 @@
 #define LV_TXT_COLOR_CMD                                "#"
 
 // WIDGETS
-// =======
+// -------
 
 #define LV_WIDGETS_HAS_DEFAULT_VALUE                    1
 #define LV_USE_ANIMIMG                                  1
@@ -217,12 +217,6 @@
 #define LV_USE_CALENDAR                                 1
 #if LV_USE_CALENDAR
     #define LV_CALENDAR_WEEK_STARTS_MONDAY              0
-    #if LV_CALENDAR_WEEK_STARTS_MONDAY
-        #define LV_CALENDAR_DEFAULT_DAY_NAMES           { "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su" }
-    #else
-        #define LV_CALENDAR_DEFAULT_DAY_NAMES           { "Su", "Mo", "Tu", "We", "Th", "Fr", "Sa" }
-    #endif
-    #define LV_CALENDAR_DEFAULT_MONTH_NAMES             { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
     #define LV_USE_CALENDAR_HEADER_ARROW                1
     #define LV_USE_CALENDAR_HEADER_DROPDOWN             1
     #define LV_USE_CALENDAR_CHINESE                     0
@@ -266,7 +260,7 @@
 #define LV_USE_WIN                                      1
 
 // THEMES
-// ======
+// ------
 
 #define LV_USE_THEME_DEFAULT                            0
 #if LV_USE_THEME_DEFAULT
@@ -278,7 +272,7 @@
 #define LV_USE_THEME_MONO                               0
 
 // BUILD OPTIONS
-// =============
+// -------------
 
 #define LV_DISABLE_API_MAPPING                          1
 #define LV_BUILD_EXAMPLES                               0

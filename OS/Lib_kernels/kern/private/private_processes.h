@@ -46,7 +46,6 @@ extern          list_t      vKern_listFree[KNB_CORES];                          
 extern          list_t      vKern_listExec[KNB_CORES];                          // Execution list for all the priorities
 extern          uint16_t    vKern_nbProc[KNB_CORES];                            // Nb of used processes
 extern          uint16_t    vKern_nbMaxProc[KNB_CORES];                         // Max number of used processes
-extern  const   void        **vKern_ptrGlobal[KNB_CORES];                       // Save the Ptr on a global variable
 
 /**@}*/
 /**@}*/

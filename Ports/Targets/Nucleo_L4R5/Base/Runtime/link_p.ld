@@ -43,10 +43,10 @@ INCLUDE     STM32L4R5xx.ld
 /*           User Memory         0x20090000                 */
 /*            └ 64K                                         */
 
-linker_sizeStackSystem_C0   = (4K);                                                         /* Length of the System stack                               */
-linker_sizeStackFirst_C0    = (2K);                                                         /* Length of the First stack                                */
-config_sizeData             = (58K);
-config_sizeUserMemory       = (64K);
+linker_sizeStackSystem_C0   = 4K;                                                           /* Length of the System stack                               */
+linker_sizeStackFirst_C0    = 2K;                                                           /* Length of the First stack                                */
+config_sizeData             = 58K;
+config_sizeUserMemory       = 64K;
 config_sizeHeap1            = stm_lnSRAM1 - config_sizeData - linker_sizeStackSystem_C0 - linker_sizeStackFirst_C0;
 config_sizeHeap3            = stm_lnSRAM3 - config_sizeUserMemory;
 
@@ -69,16 +69,16 @@ ASSERT((linker_topStackFirst_C0 & 7)  == 0, "Stack user must be 8-byte aligned")
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
-linker_stUMemo              = (stm_stSRAM3 + config_sizeHeap3);                             /* 0x20090000: UMemo, start of the user memory              */
+linker_stUMemo              = stm_stSRAM3 + config_sizeHeap3;                               /* 0x20090000: UMemo, start of the user memory              */
 linker_lnUMemo              = config_sizeUserMemory;                                        /* 0x00010000: Length of the user memory                    */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
-linker_stHeap               = (linker_stPrgmData + linker_lnPrgmData);                      /* 0x20010000: start of the heap                            */
+linker_stHeap               = linker_stPrgmData + linker_lnPrgmData;                        /* 0x20010000: start of the heap                            */
 linker_lnHeap               = config_sizeHeap1 + stm_lnSRAM2 + config_sizeHeap3;            /* 0x00080000: Length of the heap                           */
 
 /* IMPORTANT:                                               */

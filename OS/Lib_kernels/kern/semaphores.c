@@ -245,7 +245,7 @@ int32_t kern_killSemaphore(sema_t *handle) {
 
 // If the ready process has a higher priority, then preemption occurs
 
-        preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
+        if (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) { preemption = true; }
     }
 
     handle->oIdentifier = nullptr;
@@ -302,7 +302,7 @@ int32_t kern_restartSemaphore(sema_t *handle) {
 
 // If the ready process has a higher priority, then preemption occurs
 
-        preemption = (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority);
+        if (process->oInternal.oDynamicPriority < vKern_runProc[core]->oInternal.oDynamicPriority) { preemption = true; }
     }
     handle->oCounter    = 0;
     handle->oMaxCounter = KSEMA_MAX_CPT;

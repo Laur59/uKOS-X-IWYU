@@ -1,0 +1,11 @@
+# Board rows known to fail, and how. board-regression reports a matching
+# result as "known" rather than a regression. A listed row that PASSES fails
+# the run: the defect is gone or the row no longer reaches it, so remove the
+# line - a stale entry would hide the next regression of that row.
+#
+# <Board>  <row id>  <fail|crash|hang>  <reference>
+#
+# Discovery_N657 test_ram/one-pass crash went when test_ram started sweeping
+# the external RAM privileged (DEFECTS.md).
+
+Alastor_H743  X/sensor-range  fail  DEFECTS.md: the LSM9DS1 does not answer on SPI

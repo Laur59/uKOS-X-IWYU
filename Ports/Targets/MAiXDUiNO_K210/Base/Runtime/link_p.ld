@@ -49,14 +49,14 @@ INCLUDE     K210.ld
 /*           Share               0x804F0000                 */
 /*            └ 64K                                         */
 
-linker_sizeStackFirst_C0    = (4K);                                                         /* Length of the First stack for core 0                     */
-linker_sizeStackSystem_C0   = (0);                                                          /* Length of the System stack for core 0                    */
-linker_sizeStackFirst_C1    = (4K);                                                         /* Length of the First stack for core 1                     */
-linker_sizeStackSystem_C1   = (0);                                                          /* Length of the System stack for core 1                    */
-config_sizeCode             = (2M);
-config_sizeData             = (504K);
-config_sizeHeap             = (1M);
-config_sizeShare            = (64K);
+linker_sizeStackFirst_C0    = 4K;                                                           /* Length of the First stack for core 0                     */
+linker_sizeStackSystem_C0   = 0;                                                            /* Length of the System stack for core 0                    */
+linker_sizeStackFirst_C1    = 4K;                                                           /* Length of the First stack for core 1                     */
+linker_sizeStackSystem_C1   = 0;                                                            /* Length of the System stack for core 1                    */
+config_sizeCode             = 2M;
+config_sizeData             = 504K;
+config_sizeHeap             = 1M;
+config_sizeShare            = 64K;
 
 /* IMPORTANT:                                               */
 /* all the stacks have to be maintained aligned             */
@@ -87,19 +87,19 @@ ASSERT((linker_topStackFirst_C1 & 15)  == 0, "Stack user must be 16-byte aligned
 /* External memory, User (download application) and shared  */
 
 linker_stEXRAM              = 0;                                                            /* 0x00000000: EXRAM, start of the external memory          */
-linker_lnEXRAM              = (0);                                                          /* Length of the external memory                            */
+linker_lnEXRAM              = 0;                                                            /* Length of the external memory                            */
 
-linker_stUMemo              = (k210_stSRAM_Cache + 3M + config_sizeHeap);                   /* 0x80400000: UMemo, start of the user memory              */
-linker_lnUMemo              = (1M - config_sizeShare);                                      /* Length of the user memory                                */
+linker_stUMemo              = k210_stSRAM_Cache + 3M + config_sizeHeap;                     /* 0x80400000: UMemo, start of the user memory              */
+linker_lnUMemo              = 1M - config_sizeShare;                                        /* Length of the user memory                                */
 
-linker_stShare              = (linker_stUMemo + linker_lnUMemo);                            /* 0x804F0000: Share, start of the multicore shared memory  */
+linker_stShare              = linker_stUMemo + linker_lnUMemo;                              /* 0x804F0000: Share, start of the multicore shared memory  */
 linker_lnShare              = config_sizeShare;                                             /* Length of the user multicore shared memory               */
 
 /* IMPORTANT:                                               */
 /* The heap has to be maintained aligned                    */
 /* on a boundary of 8-bytes                                 */
 
-linker_stHeap               = (k210_stSRAM_Cache + 3M);                                     /* 0x80300000: start of the heap                            */
+linker_stHeap               = k210_stSRAM_Cache + 3M;                                       /* 0x80300000: start of the heap                            */
 linker_lnHeap               = config_sizeHeap;                                              /* Length of the heap                                       */
 
 /* IMPORTANT:                                               */

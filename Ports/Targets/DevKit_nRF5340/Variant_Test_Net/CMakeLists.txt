@@ -98,10 +98,12 @@ target_sources(kern_p PRIVATE
     ${PATH_OSYS}/Lib_kernels/kern/temporal.c
     ${PATH_BASE}/Lib_kernels/kern/stub_kern_kernel.c
 )
+# Table sizes are unsigned, like their defaults in kern_types.h: the code
+# that prints and compares them expects unsigned int
 add_compile_definitions(
-    KKERN_NB_POOLS=0
-    KKERN_NB_PRECISE_SIGNALS=0
-    KKERN_NB_SOFTWARE_TIMERS=0
+    KKERN_NB_POOLS=0U
+    KKERN_NB_PRECISE_SIGNALS=0U
+    KKERN_NB_SOFTWARE_TIMERS=0U
 )
 target_link_libraries(kern_p PUBLIC system_compiler_flags)
 
@@ -168,7 +170,6 @@ target_link_libraries(proc_u PUBLIC system_compiler_flags)
 # CLI components (user) -> libtool_u.a
 add_library(tool_u)
 target_sources(tool_u PRIVATE
-    ${PATH_OSYS}/CLI/bangla/BaNgLa.c
     ${PATH_OSYS}/CLI/console/console.c
     ${PATH_OSYS}/CLI/cycle/cycle.c
     ${PATH_OSYS}/CLI/date/date.c
@@ -210,12 +211,14 @@ add_compile_definitions(
     KDAEMONS_WITH_STACK_INT_S=true
 )
 
+# Table sizes are unsigned, like their defaults in kern_types.h: the code
+# that prints and compares them expects unsigned int
 add_compile_definitions(
-    KKERN_NB_MAILBOXES=8
-    KKERN_NB_MUTEXES=8
-    KKERN_NB_PROCESSES=8
-    KKERN_NB_SEMAPHORES=8
-    KKERN_NB_SIGNALS=2
+    KKERN_NB_MAILBOXES=8U
+    KKERN_NB_MUTEXES=8U
+    KKERN_NB_PROCESSES=8U
+    KKERN_NB_SEMAPHORES=8U
+    KKERN_NB_SIGNALS=2U
 )
 
 # Apply system configuration

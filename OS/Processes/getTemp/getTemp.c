@@ -1,12 +1,15 @@
 /*
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2026 Laurent von Allmen
  *
- * Goal:     getTemp process; continuous acquisition of the temperature.
- *           The result is pushed in a mailbox.
+ * Acquire the temperature every 200 ms and post the last 128 samples to the
+ * "Temperature" mailbox, which the X tool reads. The samples come from the
+ * temperature manager when the variant builds one, and from a simulated table
+ * otherwise.
  *
  *           Process                             Tool
- *           temperature                         X
+ *           getTemp                             X
  *           while
  *               - malloc of a buffer k
  *               - send the buffer k             - receive the buffer k
@@ -27,9 +30,16 @@
 #include    "memo/memo.h"
 #include    "modules.h"
 #include    "os_errors.h"
-#include    "random/random.h"
 #include    "record/record.h"
 #include    "types.h"
+
+#ifdef CONFIG_MAN_TEMPERATURE_S
+#include    <string.h>
+
+#include    "temperature/temperature.h"
+#else
+#include    "random/random.h"
+#endif
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -134,23 +144,34 @@ static  int32_t temperature_clean([[maybe_unused]] uint32_t argc, [[maybe_unused
  *   In the simulated table a period is represented by 16 samples
  *   200-ms per sample -> 3.2-s -> 1/3.2 = 0.3125-Hz
  *
+ * - Each buffer sent belongs to the reader from then on (X frees it). A buffer
+ *   the mailbox has not taken yet is still ours.
+ *
  */
 [[noreturn]]
 static void local_process(const void *argument) {
                     mbox_t      *mailBox;
-                    int16_t     *temperature = nullptr;
-                    uint16_t    i;
-                    int32_t     value;
-                    uint32_t    sizeSnd;
-                    float64_t   raw;
+                    uint16_t    *temperature;
+                    void        *message;
+                    uint32_t    sizeSnd, sizeRec;
+                    int32_t     status;
                     mcnf_t      configure = {
                                     .oNbMaxPacks    = 10U,
                                     .oDataEntrySize = 0U,
                                 };
             const   bool        *killRequest;
 
-    #ifndef CONFIG_REAL_TMPERATURE_S
+    #ifdef CONFIG_MAN_TEMPERATURE_S
+                    uint16_t    i;
+                    float64_t   instTemperature;
+    static          uint16_t    vHistory[KNB_SAMPLES];
+    static          bool        vPrimed = false;
+
+    #else
+                    uint16_t    i;
+                    int32_t     value;
                     uint32_t    random;
+                    float64_t   raw;
     static  const   float64_t   aSimule[KNB_SAMPLES] = {
                                     20.23, 20.52, 21.23, 21.87, 22.21, 22.67, 23.12, 23.67,
                                     23.78, 23.34, 22.76, 22.09, 21.56, 21.14, 20.55, 20.03,
@@ -169,9 +190,6 @@ static void local_process(const void *argument) {
                                     20.23, 20.52, 21.23, 21.87, 22.21, 22.67, 23.12, 23.67,
                                     23.78, 23.34, 22.76, 22.09, 21.56, 21.14, 20.55, 20.03,
                                 };
-
-    #else
-                    float64_t   instTemperature;
     #endif
 
     killRequest = (const bool *)argument;
@@ -187,51 +205,89 @@ static void local_process(const void *argument) {
 // Request a temperature buffer
 // It will be free by the tool X
 
-        temperature = (int16_t *)memo_malloc(KMEMO_ALIGN_8, (KNB_SAMPLES * sizeof(int16_t)), "temperature");
+        temperature = (uint16_t *)memo_malloc(KMEMO_ALIGN_8, (KNB_SAMPLES * sizeof(uint16_t)), "temperature");
         if (temperature == nullptr) {
             LOG(KFATAL_SYSTEM, "temperature: out of memory");
             exit(EXIT_OS_FAILURE);
         }
 
-// Rearrange the vector & store the new value inside the mailbox
-// The temperature acquisition is emulated (see table),
-// then, a random noise (-1.28 .. +1.27 degree) is added
-// The (random & 0xFF) -> +127/-128 numbers
+        #ifdef CONFIG_MAN_TEMPERATURE_S
 
-        #ifdef CONFIG_REAL_TMPERATURE_S
-        for (i = 0U; i < (KNB_SAMPLES - 1U); i++) {
-            temperature[KNB_SAMPLES - 1U - i] = temperature[KNB_SAMPLES - 2U - i];
+// Real acquisition, the newest sample first. The history lives here, not in the
+// buffer: a fresh buffer holds whatever the heap held, and shifting it moved
+// garbage along. The manager answers in kelvin already. A read that fails, or
+// a manager kept busy by another user, holds the previous sample.
+
+        if (temperature_reserve(KMODE_READ, KTIME_ACQ) == KERR_TEMPERATURE_NOERR) {
+            if (temperature_read(&instTemperature) == KERR_TEMPERATURE_NOERR) {
+                if (!vPrimed) {
+                    for (i = 0U; i < KNB_SAMPLES; i++) {
+                        vHistory[i] = (uint16_t)(instTemperature * 100.0);
+                    }
+                    vPrimed = true;
+                }
+                for (i = 0U; i < (KNB_SAMPLES - 1U); i++) {
+                    vHistory[KNB_SAMPLES - 1U - i] = vHistory[KNB_SAMPLES - 2U - i];
+                }
+                vHistory[0] = (uint16_t)(instTemperature * 100.0);
+            }
+            (void)temperature_release(KMODE_READ);
         }
-
-        temperature_read(&instTemperature);
-        temperature[0] = (int16_t)((instTemperature + 273.16) * 100.0);
+        memcpy(temperature, vHistory, (KNB_SAMPLES * sizeof(uint16_t)));
 
         #else
+
+// The temperature acquisition is emulated (see table),
+// then, a random noise (0 .. +2.55 degree) is added
+
         for (i = 0U; i < KNB_SAMPLES; i++) {
             random_read(KRANDOM_SOFT, &random, 1U);
             raw = (aSimule[i] + 273.16) * 100.0;
             value = (int32_t)raw + (int32_t)(random & 0xFFU);
-            temperature[i] = (int16_t)value;
+            temperature[i] = (uint16_t)value;
         }
         #endif
 
-// As long as the mailbox is not full, send a the temperature
+// Hand the buffer over. A finite timeout keeps a full mailbox (nobody running
+// X) from blocking the process for ever: with KWAIT_INFINITY a kill took effect
+// only once a reader had drained a message. On a timeout the sample is dropped.
 
         sizeSnd = (KNB_SAMPLES * sizeof(uint16_t));
-        if (kern_writeMailbox(mailBox, &temperature[0], sizeSnd, KWAIT_INFINITY) != KERR_KERN_NOERR) {
-            (void)dprintf(KSYST, "mbox problem\n");
-            LOG(KFATAL_USER, "temperature: mbox problem");
-            exit(EXIT_OS_FAILURE);
+        status  = kern_writeMailbox(mailBox, &temperature[0], sizeSnd, KTIME_ACQ);
+        switch (status) {
+            case KERR_KERN_NOERR: {
+                break;
+            }
+            case KERR_KERN_TIMEO: {
+                memo_free(temperature);
+                break;
+            }
+            default: {
+                (void)dprintf(KSYST, "mbox problem\n");
+                LOG(KFATAL_USER, "temperature: mbox problem");
+                exit(EXIT_OS_FAILURE);
+            }
         }
+    }
 
+// Free the buffers still queued: kern_killMailbox() releases the FIFO, not the
+// buffers its messages point to, and nobody else will read them. Only this
+// process writes, so once the mailbox is empty it stays empty; a reader that
+// arrives now waits and is woken with KERR_KERN_MBKIL by the kill.
+//
+// The last buffer sent is not freed here any more: it belongs to the mailbox
+// or to the reader, and freeing it was a double free once X had consumed it.
+
+    sizeRec = (KNB_SAMPLES * sizeof(uint16_t));
+    while (kern_readMailbox(mailBox, &message, &sizeRec, 0U) == KERR_KERN_NOERR) {
+        memo_free(message);
     }
 
 // Kill the process & the ressources
 
     PRIVILEGE_ELEVATE;      // INTERRUPTION_OFF writes the interrupt mask: privileged
     INTERRUPTION_OFF;
-    kern_killMailbox(mailBox);
-    memo_free(temperature);
+    (void)kern_killMailbox(mailBox);
 
     exit(EXIT_OS_SUCCESS);
 }

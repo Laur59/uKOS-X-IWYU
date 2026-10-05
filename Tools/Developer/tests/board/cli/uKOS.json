@@ -1,0 +1,75 @@
+{
+  "module": "uKOS",
+  "note": "Placeholders ${BOARD} ${VARIANT} ${SOC} ${CORE} come from the variant's CMakeLists.txt; ${VCS} is the firmware SHA with --expect-sha, its shape otherwise. The host suite (Tools/Developer/tests/cli/test_ukos.c) owns the argument parsing; these rows prove what the console actually delivers.",
+
+  "tests": [
+    {
+      "id": "uKOS/identity",
+      "cmd": "uKOS",
+      "expect": ["^Target:$",
+                 "^Board:   ${BOARD}$",
+                 "^Variant: ${VARIANT}$",
+                 "^SoC:     ${SOC}$",
+                 "^Core:    ${CORE}$",
+                 "^Compiler: (clang \\d+|gcc-\\d+)\\.\\d+\\.\\d+$",
+                 "^VCS#:    ${VCS}$",
+                 "^uKOS-X is a development environment for embedded$"],
+      "refute": ["Incorrect arguments", "^uKOS History$"],
+      "timeout": 10,
+      "note": "the board must be the variant the specs were resolved against, down to the core"
+    },
+    {
+      "id": "uKOS/identity-notice-once",
+      "cmd": "uKOS",
+      "refute": ["(?s)uKOS-X is a development environment.*uKOS-X is a development environment"],
+      "timeout": 10,
+      "note": "the notice used to be printed twice; fixed in 123639afc. (?s) lets one refute span lines"
+    },
+    {
+      "id": "uKOS/history",
+      "cmd": "uKOS -history",
+      "expect": ["^uKOS History$",
+                 "^1984 - 1986, uKOS-0$",
+                 "^1989 - 1997, uKOS-I$",
+                 "^1997 - 2005, uKOS-II$",
+                 "^2005 - 2017, uKOS-III$",
+                 "^2025 - 20xx, uKOS-X back to the open-source\\.$",
+                 "^Main contributors to uKOS-X:$",
+                 "^VCS#: ${VCS}$",
+                 "^uKOS-X is a development environment for embedded$"],
+      "refute": ["^Target:$",
+                 "(?s)uKOS-X is a development environment.*uKOS-X is a development environment"],
+      "timeout": 10,
+      "note": "one space after 'VCS#:' here, four in the target display"
+    },
+    {
+      "id": "uKOS/history-case-sensitive",
+      "cmd": "uKOS -HISTORY",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["^uKOS History$", "^Target:$"],
+      "timeout": 10
+    },
+    {
+      "id": "uKOS/history-prefix-rejected",
+      "cmd": "uKOS -hist",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["^uKOS History$", "^Target:$"],
+      "timeout": 10
+    },
+    {
+      "id": "uKOS/bad-option",
+      "cmd": "uKOS -xyz",
+      "expect": ["^Incorrect arguments\\.$"],
+      "refute": ["^Target:$", "^uKOS History$"],
+      "timeout": 10
+    },
+    {
+      "id": "uKOS/extra-argument-shows-target",
+      "cmd": "uKOS -history extra",
+      "expect": ["^Target:$", "^Board:   ${BOARD}$"],
+      "refute": ["^uKOS History$", "Incorrect arguments"],
+      "timeout": 10,
+      "note": "pins CURRENT behaviour: the console splits on spaces, argc = 3 falls into default: and the target is shown, extra arguments silently ignored. The host test ukos_history_flag_is_space_terminated passes a single argv token and cannot see this"
+    }
+  ]
+}

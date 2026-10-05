@@ -1,0 +1,14 @@
+{
+  "module": "dumplog",
+
+  "tests": [
+    {
+      "id": "dumplog/header",
+      "cmd": "dumplog",
+      "expect": ["^Log dump\\.$",
+                 "^Log provided by the core 0$",
+                 "^ +Time \\[us\\]  Category "],
+      "timeout": 15
+    }
+  ]
+}

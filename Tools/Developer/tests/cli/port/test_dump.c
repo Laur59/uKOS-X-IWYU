@@ -8,12 +8,10 @@
  * PRIVILEGE_RESTORE only. Addresses are handed to the module as hex text, so a
  * host buffer is dumped exactly the way board memory would be.
  *
- * Two things are deliberately NOT asserted, both host artefacts rather than
- * module behaviour:
- *   - the address column. dump.c:141 formats a uintptr_t with 0x%016X, which is
- *     correct for the target's 32-bit uintptr_t and truncates on this 64-bit
- *     host (DEFECTS.md).
- *   - the ASCII column for bytes above 0x7F, whose char signedness differs.
+ * One thing is deliberately NOT asserted, a host artefact rather than module
+ * behaviour: the ASCII column for bytes above 0x7F, whose char signedness
+ * differs. The address column is asserted: it used to be formatted with
+ * 0x%016X, which truncated a pointer on this 64-bit host.
  */
 
 #include    <inttypes.h>
@@ -37,10 +35,10 @@ extern  const uKOS_module_t     aDump_Specifications;
 #define KOK                 EXIT_OS_SUCCESS_CLI
 #define KFAIL               EXIT_OS_FAILURE
 
-// dump.c:147 walks (nbBytes + 16) / 16 lines and READS every byte of the last
-// one, so the fixture is padded well past the range any test asks for. Without
-// this the suite would trip ASan on the module's own over-read, which is a
-// recorded defect rather than something these tests are here to provoke.
+// dump reads whole 16-byte lines, so a range that is not a multiple of 16 is
+// read up to the end of its last line; the pad keeps that inside vFixture. It
+// used to walk (nbBytes + 16) / 16 lines - one too many - and the test that
+// dumps the last line of the fixture is what catches that under ASan.
 
 #define KFIXTURE_USED       64U
 #define KFIXTURE_PAD        64U
@@ -114,28 +112,48 @@ TEST(dump_renders_the_requested_bytes) {
     EXPECT_OUT_HAS("40,41,42,43,44,45,46,47,48,49,4A,4B,4C,4D,4E,4F  @ABCDEFGHIJKLMNO\n");
 }
 
-TEST(dump_emits_one_line_too_many) {
+TEST(dump_address_column_is_the_whole_pointer) {
+    const char_t    *argv[] = { "dump", &vStart[0], &vEnd[0] };
+    char            expect[40];
+
+    local_fixture(0U, 16U);
+    (void)snprintf(&expect[0], sizeof expect, "0x%016" PRIXPTR ": ", (uintptr_t)&vFixture[0]);
+
+// PRIXPTR prints the full uintptr_t; %X printed an unsigned int, which dropped
+// the upper half of every 64-bit host address.
+
+    EXPECT_EQ_I(local_run(3U, argv), KOK);
+    EXPECT_OUT_HAS(&expect[0]);
+}
+
+TEST(dump_sixteen_bytes_are_one_line) {
     const char_t    *argv[] = { "dump", &vStart[0], &vEnd[0] };
 
     local_fixture(0U, 16U);
     (void)local_run(3U, argv);
 
-// Exactly 16 bytes should be one line. dump.c:147 computes (16 + 16) / 16 and
-// prints two, reading 16 bytes beyond the range - see DEFECTS.md. Pinned as
-// CURRENT behaviour; fixing it will turn this red.
+// The end address is excluded: 16 bytes are exactly one line. The old
+// (nbBytes + 16) / 16 printed two, reading 16 bytes beyond the range.
 
-    EXPECT_EQ_U(local_countLines(), 2U);
+    EXPECT_EQ_U(local_countLines(), 1U);
 }
 
-TEST(dump_zero_length_still_prints_a_line) {
+TEST(dump_zero_length_prints_no_line) {
     const char_t    *argv[] = { "dump", &vStart[0], &vEnd[0] };
 
     local_fixture(0U, 0U);
 
-// Same rounding: (0 + 16) / 16 is 1.
+    EXPECT_EQ_I(local_run(3U, argv), KOK);
+    EXPECT_EQ_U(local_countLines(), 0U);
+}
+
+TEST(dump_a_partial_line_is_rounded_up) {
+    const char_t    *argv[] = { "dump", &vStart[0], &vEnd[0] };
+
+    local_fixture(0U, 17U);
 
     EXPECT_EQ_I(local_run(3U, argv), KOK);
-    EXPECT_EQ_U(local_countLines(), 1U);
+    EXPECT_EQ_U(local_countLines(), 2U);                     // 16 + 1 bytes
 }
 
 TEST(dump_multiple_lines) {
@@ -144,7 +162,20 @@ TEST(dump_multiple_lines) {
     local_fixture(0U, 32U);
 
     EXPECT_EQ_I(local_run(3U, argv), KOK);
-    EXPECT_EQ_U(local_countLines(), 3U);                     // 32 bytes -> (32+16)/16
+    EXPECT_EQ_U(local_countLines(), 2U);                     // 32 bytes
+}
+
+TEST(dump_the_last_line_reads_nothing_past_the_range) {
+    const char_t    *argv[] = { "dump", &vStart[0], &vEnd[0] };
+
+// The last 16 bytes of vFixture: one line, and not a byte past the array. The
+// old extra line read the 16 bytes after vFixture - a global-buffer-overflow
+// under "run-tests -s", and one line too many here.
+
+    local_fixture((uint32_t)(sizeof vFixture - 16U), 16U);
+
+    EXPECT_EQ_I(local_run(3U, argv), KOK);
+    EXPECT_EQ_U(local_countLines(), 1U);
 }
 
 TEST(dump_reversed_range_is_read_as_a_length) {
@@ -157,7 +188,7 @@ TEST(dump_reversed_range_is_read_as_a_length) {
 // "Not defects" section of DEFECTS.md.
 
     EXPECT_EQ_I(local_run(3U, argv), KOK);
-    EXPECT_EQ_U(local_countLines(), 2U);                     // 0x10 bytes -> two lines
+    EXPECT_EQ_U(local_countLines(), 1U);                     // 0x10 bytes -> one line
 }
 
 TEST(dump_non_printable_bytes_become_dots) {
