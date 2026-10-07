@@ -102,11 +102,6 @@ extract_targets() {
         printf '  %sDevice name%s : %s%s%s\n' "${BOLD}" "${NC}" "${GREEN}"  "${device_name}" "${NC}"
         printf '\n'
 
-        printf '  %sSN%s : %s%s%s\n'          "${BOLD}" "${NC}" "${YELLOW}" "${sn}"          "${NC}"
-        printf '  %sFW%s : %s%s%s\n'          "${BOLD}" "${NC}" "${FAINT}"  "${fw_name}"    "${NC}"
-        printf '  %sDevice name%s : %s%s%s\n' "${BOLD}" "${NC}" "${GREEN}"  "${device_name}" "${NC}"
-        printf '\n'
-
         if [[ "${device_name}" == "${target_device}" ]]; then
             SN="${sn}"
             return 0

@@ -17,7 +17,9 @@ source Tflite_Pyenv/bin/activate
 cd ${PATH_UKOS_X_PACKAGE}/Applications/uKOS_Demos/debris/Classifier/_Training
 ./build
 
-# At this stage, NN_model.c_inc should be in the folder
+# At this stage, mlp_model.xxd should be in the folder (a reversible hex dump
+# of the trained model; xxd -r mlp_model.xxd mlp_model.tflite recreates the
+# flatbuffer). The build generates mlp_model.c_inc from it automatically
 # Now, build the system with the embedded the demo
 cd ${PATH_UKOS_X_PACKAGE}/Ports/Targets/Discovery_xyz/Variant_Test/System
 make -j USER_MODE=1 WITHAPP=debris

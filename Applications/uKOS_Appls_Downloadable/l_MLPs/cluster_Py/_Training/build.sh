@@ -6,9 +6,11 @@
 
 set -euo pipefail
 
-# Determine script directory (works if executed via ./script.sh or bash script.sh)
-readonly PATH_PRG="${0:a:h}"
-readonly PATH_UKOS="$(cd "$PATH_PRG/../../../../.." && pwd)"
+PATH_UKOS_X_PACKAGE="${0:A:h:h:h:h:h:h}"
+if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
+    echo "Variable PATH_UKOS_X_PACKAGE is not set!"
+    exit 1
+fi
 
 export  PYTHONPATH="$PYTHONPATH:$(pwd)"
 

@@ -1,19 +1,20 @@
 /*
-; stub_spi0_sspi4.
-; ================
+; ulvgl.
+; ======
 
 ; SPDX-License-Identifier: MIT
-; SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+; SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 
 ;------------------------------------------------------------------------
-; Author:   Edo. Franzi     The 2025-01-01
+; Author:   Laurent von Allmen  The 2026-02-01
 ; Modifs:
 ;
 ; Project:  uKOS-X
-; Goal:     stub for the connection of the "spi0" manager to the sspi4 device.
+; Goal:     Wrapper for LVGL header file
+;           Suppress clang warnings.
 ;
-;   (c) 2025-2026, Edo. Franzi
-;   --------------------------
+;   (c) 2025-2026, Laurent von Allmen
+;   ---------------------------------
 ;                                              __ ______  _____
 ;   Edo. Franzi                         __  __/ //_/ __ \/ ___/
 ;   5-Route de Cheseaux                / / / / ,< / / / /\__ \
@@ -47,33 +48,20 @@
 ;------------------------------------------------------------------------
 */
 
-#include    "uKOS.h"
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wconversion"
 
-// Connect the physical device to the logical manager
-// --------------------------------------------------
+#elif defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
 
-#define UNIT                            "SPI4"
-#define SPI                             REG(SPI4)
-#define SPI_VECTOR_NUMBER               SPI4_IRQn
-#define SPI_FREQUENCY                   KFREQUENCY_APB2
+#include "lvgl.h"
 
-#define model_spi_init                  stub_spi0_init
-#define model_spi_configure             stub_spi0_configure
-#define model_spi_multipleWriteRead     stub_spi0_multipleWriteRead
+#ifdef __clang__
+#pragma clang diagnostic pop
 
-// Model callbacks
-// ---------------
-
-/*
- * \brief cb_enable
- *
- * - Enable the device (clock)
- *
- */
-static  void    cb_enable(void) {
-
-    REG(RCC)->APB2ENR   |= RCC_APB2ENR_SPI4EN;
-    REG(RCC)->APB2LPENR |= RCC_APB2LPENR_SPI4LPEN;
-}
-
-#include    "model_spi.c_inc"
+#elif defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
