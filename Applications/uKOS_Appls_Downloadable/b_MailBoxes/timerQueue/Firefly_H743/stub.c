@@ -20,11 +20,11 @@
 #include    "macros_core.h"
 #include    "kern/kern.h"
 
-#define KTTIM100US      100u                                    // For 100-us (10000-Hz)
-#define KFPRET7         1000000u                                // 1'000'000-Hz
+#define KTTIM100US      100U                                    // For 100-us (10000-Hz)
+#define KFPRET7         1000000U                                // 1'000'000-Hz
 #define KFINTT7         KTTIM100US                              // 10'000-Hz
-#define KPSCT7          ((KFREQUENCY_TIM / KFPRET7) - 1u)       // Prescaler for 1'000'000-Hz
-#define KARRT7          ((KFPRET7 / KFINTT7) - 1u)              // Autoreload
+#define KPSCT7          ((KFREQUENCY_TIM / KFPRET7) - 1U)       // Prescaler for 1'000'000-Hz
+#define KARRT7          ((KFPRET7 / KFINTT7) - 1U)              // Autoreload
 
 // Prototypes
 
@@ -59,11 +59,11 @@ static  void    stub_intr_timer_interruption(void) {
             int32_t     status;
     static  mbox_t      *vQueue;
     static  bool        vInit = false;
-    static  uintptr_t   vCounter = 0u;
+    static  uintptr_t   vCounter = 0U;
 
     core = GET_RUNNING_CORE;
 
-    if (vInit == false) {
+    if (!vInit) {
         if (kern_getMailboxById("Queue tim", &vQueue) == KERR_KERN_NOERR) {
             vInit = true;
         }
@@ -71,11 +71,11 @@ static  void    stub_intr_timer_interruption(void) {
 
 // INT acknowledge
 
-    if ((TIM7->SR & TIM7_SR_UIF) != 0u) {
+    if ((TIM7->SR & TIM7_SR_UIF) != 0U) {
         TIM7->SR &= (uint32_t)~TIM7_SR_UIF;
     }
 
-    status = kern_writeQueue(vQueue, vCounter, 0u);
+    status = kern_writeQueue(vQueue, vCounter, 0U);
     if (status == KERR_KERN_NOERR) {
         vCounter++;
     }

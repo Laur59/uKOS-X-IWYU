@@ -311,9 +311,6 @@ static  void    local_changeContext_PRE_C0(uint32_t core, uint64_t parameter, ui
 [[gnu::naked]]
 static  void    local_PREEMPTION_IRQHandler_C0([[maybe_unused]] uint32_t core, [[maybe_unused]] uint64_t parameter) {
 
-    #ifndef __clang__
-    #endif
-
     KERN_SAVE_FRAME;
 
 // eabi registers a0..a3 are set in the KERN_SAVE_FRAME macro
@@ -438,9 +435,6 @@ static   void    local_changeContext_TOU_C0(uint32_t core, uint64_t parameter, u
 
 [[gnu::naked]]
 static  void    local_TIM2_A_IRQHandler_C0([[maybe_unused]] uint32_t core, [[maybe_unused]] uint64_t parameter) {
-
-    #ifndef __clang__
-    #endif
 
     KERN_SAVE_FRAME;
 

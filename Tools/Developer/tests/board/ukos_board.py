@@ -535,10 +535,48 @@ def skip_reason(test, modules, have, allow_unsafe, offline,
         if need.startswith("module:") and not offline:
             if need[7:] not in modules:
                 return "%s not built into this variant" % need
-        elif need.startswith("hw:") and (need[3:] not in have):
+        elif need.startswith("hw:") and (need[3:] not in have_tags(have)):
             return "%s not available (pass --have %s)" % (need, need[3:])
         elif need == "unsafe" and not allow_unsafe:
             return "needs --allow-unsafe"
+    return None
+
+
+def have_tags(have):
+    """{tag: command or None} from the --have arguments.
+
+    "--have TAG" declares a piece of hardware present. "--have TAG=COMMAND"
+    also says how to get it ready: the command is run just before every row
+    that requires hw:TAG (a host that has to be told again to stream from the
+    board after each reset, say).
+    """
+
+    tags = {}
+    for item in have:
+        tag, _, command = item.partition("=")
+        tags[tag] = command or None
+    return tags
+
+
+def prepare_row(test, have):
+    """Run the commands of the hw: tags the row requires.
+
+    Returns None when the row can run, else why it cannot: a row whose
+    hardware could not be made ready is skipped, like one whose hardware is
+    absent, not failed.
+    """
+
+    tags = have_tags(have)
+    for need in test.get("requires", []):
+        command = tags.get(need[3:]) if need.startswith("hw:") else None
+        if not command:
+            continue
+        done = subprocess.run(command, shell=True, capture_output=True,
+                              text=True)
+        if done.returncode != 0:
+            said = (done.stderr.strip() or done.stdout.strip()).split("\n")
+            return "%s could not be made ready (exit %d): %s" % (
+                need, done.returncode, said[-1] if said else "")
     return None
 
 
@@ -547,7 +585,8 @@ def send_row(test, name):
 
     A plain row is one command read to the prompt. A row with `then` goes on
     after its command: {"send": ...} writes more input and reads to the
-    prompt, {"write": ...} writes it and returns at once (input for a
+    prompt (with "keep": {name: re} it remembers the group of re in the answer
+    and with "same": {name: re} it demands that value again), {"write": ...} writes it and returns at once (input for a
     sub-prompt such as a REPL's, which is not the console's), {"await": re}
     waits for output. `"prompt": false`
     says the command itself does not come back to the prompt until its steps
@@ -583,6 +622,7 @@ def send_row(test, name):
             return rc, {"pass": False, "error": err.strip()}
 
     step_mark = mark
+    kept = {}
     for number, step in enumerate(steps, 1):
         # absent watches from the start of the step before it: after a write
         # the answer can arrive before the absent step even begins.
@@ -597,6 +637,30 @@ def send_row(test, name):
             if rc not in (0, 3):
                 return rc, {"pass": False, "error": rep.get("error"),
                             "text": "\n".join(texts), "failures": failures}
+            # keep remembers what a pattern's group matched in this answer,
+            # same demands that value again in a later one: how a figure
+            # that differs between boards and builds is still compared with
+            # itself (the heap before and after something that must not
+            # leak).
+            for key, pattern in step.get("keep", {}).items():
+                found = re.search(pattern, rep.get("text", ""), re.M)
+                if found:
+                    kept[key] = found.group(1)
+                else:
+                    failures.append({"kind": "keep", "pattern": pattern,
+                                     "key": key, "step": number})
+            for key, pattern in step.get("same", {}).items():
+                found = re.search(pattern, rep.get("text", ""), re.M)
+                if key not in kept:
+                    failures.append({"kind": "same", "pattern": pattern,
+                                     "key": key, "step": number,
+                                     "at": "nothing was kept"})
+                elif not found or found.group(1) != kept[key]:
+                    failures.append({"kind": "same", "pattern": pattern,
+                                     "key": key, "step": number,
+                                     "was": kept[key],
+                                     "at": found.group(1) if found
+                                     else "no match"})
             if failures and test.get("stop_on_fail"):
                 break
         elif "write" in step:
@@ -648,6 +712,13 @@ def describe(failure):
     if failure["kind"] == "await":
         return "%sawait %s  not seen within %ss" % (where, failure["pattern"],
                                                     failure.get("timeout"))
+    if failure["kind"] == "keep":
+        return "%skeep %s  %s  did not match" % (where, failure["key"],
+                                                 failure["pattern"])
+    if failure["kind"] == "same":
+        return "%ssame %s  %s  kept %s, now %s" % (
+            where, failure["key"], failure["pattern"],
+            failure.get("was", "-"), failure.get("at", ""))
     if failure["kind"] == "absent":
         return "%sabsent %s  arrived anyway: %r" % (where, failure["pattern"],
                                                     failure.get("at", ""))

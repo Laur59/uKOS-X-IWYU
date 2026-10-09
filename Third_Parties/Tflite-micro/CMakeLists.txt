@@ -6,7 +6,7 @@
 #
 # Build description:
 #   Compiles libTFLite.a for every supported core from the standalone source
-#   trees that build.sh exports with create_tflm_tree.py into Library/Generic/
+#   trees that build.sh exports with create_tflm_tree.py into Library/Tflite-micro/Generic/
 #   (CORTEX_M_generic with the CMSIS-NN kernels, RISCV64_generic with the
 #   reference kernels). It replaces the upstream make build, so none of the
 #   compilers that upstream would download is used.
@@ -28,7 +28,7 @@
 #   ./very_clean.sh before switching toolchains.
 #
 # Build outputs:
-#   - Library/<CORE>/libTFLite.a
+#   - Library/Tflite-micro/<CORE>/libTFLite.a
 
 cmake_minimum_required(VERSION 3.31)
 
@@ -37,21 +37,23 @@ project(Tflite_Package
     LANGUAGES NONE
 )
 
-# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Common output directory of the third-party packages (UKOS_TP_LIBRARY) and its stamp
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+
+# Default install prefix: Third_Parties/Library, which this package fills under Tflite-micro/.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${UKOS_TP_LIBRARY}" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Toolchain used for every per-core archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
-# Stamp Library/ at install time and keep a copy in the shared cache
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+# Stamp Library/Tflite-micro at install time and keep a copy in the shared cache
 ukos_library_cache_begin(Tflite-micro)
 
 foreach(TREE CORTEX_M_generic RISCV64_generic)
-    if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Library/Generic/${TREE}/tensorflow/lite/micro")
-        message(FATAL_ERROR "Missing Library/Generic/${TREE}: run ./build.sh, which exports it.")
+    if(NOT EXISTS "${UKOS_TP_LIBRARY}/Tflite-micro/Generic/${TREE}/tensorflow/lite/micro")
+        message(FATAL_ERROR "Missing Library/Tflite-micro/Generic/${TREE}: run ./build.sh, which exports it.")
     endif()
 endforeach()
 
@@ -93,7 +95,7 @@ foreach(CORE ${SUPPORTED_CORES})
     list(APPEND ALL_CORE_PROJECTS TFLite_${CORE})
 
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/build-${CORE}/libTFLite.a"
-            DESTINATION "Library/${CORE}"
+            DESTINATION "Tflite-micro/${CORE}"
             OPTIONAL
     )
 endforeach()
@@ -114,5 +116,5 @@ else()
     message("Toolchain:       GNU gcc")
 endif()
 message("Output libraries will be in:")
-message("  Library/<CORE>/libTFLite.a")
+message("  Library/Tflite-micro/<CORE>/libTFLite.a")
 message("══════════════════════════════════════════════════════════════")

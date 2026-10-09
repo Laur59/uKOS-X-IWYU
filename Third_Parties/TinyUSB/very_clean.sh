@@ -16,6 +16,6 @@ readonly PATH_PRG="${0:a:h}"
 cd "${PATH_PRG}"
 
 rm -rf build
-rm -rf Library
+rm -rf ../Library/TinyUSB
 find Construction -type d -name "build*" -prune -exec rm -rf "{}" +
 rm -f Construction/Family/*/*/*/libTinyUSB_ready.txt(N)

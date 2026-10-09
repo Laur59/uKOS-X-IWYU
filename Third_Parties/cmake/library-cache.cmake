@@ -2,12 +2,12 @@
 # SPDX-FileCopyrightText: 2026 Laurent von Allmen
 #
 # Purpose:
-#   Stamp Third_Parties/<lib>/Library when a package is installed, and keep a
+#   Stamp Third_Parties/Library/<lib> when a package is installed, and keep a
 #   copy of it in the cache shared by every checkout, so that a later checkout
 #   of the same sources restores the archives instead of rebuilding them.
 #
 # Build description:
-#   The stamp (Library/.ukos-stamp) names the sources the archives were built
+#   The stamp (Library/<lib>/.ukos-stamp) names the sources the archives were built
 #   from and the compiler that built them; Tools/Developer/third-parties-cache
 #   writes it, and the target and application builds compare it with their own
 #   checkout before they link the archives.
@@ -25,14 +25,24 @@
 #   ukos_library_cache_end(<lib>)       # after the last install() rule
 #
 #   <lib> is the directory name under Third_Parties/. Nothing happens when the
-#   install prefix is not the package directory.
+#   install prefix is not UKOS_TP_LIBRARY (Third_Parties/Library), the common
+#   output directory of the packages, which this file defines.
 
 include_guard(GLOBAL)
+
+get_filename_component(UKOS_TP_LIBRARY "${CMAKE_CURRENT_LIST_DIR}/../Library" ABSOLUTE)
 
 get_filename_component(UKOS_LIBRARY_CACHE_TOOL
     "${CMAKE_CURRENT_LIST_DIR}/../../Tools/Developer/third-parties-cache.sh" ABSOLUTE)
 
 function(ukos_library_cache_begin lib)
+    # A build tree configured before the libraries moved to Third_Parties/Library
+    # still caches the package directory as its prefix, and would install there
+    if(CMAKE_INSTALL_PREFIX STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+        message(FATAL_ERROR "${lib}: this build tree installs into the package directory, "
+                            "the layout before Third_Parties/Library. Remove it and configure again.")
+    endif()
+
     set(_keyfile "${CMAKE_BINARY_DIR}/ukos-sources-key")
     if(NOT EXISTS "${_keyfile}")
         execute_process(
@@ -42,7 +52,7 @@ function(ukos_library_cache_begin lib)
             RESULT_VARIABLE _rc
         )
         if(NOT _rc EQUAL 0 OR _key STREQUAL "")
-            message(STATUS "Library cache: no sources key for ${lib}, Library/ will not be stamped")
+            message(STATUS "Library cache: no sources key for ${lib}, Library/${lib} will not be stamped")
             return()
         endif()
         file(WRITE "${_keyfile}" "${_key}")
@@ -50,7 +60,7 @@ function(ukos_library_cache_begin lib)
 
     # The archives are about to be replaced: the stamp no longer describes them
     install(CODE "
-        if(\"\${CMAKE_INSTALL_PREFIX}\" STREQUAL \"${CMAKE_CURRENT_SOURCE_DIR}\")
+        if(\"\${CMAKE_INSTALL_PREFIX}\" STREQUAL \"${UKOS_TP_LIBRARY}\")
             execute_process(COMMAND \"${UKOS_LIBRARY_CACHE_TOOL}\" unstamp ${lib})
         endif()
     ")
@@ -59,7 +69,7 @@ endfunction()
 function(ukos_library_cache_end lib)
     set(_keyfile "${CMAKE_BINARY_DIR}/ukos-sources-key")
     install(CODE "
-        if(\"\${CMAKE_INSTALL_PREFIX}\" STREQUAL \"${CMAKE_CURRENT_SOURCE_DIR}\" AND EXISTS \"${_keyfile}\")
+        if(\"\${CMAKE_INSTALL_PREFIX}\" STREQUAL \"${UKOS_TP_LIBRARY}\" AND EXISTS \"${_keyfile}\")
             file(READ \"${_keyfile}\" _ukos_built_from)
             execute_process(
                 COMMAND \"${UKOS_LIBRARY_CACHE_TOOL}\" stamp ${lib}

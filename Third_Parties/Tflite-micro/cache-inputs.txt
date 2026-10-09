@@ -7,4 +7,4 @@
 # under it, and '*' matches across directories ('OS/Lib_storages/*.h' is every
 # header below OS/Lib_storages). Check the list with 'third-parties-cache audit Tflite-micro'.
 #
-# Nothing: the sources are the tree upstream exports into Library/Generic.
+# Nothing: the sources are the tree upstream exports into Library/Tflite-micro/Generic.

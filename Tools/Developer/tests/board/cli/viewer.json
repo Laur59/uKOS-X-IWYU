@@ -1,0 +1,60 @@
+{
+  "module": "viewer",
+  "note": "viewer starts a process that sends pictures to a USB video host through the uvc0 manager: colour bars with viewer_uvc0_simule.c, the camera with viewer_uvc0_imager.c. The rows cover the simulated one, which needs no hardware, and are skipped where the image holds the other: they key on imager_configure, the imager manager that only the camera backend calls. They first keyed on local_prepareImage, a static function of the simulated backend, which gcc inlines: on a gcc image the symbol is gone and both rows were skipped without a word. Nothing here looks at the pictures. The process prints its frame rate only for pictures a host took, so what it prints depends on a host that the board cannot see and the test cannot start: the first row asserts nothing about those lines, the second needs a host that streams.",
+
+  "tests": [
+    {
+      "id": "viewer/runs-is-killed-runs-again",
+      "cmd": "viewer",
+      "expect": ["^Viewer process launched\\.$"],
+      "then": [
+        {"send": "process", "expect": ["Process user\\."], "timeout": 10},
+        {"send": "kill viewer", "unsafe": true, "expect": ["^Module viewer killed$"], "timeout": 10},
+        {"absent": "^Panic: system stopped!$", "timeout": 3},
+        {"send": "uKOS", "expect": ["^Board:   ${BOARD}$"], "timeout": 10},
+        {"send": "process", "refute": ["Process user\\."], "timeout": 10},
+        {"send": "semaphore", "refute": ["Video ACK"], "timeout": 10},
+        {"send": "memory", "keep": {"bytes": "^ +total used memory: +([0-9]+) \\[Bytes\\]$", "blocks": "^ +total used blocks: +([0-9]+) \\[-\\]$"}, "timeout": 10},
+        {"send": "viewer", "expect": ["^Viewer process launched\\.$"], "refute": ["^Panic: system stopped!$"], "timeout": 10},
+        {"absent": "^Panic: system stopped!$", "timeout": 2},
+        {"send": "process", "expect": ["Process user\\."], "timeout": 10},
+        {"send": "kill viewer", "unsafe": true, "expect": ["^Module viewer killed$"], "timeout": 10},
+        {"absent": "^Panic: system stopped!$", "timeout": 3},
+        {"send": "uKOS", "expect": ["^Board:   ${BOARD}$"], "timeout": 10},
+        {"send": "process", "refute": ["Process user\\."], "timeout": 10},
+        {"send": "memory", "same": {"bytes": "^ +total used memory: +([0-9]+) \\[Bytes\\]$", "blocks": "^ +total used blocks: +([0-9]+) \\[-\\]$"}, "timeout": 10}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe", "!sym:imager_configure"],
+      "note": "the viewer must start, be killed and start again. Three seconds pass after each kill before the process is expected gone: with a host that has selected the stream and reads nothing, each of the two sends of a pair waits a second for its acknowledge, so the process notices the kill up to two seconds late - and a viewer started in that window is refused, 'viewer: create proc'. Its 'Video ACK' semaphore must be gone after the kill: it used to stay, and the second viewer then ended in 'Panic: system stopped!' (fixed, ../DEFECTS.md). The heap must hold the same bytes in the same number of blocks after the second viewer as after the first; the figures are taken after a first run because that one also lets go of what the boot left pending. Without a host that streams the process prints nothing, so this row does not reach its float print: the stack and the heap of that print are the business of viewer/streams-to-a-host"
+    },
+    {
+      "id": "viewer/streams-to-a-host",
+      "cmd": "viewer",
+      "expect": ["^Viewer process launched\\.$"],
+      "then": [
+        {"await": "^Image size: [0-9]+ x [0-9]+, Frame rate = +[0-9]+\\.[0-9]{2}-fps$", "timeout": 10},
+        {"send": "uKOS", "expect": ["^Board:   ${BOARD}$"], "timeout": 10},
+        {"send": "kill viewer", "unsafe": true, "expect": ["^Module viewer killed$"], "timeout": 10},
+        {"absent": "^Panic: system stopped!$", "timeout": 3},
+        {"send": "uKOS", "expect": ["^Board:   ${BOARD}$"], "timeout": 10},
+        {"send": "process", "refute": ["Process user\\."], "timeout": 10},
+        {"absent": "^Image size: ", "timeout": 2},
+        {"send": "memory", "keep": {"bytes": "^ +total used memory: +([0-9]+) \\[Bytes\\]$", "blocks": "^ +total used blocks: +([0-9]+) \\[-\\]$"}, "timeout": 10},
+        {"send": "viewer", "expect": ["^Viewer process launched\\.$"], "refute": ["^Panic: system stopped!$"], "timeout": 10},
+        {"absent": "^Panic: system stopped!$", "timeout": 3},
+        {"send": "process", "expect": ["Process user\\."], "timeout": 10},
+        {"send": "kill viewer", "unsafe": true, "expect": ["^Module viewer killed$"], "timeout": 10},
+        {"absent": "^Panic: system stopped!$", "timeout": 3},
+        {"send": "uKOS", "expect": ["^Board:   ${BOARD}$"], "timeout": 10},
+        {"send": "process", "refute": ["Process user\\."], "timeout": 10},
+        {"send": "memory", "same": {"bytes": "^ +total used memory: +([0-9]+) \\[Bytes\\]$", "blocks": "^ +total used blocks: +([0-9]+) \\[-\\]$"}, "timeout": 10}
+      ],
+      "timeout": 10,
+      "unsafe": true,
+      "requires": ["unsafe", "!sym:imager_configure", "hw:video-host"],
+      "note": "needs a host that is streaming from the board when the row starts and stays so (a camera application showing the board; pass --have video-host). A reset of the board ends the stream and the application does not take it up again by itself, so in a run with --allow-unsafe, where restart/reboots comes first, give the tag its command, --have video-host=Tools/Developer/bin/select-video-source, which selects the board again before the row; with the bare tag the row then fails on its first step. The process then prints its frame rate with %5.2f after every pair of pictures, and that print used to overflow its stack: a core dump on Discovery_U5G9 with LLVM libc, the console lost (fixed, ../DEFECTS.md). The line must therefore arrive and the console still answer. After the kill, and the same three seconds as in the other row, the process must be gone and the lines stop. The heap must be the same after the second viewer as after the first: a process that prints a float used to leave 288 bytes of newlib's float-formatting state behind every time it ended (fixed, ../DEFECTS.md)"
+    }
+  ]
+}

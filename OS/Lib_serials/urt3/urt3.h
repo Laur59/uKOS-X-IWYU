@@ -49,6 +49,7 @@ extern  int32_t stub_urt3_configure(const urtxCnf_t *configure);
 extern  int32_t stub_urt3_write(const uint8_t *buffer, uint32_t size);
 extern  int32_t stub_urt3_read(uint8_t *buffer, uint32_t *size);
 extern  int32_t stub_urt3_flush(void);
+extern  int32_t stub_urt3_isConnected(void);
 
 /*!
  * \brief Reserve the urt3 manager
@@ -214,6 +215,24 @@ extern  int32_t urt3_getIdSemaphore(uint8_t semaphore, char_t **identifier);
  *
  */
 extern  int32_t urt3_flush(void);
+
+/*!
+ * \brief Is the urt3 connected
+ *
+ * Call example in C:
+ *
+ * \code{.c}
+ * int32_t    status;
+ *
+ *    status = urt3_isConnected();
+ * \endcode
+ *
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NOTCO   The device is not connected
+ * \return      KERR_SERIAL_GEERR   General error
+ *
+ */
+extern  int32_t urt3_isConnected(void);
 
 #ifdef __cplusplus
 }

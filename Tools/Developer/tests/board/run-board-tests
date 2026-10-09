@@ -35,8 +35,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
 from ukos_board import (KSERIAL, KSPECS, Refusal, describe,  # noqa: E402
-                        identify, only_session, prepare, send_row,
-                        skip_reason)
+                        identify, only_session, prepare, prepare_row,
+                        send_row, skip_reason)
 
 RED = GREEN = YELLOW = BOLD = DIM = NC = ""
 
@@ -67,8 +67,10 @@ def main():
                     help="list the test ids and exit")
     ap.add_argument("-n", "--dry-run", action="store_true",
                     help="print what would be sent, send nothing")
-    ap.add_argument("--have", action="append", default=[], metavar="TAG",
-                    help="declare an available hw: tag; repeatable")
+    ap.add_argument("--have", action="append", default=[],
+                    metavar="TAG[=COMMAND]",
+                    help="declare an available hw: tag; with a command, run "
+                         "it before each row that needs the tag; repeatable")
     ap.add_argument("--allow-unsafe", action="store_true",
                     help="run rows that need ukos-serial's --unsafe")
     ap.add_argument("--allow-poison", action="store_true",
@@ -192,6 +194,17 @@ def run(args):
                         print("          expect %s" % pattern)
                     for pattern in step.get("refute", []):
                         print("          refute %s" % pattern)
+                    for key, pattern in step.get("keep", {}).items():
+                        print("          keep %s  %s" % (key, pattern))
+                    for key, pattern in step.get("same", {}).items():
+                        print("          same %s  %s" % (key, pattern))
+            continue
+
+        unready = prepare_row(test, args.have)
+        if unready:
+            skipped += 1
+            results.append({"id": tid, "result": "skip", "reason": unready})
+            print("  %sSKIP%s  %-34s %s" % (YELLOW, NC, tid, unready))
             continue
 
         rc, rep = send_row(test, args.name)

@@ -22,6 +22,7 @@
 #include    "os_errors.h"
 #include    "record/record.h"
 #include    "serial/serial.h"
+#include    "TinyUSB_interface.h"
 #include    "types.h"
 
 // uKOS-X specific (see the module.h)
@@ -58,9 +59,6 @@ static  bool        vKillRequest[KNB_CORES] = MCSET(false);
 
 // Prototypes
 
-        void    TinyUSB_video_init(void);
-        void    TinyUSB_video_getImageSize(uint32_t *w, uint32_t *h);
-        void    TinyUSB_video_sendImage(uint8_t *image, uint32_t w, uint32_t h, void (*callBack)(const void *argument), const void *argument);
 static  void    aProcess(const void *argument);
 static  void    local_callBack(const void *argument);
 static  void    local_prepareImage(uint8_t *image, uint32_t w, uint32_t h, uint32_t position);
@@ -91,7 +89,7 @@ int32_t viewer_uvc0([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_
         0,                                  // Index
         specification,                      // Specifications (just use specification_x)
         aStrText,                           // Info string (nullptr if anonymous)
-        KKERN_SZ_STACK_MM,                  // KKERN_SZ_STACK_xx Stack size (number of words (machine size). _XL Extra large, _LL Large, _MM Medium, _SS Small)
+        KKERN_SZ_STACK_XLIB,                // KKERN_SZ_STACK_xx Stack size: the process prints a float, which needs up to 696 words (LLVM libc)
         aProcess,                           // Code of the process
         aStrIden,                           // Identifier (nullptr if anonymous)
         KSYST,                              // Default Serial Communication Manager (KDEF0, KURTx, KSYST, ...)
@@ -138,6 +136,7 @@ static void aProcess(const void *argument) {
             uint8_t     *image_0, *image_1;
             uint64_t    time[2];
             graphic_t   pack_0, pack_1;
+            bool        sent_0, sent_1;
     const   bool        *killRequest;
 
     killRequest = (const bool *)argument;
@@ -162,6 +161,7 @@ static void aProcess(const void *argument) {
         }
         else {
             LOG(KFATAL_USER, "viewer: out of memory");
+            TinyUSB_video_clean();
             exit(EXIT_OS_FAILURE);
         }
     }
@@ -178,13 +178,18 @@ static void aProcess(const void *argument) {
 // During the waiting for the transfer acknowledge, the callback prepares the next image
 
         kern_readTickCount(&time[0]);
-        TinyUSB_video_sendImage(image_0, w, h, local_callBack, (const void *)&pack_1);
-        TinyUSB_video_sendImage(image_1, w, h, local_callBack, (const void *)&pack_0);
+        sent_0 = TinyUSB_video_sendImage(image_0, w, h, local_callBack, (const void *)&pack_1);
+        sent_1 = TinyUSB_video_sendImage(image_1, w, h, local_callBack, (const void *)&pack_0);
         kern_readTickCount(&time[1]);
 
-        frameRate = (1000000.0 / (float64_t)(time[1] - time[0])) * 2.0;
+// A frame rate only for pictures that a host took: without a host that
+// streams, nothing was sent and the two calls just waited
 
-        (void)dprintf(KSYST, "Image size: %"PRIu32" x %"PRIu32", Frame rate = %5.2f-fps\n", w, h, frameRate);
+        if (sent_0 && sent_1) {
+            frameRate = (1000000.0 / (float64_t)(time[1] - time[0])) * 2.0;
+
+            (void)dprintf(KSYST, "Image size: %"PRIu32" x %"PRIu32", Frame rate = %5.2f-fps\n", w, h, frameRate);
+        }
     }
 
 // Kill the process & the ressources
@@ -192,6 +197,9 @@ static void aProcess(const void *argument) {
 // Stay elevated through the teardown: INTERRUPTION_OFF writes the interrupt
 // mask, which is privileged, and the process is destroyed by exit() below.
 
+// Give the video manager back: its semaphore would make the next viewer panic
+
+    TinyUSB_video_clean();
     INTERRUPTION_OFF;
     memo_free(image_0);
     memo_free(image_1);

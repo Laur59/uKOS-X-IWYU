@@ -24,12 +24,12 @@ set(PROFILE cdc_cdc)
 set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
 list(APPEND PATH_INCLUDES
     ${PATH_TINYUSB}/uKOS_Interface/Includes/mcu/${PROVIDER}
-    ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
+    ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE}
     ${PATH_TINYUSB}/uKOS_Interface/OSAL
     ${PATH_TINYUSB}/TinyUSB-current/src
 )
 add_compile_definitions(SYSTEM_TINYUSB_${SPEED}_S)
-find_library(TINYUSB TinyUSB_${SPEED} ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE})
+find_library(TINYUSB TinyUSB_${SPEED} ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE})
 ```
 
 **Problems:**
@@ -57,7 +57,7 @@ set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
 
 # Find TinyUSB package (automatically provides include paths and definitions)
 find_package(TinyUSB REQUIRED
-    PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
+    PATHS ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE}
     NO_DEFAULT_PATH
 )
 
@@ -103,13 +103,13 @@ derive_soc_properties(${SOC})
 
 ### 2. `TinyUSBConfig.cmake` Generation
 
-**Location:** `Third_Parties/TinyUSB/Library/Family/Mkfiles/TinyUSB.cmake`
+**Location:** `Third_Parties/TinyUSB/Construction/Family/cmake/TinyUSB.cmake`
 
 The `add_tinyusb_libraries()` function now automatically generates a `TinyUSBConfig.cmake` file for each profile when building TinyUSB libraries.
 
 **Generated files:**
 ```
-Third_Parties/TinyUSB/Library/Family/${FAMILY}/${SOC}/${PROFILE}/
+Third_Parties/Library/TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE}/
 ├── libTinyUSB_FS.a
 ├── libTinyUSB_HS.a
 ├── tusb_config.h
@@ -150,7 +150,7 @@ Third_Parties/TinyUSB/Library/Family/${FAMILY}/${SOC}/${PROFILE}/
    
    # Find TinyUSB package
    find_package(TinyUSB REQUIRED
-       PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
+       PATHS ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE}
        NO_DEFAULT_PATH
    )
    
@@ -179,6 +179,41 @@ Third_Parties/TinyUSB/Library/Family/${FAMILY}/${SOC}/${PROFILE}/
 - Any library that includes TinyUSB headers (`tusb.h`, `tusb_config.h`, etc.) must link against `${TINYUSB}`
 - The `${TINYUSB}` variable contains the imported target (`TinyUSB::FS` or `TinyUSB::HS`)
 - Linking provides automatic include paths and compile definitions
+
+### 4. Interface functions (`TinyUSB_interface.h`)
+
+The system reaches the TinyUSB device classes through a few functions - `TinyUSB_cdc_*`,
+`TinyUSB_msc_*`, `TinyUSB_video_*` - defined by the models of
+`Third_Parties/TinyUSB/Construction/Interface/Models/`, which the TinyUSB stub of a board
+compiles into the system image. Their declarations are in one header:
+
+```c
+#include    "TinyUSB_interface.h"
+```
+
+The header lives in `Third_Parties/TinyUSB/Construction/Interface/Includes/`, and what is
+compiled is the copy that the install of the TinyUSB libraries puts in
+`Library/TinyUSB/Include/Interface/Includes/` - like the models, so declarations and definitions
+always come from the same install, and an edit of the header needs that install too
+(`cmake --build build && cmake --install build` in `Third_Parties/TinyUSB`). The system
+build gets the directory from the `${TINYUSB}` imported target (`TinyUSBConfig.cmake`),
+the application build from `Applications/cmake/application.cmake`. Every user takes
+the declarations from it - the `cdc0` / `cdc1` managers, the viewer, the start-up stub of
+`Pico2_rp2350`, the downloadable `o_Imagings` applications - and none writes a prototype
+by hand. This matters most for a downloadable application: it is linked against the
+system by symbol name only (`--just-symbols`), so a hand-written prototype that has
+drifted from the definition is caught neither by the compiler nor by the linker.
+`o_Imagings/video` and `o_Imagings/image` called `TinyUSB_video_sendImage()` with three
+arguments where it takes five, for exactly that reason.
+
+Two things to know when changing one of these functions:
+
+- Change the header and the model together. The models include the header, so the
+  compiler checks each definition against its declaration.
+- The system build does not compile the models from `Construction/`: it compiles the
+  copies that `cmake --install` puts in `Third_Parties/Library/TinyUSB/Include/Interface/Models/`.
+  An edited model has no effect, and its check against the header does not run, until
+  the TinyUSB libraries are installed again.
 
 ## Migration Guide
 
@@ -213,7 +248,7 @@ Third_Parties/TinyUSB/Library/Family/${FAMILY}/${SOC}/${PROFILE}/
    set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
 
    find_package(TinyUSB REQUIRED
-       PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE}
+       PATHS ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE}
        NO_DEFAULT_PATH
    )
 
@@ -255,7 +290,7 @@ Simply follow the "Consumer Project Integration" steps above. No migration neede
 
 **Solution:** Build TinyUSB libraries for your SoC:
 ```bash
-cd Third_Parties/TinyUSB/Library/Family/${FAMILY}/${SOC}
+cd Third_Parties/TinyUSB/Construction/Family/${FAMILY}/${SOC}
 cmake -B build_cmake
 cmake --build build_cmake
 ```
@@ -300,7 +335,7 @@ target_link_libraries(proc_u PUBLIC system_compiler_flags ${TINYUSB})
 # Profile 1: CDC+CDC
 set(PROFILE_1 cdc_cdc)
 find_package(TinyUSB REQUIRED
-    PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE_1}
+    PATHS ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE_1}
     NO_DEFAULT_PATH
 )
 set(TINYUSB_CDC_CDC TinyUSB::FS)
@@ -308,7 +343,7 @@ set(TINYUSB_CDC_CDC TinyUSB::FS)
 # Profile 2: CDC+MSC
 set(PROFILE_2 cdc_msc)
 find_package(TinyUSB REQUIRED
-    PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${PROFILE_2}
+    PATHS ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE_2}
     NO_DEFAULT_PATH
 )
 set(TINYUSB_CDC_MSC TinyUSB::FS)
@@ -392,7 +427,7 @@ target_include_directories(my_target PRIVATE
 
 ## References
 
-- **TinyUSB Build Function**: `Third_Parties/TinyUSB/Library/Family/Mkfiles/TinyUSB.cmake`
+- **TinyUSB Build Function**: `Third_Parties/TinyUSB/Construction/Family/cmake/TinyUSB.cmake`
 - **SoC Property Derivation**: `Ports/cmake/proj_config.cmake`
 - **Example Project**: `Ports/Targets/Nucleo_L4R5/Variant_Test/CMakeLists.txt`
 

@@ -18,6 +18,7 @@
 #include    "os_errors.h"
 #include    "record/record.h"
 #include    "serial_common.h"
+#include    "TinyUSB_interface.h"
 #include    "tusb_config.h"
 #include    "types.h"
 
@@ -67,9 +68,6 @@ static  mutx_t      *vMutex_Reserve_TX[KNB_CORES];
 
 // Prototypes
 
-        void        TinyUSB_cdc_init(void);
-        void        TinyUSB_cdc_write(uint8_t itf, const uint8_t *buffer, uint32_t size);
-        void        TinyUSB_cdc_read(uint8_t itf, uint8_t *buffer, uint32_t *size);
 static  int32_t     local_init(void);
 static  int32_t     local_configure(const cdcxCnf_t *configure);
 static  int32_t     local_write(const uint8_t *buffer, uint32_t size);
@@ -391,6 +389,34 @@ int32_t cdc1_flush(void) {
     if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
 
     status = local_flush();
+    PRIVILEGE_RESTORE;
+    return status;
+}
+
+/*
+ * \brief Is the cdc1 connected
+ *
+ * Call example in C:
+ *
+ * \code{.c}
+ * int32_t    status;
+ *
+ *    status = cdc1_isConnected();
+ * \endcode
+ *
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NOTCO   The device is not connected
+ * \return      KERR_SERIAL_GEERR   General error
+ *
+ */
+int32_t cdc1_isConnected(void) {
+    int32_t     status;
+
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
+
+    status = TinyUSB_cdc_isConnected(1U) ? KERR_SERIAL_NOERR : KERR_SERIAL_NOTCO;
     PRIVILEGE_RESTORE;
     return status;
 }

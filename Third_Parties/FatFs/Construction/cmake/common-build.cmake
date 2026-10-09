@@ -31,7 +31,7 @@ set(VALID_CORE_NAMES CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_
 # Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
 # is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_FATFS}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${PATH_UKOS}/Third_Parties/Library" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Deterministic archives and a git-derived SOURCE_DATE_EPOCH
@@ -58,7 +58,7 @@ list(APPEND OPTS_UKOS
 # Each core may request several variants, each with its own output
 # subdirectory and compile definitions, using the format "subdir|DEF1 DEF2 ...".
 # When FATFS_VARIANTS is not set, build a single library installed directly
-# into Library/<core>/ using FLAGS_UKOS (the behaviour shared by the other cores).
+# into Library/FatFs/<core>/ using FLAGS_UKOS (the behaviour shared by the other cores).
 if(NOT DEFINED FATFS_VARIANTS)
     set(FATFS_VARIANTS "|${FLAGS_UKOS}")
 endif()
@@ -73,16 +73,16 @@ foreach(VARIANT_ENTRY ${FATFS_VARIANTS})
     # Create unique target name for CMake (to avoid conflicts), keep output
     # filename as libFatFs.a. Every variant builds into its own subdirectory of
     # the build tree, because they share the same archive name; 'cmake --install'
-    # deploys them to Library/<core>/<variant>/. An empty subdir installs
-    # directly into Library/<core>/.
+    # deploys them to Library/FatFs/<core>/<variant>/. An empty subdir installs
+    # directly into Library/FatFs/<core>/.
     if(VARIANT_SUBDIR STREQUAL "")
         set(TARGET_LIB FatFs_${CORE_NAME})
         set(VARIANT_OUTDIR "${CMAKE_CURRENT_BINARY_DIR}")
-        set(VARIANT_INSTALL_DIR "Library/${CORE_NAME}")
+        set(VARIANT_INSTALL_DIR "FatFs/${CORE_NAME}")
     else()
         set(TARGET_LIB FatFs_${CORE_NAME}_${VARIANT_SUBDIR})
         set(VARIANT_OUTDIR "${CMAKE_CURRENT_BINARY_DIR}/${VARIANT_SUBDIR}")
-        set(VARIANT_INSTALL_DIR "Library/${CORE_NAME}/${VARIANT_SUBDIR}")
+        set(VARIANT_INSTALL_DIR "FatFs/${CORE_NAME}/${VARIANT_SUBDIR}")
     endif()
 
     add_library(${TARGET_LIB} STATIC

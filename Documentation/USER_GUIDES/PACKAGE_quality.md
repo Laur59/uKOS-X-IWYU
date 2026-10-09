@@ -213,12 +213,12 @@ cd Third_Parties/decnumber
 for pass in 1 2; do
     ./very_clean.sh
     cmake -S . -B build -GNinja && cmake --build build && cmake --install build
-    (cd Library && find . -type f | sort | xargs shasum -a 256) > /tmp/pass$pass.txt
+    (cd ../Library/decnumber && find . -type f | sort | xargs shasum -a 256) > /tmp/pass$pass.txt
 done
 diff /tmp/pass1.txt /tmp/pass2.txt      # no output
 ```
 
-This is what lets a built `Library/` be reused instead of rebuilt: `third-parties-cache`
+This is what lets a built `Library/<package>/` be reused instead of rebuilt: `third-parties-cache`
 keeps each one outside the repository under a key made of its sources and its compiler,
 and restores it when the checkout comes back to the same sources — see *Keeping the built
 libraries across checkouts* in [getting-started.md](getting-started.md).

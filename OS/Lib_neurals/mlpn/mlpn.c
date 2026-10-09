@@ -92,8 +92,8 @@ static  void    local_nonLinear_smax(const float32_t *w, const float32_t *x, flo
  * \code{.c}
  * // Layer 1: 3 inputs + the bias, 5 neurons
  *
- * #define    KMLPN_L1_NB_IN     (3 + 1)
- * #define    KMLPN_L1_NB_OUT    5
+ * #define    KMLPN_L1_NB_IN     (3 + 1)                  // 3 inputs + the bias
+ * #define    KMLPN_L1_NB_OUT    5                        // 5 outputs
  *
  * static                  float32_t          vInput_L1[KMLPN_L1_NB_IN];
  * static                  float32_t          vActivation_L1[KMLPN_L1_NB_OUT];
@@ -121,8 +121,8 @@ static  void    local_nonLinear_smax(const float32_t *w, const float32_t *x, flo
  *
  * // Layer 2: the 5 outputs of layer 1 + the bias, 2 neurons
  *
- * #define    KMLPN_L2_NB_IN     (KMLPN_L1_NB_OUT + 1)
- * #define    KMLPN_L2_NB_OUT    2
+ * #define    KMLPN_L2_NB_IN     (KMLPN_L1_NB_OUT + 1)    // 5 inputs + the bias
+ * #define    KMLPN_L2_NB_OUT    2                        // 2 outputs
  *
  * static                  float32_t          vActivation_L2[KMLPN_L2_NB_OUT];
  * static                  float32_t          vOutput_L2[KMLPN_L2_NB_OUT + 1];
@@ -143,7 +143,7 @@ static  void    local_nonLinear_smax(const float32_t *w, const float32_t *x, flo
  *
  * // The full network
  *
- * #define    KMLPN_NB_LAYERS    2
+ * #define    KMLPN_NB_LAYERS    2                        // 2 layers
  *
  * static     const        mlpnNetwork_t      aNetwork = {
  *                                                KMLPN_NB_LAYERS,
@@ -186,10 +186,16 @@ int32_t mlpn_configure(const mlpnNetwork_t *network) {
 // pointer was only found by mlpn_compute() dereferencing it
 
     for (i = 0U; i < network->oNBLayer; i++) {
-        if (layers[i] == nullptr) { return KERR_MLPN_GEERR; }
+        if (layers[i] == nullptr) {
+            return KERR_MLPN_GEERR;
+        }
+
     }
     for (i = 0U; i < network->oNBLayer; i++) {
-        if (!local_isLayerValid(layers[i])) { return KERR_MLPN_CNERR; }
+        if (!local_isLayerValid(layers[i])) {
+            return KERR_MLPN_CNERR;
+        }
+
     }
     for (i = 0U; i < network->oNBLayer; i++) {
         local_initialiseLayer(layers[i]);
@@ -203,7 +209,7 @@ int32_t mlpn_configure(const mlpnNetwork_t *network) {
  * Call example in C:
  *
  * \code{.c}
- * // Compute the network (declared as in the mlpn_configure example)
+ * // Compute the network
  *
  *    vInput_L1[0] = accelerationX;
  *    vInput_L1[1] = accelerationY;

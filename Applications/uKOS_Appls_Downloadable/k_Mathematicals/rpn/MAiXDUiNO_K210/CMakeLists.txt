@@ -16,8 +16,6 @@ project(
     LANGUAGES C
 )
 
-set(PATH_DECNUMBER ${PATH_UKOS}/Third_Parties/decnumber)
-
 # Microcontroller description (mandatory variables)
 set(SOC K210)
 set(CORE RV64IMAFDC)
@@ -37,9 +35,9 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
 endif()
 
 set(PATH_INCLUDES
-    ${PATH_DECNUMBER}/Library/include
-    ${PATH_DECNUMBER}/Library/include/libdecnumber
+    ${PATH_TP_LIBRARY}/decnumber/include
+    ${PATH_TP_LIBRARY}/decnumber/include/libdecnumber
 )
-find_library(MYLIB decnumber ${PATH_DECNUMBER}/Library/${CORE})
+find_library(MYLIB decnumber ${PATH_TP_LIBRARY}/decnumber/${CORE})
 
 include(common)

@@ -6,7 +6,7 @@
 #
 # Build description:
 #   Compiles the standalone source tree that create_tflm_tree.py exports into
-#   Library/Generic/<TFLITE_TREE> (build.sh), with the flags of the upstream
+#   Library/Tflite-micro/Generic/<TFLITE_TREE> (build.sh), with the flags of the upstream
 #   "microlite" make target, so no toolchain downloaded by upstream is used.
 #   Requires, set by the per-core CMakeLists.txt:
 #     TFLITE_TREE        CORTEX_M_generic or RISCV64_generic
@@ -33,7 +33,7 @@ endif()
 # Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
 # is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_TFLITE}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${PATH_UKOS}/Third_Parties/Library" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Deterministic archives and a git-derived SOURCE_DATE_EPOCH
@@ -41,7 +41,7 @@ include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
 ukos_reproducible_build()
 
 # The exported source tree (build.sh runs create_tflm_tree.py)
-set(TREE "${PATH_TFLITE}/Library/Generic/${TFLITE_TREE}")
+set(TREE "${PATH_UKOS}/Third_Parties/Library/Tflite-micro/Generic/${TFLITE_TREE}")
 set(DOWNLOADS "${PATH_TFLITE}/Tflite-micro-current/tensorflow/lite/micro/tools/make/downloads")
 if(NOT EXISTS "${TREE}/tensorflow/lite/micro")
     message(FATAL_ERROR "Tflite-micro source tree not found: ${TREE}\n"
@@ -200,4 +200,4 @@ else()
 endif()
 
 # Installation (deployed by 'cmake --install')
-install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "Library/${CORE_NAME}")
+install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "Tflite-micro/${CORE_NAME}")

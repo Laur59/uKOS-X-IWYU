@@ -312,7 +312,7 @@ MAIN_ENTRY(argc, argv[]) {
 
 // Specifications for the processes
 
-    record_trace("--> Main: Process specifications", 0x05050505u);
+    record_trace("--> Main: Process specifications", 0x05050505U);
 
     PROCESS_STACKMALLOC(
         0,                                  // Index
@@ -327,7 +327,7 @@ MAIN_ENTRY(argc, argv[]) {
 
     if (kern_createProcess(&specification, nullptr, &process) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
-    record_trace("--> Main: Process launched", 0x06060606u);
+    record_trace("--> Main: Process launched", 0x06060606U);
 
     LOG(KINFO_USER, "Application launched");
     return EXIT_OS_SUCCESS_CLI;

@@ -43,10 +43,10 @@ add_compile_definitions(
 )
 
 set(PATH_INCLUDES
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/RISCV64_generic
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/RISCV64_generic/third_party/flatbuffers/include
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/RISCV64_generic/third_party/gemmlowp
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/RISCV64_generic
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/RISCV64_generic/third_party/flatbuffers/include
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/RISCV64_generic/third_party/gemmlowp
 )
-find_library(MYLIB TFLite ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE})
+find_library(MYLIB TFLite ${PATH_TP_LIBRARY}/Tflite-micro/${CORE})
 
 include(common)

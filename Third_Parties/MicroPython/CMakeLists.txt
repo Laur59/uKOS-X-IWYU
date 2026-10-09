@@ -28,7 +28,7 @@
 #   before switching toolchains.
 #
 # Build outputs:
-#   - Library/*/libMicroPython.a
+#   - Library/MicroPython/*/libMicroPython.a
 
 cmake_minimum_required(VERSION 3.31)
 
@@ -38,17 +38,19 @@ project(MicroPython_Package
     LANGUAGES NONE
 )
 
-# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Common output directory of the third-party packages (UKOS_TP_LIBRARY) and its stamp
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+
+# Default install prefix: Third_Parties/Library, which this package fills under MicroPython/.
 # Override with cmake --install build --prefix /other/path if needed.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${UKOS_TP_LIBRARY}" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Toolchain used for every per-core archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
-# Stamp Library/ at install time and keep a copy in the shared cache
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+# Stamp Library/MicroPython at install time and keep a copy in the shared cache
 ukos_library_cache_begin(MicroPython)
 
 # Include FetchContent module for downloading upstream MicroPython
@@ -210,14 +212,14 @@ endforeach()
 # Step 4: Install rules
 #
 # cmake --install build gathers libMicroPython.a from each per-core build
-# tree (Construction/<CORE>/build/) and deploys it to Library/<CORE>/.
+# tree (Construction/<CORE>/build/) and deploys it to Library/MicroPython/<CORE>/.
 #------------------------------------------------------------------------
 
 foreach(CORE ${SUPPORTED_CORES})
     set(CORE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}")
     if(EXISTS "${CORE_SOURCE_DIR}/CMakeLists.txt")
         install(FILES "${CORE_SOURCE_DIR}/build/libMicroPython.a"
-                DESTINATION "Library/${CORE}"
+                DESTINATION "MicroPython/${CORE}"
                 OPTIONAL
         )
     endif()
@@ -266,5 +268,5 @@ foreach(CORE ${SUPPORTED_CORES})
 endforeach()
 message("")
 message("Output libraries will be in:")
-message("  Library/<CORE>/libMicroPython.a")
+message("  Library/MicroPython/<CORE>/libMicroPython.a")
 message("══════════════════════════════════════════════════════════════")

@@ -37,6 +37,7 @@ extern  int32_t     stub_ble0_write(const uint8_t *buffer, uint32_t size);
 extern  int32_t     stub_ble0_read(uint8_t *buffer, uint32_t *size);
 extern  int32_t     stub_ble0_getIdSemaphore(uint8_t semaphore, char_t **identifier);
 extern  int32_t     stub_ble0_flush(void);
+extern  int32_t     stub_ble0_isConnected(void);
 
 
 #if (defined(__cplusplus))

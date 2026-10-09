@@ -7,7 +7,7 @@
 #
 # This function automatically determines the PROVIDER and FAMILY from a SoC name.
 # These properties map to the TinyUSB library directory structure:
-#   Library/Family/${FAMILY}/${SOC}/${PROFILE}
+#   Third_Parties/Library/TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE}
 #
 # Arguments:
 #   SOC_NAME - Name of the SoC (e.g., STM32L4R5, STM32H743, nRF5340)
@@ -73,7 +73,7 @@ endfunction()
 #
 # Sets in parent scope:
 #   TINYUSB      - The imported target to link against (e.g., TinyUSB::FS)
-#   PATH_TINYUSB - Path to the TinyUSB third-party directory
+#   PATH_TINYUSB - Path to the TinyUSB sources (Third_Parties/TinyUSB)
 #
 # Usage example:
 #   add_TinyUSB(SPEED FS  PROFILE cdc_cdc)
@@ -106,7 +106,7 @@ function(add_TinyUSB)
     set(PATH_TINYUSB ${PATH_TINYUSB} PARENT_SCOPE)
 
     find_package(TinyUSB REQUIRED
-        PATHS ${PATH_TINYUSB}/Library/Family/${FAMILY}/${SOC}/${TUSB_PROFILE}
+        PATHS ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC}/${TUSB_PROFILE}
         NO_DEFAULT_PATH
     )
 

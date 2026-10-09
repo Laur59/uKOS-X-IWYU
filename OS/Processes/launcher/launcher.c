@@ -38,7 +38,7 @@ STRG_LOC_CONST(aStrHelp[])        = "launcher process\n"
 
 #define KEXECUTION_CORE     ((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
-static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]);
 
 MODULE(
     Launcher,                       // Module name (the first letter has to be upper case)
@@ -138,8 +138,9 @@ static void local_process([[maybe_unused]] const void *argument) {
 
     index = 0U;
     while (system_getModuleFamily((uint8_t)KID_FAM_PROCESSES, &idModule, &index, &module) == KERR_SYSTEM_NOERR) {
-        if (!((idModule == (uint32_t)KID_ALIVE) || (idModule == (uint32_t)KID_LAUNCHER)) &&
-            (((1U<<core) & module->oExecutionCore) != 0U)) {
+        if ((idModule != (uint32_t)KID_ALIVE)    &&
+            (idModule != (uint32_t)KID_LAUNCHER) &&
+            (((1U << core) & module->oExecutionCore) != 0U)) {
             module->oExecution(0U, nullptr);
         }
         index++;

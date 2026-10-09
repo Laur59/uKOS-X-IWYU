@@ -3,7 +3,7 @@
 # SPDX-FileCopyrightText: 2026 Laurent von Allmen
 #
 # Description:
-#   Keep the prebuilt third-party libraries (Third_Parties/<lib>/Library) in a
+#   Keep the prebuilt third-party libraries (Third_Parties/Library/<lib>) in a
 #   cache outside the repository, so that moving the checkout to another commit
 #   restores the matching archives instead of rebuilding them, and so that a
 #   Library/ left over from another commit is noticed instead of linked.
@@ -18,7 +18,7 @@
 #     compiler  what built the archives, read back from the archives themselves
 #               (e.g. gcc-16.2.0, clang-23.1.2).
 #
-#   Both are written to Library/.ukos-stamp when a library is installed, and name
+#   Both are written to Library/<lib>/.ukos-stamp when a library is installed, and name
 #   the cache entry: <cache>/<lib>/<sources, 16 digits>-<compiler>/.
 #
 #   The cache is <parent of the checkout>/.cache/ukos-third-parties, shared by
@@ -53,7 +53,7 @@
 #                'stamp' runs the same check and refuses on a finding
 #   list         The cache entries and their size
 #   sources-key  Print the sources key of this checkout
-#   stamp        Write Library/.ukos-stamp. Refused when the sources changed
+#   stamp        Write Library/<lib>/.ukos-stamp. Refused when the sources changed
 #                since the build started (--built-from), or when the archives
 #                were not all built by the same compiler family
 #   unstamp      Remove the stamp (a build is about to overwrite Library/)
@@ -120,6 +120,11 @@ need_lib() {
         die "unknown library '$1' (no Third_Parties/$1/${INPUTS}); known: ${(j:, :)${(f)"$(all_libs)"}}"
 }
 
+# Where a library is installed: the common output directory, one entry each
+lib_dir() {
+    print -r -- "${PATH_TP}/Library/$1"
+}
+
 # The repository paths a library is built from, one per line
 input_paths() {
     local lib="$1" f line
@@ -180,7 +185,7 @@ built_compiler() {
     local -a archives ids
     local line
 
-    archives=("${PATH_TP}/${lib}/Library"/**/*.a(.N))
+    archives=("$(lib_dir "${lib}")"/**/*.a(.N))
     (( ${#archives} )) || return 0
 
     for line in ${(f)"$(strings -a ${archives} |
@@ -233,7 +238,7 @@ copy_tree() {
 write_stamp() {
     local lib="$1" sources="$2" compiler="$3"
     print -r -- "library=${lib}"$'\n'"sources=${sources}"$'\n'"compiler=${compiler}" \
-        > "${PATH_TP}/${lib}/Library/${STAMP}"
+        > "$(lib_dir "${lib}")/${STAMP}"
 }
 
 # Copy a stamped Library/ into its cache entry. Entries are merged, never
@@ -241,17 +246,17 @@ write_stamp() {
 # complete one, and the same key means the same content for a file both have.
 save_lib() {
     local lib="$1"
-    local stamp="${PATH_TP}/${lib}/Library/${STAMP}"
+    local stamp="$(lib_dir "${lib}")/${STAMP}"
     local sources compiler entry
 
     sources="$(stamp_get "${stamp}" sources)"
     compiler="$(stamp_get "${stamp}" compiler)"
     if [[ -z "${sources}" || -z "${compiler}" ]]; then
-        print -u2 "${lib}: Library/ is not stamped, nothing saved"
+        print -u2 "${lib}: Library/${lib} is not stamped, nothing saved"
         return 4
     fi
     entry="${PATH_CACHE}/${lib}/$(entry_name "${sources}" "${compiler}")"
-    copy_tree "${PATH_TP}/${lib}/Library" "${entry}" || die "${lib}: cannot write ${entry}"
+    copy_tree "$(lib_dir "${lib}")" "${entry}" || die "${lib}: cannot write ${entry}"
     print -r -- "${lib}: saved to ${entry}"
 }
 
@@ -264,7 +269,7 @@ cmd_sources_key() {
 cmd_unstamp() {
     (( $# == 1 )) || usage
     need_lib "$1"
-    rm -f "${PATH_TP}/$1/Library/${STAMP}"
+    rm -f "$(lib_dir "$1")/${STAMP}"
 }
 
 cmd_stamp() {
@@ -275,22 +280,22 @@ cmd_stamp() {
     local -a missing
     need_lib "${lib}"
 
-    rm -f "${PATH_TP}/${lib}/Library/${STAMP}"
+    rm -f "$(lib_dir "${lib}")/${STAMP}"
 
     now="$(sources_key "${lib}")"
     if [[ "${built_from}" != "${now}" ]]; then
-        print -u2 "${lib}: the sources changed since this build started, so Library/ is left unstamped."
+        print -u2 "${lib}: the sources changed since this build started, so Library/${lib} is left unstamped."
         print -u2 "${lib}: run ./very_clean.sh and build again to get a stamped, cached library."
         return 3
     fi
 
     compiler="$(built_compiler "${lib}")"
     if [[ -z "${compiler}" ]]; then
-        print -u2 "${lib}: no archive in Library/, nothing to stamp"
+        print -u2 "${lib}: no archive in Library/${lib}, nothing to stamp"
         return 4
     fi
     if [[ "${compiler}" == *gcc* && "${compiler}" == *clang* ]]; then
-        print -u2 "${lib}: Library/ mixes archives of both compilers (${compiler}), left unstamped."
+        print -u2 "${lib}: Library/${lib} mixes archives of both compilers (${compiler}), left unstamped."
         print -u2 "${lib}: run ./very_clean.sh and build again with a single toolchain."
         return 3
     fi
@@ -299,7 +304,7 @@ cmd_stamp() {
     missing=(${(f)"$(undeclared_inputs "${lib}")"})
     if [[ "${missing[1]:-}" != '?' ]] && (( ${#missing} )); then
         print -u2 "${lib}: the build read ${#missing} file(s) that Third_Parties/${lib}/${INPUTS} does not declare,"
-        print -u2 "${lib}: so Library/ is left unstamped. '${PRG} audit ${lib}' lists them."
+        print -u2 "${lib}: so Library/${lib} is left unstamped. '${PRG} audit ${lib}' lists them."
         return 3
     fi
 
@@ -317,12 +322,12 @@ cmd_adopt() {
         need_lib "${lib}"
         compiler="$(built_compiler "${lib}")"
         if [[ -z "${compiler}" ]]; then
-            print -u2 "${lib}: no archive in Library/, nothing to adopt"
+            print -u2 "${lib}: no archive in Library/${lib}, nothing to adopt"
             rc=4
             continue
         fi
         if [[ "${compiler}" == *gcc* && "${compiler}" == *clang* ]]; then
-            print -u2 "${lib}: Library/ mixes archives of both compilers (${compiler}), not adopted"
+            print -u2 "${lib}: Library/${lib} mixes archives of both compilers (${compiler}), not adopted"
             rc=3
             continue
         fi
@@ -348,23 +353,23 @@ cmd_check() {
     (( $# == 1 )) || usage
     local lib="$1"
     need_lib "${lib}"
-    local stamp="${PATH_TP}/${lib}/Library/${STAMP}"
+    local stamp="$(lib_dir "${lib}")/${STAMP}"
     local sources compiler now installed note=''
 
-    if [[ ! -d "${PATH_TP}/${lib}/Library" ]]; then
-        print -r -- "${lib}: Library/ is missing"
+    if [[ ! -d "$(lib_dir "${lib}")" ]]; then
+        print -r -- "${lib}: Library/${lib} is missing"
         return 4
     fi
     sources="$(stamp_get "${stamp}" sources)"
     compiler="$(stamp_get "${stamp}" compiler)"
     if [[ -z "${sources}" ]]; then
-        print -r -- "${lib}: Library/ is not stamped, so it cannot be checked against this checkout"
+        print -r -- "${lib}: Library/${lib} is not stamped, so it cannot be checked against this checkout"
         return 4
     fi
 
     now="$(sources_key "${lib}")"
     if [[ "${sources}" != "${now}" ]]; then
-        print -r -- "${lib}: Library/ was built from other sources (${sources[1,16]}, this checkout is ${now[1,16]})"
+        print -r -- "${lib}: Library/${lib} was built from other sources (${sources[1,16]}, this checkout is ${now[1,16]})"
         return 3
     fi
 
@@ -372,7 +377,7 @@ cmd_check() {
     if [[ -n "${installed}" && "${installed}" != "${compiler}" ]]; then
         note=", the installed toolchain is ${installed}"
     fi
-    print -r -- "${lib}: Library/ matches this checkout (${now[1,16]}, built with ${compiler}${note})"
+    print -r -- "${lib}: Library/${lib} matches this checkout (${now[1,16]}, built with ${compiler}${note})"
     return 0
 }
 
@@ -383,12 +388,12 @@ cmd_status() {
     printf '%-15s %-18s %-16s %-11s %s\n' 'Library' 'Checkout' 'Library/' 'State' 'Cached for this checkout'
     for lib in ${@:-${(f)"$(all_libs)"}}; do
         need_lib "${lib}"
-        stamp="${PATH_TP}/${lib}/Library/${STAMP}"
+        stamp="$(lib_dir "${lib}")/${STAMP}"
         now="$(sources_key "${lib}")"
         sources="$(stamp_get "${stamp}" sources)"
         compiler="$(stamp_get "${stamp}" compiler)"
 
-        if [[ ! -d "${PATH_TP}/${lib}/Library" ]]; then
+        if [[ ! -d "$(lib_dir "${lib}")" ]]; then
             state="${YELLOW}missing${NC}    "
         elif [[ -z "${sources}" ]]; then
             state="${YELLOW}unstamped${NC}  "
@@ -432,7 +437,7 @@ cmd_restore() {
 
     for lib in ${@:-${(f)"$(all_libs)"}}; do
         need_lib "${lib}"
-        dir="${PATH_TP}/${lib}/Library"
+        dir="$(lib_dir "${lib}")"
         stamp="${dir}/${STAMP}"
         now="$(sources_key "${lib}")"
         sources="$(stamp_get "${stamp}" sources)"
@@ -481,12 +486,13 @@ cmd_restore() {
             if [[ -n "${sources}" ]]; then
                 save_lib "${lib}" >/dev/null || die "${lib}: cannot save the current Library/"
             elif (( ! ${#o_force} )); then
-                print -r -- "${lib}: ${YELLOW}kept${NC}: Library/ is not stamped, so replacing it would lose it. 'adopt' it at the commit it was built from, or pass --force"
+                print -r -- "${lib}: ${YELLOW}kept${NC}: Library/${lib} is not stamped, so replacing it would lose it. 'adopt' it at the commit it was built from, or pass --force"
                 rc=3
                 continue
             fi
         fi
 
+        mkdir -p "${dir:h}"
         rm -rf "${dir}.restore"
         copy_tree "${PATH_CACHE}/${lib}/${pick}" "${dir}.restore" || die "${lib}: cannot copy ${pick}"
         rm -rf "${dir}"
@@ -503,9 +509,11 @@ undeclared_inputs() {
     local lib="$1" tree dep rel p covered
     local -a trees paths missing
 
-    paths=(${(f)"$(input_paths "${lib}")"})
+    # The installed library counts as declared: Tflite-micro compiles the tree
+    # that its build.sh exports there, which the pinned upstream hash identifies
+    paths=(${(f)"$(input_paths "${lib}")"} "Third_Parties/Library/${lib}")
     trees=(${(f)"$(find "${PATH_TP}/${lib}" -name '*-current' -prune -o \
-                        -name Library -prune -o -name .ninja_deps -print)"})
+                        -name .ninja_deps -print)"})
     if (( ! ${#trees} )) || ! command -v ninja >/dev/null; then
         print -r -- '?'
         return 0

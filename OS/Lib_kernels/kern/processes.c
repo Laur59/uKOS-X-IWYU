@@ -362,13 +362,14 @@ int32_t kern_killProcess(proc_t *handle) {
 // Here the sequence of the operation is highly sensitive (DO NOT CHANGE THE SEQUENCE)
 //
 // 1. IOFF (only traps can be executed)
-// 2. Release the process memory stack (using memo_delayedFree)
+// 2. Give back the memory of the C library, then release the process memory stack (using memo_delayedFree)
 // 3. Disconnect the process descriptor from the execution list and connect it to the free one
 // 4. Initialise the descriptor
 // 5. Go to the uKernel
 
         case KSUICIDE: {
             local_fatherKilled(wkHandle);
+            xLibrary_release(wkHandle);
             vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? wkHandle->oSpecification.oStackStart : nullptr;
             memo_delayedFree(vKern_stackLocation[core]);
             lists_disconnectConnect(wkHandle->oObject.oList, &vKern_listFree[core], wkHandle);
@@ -388,6 +389,7 @@ int32_t kern_killProcess(proc_t *handle) {
 
         case KNORMAL: {
             local_fatherKilled(wkHandle);
+            xLibrary_release(wkHandle);
             vKern_stackLocation[core] = (wkHandle->oSpecification.oStackMode == KPROC_STACK_DYNAMIC) ? wkHandle->oSpecification.oStackStart : nullptr;
             memo_free(vKern_stackLocation[core]);
             lists_disconnectConnect(wkHandle->oObject.oList, &vKern_listFree[core], wkHandle);

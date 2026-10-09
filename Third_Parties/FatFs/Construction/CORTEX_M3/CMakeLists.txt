@@ -20,7 +20,7 @@ set(FLAGS_FP -mfloat-abi=soft)
 set(CPU_SPEC -mcpu=cortex-m3)
 
 # Library variants to build, format "subdir|definitions".
-# Each entry produces Library/CORTEX_M3/<subdir>/libFatFs.a.
+# Each entry produces Library/FatFs/CORTEX_M3/<subdir>/libFatFs.a.
 set(FATFS_VARIANTS
     "flash|SECURE_S FLASH_S"
     "sdcard|SECURE_S SDCARD_S"

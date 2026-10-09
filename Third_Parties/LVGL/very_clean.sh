@@ -16,5 +16,5 @@ readonly PATH_PRG="${0:a:h}"
 cd "${PATH_PRG}"
 
 rm -rf build
-rm -rf Library
+rm -rf ../Library/LVGL
 find Construction -type d -name "build*" -prune -exec rm -r "{}" +

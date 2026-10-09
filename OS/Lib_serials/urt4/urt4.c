@@ -380,6 +380,34 @@ int32_t urt4_flush(void) {
     return status;
 }
 
+/*
+ * \brief Is the urt4 connected
+ *
+ * Call example in C:
+ *
+ * \code{.c}
+ * int32_t    status;
+ *
+ *    status = urt4_isConnected();
+ * \endcode
+ *
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NOTCO   The device is not connected
+ * \return      KERR_SERIAL_GEERR   General error
+ *
+ */
+int32_t urt4_isConnected(void) {
+    int32_t     status;
+
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
+
+    status = stub_urt4_isConnected();
+    PRIVILEGE_RESTORE;
+    return status;
+}
+
 // Local routines
 // ==============
 

@@ -35,7 +35,7 @@ set(VALID_CORE_NAMES CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55)
 # Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
 # is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_LVGL}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${PATH_UKOS}/Third_Parties/Library" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Deterministic archives and a git-derived SOURCE_DATE_EPOCH
@@ -114,13 +114,13 @@ set_target_properties(${TARGET_LIB} PROPERTIES
 
 # Installation (deployed by 'cmake --install').
 # The panel headers ship with the archive: the downloadable LVGL applications
-# include lcd_display.h and lv_conf.h from Library/.
-install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "Library/${DISPLAY_NAME}/${CORE_NAME}")
+# include lcd_display.h and lv_conf.h from Library/LVGL/.
+install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "LVGL/${DISPLAY_NAME}/${CORE_NAME}")
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/lv_conf.h"
-        DESTINATION "Library/${DISPLAY_NAME}/${CORE_NAME}"
+        DESTINATION "LVGL/${DISPLAY_NAME}/${CORE_NAME}"
 )
 install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../lcd_display.h"
-        DESTINATION "Library/${DISPLAY_NAME}"
+        DESTINATION "LVGL/${DISPLAY_NAME}"
 )
 
 # Strip unnecessary symbols after build

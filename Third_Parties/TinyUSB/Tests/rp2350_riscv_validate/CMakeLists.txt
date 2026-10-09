@@ -29,7 +29,7 @@ set(PATH_TINYUSB "${CMAKE_CURRENT_LIST_DIR}/../..")
 
 # Path to the validation archive
 set(VALIDATE_LIB_DIR
-    "${PATH_TINYUSB}/Library/Family/pico2riscv/rp2350/cdc_cdc/validate")
+    "${PATH_TINYUSB}/../Library/TinyUSB/Family/pico2riscv/rp2350/cdc_cdc/validate")
 
 if(NOT EXISTS "${VALIDATE_LIB_DIR}/libTinyUSB_FS.a")
     message(FATAL_ERROR
@@ -38,7 +38,7 @@ if(NOT EXISTS "${VALIDATE_LIB_DIR}/libTinyUSB_FS.a")
         "  cd ${PATH_TINYUSB}/Construction/Family/pico2riscv/rp2350\n"
         "  cmake -B build_cmake -G Ninja -DBUILD_VALIDATE_PICO=ON\n"
         "  cmake --build build_cmake -j\n"
-        "  cmake --install build_cmake --prefix ${PATH_TINYUSB}")
+        "  cmake --install build_cmake --prefix ${PATH_TINYUSB}/../Library")
 endif()
 
 # Imported target for the validation archive

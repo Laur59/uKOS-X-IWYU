@@ -31,9 +31,9 @@
 #   ./very_clean.sh before switching toolchains.
 #
 # Build outputs:
-#   - Library/*/*/libLVGL.a
-#   - Library/*/*/lv_conf.h
-#   - Library/*/lcd_display.h
+#   - Library/LVGL/*/*/libLVGL.a
+#   - Library/LVGL/*/*/lv_conf.h
+#   - Library/LVGL/*/lcd_display.h
 
 cmake_minimum_required(VERSION 3.31)
 
@@ -43,17 +43,19 @@ project(LVGL_Package
     LANGUAGES NONE
 )
 
-# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Common output directory of the third-party packages (UKOS_TP_LIBRARY) and its stamp
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+
+# Default install prefix: Third_Parties/Library, which this package fills under LVGL/.
 # Override with cmake --install build --prefix /other/path if needed.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${UKOS_TP_LIBRARY}" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Toolchain used for every per-core archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
-# Stamp Library/ at install time and keep a copy in the shared cache
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+# Stamp Library/LVGL at install time and keep a copy in the shared cache
 ukos_library_cache_begin(LVGL)
 
 # Include ExternalProject module for downloading and building
@@ -192,7 +194,7 @@ endforeach()
 #
 # cmake --install build gathers libLVGL.a from each per-core build tree
 # (Construction/<DISPLAY>/<CORE>/build/) and deploys it to
-# Library/<DISPLAY>/<CORE>/, together with the panel headers that the
+# Library/LVGL/<DISPLAY>/<CORE>/, together with the panel headers that the
 # downloadable LVGL applications include from there.
 #------------------------------------------------------------------------
 
@@ -205,11 +207,11 @@ foreach(VARIANT ${ALL_VARIANTS})
     set(CORE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${DISPLAY}/${CORE}")
 
     install(FILES "${CORE_SOURCE_DIR}/build/libLVGL.a"
-            DESTINATION "Library/${DISPLAY}/${CORE}"
+            DESTINATION "LVGL/${DISPLAY}/${CORE}"
             OPTIONAL
     )
     install(FILES "${CORE_SOURCE_DIR}/lv_conf.h"
-            DESTINATION "Library/${DISPLAY}/${CORE}"
+            DESTINATION "LVGL/${DISPLAY}/${CORE}"
     )
     list(APPEND ALL_DISPLAYS "${DISPLAY}")
 endforeach()
@@ -218,7 +220,7 @@ endforeach()
 list(REMOVE_DUPLICATES ALL_DISPLAYS)
 foreach(DISPLAY ${ALL_DISPLAYS})
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${DISPLAY}/lcd_display.h"
-            DESTINATION "Library/${DISPLAY}"
+            DESTINATION "LVGL/${DISPLAY}"
     )
 endforeach()
 
@@ -262,5 +264,5 @@ foreach(PROJECT_TARGET ${ALL_CORE_PROJECTS})
 endforeach()
 message("")
 message("Output libraries will be in:")
-message("  Library/<DISPLAY>/<CORE>/libLVGL.a")
+message("  Library/LVGL/<DISPLAY>/<CORE>/libLVGL.a")
 message("══════════════════════════════════════════════════════════════")

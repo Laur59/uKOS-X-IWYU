@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
- * Goal:        Demo of a C application.
+ *  Goal:   Demo of a C application.
  *          mlpn classifier.
  */
 

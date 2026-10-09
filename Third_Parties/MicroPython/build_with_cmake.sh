@@ -44,7 +44,7 @@ readonly FAINT=$'\033[2m'
 readonly ITALIC=$'\033[3m'
 readonly NC=$'\033[0m' # No Color
 
-# Library/ stamp and shared cache. The sources are identified now, so that a
+# Library/MicroPython stamp and shared cache. The sources are identified now, so that a
 # file edited while the build runs leaves the library unstamped rather than
 # stamped with sources it was not built from. A reference given on the command
 # line is not the one the checkout pins: such a build is never stamped.
@@ -116,10 +116,10 @@ build_core() {
     # Configure, build, and install with CMake
     cmake "${CORE_DIR}" -GNinja -DUSE_LLVM=${use_llvm}
     cmake --build . --parallel
-    cmake --install . --prefix "${PATH_PRG}"   # installs libMicroPython.a in Library/${CORE}/
+    cmake --install . --prefix "${PATH_PRG:h}/Library"   # installs libMicroPython.a in Library/MicroPython/${CORE}/
 
     echo "End of building ${CORE}: $(date)" >> libMicroPython_temp.log
-    mv libMicroPython_temp.log "${PATH_PRG}/Library/${CORE}/libMicroPython_ready.txt"
+    mv libMicroPython_temp.log "${PATH_PRG:h}/Library/MicroPython/${CORE}/libMicroPython_ready.txt"
     cd "${PATH_PRG}"
 }
 
@@ -135,7 +135,7 @@ done
 # the stamp checks the dependencies ninja recorded in them.
 
 if (( CUSTOM_REF )); then
-    echo -e "\n${YELLOW}Built from ${MICROPY_REF}, not the pinned reference: Library/ is left unstamped${NC}"
+    echo -e "\n${YELLOW}Built from ${MICROPY_REF}, not the pinned reference: Library/MicroPython is left unstamped${NC}"
 else
     "${CACHE_TOOL}" stamp MicroPython --built-from "${BUILT_FROM}" --save || true
 fi

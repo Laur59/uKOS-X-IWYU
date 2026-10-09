@@ -222,7 +222,7 @@ better than a comment because it is **printed on failure**.
 | `requires` | skip predicates, below; besides `module:`, `hw:` and `unsafe`, `"sym:NAME"` runs the row only where the flashed build's symbol `NAME` is non-zero and `"!sym:NAME"` only where it is zero or absent (`test_ram` keys on `linker_lnEXRAM`, the size of the external RAM) |
 | `poisons` | what the row leaves behind until the next reset; see below |
 | `prompt` | `false`: the command does not come back to the prompt by itself (it reads input); it is only written, and the steps do the rest |
-| `then` | steps after the command, in order - `{"send": ..., "expect", "refute", "timeout"}` writes more input and reads to the console prompt; `{"write": ...}` writes it and returns at once (input for a sub-prompt such as MicroPython's `>>> `); `{"await": re, "timeout"}` waits for output; `{"absent": re, "timeout"}` fails if matching output arrives, from the previous step on, within the timeout |
+| `then` | steps after the command, in order - `{"send": ..., "expect", "refute", "timeout"}` writes more input and reads to the console prompt; with `"keep": {name: re}` it also remembers what the group of `re` matched in that answer and with `"same": {name: re}` it demands that same value again, which is how a figure that differs between boards and builds is compared with itself (`viewer` checks that the heap is the same after a second run); `{"write": ...}` writes it and returns at once (input for a sub-prompt such as MicroPython's `>>> `); `{"await": re, "timeout"}` waits for output; `{"absent": re, "timeout"}` fails if matching output arrives, from the previous step on, within the timeout |
 | `stop_on_fail` | `true`: the first failed assertion ends the row - for a guard (`runDemo` checks that no demo is installed before calling it) |
 | `terminal` | the row ends the console on purpose (`gdb` freezes the kernel); see below |
 | `note` | why the row exists; printed when it fails |
@@ -250,9 +250,10 @@ marked `"poisons": "<what it leaves>"`, skipped unless `--allow-poison` is
 passed, and, when run, **runs after all the others**. `board-regression` then
 ends with a reminder to reset.
 
-**No row poisons today.** Five did, each because of a defect that has since
-been fixed (`../DEFECTS.md`, "Fixed in this branch"): `bench/all` left the
-console privileged, `echo/unknown-input-manager` left its output reservation
+**No row poisons today.** Six did, each because of a defect that has since
+been fixed (`../DEFECTS.md`, "Fixed in this branch"): `viewer/...` left a
+semaphore that made the next viewer panic, `bench/all` left the console
+privileged, `echo/unknown-input-manager` left its output reservation
 held, `hexloader/...` left the user memory reserved, and
 `console/already-active` and `cycle/in-use-then-stop` leaked a process stack.
 The mechanism stays for the next one.
@@ -274,6 +275,21 @@ Predicates, all resolved by the runner:
 |---|---|
 | `module:<name>` | the name appears in the `list` output captured once at start-up |
 | `hw:<tag>` | the operator passed `--have <tag>` |
+
+`--have <tag>=<command>` also says how to get the hardware ready: the command
+is run by the shell just before every row that requires `hw:<tag>`, and a row
+whose command fails is skipped with its last line as the reason, like a row
+whose hardware is absent. This is for hardware a reset takes away. The one
+case today is `hw:video-host`, a host streaming from the board: after
+`restart/reboots` the camera application falls back on another camera and
+does not come back by itself. `select-video-source` picks the board again in
+Quick Camera (macOS, through System Events, so the terminal needs the
+Accessibility permission; it never starts the application):
+
+```bash
+Tools/Developer/bin/board-regression --board <Board> --allow-unsafe \
+    --have video-host=Tools/Developer/bin/select-video-source
+```
 | `unsafe` | the operator passed `--allow-unsafe` |
 
 Anything unavailable is a **printed SKIP with its reason** — never a silent pass

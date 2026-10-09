@@ -98,8 +98,6 @@ target_sources(kern_p PRIVATE
     ${PATH_OSYS}/Lib_kernels/kern/temporal.c
     ${PATH_BASE}/Lib_kernels/kern/stub_kern_kernel.c
 )
-# Table sizes are unsigned, like their defaults in kern_types.h: the code
-# that prints and compares them expects unsigned int
 add_compile_definitions(
     KKERN_NB_POOLS=0U
     KKERN_NB_PRECISE_SIGNALS=0U

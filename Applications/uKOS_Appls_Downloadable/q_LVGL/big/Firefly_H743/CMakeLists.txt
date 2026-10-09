@@ -35,8 +35,8 @@ add_compile_options(
 )
 
 set(PATH_INCLUDES
-    ${PATH_LVGL}/Library/${DISPLAY}
-    ${PATH_LVGL}/Library/${DISPLAY}/${CORE}
+    ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}
+    ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}/${CORE}
     ${PATH_LVGL}/LVGL-current
     ${PATH_LVGL}/LVGL-current/src
 )

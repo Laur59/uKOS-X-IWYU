@@ -11,3 +11,6 @@ cmake_path(GET APP_DIR PARENT_PATH SECTION_DIR)
 cmake_path(GET SECTION_DIR PARENT_PATH UKOS_APPLS_DIR)
 cmake_path(GET UKOS_APPLS_DIR PARENT_PATH APPLICATIONS_DIR)
 cmake_path(GET APPLICATIONS_DIR PARENT_PATH PATH_UKOS)
+
+# Prebuilt third-party libraries, one folder per package
+set(PATH_TP_LIBRARY ${PATH_UKOS}/Third_Parties/Library)

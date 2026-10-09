@@ -6,11 +6,12 @@
  *          TensorFlow classifier.
  */
 
-#include    <stdlib.h>
-#include    <math.h>
 #include    <cinttypes>
+#include    <math.h>
+#include    <stdlib.h>
 
 #include    "kern/kern.h"
+#include    "nn.h"
 #include    "serial/serial.h"
 #include    "types.h"
 #include    "ui.h"

@@ -380,6 +380,34 @@ int32_t urt3_flush(void) {
     return status;
 }
 
+/*
+ * \brief Is the urt3 connected
+ *
+ * Call example in C:
+ *
+ * \code{.c}
+ * int32_t    status;
+ *
+ *    status = urt3_isConnected();
+ * \endcode
+ *
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NOTCO   The device is not connected
+ * \return      KERR_SERIAL_GEERR   General error
+ *
+ */
+int32_t urt3_isConnected(void) {
+    int32_t     status;
+
+    PRIVILEGE_ELEVATE;
+    status = local_init();
+    if (status != KERR_SERIAL_NOERR) { PRIVILEGE_RESTORE; return status; }
+
+    status = stub_urt3_isConnected();
+    PRIVILEGE_RESTORE;
+    return status;
+}
+
 // Local routines
 // ==============
 

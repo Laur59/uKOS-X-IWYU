@@ -272,12 +272,11 @@ int32_t kern_signalSignal(sign_t *handle, uint32_t signals, proc_t *toProcess, u
 // ------------------------
 
         for (i = 0U; i < KKERN_NB_PROCESSES; i++) {
-            if (((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) &&
-                (&vKern_proc[core][i] != vKern_runProc[core])) {
+            if (((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_INSTALLED)) != 0U) && (&vKern_proc[core][i] != vKern_runProc[core])) {
                 handle->oSynchro[i].oSignalBitPending |= signals;
                 if ((vKern_proc[core][i].oInternal.oState & (1U<<BPROC_SUSP_SIGN)) != 0U) {
                     theSignals = handle->oSynchro[i].oSignalBitGenerate & signals;
-                    if ((theSignals != 0) && ((handle->oSynchro[i].oSignalFromProcess == vKern_runProc[core]) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_BROADCAST) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_FROM_ISR))) {
+                    if ((theSignals != 0U) && ((handle->oSynchro[i].oSignalFromProcess == vKern_runProc[core]) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_BROADCAST) || (handle->oSynchro[i].oSignalFromProcess == KKERN_HANDLE_FROM_ISR))) {
                         vKern_proc[core][i].oInternal.oState &= (uint16_t)~(1U<<BPROC_SUSP_SIGN);
                         lists_disconnectConnect(vKern_proc[core][i].oObject.oList, &vKern_listExec[core], &vKern_proc[core][i]);
                         vKern_proc[core][i].oInternal.oStatus = KERR_KERN_NOERR;

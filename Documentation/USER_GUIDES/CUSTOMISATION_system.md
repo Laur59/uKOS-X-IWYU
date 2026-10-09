@@ -59,7 +59,7 @@ target_sources(proc_u PRIVATE
 
 ```cmake
 # FatFs (file system) integration. STORAGE is flash, sdcard or sdcard_flash and
-# selects Third_Parties/FatFs/Library/${CORE}/${STORAGE}/libFatFs.a
+# selects Third_Parties/Library/FatFs/${CORE}/${STORAGE}/libFatFs.a
 add_FatFs(STORAGE sdcard_flash)
 ```
 
@@ -67,13 +67,13 @@ add_FatFs(STORAGE sdcard_flash)
 
 ```cmake
 # Graphic library integration. DISPLAY names the panel and selects
-# Third_Parties/LVGL/Library/${DISPLAY}/${CORE}/libLVGL.a
+# Third_Parties/Library/LVGL/${DISPLAY}/${CORE}/libLVGL.a
 add_LVGL(DISPLAY WKS43WV067_5_Inches)
 ```
 
 That one line is all the system image needs. The drawing code and the panel headers
 (`lcd_display.h`, `lv_conf.h`) belong to the downloadable `q_LVGL` applications, which
-put `Library/${DISPLAY}` and `Library/${DISPLAY}/${CORE}` on their own include paths.
+put `Library/LVGL/${DISPLAY}` and `Library/LVGL/${DISPLAY}/${CORE}` on their own include paths.
 
 The archive has to exist for the panel *and* the variant's core:
 
@@ -91,7 +91,7 @@ own `CMakeLists.txt` and `lv_conf.h`.
 ### Adding third party TensorFlow Lite Micro library
 
 ```cmake
-# Locates Library/${CORE}/libTFLite.a, adds the TFLite-micro, flatbuffers and
+# Locates Library/Tflite-micro/${CORE}/libTFLite.a, adds the TFLite-micro, flatbuffers and
 # gemmlowp include directories, and defines SYSTEM_TFLITE_S
 add_Tflite()
 ```
@@ -101,14 +101,14 @@ add_Tflite()
 
 ```cmake
 set(PATH_INCLUDES
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/CORTEX_M_generic
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic
     ...
 )
-find_library(MYLIB TFLite ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE})
+find_library(MYLIB TFLite ${PATH_TP_LIBRARY}/Tflite-micro/${CORE})
 ```
 
 The macro picks the generic header tree from the architecture, not the core:
-`Library/Generic/CORTEX_M_generic` on ARM and `Library/Generic/RISCV64_generic` on
+`Generic/CORTEX_M_generic` on ARM and `Generic/RISCV64_generic` on
 RISC-V, the latter being ISA-independent and serving rv32 as well as rv64 despite its
 name.
 

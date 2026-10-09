@@ -49,6 +49,7 @@ extern  int32_t stub_urt4_configure(const urtxCnf_t *configure);
 extern  int32_t stub_urt4_write(const uint8_t *buffer, uint32_t size);
 extern  int32_t stub_urt4_read(uint8_t *buffer, uint32_t *size);
 extern  int32_t stub_urt4_flush(void);
+extern  int32_t stub_urt4_isConnected(void);
 
 /*!
  * \brief Reserve the urt4 manager
@@ -214,6 +215,24 @@ extern  int32_t urt4_getIdSemaphore(uint8_t semaphore, char_t **identifier);
  *
  */
 extern  int32_t urt4_flush(void);
+
+/*!
+ * \brief Is the urt4 connected
+ *
+ * Call example in C:
+ *
+ * \code{.c}
+ * int32_t    status;
+ *
+ *    status = urt4_isConnected();
+ * \endcode
+ *
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NOTCO   The device is not connected
+ * \return      KERR_SERIAL_GEERR   General error
+ *
+ */
+extern  int32_t urt4_isConnected(void);
 
 #ifdef __cplusplus
 }

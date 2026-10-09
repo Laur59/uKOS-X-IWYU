@@ -202,6 +202,9 @@ target_include_directories(system_compiler_flags INTERFACE
     ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
     ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
     ${PATH_UKOS}/Third_Parties
+    # "TinyUSB_interface.h", for the applications that call the TinyUSB
+    # device classes of the system (the installed copy, as the system uses).
+    ${PATH_TP_LIBRARY}/TinyUSB/Include/Interface/Includes
     # Application root, so a board stub reaches the shared headers of its own
     # application by name (e.g. "stub.h") instead of by relative path. Kept
     # last so a project header always wins a name clash.

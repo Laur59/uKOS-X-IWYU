@@ -85,7 +85,7 @@ extern  "C" {
  *                                  KWAIT_REMAINING_TIMEOUT, waiting for the remaining timeout
  * \return      KERR_SERIAL_NOERR   OK
  * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
- * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
+ * \return      KERR_SERIAL_xxxxx   Depends on the "xxxx" Serial Communication Manager
  *
  */
 extern  int32_t serial_reserve(serialManager_t serialManager, reserveMode_t reserveMode, uint32_t timeout);
@@ -105,7 +105,7 @@ extern  int32_t serial_reserve(serialManager_t serialManager, reserveMode_t rese
  * \param[in]   reserveMode         KMODE_READ, KMODE_WRITE, KMODE_READ_WRITE
  * \return      KERR_SERIAL_NOERR   OK
  * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
- * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
+ * \return      KERR_SERIAL_xxxxx   Depends on the "xxxx" Serial Communication Manager
  *
  */
 extern  int32_t serial_release(serialManager_t serialManager, reserveMode_t reserveMode);
@@ -132,7 +132,7 @@ extern  int32_t serial_release(serialManager_t serialManager, reserveMode_t rese
  * \param[in]   *configure          Ptr on the configuration buffer
  * \return      KERR_SERIAL_NOERR   OK
  * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
- * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
+ * \return      KERR_SERIAL_xxxxx   Depends on the "xxxx" Serial Communication Manager
  *
  */
 extern  int32_t serial_configure(serialManager_t serialManager, const void *configure);
@@ -165,7 +165,7 @@ extern  int32_t serial_configure(serialManager_t serialManager, const void *conf
  * \param[in]   size                Size of the buffer
  * \return      KERR_SERIAL_NOERR   OK
  * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
- * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
+ * \return      KERR_SERIAL_xxxxx   Depends on the "xxxx" Serial Communication Manager
  *
  */
 extern  int32_t serial_write(serialManager_t serialManager, const uint8_t *buffer, uint32_t size);
@@ -192,7 +192,7 @@ extern  int32_t serial_write(serialManager_t serialManager, const uint8_t *buffe
  * \param[in, out]  *size               Ptr to a variable storing the size, initialized with the size of the buffer
  * \return          KERR_SERIAL_NOERR   OK
  * \return          KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
- * \return          KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
+ * \return          KERR_SERIAL_xxxxx   Depends on the "xxxx" Serial Communication Manager
  *
  */
 extern  int32_t serial_read(serialManager_t serialManager, uint8_t *buffer, uint32_t *size);
@@ -218,7 +218,7 @@ extern  int32_t serial_read(serialManager_t serialManager, uint8_t *buffer, uint
  * \return      KERR_SERIAL_NOERR   OK
  * \return      KERR_SERIAL_NODEV   No corresponding Serial Communication Manager
  * \return      KERR_SERIAL_SENOE   The semaphore does not exist
- * \return      KERR_xxxxxx_NODEV   Depends on the "xxxx" Serial Communication Manager
+ * \return      KERR_SERIAL_xxxxx   Depends on the "xxxx" Serial Communication Manager
  *
  */
 extern  int32_t serial_getIdSemaphore(serialManager_t serialManager, uint8_t semaphore, char_t **identifier);
@@ -237,9 +237,30 @@ extern  int32_t serial_getIdSemaphore(serialManager_t serialManager, uint8_t sem
  * \param[in]   serialManager           Serial Communication Manager
  * \return      KERR_SERIAL_NOERR   OK
  * \return      KERR_SERIAL_NODEV   The serialManager does not exist
+ * \return      KERR_SERIAL_xxxxx   Depends on the "xxxx" Serial Communication Manager
  *
  */
 extern  int32_t serial_flush(serialManager_t serialManager);
+
+/*!
+ * \brief Is the Serial Communication connected
+ *
+ * Call example in C:
+ *
+ * \code{.c}
+ * int32_t    status;
+ *
+ *    status = serial_isConnected(KDEF0);
+ * \endcode
+ *
+ * \param[in]   serialManager       Serial Communication Manager
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NOTCO   The device is not connected
+ * \return      KERR_SERIAL_NODEV   The serialManager does not exist
+ * \return      KERR_SERIAL_xxxxx   Depends on the "xxxx" Serial Communication Manager
+ *
+ */
+extern  int32_t serial_isConnected(serialManager_t serialManager);
 
 /*!
  * \brief Set the system-wide default Serial Communication Manager

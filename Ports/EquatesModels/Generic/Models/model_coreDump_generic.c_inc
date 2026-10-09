@@ -41,7 +41,6 @@ static  void    local_readFunctionName([[maybe_unused]] const uintptr_t pc, cons
         }
 
     }
-    *function = nullptr;
     #endif
 
     *function = nullptr;

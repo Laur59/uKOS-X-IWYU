@@ -88,24 +88,25 @@ cd "${PATH_PRG}"
 
 printf '\n%bExport the Tflite-micro source trees ...%b\n\n' "${BOLD}" "${NC}"
 
-# Library/ changes from here on, so its stamp no longer describes it; the
+# Library/Tflite-micro changes from here on, so its stamp no longer describes it; the
 # install step at the end writes a new one.
 "${PATH_PRG:h:h}/Tools/Developer/third-parties-cache.sh" unstamp Tflite-micro
 
-rm -fr Library/Generic/CORTEX_M_generic Library/Generic/RISCV64_generic
+readonly GENERIC="${PATH_PRG:h}/Library/Tflite-micro/Generic"
+rm -fr "${GENERIC}/CORTEX_M_generic" "${GENERIC}/RISCV64_generic"
 cd Tflite-micro-current
 
 python3 tensorflow/lite/micro/tools/project_generation/create_tflm_tree.py \
     --makefile_options='TARGET=cortex_m_generic OPTIMIZED_KERNEL_DIR=cmsis_nn TARGET_ARCH=project_generation' \
-    ../Library/Generic/CORTEX_M_generic
+    "${GENERIC}/CORTEX_M_generic"
 
 python3 tensorflow/lite/micro/tools/project_generation/create_tflm_tree.py \
     --makefile_options='TARGET=riscv32_generic TARGET_ARCH=project_generation' \
-    ../Library/Generic/RISCV64_generic
+    "${GENERIC}/RISCV64_generic"
 
 cd "${PATH_PRG}"
 
-# Build and install Library/<CORE>/libTFLite.a for every core
+# Build and install Library/Tflite-micro/<CORE>/libTFLite.a for every core
 
 printf '\n%bBuilding all the Tflite-micro libraries (USE_LLVM=%s) ...%b\n' "${BOLD}" "${use_llvm}" "${NC}"
 

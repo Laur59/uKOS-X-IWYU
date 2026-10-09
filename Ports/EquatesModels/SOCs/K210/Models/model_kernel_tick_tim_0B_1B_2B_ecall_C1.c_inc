@@ -27,10 +27,11 @@
 
 #include    <stdint.h>
 
+#include    "clockTree.h"
+#include    "kern/private/private_preciseSignals.h"
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_scheduler.h"
 #include    "kern/private/private_temporal.h"
-#include    "kern/private/private_preciseSignals.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
 #include    "macros_soc.h"
@@ -434,9 +435,6 @@ static  void    local_changeContext_TOU_C1(uint32_t core, uint64_t parameter, ui
 [[gnu::naked]]
 static  void    local_TIM2_B_IRQHandler_C1([[maybe_unused]] uint32_t core, [[maybe_unused]] uint64_t parameter) {
 
-    #ifndef __clang__
-    #endif
-
     KERN_SAVE_FRAME;
 
 // eabi registers a0..a3 are set in the KERN_SAVE_FRAME macro
@@ -563,9 +561,6 @@ static  void    local_changeContext_MSG_C1(uint32_t core, uint64_t message, uint
 
 [[gnu::naked]]
 static  void    local_ECALL_message_C1([[maybe_unused]] uint32_t core, [[maybe_unused]] uint64_t message) {
-
-    #ifndef __clang__
-    #endif
 
     KERN_SAVE_FRAME;
 

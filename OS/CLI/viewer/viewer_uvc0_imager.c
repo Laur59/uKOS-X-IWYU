@@ -24,6 +24,7 @@
 #include    "os_errors.h"
 #include    "record/record.h"
 #include    "serial/serial.h"
+#include    "TinyUSB_interface.h"
 #include    "types.h"
 
 #ifdef CONFIG_MAN_IMAGER_S
@@ -54,10 +55,6 @@ static  bool    vKillRequest[KNB_CORES] = MCSET(false);
 
 // Prototypes
 
-        void    TinyUSB_video_init(void);
-        void    TinyUSB_video_clean(void);
-        void    TinyUSB_video_getImageSize(uint32_t *w, uint32_t *h);
-        void    TinyUSB_video_sendImage(uint8_t *image, uint32_t w, uint32_t h, void (*callBack)(const void *argument), const void *argument);
 static  void    local_initialiseYUY2(uint8_t *output, uint32_t w, uint32_t h);
 static  void    local_convertToYUY2(volatile const uint8_t *input, uint8_t *output, uint32_t w, uint32_t h);
 static  void    aProcess_acquisition(const void *argument);
@@ -144,6 +141,7 @@ static void aProcess_acquisition(const void *argument) {
     imageYUY2 = (uint8_t *)memo_malloc(KMEMO_ALIGN_32, (w * h * 2U), "viewer_uvc0_YUY2");
     if (imageYUY2 == nullptr) {
         LOG(KFATAL_USER, "viewer: out of memory");
+        TinyUSB_video_clean();
         exit(EXIT_OS_FAILURE);
     }
 

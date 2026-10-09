@@ -73,6 +73,19 @@ extern  reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];    // Array
 extern  void    xLibrary_initialise(proc_t *handle);
 
 /*!
+ * \brief Give back what the C library allocated for the process
+ *
+ * \param[in]   *handle     Ptr on the handle
+ *
+ * \note This function does not return a value (None).
+ *
+ * \warning call usable only by the uKernel, before the stack of the process
+ * \warning is released.
+ *
+ */
+extern  void    xLibrary_release(proc_t *handle);
+
+/*!
  * \brief update the impure pointer with the impure data of the process
  *
  *

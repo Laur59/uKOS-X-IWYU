@@ -70,7 +70,7 @@ following commands from the cloned directory.
 
 Every CMake package follows the same three steps. `cmake --build build` only compiles the
 libraries into the package build tree; `cmake --install build` is what deploys them into
-`Third_Parties/<package>/Library/`, which is where the target and application builds look
+`Third_Parties/Library/<package>/`, which is where the target and application builds look
 for them. Skipping the install step leaves `find_library()` empty and the failure only
 shows up later as a link error.
 
@@ -170,16 +170,16 @@ cd Third_Parties/esp32
 
 ### Keeping the built libraries across checkouts
 
-`Third_Parties/<package>/Library/` is ignored by git. Without more, it stays as it is when
+`Third_Parties/Library/<package>/` is ignored by git. Without more, it stays as it is when
 you check out another commit, and the archives of the previous commit are linked against
 the headers of the new one. Two things take care of that.
 
-**A stamp.** Installing a package writes `Library/.ukos-stamp`, which names the sources the
+**A stamp.** Installing a package writes `Library/<package>/.ukos-stamp`, which names the sources the
 archives were built from and the compiler that built them. The target and application
 builds compare it with the checkout at configure time and print a CMake warning when the
 library was built from other sources (`-DTHIRD_PARTY_CHECK=OFF` turns the comparison off).
 
-**A cache outside the repository.** Installing also copies `Library/` to
+**A cache outside the repository.** Installing also copies `Library/<package>/` to
 `<parent of the checkout>/.cache/ukos-third-parties/<package>/<sources>-<compiler>/`, so
 every checkout and worktree placed side by side shares it. `UKOS_THIRD_PARTIES_CACHE`
 selects another directory. After moving to another commit:
@@ -189,9 +189,9 @@ Tools/Developer/bin/third-parties-cache status     # what Library/ holds, what i
 Tools/Developer/bin/third-parties-cache restore    # bring back the builds of this checkout
 ```
 
-`restore` replaces a `Library/` only by a build of exactly the sources now checked out, and
+`restore` replaces a `Library/<package>/` only by a build of exactly the sources now checked out, and
 reports the packages it has no build for; those have to be built as above. It saves a
-stamped `Library/` before replacing it, and leaves an unstamped one alone unless `--force`
+stamped `Library/<package>/` before replacing it, and leaves an unstamped one alone unless `--force`
 is given. `--gcc` and `--llvm` choose between the two when both are cached.
 
 What "the sources" means: every file under `Third_Parties/<package>` that git does not
@@ -214,7 +214,7 @@ from that definition:
   the library. A restored library keeps that date, so two checkouts with the same key share
   archives that a rebuild would make differ in that one string.
 
-A `Library/` built before the stamp existed is reported as *not stamped*, never as stale.
+A `Library/<package>/` built before the stamp existed is reported as *not stamped*, never as stale.
 If you know it was built from the sources now checked out,
 `third-parties-cache adopt <package>` stamps and caches it on your word. The cache only
 grows; entries are plain directories and can be deleted at any time

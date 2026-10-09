@@ -98,7 +98,7 @@ cd ${PATH_UKOS_X_PACKAGE}/Third_Parties/Tflite-micro
 ./build.sh -G   # GNU gcc
 ```
 
-The upstream make only exports the source trees (`Library/Generic/`); `CMakeLists.txt`
+The upstream make only exports the source trees (`Third_Parties/Library/Tflite-micro/Generic/`); `CMakeLists.txt`
 compiles them with the uKOS-X toolchains and the flags of the upstream `microlite`
 target, plus `-fshort-enums`.
 

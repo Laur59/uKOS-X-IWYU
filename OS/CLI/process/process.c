@@ -319,8 +319,6 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
             uint64_t    pRatio, kRatio, eRatio;
             float64_t   pRatioF, kRatioF, eRatioF;
             float64_t   sum;
-
-            #else
             #endif
 
     const   char_t      *idSpacer;

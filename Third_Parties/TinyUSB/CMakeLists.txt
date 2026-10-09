@@ -50,17 +50,19 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE MinSizeRel CACHE STRING "Build type")
 endif()
 
-# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Common output directory of the third-party packages (UKOS_TP_LIBRARY) and its stamp
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+
+# Default install prefix: Third_Parties/Library, which this package fills under TinyUSB/.
 # Override with cmake --install build --prefix /other/path if needed.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${UKOS_TP_LIBRARY}" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Toolchain used for every per-SOC archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
-# Stamp Library/ at install time and keep a copy in the shared cache
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+# Stamp Library/TinyUSB at install time and keep a copy in the shared cache
 ukos_library_cache_begin(TinyUSB)
 
 # Include FetchContent module for downloading upstream TinyUSB
@@ -80,7 +82,7 @@ message("")
 
 # Package version and commit hash
 set(TINYUSB_VERSION "0.21.0")
-set(TINYUSB_HASH "064afa3")
+set(TINYUSB_HASH "d48bd84")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -259,21 +261,21 @@ add_custom_target(TinyUSB_Fetch_Complete
 
 # Install TinyUSB stack headers from src/ only
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/TinyUSB-current/src/"
-        DESTINATION "Library/Include"
+        DESTINATION "TinyUSB/Include"
         FILES_MATCHING PATTERN "*.h"
 )
 
 # Install uKOS interface files from the three designated subdirectories
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/Includes/"
-        DESTINATION "Library/Include/Interface/Includes"
+        DESTINATION "TinyUSB/Include/Interface/Includes"
         FILES_MATCHING PATTERN "*.h"
 )
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/Models/"
-        DESTINATION "Library/Include/Interface/Models"
+        DESTINATION "TinyUSB/Include/Interface/Models"
         FILES_MATCHING PATTERN "*.c_inc"
 )
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/OSAL/"
-        DESTINATION "Library/Include/Interface/OSAL"
+        DESTINATION "TinyUSB/Include/Interface/OSAL"
         FILES_MATCHING PATTERN "*.h"
 )
 
@@ -395,8 +397,8 @@ endforeach()
 # Step 4: Install rules — libraries and config files
 #
 # cmake --install build gathers .a files and TinyUSBConfig.cmake from the
-# per-SOC build trees (build_cmake/) and deploys them to Library/Family/.
-# Headers are installed from TinyUSB-current/ to Library/Include/.
+# per-SOC build trees (build_cmake/) and deploys them to Library/TinyUSB/Family/.
+# Headers are installed from TinyUSB-current/ to Library/TinyUSB/Include/.
 #------------------------------------------------------------------------
 
 foreach(SOC_CONFIG ${SUPPORTED_SOCS})
@@ -416,7 +418,7 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
                 "${SOC_BUILD_DIR}/${PROFILE}/libTinyUSB_HS.a"
                 "${SOC_BUILD_DIR}/${PROFILE}/TinyUSBConfig.cmake"
                 "${SOC_SOURCE_DIR}/${PROFILE}/tusb_config.h"
-                DESTINATION "Library/Family/${FAMILY}/${SOC}/${PROFILE}"
+                DESTINATION "TinyUSB/Family/${FAMILY}/${SOC}/${PROFILE}"
                 OPTIONAL
             )
         endforeach()
@@ -469,6 +471,6 @@ foreach(SOC_CONFIG ${SUPPORTED_SOCS})
 endforeach()
 message("")
 message("Output libraries will be in:")
-message("  Library/Family/<FAMILY>/<SOC>/<PROFILE>/libTinyUSB_FS.a")
-message("  Library/Family/<FAMILY>/<SOC>/<PROFILE>/libTinyUSB_HS.a")
+message("  Library/TinyUSB/Family/<FAMILY>/<SOC>/<PROFILE>/libTinyUSB_FS.a")
+message("  Library/TinyUSB/Family/<FAMILY>/<SOC>/<PROFILE>/libTinyUSB_HS.a")
 message("══════════════════════════════════════════════════════════════")

@@ -28,7 +28,7 @@ extern  mbox_t  *vQueue_dispatcher;
 
 // Prototypes
 
-static  void    aProcess(const void *argument);
+static  void    aProcess([[maybe_unused]] const void *argument);
 
 /*
  * \brief Install & launch the process

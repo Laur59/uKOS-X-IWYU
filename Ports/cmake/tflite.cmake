@@ -24,13 +24,13 @@
 macro(add_Tflite)
     # Locate the prebuilt static library for this CORE
     find_library(TFLITE TFLite
-        PATHS ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE}
+        PATHS ${PATH_TP_LIBRARY}/Tflite-micro/${CORE}
         NO_DEFAULT_PATH
     )
     if(NOT TFLITE)
         message(FATAL_ERROR
             "add_Tflite: libTFLite.a not found for CORE=${CORE} in "
-            "${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE}")
+            "${PATH_TP_LIBRARY}/Tflite-micro/${CORE}")
     endif()
 
     # Public include paths for users of the library.
@@ -44,7 +44,7 @@ macro(add_Tflite)
         set(_TFLITE_GENERIC CORTEX_M_generic)
     endif()
     set(_TFLITE_ROOT
-        ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/${_TFLITE_GENERIC}
+        ${PATH_TP_LIBRARY}/Tflite-micro/Generic/${_TFLITE_GENERIC}
     )
     if(NOT EXISTS "${_TFLITE_ROOT}")
         message(FATAL_ERROR

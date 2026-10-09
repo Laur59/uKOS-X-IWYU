@@ -38,18 +38,18 @@ add_compile_definitions(
 )
 
 set(PATH_INCLUDES
-    ${PATH_LVGL}/Library/${DISPLAY}
-    ${PATH_LVGL}/Library/${DISPLAY}/${CORE}
+    ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}
+    ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}/${CORE}
     ${PATH_LVGL}/LVGL-current
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/CORTEX_M_generic
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/CORTEX_M_generic/third_party/flatbuffers/include
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/CORTEX_M_generic/third_party/gemmlowp
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic/third_party/flatbuffers/include
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic/third_party/gemmlowp
     ${PATH_UKOS}/Third_Parties/STM32/STM32N6/Library/AI/gan
     ${PATH_UKOS}/Applications/uKOS_Demos/gan/Classifier
     ${PATH_UKOS}/Applications/uKOS_Demos/gan/Graphics
     ${PATH_UKOS}/Applications/uKOS_Demos/gan/Graphics/Widgets
 )
-find_library(MYLIB0 TFLite ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE})
+find_library(MYLIB0 TFLite ${PATH_TP_LIBRARY}/Tflite-micro/${CORE})
 find_library(MYLIB1 NN_Hardware ${PATH_UKOS}/Third_Parties/STM32/STM32N6/Library/AI/gan)
 set(MYLIB ${MYLIB0} ${MYLIB1})
 

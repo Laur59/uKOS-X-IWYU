@@ -230,4 +230,25 @@ int32_t ble0_flush(void) {
     return stub_ble0_flush();
 }
 
+/*
+ * \brief Is the ble0 connected
+ *
+ * Call example in C:
+ *
+ * \code{.c}
+ * int32_t    status;
+ *
+ *    status = ble0_isConnected();
+ * \endcode
+ *
+ * \return      KERR_SERIAL_NOERR   OK
+ * \return      KERR_SERIAL_NOTCO   The device is not connected
+ * \return      KERR_SERIAL_GEERR   General error
+ *
+ */
+int32_t ble0_isConnected(void) {
+
+    return stub_ble0_isConnected();
+}
+
 #endif

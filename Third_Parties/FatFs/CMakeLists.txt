@@ -32,9 +32,9 @@
 #   ./very_clean.sh before switching toolchains.
 #
 # Build outputs:
-#   - Library/*/flash/libFatFs.a
-#   - Library/*/sdcard/libFatFs.a
-#   - Library/*/sdcard_flash/libFatFs.a
+#   - Library/FatFs/*/flash/libFatFs.a
+#   - Library/FatFs/*/sdcard/libFatFs.a
+#   - Library/FatFs/*/sdcard_flash/libFatFs.a
 
 cmake_minimum_required(VERSION 3.31)
 
@@ -44,17 +44,19 @@ project(FatFs_Package
     LANGUAGES NONE
 )
 
-# Default install prefix: keep Library/ adjacent to Construction/ inside the source tree.
+# Common output directory of the third-party packages (UKOS_TP_LIBRARY) and its stamp
+include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+
+# Default install prefix: Third_Parties/Library, which this package fills under FatFs/.
 # Override with cmake --install build --prefix /other/path if needed.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${CMAKE_CURRENT_SOURCE_DIR}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${UKOS_TP_LIBRARY}" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Toolchain used for every per-core archive (forwarded to the ExternalProjects)
 option(USE_LLVM "Build the archives with Clang/LLVM (OFF: GNU gcc)" ON)
 
-# Stamp Library/ at install time and keep a copy in the shared cache
-include(${CMAKE_CURRENT_SOURCE_DIR}/../cmake/library-cache.cmake)
+# Stamp Library/FatFs at install time and keep a copy in the shared cache
 ukos_library_cache_begin(FatFs)
 
 # Include FetchContent module for downloading upstream FatFs
@@ -139,7 +141,7 @@ set(SUPPORTED_CORES
     RV64IMAFDC
 )
 
-# Each core builds one libFatFs.a per variant into Library/<core>/<variant>/.
+# Each core builds one libFatFs.a per variant into Library/FatFs/<core>/<variant>/.
 # Keep this list in sync with FATFS_VARIANTS in the per-core CMakeLists.txt.
 set(FATFS_VARIANTS
     flash
@@ -218,14 +220,14 @@ endforeach()
 #
 # cmake --install build gathers libFatFs.a for every core/variant from the
 # per-core build trees (build/build-<CORE>/<VARIANT>/) and deploys them to
-# Library/<CORE>/<VARIANT>/.
+# Library/FatFs/<CORE>/<VARIANT>/.
 #------------------------------------------------------------------------
 
 foreach(CORE ${SUPPORTED_CORES})
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/CMakeLists.txt")
         foreach(VARIANT ${FATFS_VARIANTS})
             install(FILES "${CMAKE_CURRENT_BINARY_DIR}/build-${CORE}/${VARIANT}/libFatFs.a"
-                    DESTINATION "Library/${CORE}/${VARIANT}"
+                    DESTINATION "FatFs/${CORE}/${VARIANT}"
                     OPTIONAL
             )
         endforeach()
@@ -275,5 +277,5 @@ foreach(CORE ${SUPPORTED_CORES})
 endforeach()
 message("")
 message("Output libraries will be in:")
-message("  Library/<CORE>/<VARIANT>/libFatFs.a  (VARIANT: flash, sdcard, sdcard_flash)")
+message("  Library/FatFs/<CORE>/<VARIANT>/libFatFs.a  (VARIANT: flash, sdcard, sdcard_flash)")
 message("══════════════════════════════════════════════════════════════")

@@ -15,13 +15,13 @@
 
 include_guard(GLOBAL)
 
-# Default install prefix: install back into the source tree so Library/ stays adjacent
-# to Construction/. This has to live here rather than in common-setup.cmake, which the
+# Default install prefix: Third_Parties/Library, which this package fills under TinyUSB/.
+# This has to live here rather than in common-setup.cmake, which the
 # per-SOC CMakeLists.txt includes before project() - and project() is what sets
 # CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT, so the guard was never true there and a
 # standalone per-SOC 'cmake --install' aimed at /usr/local.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_TINYUSB}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${PATH_UKOS}/Third_Parties/Library" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Deterministic archives and a git-derived SOURCE_DATE_EPOCH
@@ -423,9 +423,9 @@ function(add_tinyusb_libraries)
         # the production archives produced by the regular build are not
         # overwritten.
         if(BUILD_VALIDATE_PICO)
-            set(_install_dir "Library/Family/${TINYUSB_FAMILY}/${SOC}/${PROFILE}/validate")
+            set(_install_dir "TinyUSB/Family/${TINYUSB_FAMILY}/${SOC}/${PROFILE}/validate")
         else()
-            set(_install_dir "Library/Family/${TINYUSB_FAMILY}/${SOC}/${PROFILE}")
+            set(_install_dir "TinyUSB/Family/${TINYUSB_FAMILY}/${SOC}/${PROFILE}")
         endif()
         install(TARGETS ${LIB_FS} ${LIB_HS}
             ARCHIVE DESTINATION "${_install_dir}"
@@ -474,43 +474,6 @@ function(generate_tinyusb_config)
         message(FATAL_ERROR "generate_tinyusb_config: Missing required arguments")
     endif()
 
-    # Build the list of interface include directories
-    # These paths will be exposed to consuming targets
-    set(CONFIG_INCLUDES
-        "\${PATH_TINYUSB}/Library/Include/Interface/OSAL"
-        "\${PATH_TINYUSB}/TinyUSB-current/src"
-        "\${PATH_TINYUSB}/TinyUSB-current/src/common"
-        "\${PATH_TINYUSB}/TinyUSB-current/src/device"
-        "\${PATH_TINYUSB}/TinyUSB-current/src/class/hid"
-        "\${PATH_TINYUSB}/TinyUSB-current/src/class/cdc"
-        "\${PATH_TINYUSB}/TinyUSB-current/src/class/msc"
-        "\${CMAKE_CURRENT_LIST_DIR}"
-    )
-
-    # Add provider-specific includes
-    if(CFG_PROVIDER STREQUAL "st")
-        list(APPEND CONFIG_INCLUDES
-            "\${PATH_TINYUSB}/Library/Include/Interface/Includes/mcu/st"
-            "\${PATH_TINYUSB}/TinyUSB-current/hw/mcu/st/cmsis_device_${CFG_FAMILY}/Include"
-        )
-    elseif(CFG_PROVIDER STREQUAL "nordic")
-        list(APPEND CONFIG_INCLUDES
-            "\${PATH_TINYUSB}/TinyUSB-current/hw/bsp/nrf"
-            "\${PATH_TINYUSB}/TinyUSB-current/hw/bsp/nrf/nrfx_config"
-            "\${PATH_TINYUSB}/TinyUSB-current/hw/mcu/nordic/nrfx"
-            "\${PATH_TINYUSB}/TinyUSB-current/hw/mcu/nordic/nrfx/mdk"
-            "\${PATH_TINYUSB}/TinyUSB-current/hw/mcu/nordic/nrfx/hal"
-        )
-    elseif(CFG_PROVIDER STREQUAL "raspberrypi")
-        list(APPEND CONFIG_INCLUDES
-            "\${PATH_TINYUSB}/Library/Include/Interface/Includes/mcu/raspberrypi"
-            "\${PATH_TINYUSB}/TinyUSB-current/src/portable/raspberrypi/rp2040"
-        )
-    endif()
-
-    # Convert list to CMake list format for the config file (semicolon-separated)
-    string(REPLACE ";" ";" CONFIG_INCLUDES_STR "${CONFIG_INCLUDES}")
-
     # Generate the TinyUSBConfig.cmake file into the build tree
     file(MAKE_DIRECTORY "${CFG_PROFILE_DIR}")
     set(CONFIG_FILE "${CFG_PROFILE_DIR}/TinyUSBConfig.cmake")
@@ -527,7 +490,7 @@ function(generate_tinyusb_config)
 #
 # Usage in your CMakeLists.txt:
 #   find_package(TinyUSB REQUIRED
-#       PATHS \${PATH_TINYUSB}/Library/Family/\${FAMILY}/\${SOC}/\${PROFILE}
+#       PATHS \${PATH_TP_LIBRARY}/TinyUSB/Family/\${FAMILY}/\${SOC}/\${PROFILE}
 #       NO_DEFAULT_PATH
 #   )
 #   target_link_libraries(your_target PRIVATE TinyUSB::FS)
@@ -538,9 +501,13 @@ function(generate_tinyusb_config)
 #   PROVIDER: ${CFG_PROVIDER}
 #   FAMILY:   ${CFG_FAMILY}
 
-# Ensure PATH_TINYUSB is defined
+# The installed package (Third_Parties/Library/TinyUSB) is found from this file,
+# four levels up: <PROFILE>, <SOC>, <FAMILY>, Family
+get_filename_component(TINYUSB_LIBRARY \"\${CMAKE_CURRENT_LIST_DIR}/../../../..\" ABSOLUTE)
+
+# Ensure PATH_TINYUSB (the sources, Third_Parties/TinyUSB) is defined
 if(NOT DEFINED PATH_TINYUSB)
-    get_filename_component(PATH_TINYUSB \"\${CMAKE_CURRENT_LIST_DIR}/../../../../../\" ABSOLUTE)
+    get_filename_component(PATH_TINYUSB \"\${TINYUSB_LIBRARY}/../../TinyUSB\" ABSOLUTE)
     message(STATUS \"TinyUSB: PATH_TINYUSB set to \${PATH_TINYUSB}\")
 endif()
 
@@ -554,11 +521,12 @@ endif()
 
 # Build the list of interface include directories
 set(TINYUSB_INTERFACE_INCLUDES
-    \${PATH_TINYUSB}/Library/Include
-    \${PATH_TINYUSB}/Library/Include/Interface/OSAL
-    \${PATH_TINYUSB}/Library/Include/common
-    \${PATH_TINYUSB}/Library/Include/device
-    \${PATH_TINYUSB}/Library/Include/class
+    \${TINYUSB_LIBRARY}/Include
+    \${TINYUSB_LIBRARY}/Include/Interface/Includes
+    \${TINYUSB_LIBRARY}/Include/Interface/OSAL
+    \${TINYUSB_LIBRARY}/Include/common
+    \${TINYUSB_LIBRARY}/Include/device
+    \${TINYUSB_LIBRARY}/Include/class
     \${CMAKE_CURRENT_LIST_DIR}
 )
 ")
@@ -567,7 +535,7 @@ set(TINYUSB_INTERFACE_INCLUDES
     if(CFG_PROVIDER STREQUAL "st")
         file(APPEND "${CONFIG_FILE}" "\
 list(APPEND TINYUSB_INTERFACE_INCLUDES
-    \${PATH_TINYUSB}/Library/Include/Interface/Includes/mcu/st
+    \${TINYUSB_LIBRARY}/Include/Interface/Includes/mcu/st
 )
 ")
         # Note: ST CMSIS device headers are provided by the uKOS-X Ports/EquatesModels
@@ -586,8 +554,8 @@ list(APPEND TINYUSB_INTERFACE_INCLUDES
     elseif(CFG_PROVIDER STREQUAL "raspberrypi")
         file(APPEND "${CONFIG_FILE}" "\
 list(APPEND TINYUSB_INTERFACE_INCLUDES
-    \${PATH_TINYUSB}/Library/Include/Interface/Includes/mcu/raspberrypi
-    \${PATH_TINYUSB}/Library/Include/portable/raspberrypi/rp2040
+    \${TINYUSB_LIBRARY}/Include/Interface/Includes/mcu/raspberrypi
+    \${TINYUSB_LIBRARY}/Include/portable/raspberrypi/rp2040
 )
 ")
     endif()
@@ -625,6 +593,6 @@ message(STATUS \"Found TinyUSB: ${CFG_SOC}/${CFG_PROFILE} (Full Speed and High S
     message(STATUS "Generated TinyUSB config: ${CONFIG_FILE}")
 
     install(FILES "${CONFIG_FILE}"
-        DESTINATION "Library/Family/${CFG_FAMILY}/${CFG_SOC}/${CFG_PROFILE}"
+        DESTINATION "TinyUSB/Family/${CFG_FAMILY}/${CFG_SOC}/${CFG_PROFILE}"
     )
 endfunction()

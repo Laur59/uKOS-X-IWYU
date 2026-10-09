@@ -115,14 +115,13 @@ static  void        local_syncCode(void);
  *
  */
 static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
-    [[maybe_unused]]
-    char_t          *dummy;
-    uint8_t         *address = nullptr, byte = 0U, checksum, counter;
-    int32_t         status, error = KERR_S_LOADER_NOT, (*code)(uint32_t argc, const char_t *argv[]);
-    bool            terminate = false, equals;
-    uint8_t         run = KRUN;
-    uint32_t        size = 0U;
-    uKOS_header_t   ramHeader;
+                        uint8_t         *address = nullptr, byte = 0U, checksum, counter;
+                        int32_t         status, error = KERR_S_LOADER_NOT, (*code)(uint32_t argc, const char_t *argv[]);
+                        bool            terminate = false, equals;
+                        uint8_t         run = KRUN;
+                        uint32_t        size = 0U;
+                        uKOS_header_t   ramHeader;
+    [[maybe_unused]]    char_t          *dummy;
 
     (void)dprintf(KSYST, "S format Motorola loader mode; waiting for the code.\n");
 
@@ -517,6 +516,7 @@ static  bool    local_isApplication(int32_t (*code)(uint32_t argc, const char_t 
     if ((code == nullptr) || (header.oMemLocation != KMEMU) || (header.oStart != code)) {
         return false;
     }
+
     if ((header.oLnApplication == 0U) || (header.oLnApplication > (uintptr_t)linker_lnUMemo)) {
         return false;
     }

@@ -8,7 +8,7 @@ Ce document décrit le système CMake DRY (Don't Repeat Yourself) pour construir
 ### Structure des fichiers
 
 ```
-Third_Parties/TinyUSB/Library/Family/
+Third_Parties/TinyUSB/Construction/Family/
 ├── Mkfiles/
 │   ├── TinyUSB.mk          # Makefile commun (original)
 │   ├── TinyUSB.cmake       # Module CMake commun (support ST + Nordic)
@@ -213,7 +213,7 @@ Le système CMake utilise `FetchContent` pour télécharger automatiquement les 
 
 ```bash
 # Construction simple - CMake gère tout
-cd Third_Parties/TinyUSB/Library/Family/nrf/nRF5340
+cd Third_Parties/TinyUSB/Construction/Family/nrf/nRF5340
 mkdir build && cd build
 cmake ..      # Téléchargera automatiquement nrfx et CMSIS_5 si nécessaire
 cmake --build .
@@ -247,7 +247,7 @@ Ce script :
 
 **Vérification rapide d'une bibliothèque :**
 ```bash
-./quick_symbol_check.sh Library/Family/l4/STM32L4R5/cdc_cdc/libTinyUSB_FS.a
+./quick_symbol_check.sh ../Library/TinyUSB/Family/l4/STM32L4R5/cdc_cdc/libTinyUSB_FS.a
 ```
 
 Le script de validation vérifie :

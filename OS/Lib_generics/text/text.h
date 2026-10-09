@@ -71,7 +71,7 @@ extern  "C" {
  * \param[in]   nbArgs          Capacity of argv (number of pointers)
  * \param[out]  *argc           Ptr on the number of ASCII arguments
  * \return      KERR_TEXT_NOERR OK
- * \return      KERR_TEXT_TMARG Too many arguments for argv
+ * \return      KERR_TEXT_TMARG Too many arguments
  *
  */
 extern  int32_t text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[], uint32_t nbArgs, uint32_t *argc);
@@ -103,7 +103,7 @@ extern  int32_t text_readArgs(char_t *ascii, uint32_t size, const char_t *argv[]
  * \param[in]   sizeD           Size of the destination buffer (terminator included)
  * \param[in]   *asciiS         Ptr on the ASCII source buffer
  * \return      KERR_TEXT_NOERR OK
- * \return      KERR_TEXT_TOLNG The source does not fit: truncated
+ * \return      KERR_TEXT_TOLNG Text too long
  *
  */
 extern  int32_t text_copyAsciiBufferZ(char_t *asciiD, uint32_t sizeD, const char_t *asciiS);
@@ -130,7 +130,7 @@ extern  int32_t text_copyAsciiBufferZ(char_t *asciiD, uint32_t sizeD, const char
  * \param[in]   sizeD           Number of characters asciiD can take
  * \param[in]   *asciiS         Ptr on the ASCII source buffer
  * \return      KERR_TEXT_NOERR OK
- * \return      KERR_TEXT_TOLNG The source does not fit: truncated
+ * \return      KERR_TEXT_TOLNG Text too long
  *
  */
 extern  int32_t text_copyAsciiBufferN(char_t *asciiD, uint32_t sizeD, const char_t *asciiS);

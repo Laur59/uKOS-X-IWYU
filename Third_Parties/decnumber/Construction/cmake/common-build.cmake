@@ -31,7 +31,7 @@ set(VALID_CORE_NAMES CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_
 # Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
 # is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_DECNUMBER}" CACHE PATH "Install prefix" FORCE)
+    set(CMAKE_INSTALL_PREFIX "${PATH_UKOS}/Third_Parties/Library" CACHE PATH "Install prefix" FORCE)
 endif()
 
 # Deterministic archives and a git-derived SOURCE_DATE_EPOCH
@@ -103,7 +103,7 @@ set_target_properties(${TARGET_LIB} PROPERTIES
 )
 
 # Installation (deployed by 'cmake --install')
-install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "Library/${CORE_NAME}")
+install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "decnumber/${CORE_NAME}")
 
 # Strip unnecessary symbols after build
 add_custom_command(TARGET ${TARGET_LIB}

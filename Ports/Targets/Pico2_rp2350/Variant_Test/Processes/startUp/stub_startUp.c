@@ -16,6 +16,7 @@
 #include    <inttypes.h>
 #include    <stdio.h>
 
+#include    "cdc0/cdc0.h"
 #include    "ip.h"
 #include    "kern/kern.h"
 #include    "macros.h"
@@ -25,9 +26,9 @@
 #include    "serial/serial.h"
 #include    "serial_common.h"
 #include    "system/system.h"
+#include    "TinyUSB_interface.h"
 #include    "types.h"
 
-extern  bool    TinyUSB_cdc_isConnected(uint8_t itf);
 
 // Bootstrap function table
 // ------------------------
@@ -220,10 +221,11 @@ void    stub_startUp_launch(void) {
 
     #if (CONFIG_DIFFERENT_SERIAL_PER_CORE_S == true)
     if (core == KCORE_0) {
-        while (!TinyUSB_cdc_isConnected(0U)) {
+        while (cdc0_isConnected() == KERR_SERIAL_NOTCO) {
             kern_suspendProcess(10U);
         }
         kern_suspendProcess(100U);
+
         (void)dprintf(KSYST, "%s", aStrLogo);
         (void)dprintf(KSYST, "Signature:\n%s\n\n", signature);
         (void)dprintf(KSYST, "%ssw = %"PRIX32"\n", identifier, mode);

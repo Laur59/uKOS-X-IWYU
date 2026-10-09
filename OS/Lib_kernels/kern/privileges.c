@@ -139,8 +139,6 @@ int32_t kern_setPrivilegeMode([[maybe_unused]] uint8_t mode) {
         }
     }
     INTERRUPTION_ON_HARD;
-
-    #else
     #endif
 
     return KERR_KERN_NOERR;

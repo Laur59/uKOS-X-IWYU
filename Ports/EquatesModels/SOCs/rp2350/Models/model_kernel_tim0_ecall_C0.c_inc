@@ -266,10 +266,16 @@ void    kernel_message_C0(void) {
         uint32_t    *frame = (uint32_t *)vKern_stackProc[KCORE_0];
         if ((vKern_runProc[KCORE_0]->oSpecification.oMode == KPROC_PRIVILEGED) ||
             ((vKern_runProc[KCORE_0]->oInternal.oState & (1U<<BPROC_PRIV_ELEVATED)) != 0U)) {
-            frame[2] |= (uint32_t)MSTATUS_MPP;          // MPP = 3 (M-mode)
+
+// MPP = 3 (M-mode)
+
+            frame[2] |= (uint32_t)MSTATUS_MPP;
         }
         else {
-            frame[2] &= ~(uint32_t)MSTATUS_MPP;         // MPP = 0 (U-mode)
+
+// MPP = 0 (U-mode)
+
+            frame[2] &= ~(uint32_t)MSTATUS_MPP;
         }
     }
     #endif

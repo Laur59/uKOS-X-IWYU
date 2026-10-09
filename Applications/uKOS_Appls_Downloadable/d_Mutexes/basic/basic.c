@@ -210,8 +210,6 @@ static void aProcess_1([[maybe_unused]] const void *argument) {
     while (true) {
         kern_suspendProcess(100U);
 
-        kern_suspendProcess(100U);
-
         led_toggle(KLED_2);
         status = kern_lockMutex(mutex, 10000U);
         if (status != KERR_KERN_NOERR) {
@@ -255,8 +253,6 @@ static void aProcess_2([[maybe_unused]] const void *argument) {
 
     while (true) {
         kern_suspendProcess(1000U);
-
-        kern_suspendProcess(1000u);
 
         led_toggle(KLED_3);
         status = kern_lockMutex(mutex, 10000U);

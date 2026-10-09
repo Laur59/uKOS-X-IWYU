@@ -6,6 +6,7 @@
 # Project paths
 
 # - PATH_UKOS   --> Main uKOS-X folder
+# - PATH_TP_LIBRARY --> Prebuilt third-party libraries, one folder per package
 # - PATH_VARI   --> folder holding CMakeLists.txt
 # - PATH_BASE   --> Projects Root Base folder
 # - PATH_OSYS   --> Projects Root OS folder
@@ -16,6 +17,7 @@ get_filename_component(PATH_UKOS "${PATH_PORT}/.." ABSOLUTE)
 cmake_path(GET CMAKE_SOURCE_DIR PARENT_PATH TARGET_DIR)
 set(PATH_VARI ${CMAKE_SOURCE_DIR})
 set(PATH_OSYS ${PATH_UKOS}/OS)
+set(PATH_TP_LIBRARY ${PATH_UKOS}/Third_Parties/Library)
 get_filename_component(VARIANT "${PATH_VARI}" NAME)
 get_filename_component(BOARD "${TARGET_DIR}" NAME)
 

@@ -99,7 +99,7 @@ osal_semaphore_t    osal_semaphore_create([[maybe_unused]] osal_semaphore_def_t 
 bool    osal_semaphore_post(osal_semaphore_t sem_hdl, [[maybe_unused]] bool in_isr) {
     bool    status;
 
-    status = (kern_signalSemaphore((sema_t *)sem_hdl) == KERR_KERN_NOERR) ? (true) : (false);
+    status = (kern_signalSemaphore((sema_t *)sem_hdl) == KERR_KERN_NOERR);
     return status;
 }
 
@@ -112,7 +112,7 @@ bool    osal_semaphore_post(osal_semaphore_t sem_hdl, [[maybe_unused]] bool in_i
 bool    osal_semaphore_wait(osal_semaphore_t sem_hdl, [[maybe_unused]] uint32_t msec) {
     bool    status;
 
-    status = (kern_waitSemaphore((sema_t *)sem_hdl, 0U) == KERR_KERN_NOERR) ? (true) : (false);
+    status = (kern_waitSemaphore((sema_t *)sem_hdl, 0U) == KERR_KERN_NOERR);
     return status;
 }
 

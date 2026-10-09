@@ -17,4 +17,4 @@ readonly PATH_PRG="${0:a:h}"
 cd "${PATH_PRG}"
 
 rm -rf build
-rm -f Library/*/libTFLite.a(N)
+rm -f ../Library/Tflite-micro/*/libTFLite.a(N)

@@ -155,5 +155,5 @@ int32_t stub_urt0_isConnected(void) {
 
     if (core == KCORE_0) { status = model_usart_isConnected_C0(); }
     else                 { status = model_usart_isConnected_C1(); }
-    return (status);
+    return status;
 }

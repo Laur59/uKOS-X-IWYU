@@ -267,7 +267,7 @@ static  int32_t model_usart_flush_C1(void) {
  */
 static  int32_t model_usart_isConnected_C1(void) {
 
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 // Local routines
@@ -279,7 +279,7 @@ static  int32_t model_usart_isConnected_C1(void) {
  * - Interruption RX-TX
  *
  */
-static  void    local_USART_IRQHandler_C1(uint32_t core, [[maybe_unused]] uint64_t parameter) {
+static  void    local_USART_IRQHandler_C1(uint32_t core, uint64_t parameter) {
     volatile    uint32_t    iir;
 
     iir = USART_C1->IIR;

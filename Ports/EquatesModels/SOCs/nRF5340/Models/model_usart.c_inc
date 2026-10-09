@@ -252,7 +252,7 @@ int32_t model_usart_flush(void) {
  */
 int32_t model_usart_isConnected(void) {
 
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 // Local routines

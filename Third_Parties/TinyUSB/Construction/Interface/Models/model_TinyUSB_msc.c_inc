@@ -9,8 +9,10 @@
 
 #include    <stddef.h>
 #include    <string.h>
+#include    "TinyUSB_interface.h"
 
 static  bool    vEjected[KNB_CORES] = MCSET(false);
+extern  mutx_t  *vTinyUSB_API[KNB_CORES];
 
 // Some MCU doesn't have enough 8KB SRAM to store the whole disk
 // We will use Flash as read-only disk with board that has
@@ -167,7 +169,7 @@ void    tud_msc_inquiry_cb([[maybe_unused]] uint8_t lun, uint8_t vendor_id[8], u
  * - Called when received Test Unit Ready command
  *
  */
-bool    tud_msc_test_unit_ready_cb([[maybe_unused]] uint8_t lun) {
+bool    tud_msc_test_unit_ready_cb(uint8_t lun) {
     bool        status = true;
     uint32_t    core;
 
@@ -283,7 +285,7 @@ bool    tud_msc_is_writable_cb([[maybe_unused]] uint8_t lun) {
  * - Called when received WRITE10 command
  *
  */
-int32_t tud_msc_write10_cb([[maybe_unused]] uint8_t lun, [[maybe_unused]] uint32_t lba, [[maybe_unused]] uint32_t offset, [[maybe_unused]] uint8_t *buffer, uint32_t bufsize) {
+int32_t tud_msc_write10_cb([[maybe_unused]] uint8_t lun, uint32_t lba, [[maybe_unused]] uint32_t offset, [[maybe_unused]] uint8_t *buffer, uint32_t bufsize) {
     uint32_t    core;
 
     core = GET_RUNNING_CORE;
@@ -299,8 +301,6 @@ int32_t tud_msc_write10_cb([[maybe_unused]] uint8_t lun, [[maybe_unused]] uint32
     #if (defined(CFG_EXAMPLE_MSC_READONLY))
     uint8_t *addr = msc_disk[lba] + offset;
     memcpy(addr, buffer, bufsize);
-
-    #else
     #endif
 
     kern_unlockMutex(vTinyUSB_API[core]);

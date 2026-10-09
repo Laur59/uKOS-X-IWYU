@@ -19,7 +19,7 @@ project(FatFs_CORTEX_M4
 set(FLAGS_FP -mfloat-abi=hard -mfpu=fpv4-sp-d16)
 set(CPU_SPEC -mcpu=cortex-m4)
 # Library variants to build, format "subdir|definitions".
-# Each entry produces Library/<core>/<subdir>/libFatFs.a.
+# Each entry produces Library/FatFs/<core>/<subdir>/libFatFs.a.
 set(FATFS_VARIANTS
     "flash|SECURE_S FLASH_S"
     "sdcard|SECURE_S SDCARD_S"

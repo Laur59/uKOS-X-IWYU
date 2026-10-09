@@ -19,7 +19,7 @@ project(FatFs_RV32IMAC
 set(FLAGS_FP -mabi=ilp32)
 set(CPU_SPEC -march=rv32imac_zicsr_zifencei)
 # Library variants to build, format "subdir|definitions".
-# Each entry produces Library/<core>/<subdir>/libFatFs.a.
+# Each entry produces Library/FatFs/<core>/<subdir>/libFatFs.a.
 set(FATFS_VARIANTS
     "flash|SECURE_S FLASH_S"
     "sdcard|SECURE_S SDCARD_S"

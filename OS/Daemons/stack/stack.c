@@ -41,7 +41,7 @@ STRG_LOC_CONST(aStrHelp[])        = "stack deamon\n"
 
 #define KEXECUTION_CORE     ((1U<<BCORE_0) | (1U<<BCORE_1) | (1U<<BCORE_2) | (1U<<BCORE_3))
 
-static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
+static  int32_t     prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]);
 
 MODULE(
     Stack,                          // Module name (the first letter has to be upper case)

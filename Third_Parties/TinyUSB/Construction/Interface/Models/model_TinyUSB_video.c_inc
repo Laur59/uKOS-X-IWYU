@@ -17,8 +17,10 @@
 #include    "macros.h"
 #include    "os_errors.h"
 #include    "record/record.h"
+#include    "TinyUSB_interface.h"
 
 static  sema_t  *vSemaphore_ACK[KNB_CORES];
+extern  mutx_t  *vTinyUSB_API[KNB_CORES];
 
 STRG_LOC_CONST(aStrSemaphore_ACK[]) = "Video ACK";
 
@@ -65,10 +67,13 @@ void    TinyUSB_video_getImageSize(uint32_t *w, uint32_t *h) {
  * \brief TinyUSB_video_sendImage
  *
  * - Send a complete video frame
+ * - Return true when a host took it: without a host that streams, nothing is
+ *   sent and the call only waits 10-ms
  *
  */
-void    TinyUSB_video_sendImage(uint8_t *image, uint32_t w, uint32_t h, void (*callBack)(const void *argument), const void *argument) {
+bool    TinyUSB_video_sendImage(uint8_t *image, uint32_t w, uint32_t h, void (*callBack)(const void *argument), const void *argument) {
     uint32_t    core;
+    bool        sent = false;
 
     core = GET_RUNNING_CORE;
 
@@ -83,13 +88,14 @@ void    TinyUSB_video_sendImage(uint8_t *image, uint32_t w, uint32_t h, void (*c
             callBack(argument);
         }
 
-        kern_waitSemaphore(vSemaphore_ACK[core], 1000U);
+        sent = (kern_waitSemaphore(vSemaphore_ACK[core], 1000U) == KERR_KERN_NOERR);
         kern_unlockMutex(vTinyUSB_API[core]);
     }
     else {
         kern_unlockMutex(vTinyUSB_API[core]);
         kern_suspendProcess(10U);
     }
+    return sent;
 }
 
 // Video callbacks

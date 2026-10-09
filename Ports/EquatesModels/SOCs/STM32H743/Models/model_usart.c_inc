@@ -262,7 +262,7 @@ int32_t model_usart_flush(void) {
  */
 int32_t model_usart_isConnected(void) {
 
-    return (KERR_SERIAL_NOERR);
+    return KERR_SERIAL_NOERR;
 }
 
 // Local routines
@@ -313,10 +313,10 @@ static  void    local_USART_IRQHandler(void) {
         PREEMPTION_THRESHOLD(core);
     }
 
+    if (((iir & USART_ISR_TXE) != 0U) && ((USART->CR1 & USART_CR1_TXEIE) != 0U) && cb_CTSCheck()) {
+
 // TX interruption
 
-    if (((iir & USART_ISR_TXE) != 0U) && ((USART->CR1 & USART_CR1_TXEIE) != 0U) &&
-        cb_CTSCheck()) {
         USART->TDR = (uint16_t)*vRSndBuffer;
         vRSndBuffer++;
 

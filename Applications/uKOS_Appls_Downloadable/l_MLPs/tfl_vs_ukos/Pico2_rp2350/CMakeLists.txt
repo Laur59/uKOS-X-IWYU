@@ -61,10 +61,10 @@ else()
 endif()
 
 set(PATH_INCLUDES
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/${TFLITE_GENERIC}
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/${TFLITE_GENERIC}/third_party/flatbuffers/include
-    ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/Generic/${TFLITE_GENERIC}/third_party/gemmlowp
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/${TFLITE_GENERIC}
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/${TFLITE_GENERIC}/third_party/flatbuffers/include
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/${TFLITE_GENERIC}/third_party/gemmlowp
 )
-find_library(MYLIB TFLite ${PATH_UKOS}/Third_Parties/Tflite-micro/Library/${CORE})
+find_library(MYLIB TFLite ${PATH_TP_LIBRARY}/Tflite-micro/${CORE})
 
 include(common)

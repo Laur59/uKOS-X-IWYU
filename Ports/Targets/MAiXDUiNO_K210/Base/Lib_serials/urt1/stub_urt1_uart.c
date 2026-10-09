@@ -131,5 +131,5 @@ int32_t stub_urt1_isConnected(void) {
 
     if (core == KCORE_0) { status = model_usart_isConnected_C0(); }
     else                 { status = KERR_SERIAL_NODEV;            }
-    return (status);
+    return status;
 }

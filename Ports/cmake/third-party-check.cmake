@@ -6,7 +6,7 @@
 #   build, before it is linked.
 #
 # Build description:
-#   Third_Parties/<lib>/Library is ignored by git, so it stays as it is when
+#   Third_Parties/Library/<lib> is ignored by git, so it stays as it is when
 #   the checkout moves to another commit: the archives of the previous commit
 #   are then linked against the headers of this one, without a word. Each
 #   Library/ carries a stamp naming the sources it was built from
@@ -64,10 +64,10 @@ function(ukos_check_third_party lib)
     endif()
 endfunction()
 
-# Check the library of every path that lies in a Third_Parties/<lib>/Library
+# Check the library of every path that lies in Third_Parties/Library/<lib>
 function(ukos_check_third_party_archives)
     foreach(_path IN LISTS ARGN)
-        if(_path MATCHES "/Third_Parties/([^/]+)/Library/")
+        if(_path MATCHES "/Third_Parties/Library/([^/]+)/")
             ukos_check_third_party(${CMAKE_MATCH_1})
         endif()
     endforeach()

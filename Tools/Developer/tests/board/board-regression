@@ -41,9 +41,10 @@ sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 from ukos_board import (KHERE, KROOT, KSERIAL, KSPECS, Refusal,  # noqa: E402
                         console_answers, console_bauds, describe, identify,
                         log_mark, log_since, per_core, RX_MUTEX_CORE,
-                        parse_dump, prepare, probe_for_port, reset_board,
-                        send_json, send_row, serial, session_for_port,
-                        skip_reason, stlink_ports, symbolize)
+                        parse_dump, prepare, prepare_row, probe_for_port,
+                        reset_board, send_json, send_row, serial,
+                        session_for_port, skip_reason, stlink_ports,
+                        symbolize)
 
 KKNOWN = os.path.join(KHERE, "KNOWN-FAILURES")
 # " 8  Reserve_urt0_T     -1     Console_urt0" - a negative counter is held.
@@ -425,6 +426,11 @@ def run(args, sessions):
             res.update(result="notrun", error=lost)
             continue
 
+        unready = prepare_row(test, args.have)
+        if unready:
+            res.update(result="skip", error=unready)
+            continue
+
         if args.verbose:
             print("  %s... %s%s" % (DIM, tid, NC))
             sys.stdout.flush()
@@ -637,8 +643,10 @@ def main():
     ap.add_argument("--any-firmware", action="store_true",
                     help="test a board whose firmware is not HEAD")
     ap.add_argument("--expect-libc", choices=("newlib", "picolibc", "llvmlibc"))
-    ap.add_argument("--have", action="append", default=[], metavar="TAG",
-                    help="declare an available hw: tag; repeatable")
+    ap.add_argument("--have", action="append", default=[],
+                    metavar="TAG[=COMMAND]",
+                    help="declare an available hw: tag; with a command, run "
+                         "it before each row that needs the tag; repeatable")
     ap.add_argument("--allow-unsafe", action="store_true",
                     help="run rows that need ukos-serial's --unsafe")
     ap.add_argument("--allow-poison", action="store_true",

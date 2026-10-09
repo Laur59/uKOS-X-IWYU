@@ -5,7 +5,8 @@
  * Goal:     Kern - C library integration for xlib management.
  *
  *           This module is responsible for C library integration with uKOS-X.
- *           For newlib: creating and swapping the impure data (_impure_ptr).
+ *           For newlib: creating and swapping the impure data (_impure_ptr),
+ *           and giving back what newlib allocated for a process that ends.
  *           For picolibc and llvmlibc: saving and restoring the global errno
  *           on every switch.
  */
@@ -63,6 +64,42 @@ void    xLibrary_initialise(proc_t *handle) {
 }
 
 /*
+ * \brief Give back what newlib allocated for the process (newlib)
+ *
+ * newlib hangs memory on the reentrancy structure of a process the first time
+ * the process needs it - printing a floating-point value allocates the state of
+ * the number formatter, 288 bytes of the heap with their headers - and gives it
+ * back only through _reclaim_reent(). Without this call that memory was lost
+ * every time such a process ended, because xLibrary_initialise() simply
+ * overwrites the structure for the next process that gets the descriptor.
+ *
+ * _reclaim_reent() leaves the structure _impure_ptr points at alone, and that
+ * is the very one of a process that ends by itself. newlib is therefore pointed
+ * at its global structure first; the scheduler sets _impure_ptr again at the
+ * context switch that follows.
+ *
+ * \warning call usable only by the uKernel, before the stack of the process is
+ * \warning released: the frees it makes service a pending memo_delayedFree().
+ *
+ * \param[in]   *handle     Ptr on the handle
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void    xLibrary_release(proc_t *handle) {
+    reent_t     *reent = (reent_t *)handle->oInternal.oLocal;
+
+    if (reent == nullptr) {
+        return;
+    }
+
+    if (_impure_ptr == reent) {
+        _impure_ptr = _GLOBAL_REENT;
+    }
+    _reclaim_reent(reent);
+}
+
+/*
  * \brief update the impure pointer with the impure data of the process (newlib)
  *
  * This function updates the global _impure_ptr to point to the current process's
@@ -105,6 +142,22 @@ void    xLibrary_initialise(proc_t *handle) {
     proc_t      *process = handle;
 
     process->oErrno = 0;
+}
+
+/*
+ * \brief Give back what the C library allocated for the process (picolibc, llvmlibc)
+ *
+ * Neither library keeps memory per process: there is nothing to give back.
+ *
+ * \warning call usable only by the uKernel.
+ *
+ * \param[in]   *handle     Ptr on the handle
+ *
+ * \note This function does not return a value (None).
+ *
+ */
+void    xLibrary_release([[maybe_unused]] proc_t *handle) {
+
 }
 
 /*

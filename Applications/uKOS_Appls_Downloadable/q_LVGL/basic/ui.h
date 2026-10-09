@@ -32,6 +32,7 @@
 
 #define KARC_DIAMETER       80U                                         // Arc diameter
 #define KARC_MARGIN         20U                                         // Arc margin
+#define KARC_WIDTH          5                                           // Arc width
 #define KARC_POS_X          (KLCD_WIDTH - KARC_DIAMETER - KARC_MARGIN)  // X Arc
 #define KARC_POS_Y          KARC_MARGIN                                 // Y Arc
 
