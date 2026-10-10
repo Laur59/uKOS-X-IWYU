@@ -71,9 +71,41 @@ add_FatFs(STORAGE sdcard_flash)
 add_LVGL(DISPLAY WKS43WV067_5_Inches)
 ```
 
-That one line is all the system image needs. The drawing code and the panel headers
-(`lcd_display.h`, `lv_conf.h`) belong to the downloadable `q_LVGL` applications, which
-put `Library/LVGL/${DISPLAY}` and `Library/LVGL/${DISPLAY}/${CORE}` on their own include paths.
+That one line is all the system image needs to serve the downloadable `q_LVGL`
+applications. Their drawing code and the panel headers (`lcd_display.h`, `lv_conf.h`)
+are their own: they put `Library/${DISPLAY}` and `Library/${DISPLAY}/${CORE}` on their
+include paths.
+
+A system source that draws on the display needs the same headers. `add_LVGL()` leaves
+their directories in `LVGL_INCLUDE_DIRECTORIES`, to be given to the library that holds
+such a source:
+
+```cmake
+add_LVGL(DISPLAY WKS43WV067_5_Inches)
+target_include_directories(proc_u PRIVATE ${LVGL_INCLUDE_DIRECTORIES})
+```
+
+#### Boot banner on the display
+
+The `splash` process (`OS/Processes/splash`) draws the banner of the system on the
+display at boot, so a board whose console waits for a terminal on a USB CDC port shows
+that it is ready. It turns the panel on, renders the banner once into the frame buffer,
+then calls `lv_deinit()`, frees its memory and terminates: the display keeps showing the
+frame buffer, and an application is free to initialise LVGL for itself afterwards.
+
+```cmake
+target_sources(proc_u PRIVATE
+    ${PATH_OSYS}/Processes/splash/splash.c
+    ${PATH_OSYS}/Processes/splash/splash_ui.c
+    ${PATH_BASE}/Processes/splash/stub_splash.c
+)
+target_include_directories(proc_u PRIVATE ${PATH_OSYS}/Processes/splash)
+```
+
+The launcher starts it like any other process. The board supplies `stub_splash.c`, with
+`stub_splash_on()` (panel power and display controller) and `stub_splash_flush_cb()`
+(copy of the rendered area into the frame buffer); the banner is laid out for an
+800 x 480 panel. `Firefly_H743` and `Discovery_N657` have it.
 
 The archive has to exist for the panel *and* the variant's core:
 

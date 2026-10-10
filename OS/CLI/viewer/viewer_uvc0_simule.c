@@ -13,6 +13,7 @@
 #include    <stdlib.h>
 #include    <string.h>
 
+#include    "TinyUSB_interface.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"

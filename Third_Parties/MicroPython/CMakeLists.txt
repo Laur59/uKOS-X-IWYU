@@ -68,7 +68,7 @@ message("")
 # Step 1: Fetch upstream MicroPython repository
 #------------------------------------------------------------------------
 
-# Package version and tag (matching build_with_cmake.sh default)
+# Package version and tag
 set(MICROPYTHON_VERSION "1.29.0")
 set(MICROPYTHON_TAG "v${MICROPYTHON_VERSION}")
 
@@ -96,8 +96,7 @@ message(STATUS "MicroPython source fetched to: ${CMAKE_CURRENT_SOURCE_DIR}/Micro
 # Applied here rather than through FetchContent's PATCH_COMMAND: with
 # FETCHCONTENT_UPDATES_DISCONNECTED the populate step is skipped on every
 # configure after the first, and the patch step with it. This runs always, and
-# Patches/apply-patches.sh is idempotent. build_with_cmake.sh calls the same
-# script after its own checkout.
+# Patches/apply-patches.sh is idempotent.
 
 execute_process(
     COMMAND         ${CMAKE_CURRENT_SOURCE_DIR}/Patches/apply-patches.sh

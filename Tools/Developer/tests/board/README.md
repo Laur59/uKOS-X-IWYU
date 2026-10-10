@@ -42,7 +42,8 @@ Flash the board yourself first; the tool never flashes. Then, for one board:
 
 1. **Board.** `--port`, or `--board NAME`, which asks `uKOS` on every ST-Link
    console; with neither, the only ST-Link console that answers. A board
-   behind a UART bridge (K210, Firefly) has no ST-Link, so it needs `--port`;
+   without an ST-Link (K210 behind a UART bridge, Firefly on its own USB CDC
+   port) needs `--port`;
    adding `--board` then checks the answer. A `ukos-serial` session already
    holding the port is reused and left running; otherwise one is started at
    the console's baud rate and stopped on exit. That rate comes from the

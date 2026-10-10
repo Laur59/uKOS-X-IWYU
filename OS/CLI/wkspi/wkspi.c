@@ -95,9 +95,9 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
                 enum            { KERR_NOT, KERR_OKX, KERR_OCS, KERR_SET, KERR_BSY, KERR_INA, KERR_GEN, KERR_UNI } error = KERR_INA;
     volatile    uint32_t        *port = nullptr;
     static      spiCnf_t        configure = {
-                                    .oSpeed    = 5000000U,
-                                    .oMode     = (uint8_t)KSPI_MASTER,
-                                    .oClock    = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA),
+                                    .oSpeed = 5000000U,
+                                    .oMode  = (uint8_t)KSPI_MASTER,
+                                    .oClock = (1U<<(uint8_t)BSPI_POL) | (1U<<(uint8_t)BSPI_PHA),
                                 };
 
     (void)dprintf(KSYST, "wkspi operations.\n");

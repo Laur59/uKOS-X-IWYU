@@ -26,6 +26,7 @@
 #include    <stdlib.h>
 #include    <string.h>
 
+#include    "TinyUSB_interface.h"
 #include    "crt0.h"
 #include    "serial/serial.h"
 #include    "kern/kern.h"

@@ -5,10 +5,8 @@
 # Purpose:
 #   Apply the uKOS-X patches to the fetched MicroPython source tree.
 #
-#   Both ways of obtaining the source call this script: the CMake flow
-#   (CMakeLists.txt, after FetchContent_MakeAvailable) and the shell wrapper
-#   (build_with_cmake.sh, after the checkout). Either alone would leave the
-#   other unpatched.
+#   Called by CMakeLists.txt at every configure, after
+#   FetchContent_MakeAvailable.
 #
 #   Idempotent: a patch that is already applied is reported and skipped, so the
 #   script is safe to run on every configure and on every build.

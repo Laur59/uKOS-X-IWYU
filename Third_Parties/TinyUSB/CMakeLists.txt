@@ -82,7 +82,7 @@ message("")
 
 # Package version and commit hash
 set(TINYUSB_VERSION "0.21.0")
-set(TINYUSB_HASH "d48bd84")
+set(TINYUSB_HASH "e204823")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 

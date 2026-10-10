@@ -24,6 +24,7 @@
 #include    <stdlib.h>
 
 #include    "MT9V03x/MT9V03x.h"
+#include    "TinyUSB_interface.h"
 #include    "crt0.h"
 #include    "imager/imager.h"
 #include    "imager_common.h"

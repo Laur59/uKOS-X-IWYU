@@ -534,13 +534,13 @@ static  void    local_GPIO_Configuration(void) {
 // PE12, IN,  50-MHz, Pull-down --------    AF15
 // PE13, IN,  50-MHz, Pull-down --------    AF15
 // PE14, IN,  50-MHz, Pull-down --------    AF15
-// PE15, AL,  50-MHz, Push-pull SPI5_SCK    AF05    Arduino D13, LD6
+// PE15, OU,  50-MHz, Push-pull GPIO        AF15    Led 0
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-    CNFGPIO(E,KAL,KIN,KIN,KIN,KAL,KIN,KIN,KIN,KIN,KAL,KAL,KAL,KIN,KIN,KOU,KIN,
+    CNFGPIO(E,KOU,KIN,KIN,KIN,KAL,KIN,KIN,KIN,KIN,KAL,KAL,KAL,KIN,KIN,KOU,KIN,
               K50,K50,K50,K50,K99,K50,K50,K50,K50,K50,K50,K99,K50,K50,K50,K50,
               KNO,KPD,KPD,KPD,KNO,KPD,KPD,KPD,KPD,KPU,KNO,KPU,KPD,KPD,KNO,KPD,
-              A05,A15,A15,A15,A14,A15,A15,A15,A15,A07,A07,A11,A15,A15,A15,A15,
+              A15,A15,A15,A15,A14,A15,A15,A15,A15,A07,A07,A11,A15,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
               0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
@@ -571,7 +571,7 @@ static  void    local_GPIO_Configuration(void) {
 
 // PG00, AL,  99-MHz, Push-pull RGB.R0      AF14
 // PG01, AL,  99-MHz, Push-pull RGB.G1      AF14
-// PG02, AL,  50-MHz, Push-pull SPI5_MOSI   AF05    Arduino D11
+// PG02, IN,  50-MHz, Pull-down --------    AF15
 // PG03, IN,  50-MHz, Pull-down --------    AF15
 // PG04, IN,  50-MHz, Pull-down --------    AF15
 // PG05, IN,  50-MHz, Pull-down --------    AF15
@@ -587,10 +587,10 @@ static  void    local_GPIO_Configuration(void) {
 // PG15, AL,  99-MHz, Push-pull RGB.B0      AF14
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-    CNFGPIO(G,KAL,KIN,KOU,KAL,KAL,KOU,KIN,KAL,KIN,KAL,KIN,KIN,KIN,KAL,KAL,KAL,
+    CNFGPIO(G,KAL,KIN,KOU,KAL,KAL,KOU,KIN,KAL,KIN,KAL,KIN,KIN,KIN,KIN,KAL,KAL,
               K99,K50,K99,K99,K99,K50,K50,K99,K50,K99,K50,K50,K50,K50,K99,K99,
-              KNO,KPD,KNO,KNO,KNO,KNO,KPD,KNO,KPD,KNO,KPD,KPD,KPD,KNO,KNO,KNO,
-              A14,A15,A15,A14,A14,A15,A15,A14,A15,A14,A15,A15,A15,A05,A14,A14,
+              KNO,KPD,KNO,KNO,KNO,KNO,KPD,KNO,KPD,KNO,KPD,KPD,KPD,KPD,KNO,KNO,
+              A14,A15,A15,A14,A14,A15,A15,A14,A15,A14,A15,A15,A15,A15,A14,A14,
               KPP,KPP,KPP,KPP,KPP,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
               0U, 0U, 1U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
@@ -602,7 +602,7 @@ static  void    local_GPIO_Configuration(void) {
 // PH05, IN,  50-MHz, Pull-down --------    AF15
 // PH06, AL,  99-MHz, Push-pull RGB.B5      AF14
 // PH07, IN,  50-MHz, Pull-down --------    AF15
-// PH08, AL,  50-MHz, Pull-up   SPI5_MISO   AF05    Arduino D12
+// PH08, IN,  50-MHz, Pull-down --------    AF15
 // PH09, AL,  50-MHz, Open-D    I2C1_SCL    AF04
 // PH10, IN,  50-MHz, Pull-down --------    AF15
 // PH11, IN,  50-MHz, Pull-down --------    AF15
@@ -612,10 +612,10 @@ static  void    local_GPIO_Configuration(void) {
 // PH15, IN,  50-MHz, Pull-down --------    AF15
 
 //             15  14  13  12  11  10   9   8   7   6   5   4   3   2   1   0
-    CNFGPIO(H,KIN,KIN,KIN,KIN,KIN,KIN,KAL,KAL,KIN,KAL,KIN,KAL,KAL,KIN,KIN,KIN,
+    CNFGPIO(H,KIN,KIN,KIN,KIN,KIN,KIN,KAL,KIN,KIN,KAL,KIN,KAL,KAL,KIN,KIN,KIN,
               K50,K50,K50,K50,K50,K50,K50,K50,K50,K99,K50,K99,K99,K50,K50,K50,
-              KPD,KPD,KPD,KPD,KPD,KPD,KPU,KPU,KPD,KNO,KPD,KNO,KNO,KPD,KPD,KPD,
-              A15,A15,A15,A15,A15,A15,A04,A05,A15,A14,A15,A14,A14,A15,A15,A15,
+              KPD,KPD,KPD,KPD,KPD,KPD,KPU,KPD,KPD,KNO,KPD,KNO,KNO,KPD,KPD,KPD,
+              A15,A15,A15,A15,A15,A15,A04,A15,A15,A14,A15,A14,A14,A15,A15,A15,
               KPP,KPP,KPP,KPP,KPP,KPP,KOD,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,KPP,
               0U, 0U, 0U, 0U, 0U, 0U, 1U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U, 0U);
 
@@ -726,7 +726,7 @@ static  void    local_GPIO_Configuration(void) {
 static  void    local_RCC_Configuration(void) {
             uint32_t    retry;
 
-    #ifdef KCALENDAR_WITH_HW_RTC_S
+    #if (KCALENDAR_WITH_HW_RTC_S == true)
 
 // Enable backup domain access
 

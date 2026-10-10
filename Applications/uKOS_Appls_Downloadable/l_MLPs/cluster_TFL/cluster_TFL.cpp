@@ -67,7 +67,6 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #pragma GCC diagnostic ignored "-Wpedantic"
-#include    "tensorflow/lite/core/c/common.h"
 #include    "tensorflow/lite/micro/micro_interpreter.h"
 #include    "tensorflow/lite/micro/micro_log.h"
 #include    "tensorflow/lite/micro/micro_mutable_op_resolver.h"
@@ -151,7 +150,7 @@ void    RegisterOps(tflite::MicroMutableOpResolver<3> &resolver) {
 }
 
 #ifdef RISCV
-extern "C"  char_t  putchar_([[maybe_unused]] char_t ch) {
+extern "C"  char_t  putchar_(char_t ch) {
 
     return ch;
 }
@@ -179,13 +178,13 @@ namespace {
 
 [[noreturn]]
 void    aProcess_0([[maybe_unused]] const void *argument) {
-            TfLiteTensor    *input;
-            TfLiteTensor    *output;
-            uint64_t        time[2];
-            uint32_t        random[2], delta = 0;
-            float32_t       x, y, result;
-    const   float32_t       gain = 2.0F;
-    const   char_t          *winner;
+            tflite::micro::TfLiteTensor     *input;
+            tflite::micro::TfLiteTensor     *output;
+            uint64_t                        time[2];
+            uint32_t                        random[2], delta = 0;
+            float32_t                       x, y, result;
+    const   float32_t                       gain = 2.0F;
+    const   char_t                          *winner;
 
     #ifdef CORTEX
     RegisterDebugLogCallback(debuglog);
@@ -212,7 +211,7 @@ void    aProcess_0([[maybe_unused]] const void *argument) {
 
 // Allocate for the tensors
 
-        if (interpreter.AllocateTensors() != kTfLiteOk) {
+        if (interpreter.AllocateTensors() != tflite::micro::kTfLiteOk) {
             (void)dprintf(KSYST, "Error: Tensor allocation!\n");
             exit(EXIT_OS_FAILURE);
         }
@@ -228,7 +227,7 @@ void    aProcess_0([[maybe_unused]] const void *argument) {
         input->data.f[1] = y;
 
         kern_readTickCount(&time[0]);
-        if (interpreter.Invoke() != kTfLiteOk) {
+        if (interpreter.Invoke() != tflite::micro::kTfLiteOk) {
             (void)dprintf(KSYST, "Error: Excecution!\n");
             exit(EXIT_OS_FAILURE);
         }

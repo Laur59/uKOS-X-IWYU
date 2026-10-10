@@ -14,6 +14,7 @@
 
 #include    "Lib_peripherals/imager_common.h"
 #include    "MT9V03x/MT9V03x.h"
+#include    "TinyUSB_interface.h"
 #include    "imager/imager.h"
 #include    "kern/kern.h"
 #include    "macros.h"

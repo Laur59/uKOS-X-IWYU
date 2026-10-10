@@ -208,8 +208,7 @@ from that definition:
   that no list covers. `third-parties-cache audit` runs the same check on its own. A build
   with another generator has no such record and is stamped without it.
 - The upstream tree (`<package>-current`) is not part of the key; the reference it is
-  checked out at is, because the build files pin it. A build of another reference
-  (`MicroPython/build_with_cmake.sh <ref>`) is therefore never stamped.
+  checked out at is, because the build files pin it.
 - The module date (`"Module built on ..."`) is the commit date of the checkout that *built*
   the library. A restored library keeps that date, so two checkouts with the same key share
   archives that a rebuild would make differ in that one string.

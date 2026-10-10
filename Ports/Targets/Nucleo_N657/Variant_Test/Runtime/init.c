@@ -498,7 +498,7 @@ static  void    local_GPIO_Configuration(void) {
  */
 static  void    local_RCC_Configuration(void) {
 
-    #ifdef KCALENDAR_WITH_HW_RTC_S
+    #if (KCALENDAR_WITH_HW_RTC_S == true)
 
 // Enable backup domain access
 
@@ -511,7 +511,7 @@ static  void    local_RCC_Configuration(void) {
 
 // Waiting for LSI ready
 
-    while ((REG(RCC)->SR & RCC_SR_LSIRDY) == 0U) { }
+    while ((REG(RCC)->SR & RCC_SR_LSIRDY) == 0U) { ; }
 
 // Select LSI as RTC source and enable RTC
 

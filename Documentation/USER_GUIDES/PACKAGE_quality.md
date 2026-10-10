@@ -7,7 +7,7 @@ from the one that runs on every build to the ones you invoke deliberately:
 | Layer | Tool | Invoked |
 |---|---|---|
 | Compiler diagnostics | the warning set in `system.cmake` | every build |
-| Include hygiene | `include-what-you-use` | `checkiwyu`, `module-check-iwyu.sh` |
+| Include hygiene | `include-what-you-use` | `checkiwyu`, `checkiwyu-app`, `module-check-iwyu.sh` |
 | Header self-containment | clang `-fsyntax-only` | `check-self-contained.sh` |
 | Static analysis | clang-tidy, Cppcheck | `run-analyser`, `code_analysis.sh` |
 | **Host unit tests** | a native harness under `Tools/Developer/tests` | `run-tests` |
@@ -19,9 +19,9 @@ need a manager to fail; the board suite proves that the firmware on a real targe
 behaves. Neither subsumes the other — see §7 and §8.
 
 `Tools/Developer/bin/` holds symlinks to the scripts, so putting that directory on your
-`PATH` gives you `checkiwyu`, `run-analyser`, `clangd-target`, `latotale`, `regression`,
-`run-tests`, `run-board-tests` and `third-parties-cache` as plain commands. The examples
-below use the symlink names.
+`PATH` gives you `checkiwyu`, `checkiwyu-app`, `run-analyser`, `clangd-target`, `latotale`,
+`regression`, `run-tests`, `run-board-tests` and `third-parties-cache` as plain commands.
+The examples below use the symlink names.
 
 The result of the last full sweep is recorded in `../analysis-baseline.md`, one section per
 variant. Compare a new run against it: a finding that is not listed there is a regression,
@@ -68,6 +68,20 @@ Only LLVM presets are accepted; the script refuses anything else, because it rew
 clang invocations that CMake recorded. It wipes `build/`, reconfigures with
 `CMAKE_EXPORT_COMPILE_COMMANDS=ON`, then replays every entry of
 `build/compile_commands.json` through IWYU, printing each file as it goes.
+
+### Checking one application
+
+```bash
+cd Applications/uKOS_Appls_Downloadable/a_Basics/basic/Nucleo_H743
+checkiwyu-app                # same argument as checkiwyu
+```
+
+`checkiwyu-app` does the same for a downloadable application, from one of its board
+directories. It is a separate script because the application build gives the C++ compiler
+no `--target`, which `checkiwyu` relies on: here the triple is asked from the compiler,
+and the system headers come from the toolchain that owns it. The two runtime files every
+application links, `header.c` and `crt0_App.c`, are checked along with the application's
+own sources.
 
 ### Checking one module across every target
 

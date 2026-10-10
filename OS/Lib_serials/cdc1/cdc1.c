@@ -10,6 +10,7 @@
 #include    <stdint.h>
 #include    <stdlib.h>
 
+#include    "TinyUSB_interface.h"
 #include    "kern/kern.h"
 #include    "macros.h"
 #include    "macros_core.h"
@@ -18,7 +19,6 @@
 #include    "os_errors.h"
 #include    "record/record.h"
 #include    "serial_common.h"
-#include    "TinyUSB_interface.h"
 #include    "tusb_config.h"
 #include    "types.h"
 

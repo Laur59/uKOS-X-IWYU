@@ -9,6 +9,15 @@
                  "^Log provided by the core 0$",
                  "^ +Time \\[us\\]  Category "],
       "timeout": 15
+    },
+    {
+      "id": "dumplog/splash-banner-drawn",
+      "cmd": "dumplog",
+      "expect": ["^ +[0-9]+-us +Info system +Process_splash +local_process +[0-9]+ +splash: banner displayed$"],
+      "refute": ["splash: no memory", "splash: create proc"],
+      "timeout": 15,
+      "requires": ["sym:stub_splash_on"],
+      "note": "on a board with a display stub for the splash process (stub_splash_on in the image), the process must have drawn the banner at boot: it logs this record after lv_refr_now() and just before it terminates. The log is a ring of 200 records (KRECORD_SZ_LOG_BUF), so the record is gone on a board that has logged that many since its reset - reset it and run again"
     }
   ]
 }

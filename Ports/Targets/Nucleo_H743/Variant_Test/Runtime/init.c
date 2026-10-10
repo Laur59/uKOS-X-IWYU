@@ -549,7 +549,7 @@ static  void    local_RCC_Configuration(void) {
               | (1U * RCC_CFGR_MCO1PRE_0)               // prescaler / 1
               | (3U * RCC_CFGR_SW_0);                   // CPU clock = PLL
 
-    #ifdef KCALENDAR_WITH_HW_RTC_S
+    #if (KCALENDAR_WITH_HW_RTC_S == true)
 
 // RTC
 // ---
