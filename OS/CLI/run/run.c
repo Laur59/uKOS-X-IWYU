@@ -16,9 +16,8 @@
 #include    "system/system.h"
 #include    "types.h"
 
-#if (defined(CACHE_D_S))
+#ifdef CACHE_D_S
 #include    "cache.h"
-#include    "kern/kern.h"
 #include    "macros_core.h"
 #endif
 
@@ -111,7 +110,7 @@ static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
  */
 static  void    local_syncCode(void) {
 
-#if (defined(CACHE_D_S))
+#ifdef CACHE_D_S
     PRIVILEGE_ELEVATE;
     cache_I_D_Sync_Add((const void *)linker_stUMemo, (int32_t)(uintptr_t)linker_lnUMemo);
     PRIVILEGE_RESTORE;

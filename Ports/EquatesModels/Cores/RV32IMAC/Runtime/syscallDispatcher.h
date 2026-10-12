@@ -19,3 +19,5 @@
 // Prototypes
 
 extern  void    syscallDispatcher(void);
+extern  void    kernel_message_C0(void);
+extern  void    kernel_message_C1(void);

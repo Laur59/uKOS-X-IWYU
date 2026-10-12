@@ -13,6 +13,9 @@
 
 #include    "board.h"
 #include    "macros_core.h"
+#ifdef __riscv
+#include    "macros_soc.h"
+#endif
 #include    "os_errors.h"
 #include    "soc_reg.h"
 

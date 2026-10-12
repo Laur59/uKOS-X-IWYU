@@ -25,11 +25,11 @@
 
 // PMP cfg byte – RP2350-E6 transposed permission bits.
 
-#define KPMP_X          (1U << 0)            // execute
-#define KPMP_W          (1U << 1)            // write
-#define KPMP_R          (1U << 2)            // read
-#define KPMP_A_NAPOT    (3U << 3)            // naturally-aligned power-of-two region
-#define KPMP_L          (1U << 7)            // lock (also enforces on M-mode) – unused for now
+#define KPMP_X          (1U << 0U)           // execute
+#define KPMP_W          (1U << 1U)           // write
+#define KPMP_R          (1U << 2U)           // read
+#define KPMP_A_NAPOT    (3U << 3U)           // naturally-aligned power-of-two region
+#define KPMP_L          (1U << 7U)           // lock (also enforces on M-mode) – unused for now
 
 // Composite attributes (NAPOT + permissions, no lock).
 
@@ -53,9 +53,9 @@
     do {                                                                                      \
         extern uint8_t  linker_##base[];                                                      \
         const uintptr_t _b   = (uintptr_t)linker_##base;                                      \
-        const uintptr_t _sz  = (uintptr_t)1U << (napotLog2);                                  \
+        const uintptr_t _sz  = (uintptr_t)1U << (uint32_t)(napotLog2);                        \
         const uintptr_t _adr = (_b | ((_sz >> 1U) - 1U)) >> 2U;       /* NAPOT encode */      \
-        const uint32_t  _sh  = (uint32_t)(((regionNb) & 3U) * 8U);                            \
+        const uint32_t  _sh  = (uint32_t)(((uint32_t)(regionNb) & 3U) * 8U);                  \
         uint32_t        _cfg = core_getCSR(KPMP_CFG_CSR(regionNb));                           \
         _cfg = (_cfg & ~((uint32_t)0xFFU << _sh)) | ((uint32_t)(attr) << _sh);                \
         core_putCSR(RV_CSR_PMPADDR0 + (uint32_t)(regionNb), (uint32_t)_adr);                  \

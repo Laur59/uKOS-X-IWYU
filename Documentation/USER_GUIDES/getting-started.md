@@ -149,6 +149,10 @@ cmake --build build
 cmake --install build
 ```
 
+The install step also copies the public headers of LVGL to
+`Third_Parties/Library/LVGL`, so the cloned `LVGL-current` may be removed once the
+archives are built.
+
 ### Building STM32 (N6 FSBL + N6 NPU)
 
 ```bash
@@ -215,9 +219,13 @@ from that definition:
 
 A `Library/<package>/` built before the stamp existed is reported as *not stamped*, never as stale.
 If you know it was built from the sources now checked out,
-`third-parties-cache adopt <package>` stamps and caches it on your word. The cache only
-grows; entries are plain directories and can be deleted at any time
-(`third-parties-cache list` shows them with their size).
+`third-parties-cache adopt <package>` stamps and caches it on your word.
+
+The cache only grows on its own (`third-parties-cache list` shows the entries with their
+size). `third-parties-cache prune` removes the ones nothing needs any more: it keeps every
+entry that a checkout placed next to this one would restore or holds in its `Library/`, and
+the three most recently saved of the others (`--keep <n>` changes that number). Run it with
+`--dry-run` first to see what would go.
 
 ## Building all the targets of the package
 

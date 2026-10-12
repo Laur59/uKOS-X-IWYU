@@ -288,7 +288,7 @@ Quick Camera (macOS, through System Events, so the terminal needs the
 Accessibility permission; it never starts the application):
 
 ```bash
-Tools/Developer/bin/board-regression --board <Board> --allow-unsafe \
+Tools/Developer/bin/board-regression --board Discovery_U5G9 --allow-unsafe \
     --have video-host=Tools/Developer/bin/select-video-source
 ```
 | `unsafe` | the operator passed `--allow-unsafe` |

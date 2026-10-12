@@ -30,12 +30,6 @@ else()
                         "Expected format: TFLite_<CORE_NAME> (e.g., TFLite_CORTEX_M7)")
 endif()
 
-# Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
-# is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_UKOS}/Third_Parties/Library" CACHE PATH "Install prefix" FORCE)
-endif()
-
 # Deterministic archives and a git-derived SOURCE_DATE_EPOCH
 include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
 ukos_reproducible_build()
@@ -199,5 +193,3 @@ else()
     )
 endif()
 
-# Installation (deployed by 'cmake --install')
-install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "Tflite-micro/${CORE_NAME}")

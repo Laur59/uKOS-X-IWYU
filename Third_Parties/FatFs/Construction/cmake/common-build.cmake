@@ -28,12 +28,6 @@ else()
 endif()
 set(VALID_CORE_NAMES CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_M85)
 
-# Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
-# is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_UKOS}/Third_Parties/Library" CACHE PATH "Install prefix" FORCE)
-endif()
-
 # Deterministic archives and a git-derived SOURCE_DATE_EPOCH
 include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
 ukos_reproducible_build()
@@ -78,11 +72,9 @@ foreach(VARIANT_ENTRY ${FATFS_VARIANTS})
     if(VARIANT_SUBDIR STREQUAL "")
         set(TARGET_LIB FatFs_${CORE_NAME})
         set(VARIANT_OUTDIR "${CMAKE_CURRENT_BINARY_DIR}")
-        set(VARIANT_INSTALL_DIR "FatFs/${CORE_NAME}")
     else()
         set(TARGET_LIB FatFs_${CORE_NAME}_${VARIANT_SUBDIR})
         set(VARIANT_OUTDIR "${CMAKE_CURRENT_BINARY_DIR}/${VARIANT_SUBDIR}")
-        set(VARIANT_INSTALL_DIR "FatFs/${CORE_NAME}/${VARIANT_SUBDIR}")
     endif()
 
     add_library(${TARGET_LIB} STATIC
@@ -137,9 +129,6 @@ foreach(VARIANT_ENTRY ${FATFS_VARIANTS})
         ARCHIVE_OUTPUT_DIRECTORY "${VARIANT_OUTDIR}"
         OUTPUT_NAME "FatFs"
     )
-
-    # Installation (deployed by 'cmake --install')
-    install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "${VARIANT_INSTALL_DIR}")
 
     # Strip unnecessary symbols after build
     add_custom_command(TARGET ${TARGET_LIB}

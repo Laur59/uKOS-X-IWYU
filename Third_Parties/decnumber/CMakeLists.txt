@@ -69,7 +69,7 @@ message("")
 # Step 1: Fetch upstream decnumber repository
 #------------------------------------------------------------------------
 
-# Package version and commit hash (matching build.sh)
+# Package version and commit hash
 set(DECNUMBER_HASH "f8d97fcb")
 
 message(STATUS "Fetching decnumber (commit ${DECNUMBER_HASH})")

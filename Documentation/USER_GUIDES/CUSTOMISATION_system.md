@@ -73,8 +73,11 @@ add_LVGL(DISPLAY WKS43WV067_5_Inches)
 
 That one line is all the system image needs to serve the downloadable `q_LVGL`
 applications. Their drawing code and the panel headers (`lcd_display.h`, `lv_conf.h`)
-are their own: they put `Library/${DISPLAY}` and `Library/${DISPLAY}/${CORE}` on their
-include paths.
+are their own: they put `Library/LVGL/${DISPLAY}`, `Library/LVGL/${DISPLAY}/${CORE}`
+and `Library/LVGL` on their include paths. The last one holds the public headers of
+LVGL (`lvgl.h` and `include/lvgl/`), which `cmake --install` copies next to the
+archives: the cloned repository `Third_Parties/LVGL/LVGL-current` is needed to build
+the archives, not to use them.
 
 A system source that draws on the display needs the same headers. `add_LVGL()` leaves
 their directories in `LVGL_INCLUDE_DIRECTORIES`, to be given to the library that holds

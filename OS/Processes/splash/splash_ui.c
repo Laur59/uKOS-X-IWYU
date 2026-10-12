@@ -8,7 +8,6 @@
 #include    "splash_ui.h"
 
 #include    <inttypes.h>
-#include    <stdint.h>
 
 #include    "ulvgl.h"
 #include    "ip.h"

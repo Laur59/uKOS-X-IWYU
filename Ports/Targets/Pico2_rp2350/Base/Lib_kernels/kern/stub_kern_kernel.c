@@ -28,8 +28,6 @@
 
 #ifdef __riscv
 
-#include    "Registers/rv32_csr.h"
-#include    "core.h"
 #include    "model_kernel_tim0_ecall_C0.c_inc"
 #include    "model_kernel_tim1_ecall_C1.c_inc"
 

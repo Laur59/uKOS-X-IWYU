@@ -13,6 +13,9 @@
 #include    "Registers/RP2350_ticks.h"
 #include    "Registers/RP2350_watchdog.h"
 #include    "macros_core.h"
+#ifdef __riscv
+#include    "macros_soc.h"
+#endif
 #include    "os_errors.h"
 #include    "types.h"
 

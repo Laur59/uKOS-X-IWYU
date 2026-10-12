@@ -14,6 +14,9 @@
 #include    "kern/kern.h"
 #include    "led/led.h"
 #include    "macros_core.h"
+#ifdef __riscv
+#include    "macros_soc.h"
+#endif
 #include    "types.h"
 
 /*

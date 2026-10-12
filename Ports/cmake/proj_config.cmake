@@ -692,11 +692,12 @@ macro(add_LVGL)
     list(APPEND UKOS_COMPONENTS ${LVGL})
 
     # Headers of LVGL and of the panel, for the system sources drawing on the
-    # display: target_include_directories(<lib> PRIVATE ${LVGL_INCLUDE_DIRECTORIES})
+    # display: target_include_directories(<lib> PRIVATE ${LVGL_INCLUDE_DIRECTORIES}).
+    # The public headers of LVGL are installed with the archives (lvgl.h and
+    # include/lvgl), so the cloned repository is not needed here.
     set(LVGL_INCLUDE_DIRECTORIES
         ${PATH_TP_LIBRARY}/LVGL/${LVGL_DISPLAY}
         ${PATH_TP_LIBRARY}/LVGL/${LVGL_DISPLAY}/${CORE}
-        ${PATH_UKOS}/Third_Parties/LVGL/LVGL-current
-        ${PATH_UKOS}/Third_Parties/LVGL/LVGL-current/src
+        ${PATH_TP_LIBRARY}/LVGL
     )
 endmacro()

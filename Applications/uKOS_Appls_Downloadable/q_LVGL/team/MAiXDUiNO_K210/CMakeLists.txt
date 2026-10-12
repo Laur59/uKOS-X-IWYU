@@ -17,7 +17,6 @@ project(
 )
 
 set(DISPLAY TFT_2_4_Inches)
-set(PATH_LVGL ${PATH_UKOS}/Third_Parties/LVGL)
 
 # Microcontroller description (mandatory variables)
 set(SOC K210)
@@ -37,8 +36,7 @@ add_compile_options(
 set(PATH_INCLUDES
     ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}
     ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}/${CORE}
-    ${PATH_LVGL}/LVGL-current
-    ${PATH_LVGL}/LVGL-current/src
+    ${PATH_TP_LIBRARY}/LVGL
 )
 
 set(OBJ

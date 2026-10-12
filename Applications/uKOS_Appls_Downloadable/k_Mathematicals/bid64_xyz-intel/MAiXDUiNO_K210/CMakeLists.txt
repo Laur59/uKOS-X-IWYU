@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+
+cmake_minimum_required(VERSION 3.31)
+
+# Applications CMake module setup
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
+
+include(set-project-paths)
+
+include(${PATH_UKOS}/Ports/cmake/select-riscv-toolchain.cmake)
+
+project(
+    bid64_xyz-intel
+    VERSION 1.0
+    LANGUAGES C
+)
+
+# Microcontroller description (mandatory variables)
+set(SOC K210)
+set(CORE RV64IMAFDC)
+
+# Target
+set(BOARD MAiXDUiNO_K210)
+set(VARIANT Variant_Test)
+
+# Extra compilation options
+add_compile_options(
+    -g3 # include extra information for debugger
+    -Os # optimisation
+)
+
+# bid_functions.h declares functions taking a wchar_t
+if(CMAKE_C_COMPILER_ID MATCHES "Clang")
+    set(CFLAGS_APPEND -Wno-c++-keyword)
+endif()
+
+set(PATH_INCLUDES
+    ${PATH_TP_LIBRARY}/IntelRDFPMath/include
+)
+find_library(MYLIB IntelRDFPMath ${PATH_TP_LIBRARY}/IntelRDFPMath/${CORE})
+
+include(common)

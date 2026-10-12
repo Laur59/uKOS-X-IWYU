@@ -19,7 +19,9 @@
 
 #include    "board.h"
 #include    "cmns.h"
+#ifndef __riscv
 #include    "core.h"
+#endif
 #include    "crt0.h"
 #include    "exce.h"
 #include    "macros.h"

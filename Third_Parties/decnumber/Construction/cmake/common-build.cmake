@@ -28,12 +28,6 @@ else()
 endif()
 set(VALID_CORE_NAMES CORTEX_M3 CORTEX_M4 CORTEX_M7 CORTEX_M33 CORTEX_M55 CORTEX_M85 RV32IMAC RV64IMAFDC)
 
-# Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
-# is reliable). Allows 'cmake --install <build>' without an explicit --prefix.
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_UKOS}/Third_Parties/Library" CACHE PATH "Install prefix" FORCE)
-endif()
-
 # Deterministic archives and a git-derived SOURCE_DATE_EPOCH
 include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
 ukos_reproducible_build()
@@ -101,9 +95,6 @@ endif()
 set_target_properties(${TARGET_LIB} PROPERTIES
     OUTPUT_NAME "decnumber"
 )
-
-# Installation (deployed by 'cmake --install')
-install(TARGETS ${TARGET_LIB} ARCHIVE DESTINATION "decnumber/${CORE_NAME}")
 
 # Strip unnecessary symbols after build
 add_custom_command(TARGET ${TARGET_LIB}

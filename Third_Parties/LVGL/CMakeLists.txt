@@ -34,6 +34,11 @@
 #   - Library/LVGL/*/*/libLVGL.a
 #   - Library/LVGL/*/*/lv_conf.h
 #   - Library/LVGL/*/lcd_display.h
+#   - Library/LVGL/lvgl.h
+#   - Library/LVGL/include/lvgl/**/*.h
+#
+#   Library/LVGL is self-contained: once installed, the cloned repository
+#   (LVGL-current) is only needed to build the archives again.
 
 cmake_minimum_required(VERSION 3.31)
 
@@ -71,7 +76,7 @@ message("")
 # Step 1: Fetch upstream LVGL repository using ExternalProject
 #------------------------------------------------------------------------
 
-# Package version and commit hash (matching build.sh)
+# Package version and commit hash
 set(LVGL_VERSION "9.6.0")
 set(LVGL_HASH "v9.6.0")
 
@@ -194,8 +199,9 @@ endforeach()
 #
 # cmake --install build gathers libLVGL.a from each per-core build tree
 # (Construction/<DISPLAY>/<CORE>/build/) and deploys it to
-# Library/LVGL/<DISPLAY>/<CORE>/, together with the panel headers that the
-# downloadable LVGL applications include from there.
+# Library/LVGL/<DISPLAY>/<CORE>/, together with the panel headers and the
+# public headers of LVGL that the system and the downloadable LVGL
+# applications include from there.
 #------------------------------------------------------------------------
 
 set(ALL_DISPLAYS "")
@@ -223,6 +229,22 @@ foreach(DISPLAY ${ALL_DISPLAYS})
             DESTINATION "LVGL/${DISPLAY}"
     )
 endforeach()
+
+# The public API of LVGL, so that the consumers of the archives do not need the
+# cloned repository. Library/LVGL mirrors the root of the upstream tree: lvgl.h
+# forwards to include/lvgl/lvgl.h, and one include directory (Library/LVGL)
+# serves both.
+#
+# The private API (include/lvgl_private and the headers under src/) is not
+# installed: every lv_conf.h leaves LV_USE_PRIVATE_API at 0. Enabling it means
+# installing lvgl_private.h, include/lvgl_private and src/**/*.h as well.
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/LVGL-current/include/lvgl/"
+        DESTINATION "LVGL/include/lvgl"
+        FILES_MATCHING PATTERN "*.h"
+)
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/LVGL-current/lvgl.h"
+        DESTINATION "LVGL"
+)
 
 #------------------------------------------------------------------------
 # Step 4: Create convenience targets

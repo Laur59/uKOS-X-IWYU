@@ -44,7 +44,7 @@
 #include    "text/text.h"
 #include    "types.h"
 
-#if (defined(CACHE_D_S))
+#ifdef CACHE_D_S
 #include    "cache.h"
 #include    "macros_core.h"
 #endif
@@ -508,7 +508,7 @@ static  int32_t local_getData(const uint8_t *counter, uint8_t *checksum, uint8_t
  */
 static  void    local_syncCode(void) {
 
-#if (defined(CACHE_D_S))
+#ifdef CACHE_D_S
     PRIVILEGE_ELEVATE;
     cache_I_D_Sync_Add((const void *)linker_stUMemo, (int32_t)(uintptr_t)linker_lnUMemo);
     PRIVILEGE_RESTORE;
@@ -539,6 +539,7 @@ static  bool    local_isApplication(int32_t (*code)(uint32_t argc, const char_t 
     if ((code == nullptr) || (header.oMemLocation != KMEMU) || (header.oStart != code)) {
         return false;
     }
+
     if ((header.oLnApplication == 0U) || (header.oLnApplication > (uintptr_t)linker_lnUMemo)) {
         return false;
     }

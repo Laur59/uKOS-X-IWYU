@@ -17,7 +17,6 @@ project(
 )
 
 set(DISPLAY RK050HR18_5_Inches)
-set(PATH_LVGL ${PATH_UKOS}/Third_Parties/LVGL)
 
 # Microcontroller description (mandatory variables)
 set(SOC STM32N657)
@@ -40,7 +39,7 @@ add_compile_definitions(
 set(PATH_INCLUDES
     ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}
     ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}/${CORE}
-    ${PATH_LVGL}/LVGL-current
+    ${PATH_TP_LIBRARY}/LVGL
     ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic
     ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic/third_party/flatbuffers/include
     ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic/third_party/gemmlowp

@@ -385,8 +385,3 @@ extern  void    model_coreDump_displayInterruptions(uintptr_t lr, uintptr_t *msp
                                 : "lr"                                                                                          \
                                 )
 #endif
-
-// Stack frame macros
-// ------------------
-
-#include    "macros_core_stackFrame.h"

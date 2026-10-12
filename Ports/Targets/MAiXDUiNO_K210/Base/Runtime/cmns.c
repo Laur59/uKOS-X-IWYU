@@ -17,7 +17,6 @@
 #include    "macros_soc.h"
 #include    "modules.h"
 #include    "types.h"
-#include    "serial/serial.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

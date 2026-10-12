@@ -11,8 +11,8 @@
 
 #include    <stdint.h>
 
-#include    "macros_core.h"
-#include    "types.h"
+#include    "Registers/rv32_csr.h"
+#include    "macros_soc.h"
 
 // Weak stubs — overridden by the RISC-V kernel model in Phase 3.3.
 

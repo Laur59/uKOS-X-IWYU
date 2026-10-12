@@ -11,22 +11,21 @@
 
 #include    <stdint.h>
 
+#include    "Registers/core_addendum.h"
 #include    "core.h"
-#include    "soc_reg.h"
-#include    "macros_soc.h"
+#include    "exce.h"
+#ifdef PRIVILEGED_USER_S
+#include    "kern/privileges.h"
+#endif
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
+#include    "macros_soc.h"
+#include    "soc_reg.h"
 
-extern  void    (*vExce_indExcVectors[KNB_CORES][KNB_EXCEPTIONS])(void);
-extern  void    (*vExce_indIntVectors[KNB_CORES][KNB_INTERRUPTIONS])(void);
-extern  bool    vExce_isException[KNB_CORES];
-
-#ifdef PRIVILEGED_USER_S
-// kern_setPrivilegeMode() checks this flag and skips the RIGHTS_ELEVATION ecall when
-// set, so a kernel service called from an interrupt or exception handler does not
-// trigger a nested ecall that would clobber the non-reentrant mscratch trap-stack swap.
-extern volatile bool vPriv_insideException[KNB_CORES];
-#endif
+// vPriv_insideException (kern/privileges.h): kern_setPrivilegeMode() checks this flag
+// and skips the RIGHTS_ELEVATION ecall when set, so a kernel service called from an
+// interrupt or exception handler does not trigger a nested ecall that would clobber the
+// non-reentrant mscratch trap-stack swap.
 
 // File-scoped suppression: every external symbol below is referenced either
 // from the boot vector table, from inline asm in this TU, or via a weak
@@ -465,13 +464,13 @@ void first_dispatch_interrupt(void) {
 
     __asm volatile ("mv %0,t0" : "=r"(interrupt));
 
-    if (interrupt == 11u) {
+    if (interrupt == 11U) {
 
         // Machine External Interrupt (MEIP)
         // Read meinext to get the pending peripheral IRQ number
 
         uint32_t    meinext = core_getNextExternalIRQ();
-        if ((meinext & MEINEXT_NOIRQ) == 0u) {
+        if ((meinext & MEINEXT_NOIRQ) == 0U) {
             uint32_t    irqNum = (meinext & MEINEXT_IRQ_MASK) >> MEINEXT_IRQ_SHIFT;
             if (irqNum < KNB_INTERRUPTIONS && vExce_indIntVectors[core][irqNum] != nullptr) {
                 #ifdef PRIVILEGED_USER_S
@@ -507,8 +506,8 @@ void first_dispatch_ecall(void) {
 
     core = GET_RUNNING_CORE;
 
-    if (vExce_indExcVectors[core][11u] != nullptr) {
-        vExce_indExcVectors[core][11u]();
+    if (vExce_indExcVectors[core][11U] != nullptr) {
+        vExce_indExcVectors[core][11U]();
     }
 }
 
@@ -552,7 +551,7 @@ static void MTVEC_MEI_Handler_C0(void) {
     core    = GET_RUNNING_CORE;
     meinext = core_getNextExternalIRQ();
 
-    while ((meinext & MEINEXT_NOIRQ) == 0u) {
+    while ((meinext & MEINEXT_NOIRQ) == 0U) {
         uint32_t    irqNum = (meinext & MEINEXT_IRQ_MASK) >> MEINEXT_IRQ_SHIFT;
 
         if ((irqNum < KNB_INTERRUPTIONS) && (vExce_indIntVectors[core][irqNum] != nullptr)) {

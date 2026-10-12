@@ -17,6 +17,7 @@
 #include    "board.h"
 #include    "clockTree.h"
 #include    "macros_core.h"
+#include    "macros_soc.h"
 #include    "soc_reg.h"
 
 #ifdef __riscv
@@ -140,37 +141,37 @@ static  void    local_PLL_Configuration(void) {
 
 // Disable clock resuscitation (may have been enabled by bootrom)
 
-    REG(CLOCKS)->CLK_SYS_RESUS_CTRL = 0x0u;
+    REG(CLOCKS)->CLK_SYS_RESUS_CTRL = 0x0U;
 
 // Before touching PLLs or XOSC, switch clk_sys and clk_ref to safe
 // default sources (ROSC). This prevents killing the clock if the
 // bootrom left clk_sys running from PLL or clk_ref running from XOSC.
 
     REG(CLOCKS)->CLK_SYS_CTRL &= ~CLOCKS_CLK_SYS_CTRL_SRC;
-    while ((REG(CLOCKS)->CLK_SYS_SELECTED & 0x1u) == 0x0u) { }
+    while ((REG(CLOCKS)->CLK_SYS_SELECTED & 0x1U) == 0x0U) { }
 
     REG(CLOCKS)->CLK_REF_CTRL &= ~CLOCKS_CLK_REF_CTRL_SRC;
-    while ((REG(CLOCKS)->CLK_REF_SELECTED & 0x1u) == 0x0u) { }
+    while ((REG(CLOCKS)->CLK_REF_SELECTED & 0x1U) == 0x0U) { }
 
 // Turn on the 12-MHz crystal oscillator
 
     REG(XOSC)->CTRL    = XOSC_CTRL_FREQ_RANGE_1_15MHZ;
-    REG(XOSC)->STARTUP = 0x00C4u;
+    REG(XOSC)->STARTUP = 0x00C4U;
     REG(XOSC)->CTRL   |= XOSC_CTRL_ENABLE_ENABLE;
-    while ((REG(XOSC)->STATUS & XOSC_STATUS_STABLE) == 0x0u) { }
+    while ((REG(XOSC)->STATUS & XOSC_STATUS_STABLE) == 0x0U) { }
 
 // Switch clk_ref to XOSC (glitchless)
 
-    REG(CLOCKS)->CLK_REF_DIV  = 1u * CLOCKS_CLK_REF_DIV_INT_0;
-    REG(CLOCKS)->CLK_REF_CTRL = (REG(CLOCKS)->CLK_REF_CTRL & ~0x3u) | 0x2u;
-    while ((REG(CLOCKS)->CLK_REF_SELECTED & (1u<<0x2u)) == 0x0u) { }
+    REG(CLOCKS)->CLK_REF_DIV  = 1U * CLOCKS_CLK_REF_DIV_INT_0;
+    REG(CLOCKS)->CLK_REF_CTRL = (REG(CLOCKS)->CLK_REF_CTRL & ~0x3U) | 0x2U;
+    while ((REG(CLOCKS)->CLK_REF_SELECTED & (1U<<0x2U)) == 0x0U) { }
 
 // Reset PLL_SYS
 
     REG(RESETS)->RESET |= RESETS_RESET_PLL_SYS;
     cmns_wait(10);
     REG(RESETS)->RESET &= ~RESETS_RESET_PLL_SYS;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_SYS) == 0x0u) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_SYS) == 0x0U) { }
 
     REG(PLL_SYS)->PWR |= (PLL_SYS_PWR_PD | PLL_SYS_PWR_VCOPD | PLL_SYS_PWR_POSTDIVPD);
 
@@ -178,27 +179,27 @@ static  void    local_PLL_Configuration(void) {
     // VCO = 1500 MHz, REFDIV = 1, FBDIV = 125 (12 * 125 = 1500)
     // postdiv1 = 5, postdiv2 = 2 => 1500 / (5 * 2) = 150 MHz
 
-    REG(PLL_SYS)->CS        = 0x1u;
-    REG(PLL_SYS)->FBDIV_INT = 125u;
+    REG(PLL_SYS)->CS        = 0x1U;
+    REG(PLL_SYS)->FBDIV_INT = 125U;
 
     // Turn on the VCO
 
     REG(PLL_SYS)->PWR &= ~(PLL_SYS_PWR_PD | PLL_SYS_PWR_VCOPD);
-    while ((REG(PLL_SYS)->CS & PLL_SYS_CS_LOCK) == 0u) { }
+    while ((REG(PLL_SYS)->CS & PLL_SYS_CS_LOCK) == 0U) { }
 
-    REG(PLL_SYS)->PRIM = (5u * PLL_SYS_PRIM_POSTDIV1_0) | (2u * PLL_SYS_PRIM_POSTDIV2_0);
+    REG(PLL_SYS)->PRIM = (5U * PLL_SYS_PRIM_POSTDIV1_0) | (2U * PLL_SYS_PRIM_POSTDIV2_0);
     REG(PLL_SYS)->PWR &= ~PLL_SYS_PWR_POSTDIVPD;
 
     // Switch clk_sys to PLL_SYS (glitchless via SRC/AUXSRC)
 
-    REG(CLOCKS)->CLK_SYS_DIV  = 1u * CLOCKS_CLK_SYS_DIV_INT_0;
-    REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~(0x7u<<5u)) | (0x0u<<5u);
-    REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~0x1u) | 0x1u;
-    while ((REG(CLOCKS)->CLK_SYS_SELECTED & (1u<<0x1u)) == 0x0u) { }
+    REG(CLOCKS)->CLK_SYS_DIV  = 1U * CLOCKS_CLK_SYS_DIV_INT_0;
+    REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~(0x7U<<5U)) | (0x0U<<5U);
+    REG(CLOCKS)->CLK_SYS_CTRL = (REG(CLOCKS)->CLK_SYS_CTRL & ~0x1U) | 0x1U;
+    while ((REG(CLOCKS)->CLK_SYS_SELECTED & (1U<<0x1U)) == 0x0U) { }
 
     // Configure clk_peri = clk_sys (for UART, etc.)
 
-    REG(CLOCKS)->CLK_PERI_CTRL = (0x0u<<5u) | (1u<<0x0Bu);
+    REG(CLOCKS)->CLK_PERI_CTRL = (0x0U<<5U) | (1U<<0x0BU);
 
 // The USB PLL
 // -----------
@@ -206,9 +207,9 @@ static  void    local_PLL_Configuration(void) {
 // Reset the PLL_USB
 
     REG(RESETS)->RESET |= RESETS_RESET_PLL_USB;
-    cmns_wait(10u);
+    cmns_wait(10U);
     REG(RESETS)->RESET &= ~RESETS_RESET_PLL_USB;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_USB) == 0x0u) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_PLL_USB) == 0x0U) { }
 
     REG(PLL_USB)->PWR |= (PLL_USB_PWR_PD | PLL_USB_PWR_VCOPD | PLL_USB_PWR_POSTDIVPD);
 
@@ -216,21 +217,21 @@ static  void    local_PLL_Configuration(void) {
 // - VCO = 480-MHz, REFDIV = 1, FBDIV = 40 (12 * 40 = 480)
 // - postdiv1 = 5, postdiv2 = 2  => 480 / (5 * 2) = 48-MHz
 
-    REG(PLL_USB)->CS        = 0x1u;
-    REG(PLL_USB)->FBDIV_INT = 40u;
+    REG(PLL_USB)->CS        = 0x1U;
+    REG(PLL_USB)->FBDIV_INT = 40U;
 
 // Turn on the VCO
 
     REG(PLL_USB)->PWR &= ~(PLL_USB_PWR_PD | PLL_USB_PWR_VCOPD);
-    while ((REG(PLL_USB)->CS & PLL_USB_CS_LOCK) == 0u) { }
+    while ((REG(PLL_USB)->CS & PLL_USB_CS_LOCK) == 0U) { }
 
-    REG(PLL_USB)->PRIM = (5u * PLL_USB_PRIM_POSTDIV1_0) | (2u * PLL_USB_PRIM_POSTDIV2_0);
+    REG(PLL_USB)->PRIM = (5U * PLL_USB_PRIM_POSTDIV1_0) | (2U * PLL_USB_PRIM_POSTDIV2_0);
     REG(PLL_USB)->PWR &= ~PLL_USB_PWR_POSTDIVPD;
 
 // Switch the clk_usb on the PLL_USB (via SRC/AUXSRC)
 
-    REG(CLOCKS)->CLK_USB_DIV  = 1u * CLOCKS_CLK_USB_DIV_INT_0;
-    REG(CLOCKS)->CLK_USB_CTRL = (REG(CLOCKS)->CLK_USB_CTRL & ~(0x7u<<5u)) | (0x0u<<5u);
+    REG(CLOCKS)->CLK_USB_DIV  = 1U * CLOCKS_CLK_USB_DIV_INT_0;
+    REG(CLOCKS)->CLK_USB_CTRL = (REG(CLOCKS)->CLK_USB_CTRL & ~(0x7U<<5U)) | (0x0U<<5U);
     REG(CLOCKS)->CLK_USB_CTRL = (REG(CLOCKS)->CLK_USB_CTRL | CLOCKS_CLK_USB_CTRL_ENABLE);
 
 // The timer clocks
@@ -240,13 +241,13 @@ static  void    local_PLL_Configuration(void) {
 
     REG(TICKS)->TIMER0_CTRL   = TICKS_TIMER0_CTRL_ENABLE;
     REG(TICKS)->TIMER0_CYCLES = KCRYSTAL / KFREQUENCY_TIM;
-    REG(TIMER0)->SOURCE       = 0u;
+    REG(TIMER0)->SOURCE       = 0U;
 
 // Timer 1 clocked to 1-MHz
 
     REG(TICKS)->TIMER1_CTRL   = TICKS_TIMER1_CTRL_ENABLE;
     REG(TICKS)->TIMER1_CYCLES = KCRYSTAL / KFREQUENCY_TIM;
-    REG(TIMER1)->SOURCE       = 0u;
+    REG(TIMER1)->SOURCE       = 0U;
 }
 
 /*
@@ -258,7 +259,7 @@ static  void    local_PLL_Configuration(void) {
 static  void    local_USB_Configuration(void) {
 
     REG(RESETS)->RESET &= ~RESETS_RESET_USBCTRL;
-    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_USBCTRL) == 0x0u) { }
+    while ((REG(RESETS)->RESET_DONE & RESETS_RESET_DONE_USBCTRL) == 0x0U) { }
 
     REG(USB)->MAIN_CTRL &= ~USB_MAIN_CTRL_PHY_ISO;
     REG(USB)->MAIN_CTRL |= USB_MAIN_CTRL_CONTROLLER_EN;
@@ -292,7 +293,7 @@ void    init_launchCore_1(void (*entry)(void)) {
         fence();
 
         echo = local_readRxFifo();
-        i = (echo == cmd) ? (i + 1U) : (0U);
+        i = (echo == cmd) ? (i + 1U) : 0U;
     } while (i < 6U);
 }
 
@@ -306,7 +307,7 @@ static  void    local_emptyRxFifo(void) {
     uint8_t     i;
 
     for (i = 0U; i < 8U; i++) {
-        if ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) != 0u) {
+        if ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) != 0U) {
             (void)REG(SIO)->FIFO_RD;
         }
         else { break; }
@@ -324,7 +325,7 @@ static  void    local_writeRTxFifo(uint32_t data) {
 // Waiting for a room in the Tx fifo, and write
 // Wake-up the core 1
 
-    while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_RDY) == 0u) { }
+    while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_RDY) == 0U) { }
     REG(SIO)->FIFO_WR = data;
     sev();
 }
@@ -339,7 +340,7 @@ static  uint32_t    local_readRxFifo(void) {
 
 // Waiting for data in the Rx fifo, and read
 
-    while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) == 0u) { }
+    while ((REG(SIO)->FIFO_ST & SIO_FIFO_ST_VLD) == 0U) { }
     return (REG(SIO)->FIFO_RD);
 }
 
@@ -379,7 +380,7 @@ void    init_C0_init(void) {
     REG(IO_BANK0)->GPIO13_CTRL = IO_BANK0_GPIO13_CTRL_FUNCSEL_SIOB_PROC_13;
     REG(IO_BANK0)->GPIO25_CTRL = IO_BANK0_GPIO25_CTRL_FUNCSEL_SIOB_PROC_25;
 
-    REG(SIO)->GPIO_OE_SET = (1u << BLED_s) | (1u << BLED_0) | (1u << BLED_1) | (1u << BLED_2);
+    REG(SIO)->GPIO_OE_SET = (1U << BLED_s) | (1U << BLED_0) | (1U << BLED_1) | (1U << BLED_2);
 
 // UART0: GPIO16 (TX) output, GPIO17 (RX) input with Schmitt trigger
 
@@ -441,10 +442,7 @@ static  void    init_C1_init(void) {
  *   startUp running its core-1 branch on UART0).
  *
  */
-// NOLINTNEXTLINE(misc-use-internal-linkage)
-extern  void    init_relocate(void);
-
-void    main_C1(void) {
+void    main_C1(void) {              // NOLINT(misc-use-internal-linkage): called from Reset_C1_Handler in first.c
     init_C1_init();
     exce_init();
     init_relocate();
@@ -457,7 +455,6 @@ void    main_C1(void) {
 #include    "first.h"
 #include    "linker.h"
 #include    "macros.h"
-#include    "macros_soc.h"
 #include    "modules.h"
 
 // uKOS-X specific (see the module.h)

@@ -82,7 +82,7 @@ message("")
 
 # Package version and commit hash
 set(TINYUSB_VERSION "0.21.0")
-set(TINYUSB_HASH "e204823")
+set(TINYUSB_HASH "3174e76")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -295,7 +295,6 @@ set(SUPPORTED_SOCS
     "n6|STM32N657|cdc_cdc,cdc_msc,cdc_video"
     "pico2m33|rp2350|cdc_cdc"
     "pico2riscv|rp2350|cdc_cdc"
-#     "v8|STM32V873|cdc_cdc,cdc_msc,cdc_video"
 )
 
 #------------------------------------------------------------------------

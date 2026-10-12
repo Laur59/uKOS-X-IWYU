@@ -35,11 +35,13 @@
 #include    "clockTree.h"
 #include    "core_reg.h"
 #include    "exce.h"
+#include    "first.h"
 #include    "kern/private/private_processes.h"
 #include    "kern/private/private_scheduler.h"
 #include    "kern/private/private_temporal.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"
+#include    "syscallDispatcher.h"
 
 #define K1ms_C1         ((float64_t)(0.001))
 
@@ -50,11 +52,6 @@ static  volatile    uint32_t    vTimeStart_C1     = 0U;
 static  volatile    uint32_t    vTimeStop_C1      = 0U;
 static  volatile    uint32_t    vTimeLastStart_C1 = 0U;
 static  volatile    uint64_t    vTickCount_C1     = 0U;
-
-// External: set/restored by first_handle_trap ecall path (per-hart arrays).
-
-extern  volatile    uintptr_t   vSaveStack[KNB_CORES];
-extern  volatile    uint32_t    vMessage[KNB_CORES];
 
 // Prototypes
 

@@ -25,12 +25,6 @@ else()
     set(BUILD_VERBOSE ON)
 endif()
 
-# Default install prefix (set here, after project(), so CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT
-# is reliable). Allows 'cmake --install build' without an explicit --prefix.
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    set(CMAKE_INSTALL_PREFIX "${PATH_UKOS}/Third_Parties/Library" CACHE PATH "Install prefix" FORCE)
-endif()
-
 # Deterministic archives and a git-derived SOURCE_DATE_EPOCH
 include(${PATH_UKOS}/Ports/cmake/reproducible.cmake)
 ukos_reproducible_build()
@@ -161,9 +155,6 @@ endif()
 # Include MicroPython mkrules.cmake (after object target exists!)
 set(MICROPY_BUILD_TARGET ${MICROPY_TARGET})
 include(${MICROPY_DIR}/py/mkrules.cmake)
-
-# Installation (deployed by 'cmake --install')
-install(TARGETS ${MICROPY_TARGET} ARCHIVE DESTINATION "MicroPython/${CORE_NAME}")
 
 # Strip unnecessary symbols after build
 add_custom_command(TARGET ${MICROPY_TARGET}

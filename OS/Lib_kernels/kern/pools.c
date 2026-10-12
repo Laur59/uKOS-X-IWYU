@@ -32,9 +32,6 @@
 #include    "macros_soc.h"
 #include    "memo/memo.h"
 #include    "os_errors.h"
-#ifdef RV32IMAC_S
-#include    "soc_reg.h"
-#endif
 #include    "types.h"
 
 #if (KKERN_NB_POOLS > 0)

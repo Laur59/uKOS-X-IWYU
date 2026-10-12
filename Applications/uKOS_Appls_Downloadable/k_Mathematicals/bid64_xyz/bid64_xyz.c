@@ -59,7 +59,7 @@
 
 // ----------------------------------I------------I-----------------------------------------I--------------I
 
-STRG_LOC_CONST(aStrApplication[]) = "bid64_xyz    Example of how to use the Intel math lib. (c) EFr-2026";
+STRG_LOC_CONST(aStrApplication[]) = "bid64_xyz    Example of how to use the decNumber lib.  (c) EFr-2026";
 STRG_LOC_CONST(aStrHelp[])        = "This is a romable C application\n"
                                     "===============================\n\n"
 

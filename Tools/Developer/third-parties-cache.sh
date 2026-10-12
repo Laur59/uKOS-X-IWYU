@@ -32,6 +32,7 @@
 #   third-parties-cache adopt   <lib>...
 #   third-parties-cache audit   [<lib>...]
 #   third-parties-cache list
+#   third-parties-cache prune   [--keep <n>] [--dry-run] [<lib>...]
 #
 #   Used by the build system:
 #   third-parties-cache sources-key <lib>
@@ -52,6 +53,11 @@
 #                in the build trees; a file read from outside them is reported.
 #                'stamp' runs the same check and refuses on a finding
 #   list         The cache entries and their size
+#   prune        Remove the cache entries nothing needs any more. An entry is
+#                kept when a checkout next to this one would restore it or
+#                holds it in its Library/, and so are the <n> most recently
+#                saved of the others (--keep, 3 by default). --dry-run only
+#                shows what would go
 #   sources-key  Print the sources key of this checkout
 #   stamp        Write Library/<lib>/.ukos-stamp. Refused when the sources changed
 #                since the build started (--built-from), or when the archives
@@ -427,6 +433,69 @@ cmd_list() {
     print -r -- "Cache: ${PATH_CACHE} ($(du -sh "${PATH_CACHE}" | cut -f1 | tr -d ' '))"
 }
 
+# The checkouts that share the cache: this one and those placed next to it
+sibling_roots() {
+    local -aU roots
+    roots=("${PATH_ROOT}" "${PATH_ROOT:h}"/*/Tools/Developer/"${PATH_SELF:t}"(.N:A:h:h:h))
+    print -r -l -- ${roots}
+}
+
+cmd_prune() {
+    local -a o_keep o_dry
+    zparseopts -D -E -- -keep:=o_keep -dry-run=o_dry || usage
+    local keep="${o_keep[2]:-3}"
+    [[ "${keep}" == <-> ]] || die "--keep takes a number, got '${keep}'"
+
+    local lib root key stamp entry spared kb
+    local -a roots entries
+    local -aU needed
+    local -i removed=0 freed=0
+
+    roots=(${(f)"$(sibling_roots)"})
+    for lib in ${@:-${(f)"$(all_libs)"}}; do
+        need_lib "${lib}"
+
+        # What a checkout would restore (its sources key) or holds (its stamp)
+        needed=()
+        for root in ${roots}; do
+            if [[ "${root}" == "${PATH_ROOT}" ]]; then
+                key="$(sources_key "${lib}")"
+            else
+                key="$("${root}/Tools/Developer/${PATH_SELF:t}" sources-key "${lib}" 2>/dev/null)"
+            fi
+            [[ -n "${key}" ]] && needed+=("${key[1,16]}")
+            # A checkout older than Third_Parties/Library keeps <lib>/Library
+            for stamp in "${root}/Third_Parties/Library/${lib}/${STAMP}" \
+                         "${root}/Third_Parties/${lib}/Library/${STAMP}"; do
+                key="$(stamp_get "${stamp}" sources)"
+                [[ -n "${key}" ]] && needed+=("${key[1,16]}")
+            done
+        done
+
+        # Most recently saved first
+        entries=("${PATH_CACHE}/${lib}"/*(/Nom))
+        spared=0
+        for entry in ${entries}; do
+            if (( ${needed[(Ie)${${entry:t}%%-*}]} )); then
+                continue
+            fi
+            if (( spared < keep )); then
+                (( spared += 1 ))
+                continue
+            fi
+            kb="$(du -sk "${entry}" | cut -f1)"
+            (( removed += 1, freed += kb ))
+            printf '%-15s %-34s %6s  %s\n' "${lib}" "${entry:t}" \
+                "$(du -sh "${entry}" | cut -f1 | tr -d ' ')" \
+                "${${o_dry:+would be removed}:-removed}"
+            (( ${#o_dry} )) || rm -rf "${entry}"
+        done
+    done
+
+    print -r -- "${removed} entr$( (( removed == 1 )) && print y || print ies) ${${o_dry:+to remove}:-removed}, $(( freed / 1024 )) MB, checked against ${#roots} checkout(s)"
+    print -r -- "Cache: ${PATH_CACHE}"
+}
+
 cmd_restore() {
     local -a o_gcc o_llvm o_force
     zparseopts -D -E -- -gcc=o_gcc -llvm=o_llvm -force=o_force || usage
@@ -574,6 +643,7 @@ case "${COMMAND}" in
     (adopt)       cmd_adopt "$@" ;;
     (audit)       cmd_audit "$@" ;;
     (list)        cmd_list "$@" ;;
+    (prune)       cmd_prune "$@" ;;
     (sources-key) cmd_sources_key "$@" ;;
     (stamp)       cmd_stamp "$@" ;;
     (unstamp)     cmd_unstamp "$@" ;;

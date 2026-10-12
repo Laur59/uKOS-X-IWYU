@@ -72,7 +72,7 @@ message("")
 # Step 1: Fetch upstream FatFs repository
 #------------------------------------------------------------------------
 
-# Package version and commit hash (matching build.sh)
+# Package version and commit hash
 set(FATFS_VERSION "0.16")
 set(FATFS_HASH "30ca13c")
 

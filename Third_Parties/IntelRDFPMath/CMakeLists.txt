@@ -33,6 +33,7 @@
 #
 # Build outputs:
 #   - Library/IntelRDFPMath/*/libIntelRDFPMath.a
+#   - Library/IntelRDFPMath/include/{bid_conf.h,bid_functions.h}
 
 cmake_minimum_required(VERSION 3.31)
 
@@ -70,7 +71,7 @@ message("")
 # Step 1: Fetch upstream IntelRDFPMath repository
 #------------------------------------------------------------------------
 
-# Package version and commit hash (matching build.sh)
+# Package version and commit hash
 set(INTELRDFPMATH_VERSION "2.3")
 set(INTELRDFPMATH_HASH "ffca6d2")
 
@@ -192,6 +193,15 @@ foreach(CORE ${SUPPORTED_CORES})
         )
     endif()
 endforeach()
+
+# The public headers, so that the consumers of the archives do not need the
+# cloned repository. bid_conf.h selects the calling convention and has to be
+# included before bid_functions.h; the archives are built with its defaults
+# (arguments by value, rounding mode as an argument, flags through a pointer).
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/IntelRDFPMath-current/LIBRARY/src/bid_conf.h"
+              "${CMAKE_CURRENT_SOURCE_DIR}/IntelRDFPMath-current/LIBRARY/src/bid_functions.h"
+        DESTINATION "IntelRDFPMath/include"
+)
 
 #------------------------------------------------------------------------
 # Step 4: Create convenience targets

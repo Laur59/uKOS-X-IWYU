@@ -8,7 +8,6 @@
 
 #include    "splash/splash.h"
 
-#include    <stddef.h>
 #include    <stdint.h>
 #include    <string.h>
 
@@ -17,7 +16,7 @@
 #include    "kern/kern.h"
 #include    "lcd_display.h"
 #include    "macros_core.h"
-#include    "macros_soc.h"
+#include    "soc_reg.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -43,7 +42,7 @@ static_assert((KLCD_WIDTH == LCD_W) && (KLCD_HEIGHT == LCD_H), "The banner does 
  * - Callback for flushing an image in the LCD display
  *
  */
-void    stub_splash_flush_cb(lv_display_t *lv_display, const lv_area_t *area, uint8_t *pixelMapping) {
+void    stub_splash_flush_cb(lv_display_t *lv_display, const lv_area_t *area, uint8_t *pixelMapping) {  // NOLINT(readability-non-const-parameter): the signature is imposed by lv_display_flush_cb_t
             uint8_t     *frameBuffer = (uint8_t *)FB_ADDR;
             int32_t     w = area->x2 - area->x1 + 1;
             int32_t     h = area->y2 - area->y1 + 1;

@@ -16,7 +16,7 @@
 // Item header layout in flash: low byte = item id, high byte = item size in
 // 32-bit words (counted from the start of the item to the start of the next)
 
-#define PICOBIN_HDR(size_words, id)     (uint16_t)(((size_words)<<8u) | (id))
+#define PICOBIN_HDR(size_words, id)     (uint16_t)(((size_words)<<8U) | (id))
 
 #ifdef  __riscv
 extern  void    Reset_C0_Handler(void);
@@ -39,17 +39,17 @@ struct [[gnu::packed]] picobin_image_def {
 [[gnu::used, gnu::section(".picobin_block")]]
 static  const   struct picobin_image_def picobin_block = {
     .start              = PICOBIN_BLOCK_MARKER_START,
-    .image_type_hdr     = PICOBIN_HDR(1u, PICOBIN_BLOCK_ITEM_1BS_IMAGE_TYPE),
+    .image_type_hdr     = PICOBIN_HDR(1U, PICOBIN_BLOCK_ITEM_1BS_IMAGE_TYPE),
     .image_type_flags   = (uint16_t)(PICOBIN_IMAGE_TYPE_IMAGE_TYPE_AS_BITS(EXE)
                                     | PICOBIN_IMAGE_TYPE_EXE_CPU_AS_BITS(RISCV)
                                     | PICOBIN_IMAGE_TYPE_EXE_CHIP_AS_BITS(RP2350)),
-    .entry_hdr          = PICOBIN_HDR(3u, PICOBIN_BLOCK_ITEM_1BS_ENTRY_POINT),
-    .entry_pad          = 0u,
+    .entry_hdr          = PICOBIN_HDR(3U, PICOBIN_BLOCK_ITEM_1BS_ENTRY_POINT),
+    .entry_pad          = 0U,
     .entry_point        = &Reset_C0_Handler,
     .initial_sp         = linker_topStackFirst_C0,
-    .last_hdr           = PICOBIN_HDR(4u, PICOBIN_BLOCK_ITEM_2BS_LAST),
-    .last_pad           = 0u,
-    .next               = 0u,
+    .last_hdr           = PICOBIN_HDR(4U, PICOBIN_BLOCK_ITEM_2BS_LAST),
+    .last_pad           = 0U,
+    .next               = 0U,
     .end                = PICOBIN_BLOCK_MARKER_END,
 };
 
