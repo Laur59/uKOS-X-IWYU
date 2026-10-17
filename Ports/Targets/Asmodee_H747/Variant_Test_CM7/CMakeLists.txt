@@ -61,7 +61,7 @@ add_TinyUSB(
 
 # First piece of code (privileged)
 set(FIRST_P
-    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Runtime/first.c
+    ${PATH_PORT}/EquatesModels/SOCs/${SOC_BASE}/Runtime/first.c
 )
 
 # Runtime & common components (privileged) -> librtcb_p.a
@@ -72,7 +72,7 @@ target_sources(rtcb_p PRIVATE
     ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0.c
     ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0_exit.c
     ${PATH_PORT}/EquatesModels/Generic/Runtime/crt0_module.c
-    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Runtime/cache.c
+    ${PATH_PORT}/EquatesModels/SOCs/${SOC_BASE}/Runtime/cache.c
     ${PATH_BASE}/Runtime/cmns.c
     ${PATH_BASE}/Runtime/exce.c
     ${PATH_VARI}/Runtime/init.c
@@ -133,7 +133,6 @@ add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/cdc0/cdc0.c CONFIG_MAN_CD
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/serial/serial.c CONFIG_MAN_SERIAL_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/urt0/urt0.c CONFIG_MAN_URT0_S)
 target_sources(libx_p PRIVATE
-    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Models/stub_random.c
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
     ${PATH_BASE}/Lib_peripherals/i2c0/stub_i2c0_si2c3.c
     ${PATH_BASE}/Lib_peripherals/spi0/stub_spi0_sspi2.c

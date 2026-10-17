@@ -9,6 +9,11 @@
 #               _build.sh adds -DCORE=<value>, writes into Artefacts-<value>/
 #               and labels the row Variant_<name>-<value>. Only Pico2_rp2350
 #               (Cortex-M33 by default, Hazard3 RV32IMAC) uses it.
+#   cmake_soc:  optional  - CMake SOC value, for a board that carries one of
+#               several SoCs (one family directory, see Ports/cmake/soc-base.cmake).
+#               Handled like cmake_core: -DSOC=<value>, Artefacts-<value>/,
+#               Variant_<name>-<value>. No board uses it today (Nucleo_H753
+#               built the STM32H743 too until 2026-10-17).
 
 Alastor_H743:
   - name: Test
@@ -26,7 +31,7 @@ Nucleo_F207:
   - name: Test
     core: arm
 
-Nucleo_H743:
+Nucleo_H753:
   - name: Test
     core: arm
 

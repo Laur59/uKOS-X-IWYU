@@ -7,7 +7,8 @@
 #   Builds all system targets followed by all applications into a
 #   dedicated 'artefacts' directory.
 #   Applications tied to a single C library (see CLIB_ONLY_GROUPS) are
-#   skipped when another C library is selected.
+#   skipped when another C library is selected, and those that do not fit
+#   under one (see CLIB_EXCLUDED) when that one is.
 #   Everything printed on stdout is mirrored into a generated
 #   regression-results-XXXXXX.sh, which prints those results again when run.
 #
@@ -22,7 +23,7 @@
 #   -Y  Disable canary stack protection
 #   -v  Verbose: display full build output
 #   -n  Do not produce a results script
-#   -t  Filter by target name (e.g. Nucleo_H743)
+#   -t  Filter by target name (e.g. Nucleo_H753)
 #
 
 emulate -L zsh
@@ -59,6 +60,14 @@ typeset -rA CLIB_ONLY_GROUPS=(
     n_NewLibs newlib
 )
 
+# Application builds that do not fit under one C library, keyed by
+# group/project/board. cortexFPU on the soft-float Cortex-M3 of Nucleo_F207
+# overflows its 17 KB prgm_code region by about 1 KB under LLVM libc, whose
+# software float and printf routines are larger than newlib's.
+typeset -rA CLIB_EXCLUDED=(
+    k_Mathematicals/cortexFPU/Nucleo_F207 llvmlibc
+)
+
 # Defaults (LLVM, as in the _build.sh scripts)
 COMPILER="llvm"
 USE_LLVM="ON"
@@ -81,7 +90,7 @@ Options:
   -Y  Disable canary stack protection
   -v  Verbose: display full build output
   -n  Do not produce a results script
-  -t  Filter by target name (e.g. Nucleo_H743)
+  -t  Filter by target name (e.g. Nucleo_H753)
   -h  Show this help message
 EOF
 }
@@ -333,26 +342,31 @@ build_target() {
 
 # 1. Build System Targets
 #
-# A board that builds several architectures out of a single variant directory
-# (Pico2_rp2350) repeats the same variant with a different cmake_core. The source
-# directory is shared, so the identity that keys the build and install trees
-# carries the core as well - otherwise the two images overwrite each other.
+# A board that builds several architectures or SoCs out of a single variant
+# directory (Pico2_rp2350, Nucleo_H753) repeats the same variant with a different
+# cmake_core or cmake_soc. The source directory is shared, so the identity that
+# keys the build and install trees carries the core or SoC as well - otherwise
+# the images overwrite each other.
 
 emit "%b[1/2] Building System Targets%b\n" "${BOLD}" "${NC}"
-while IFS=$'\t' read -r family variant cmake_core; do
+while IFS='|' read -r family variant cmake_core cmake_soc; do
     # Apply filter if provided
     if [[ -n "${TARGET_FILTER}" && "${family}" != "${TARGET_FILTER}" ]]; then
         continue
     fi
 
     # variant names the directory; variant_id names the build and install trees.
-    # They differ only for an entry carrying cmake_core, which is then also
-    # selected on the configure line with -DCORE.
+    # They differ only for an entry carrying cmake_core or cmake_soc, which is
+    # then also selected on the configure line with -DCORE or -DSOC.
     core_args=()
     variant_id="${variant}"
     if [[ -n "${cmake_core}" ]]; then
-        variant_id="${variant}-${cmake_core}"
-        core_args=(-DCORE="${cmake_core}")
+        variant_id+="-${cmake_core}"
+        core_args+=(-DCORE="${cmake_core}")
+    fi
+    if [[ -n "${cmake_soc}" ]]; then
+        variant_id+="-${cmake_soc}"
+        core_args+=(-DSOC="${cmake_soc}")
     fi
 
     src="${PATH_ROOT}/Ports/Targets/${family}/Variant_${variant}"
@@ -369,7 +383,7 @@ while IFS=$'\t' read -r family variant cmake_core; do
     if [[ $? -eq 0 ]]; then
         cmake --install "${build_root}" --prefix "${install_dir}" >> "${build_root}/build.log" 2>&1
     fi
-done < <(yq eval 'to_entries[] | .key as $f | .value[] | (.cmake_core // "") as $c | "\($f)\t\(.name)\t\($c)"' "${PATH_VARIANTS_YAML}")
+done < <(yq eval 'to_entries[] | .key as $f | .value[] | (.cmake_core // "") as $c | (.cmake_soc // "") as $s | "\($f)|\(.name)|\($c)|\($s)"' "${PATH_VARIANTS_YAML}")
 
 # 2. Build Applications
 emit "\n%b[2/2] Building Applications%b\n" "${BOLD}" "${NC}"
@@ -384,6 +398,13 @@ while IFS=$'\t' read -r group project target_board; do
     if [[ -n "${required_clib}" && "${required_clib}" != "${C_LIB}" ]]; then
         emit "%b[SKIP]%b (%s requires the %s C library)\n" "${YELLOW}" "${NC}" \
              "${group}/${project}/${target_board}" "${required_clib}"
+        continue
+    fi
+
+    # Skip the builds that do not fit under the selected C library
+    if [[ "${CLIB_EXCLUDED[${group}/${project}/${target_board}]:-}" == "${C_LIB}" ]]; then
+        emit "%b[SKIP]%b (%s does not fit under %s)\n" "${YELLOW}" "${NC}" \
+             "${group}/${project}/${target_board}" "${C_LIB}"
         continue
     fi
 

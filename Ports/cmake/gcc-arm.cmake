@@ -11,7 +11,7 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 set(PATH_TOOLCHAIN_PREFIX ${PATH_GCC_ARM}/bin/arm-none-eabi-)
 
 # Validate that all required toolchain utilities exist
-foreach(tool IN ITEMS gcc g++ ar ld objcopy objdump ranlib strip size)
+foreach(tool IN ITEMS gcc g++ ar ld objcopy objdump ranlib readelf strip size)
     set(tool_path "${PATH_TOOLCHAIN_PREFIX}${tool}")
     if(NOT EXISTS "${tool_path}")
         message(FATAL_ERROR "Toolchain utility not found: ${tool_path}\n"
@@ -26,6 +26,7 @@ set(CMAKE_ASM_COMPILER ${CMAKE_C_COMPILER})
 set(CMAKE_LINKER "${PATH_TOOLCHAIN_PREFIX}ld")
 set(CMAKE_OBJCOPY "${PATH_TOOLCHAIN_PREFIX}objcopy")
 set(CMAKE_OBJDUMP "${PATH_TOOLCHAIN_PREFIX}objdump")
+set(CMAKE_READELF "${PATH_TOOLCHAIN_PREFIX}readelf")
 set(CMAKE_RANLIB "${PATH_TOOLCHAIN_PREFIX}ranlib")
 set(CMAKE_STRIP "${PATH_TOOLCHAIN_PREFIX}strip")
 set(CMAKE_SIZE "${PATH_TOOLCHAIN_PREFIX}size")

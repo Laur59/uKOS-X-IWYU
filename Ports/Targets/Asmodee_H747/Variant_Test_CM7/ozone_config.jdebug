@@ -27,7 +27,7 @@ void OnProjectLoad (void) {
   Project.SetTargetIF ("SWD");
   Project.SetTIFSpeed ("4 KHz");
   Project.AddSvdFile ("$(InstallDir)/Config/CPU/Cortex-M7F.svd");
-  Project.AddSvdFile ("$(ProjectDir)/../../../../../Ports/EquatesModels/SOCs/STM32H747/Includes/Registers/STM32H747_CM7.svd");
+  Project.AddSvdFile ("$(ProjectDir)/../../../../../Ports/EquatesModels/SOCs/STM32H7x7/Includes/Registers/STM32H747_CM7.svd");
   //
   // User settings
   //

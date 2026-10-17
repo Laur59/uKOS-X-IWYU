@@ -73,7 +73,7 @@ def generate_dataSet(fd, ax, colors, title):
 		if (KRING_LIMITS_MIN < r2 < KRING_LIMITS_MAX):
 			xn, yn = normalize_point(x, y)
 			ax.plot(xn, yn, colors[0])
-			fd.write(f"{xn / KABS_MAX_FUNCTION:.6f}\t{yn / KABS_MAX_FUNCTION:.6f}\t{KGOOD:.2f}\t{KBAD:.2f}\t{KBAD:.2f}\n")
+			fd.write(f"{xn:.6f}\t{yn:.6f}\t{KGOOD:.2f}\t{KBAD:.2f}\t{KBAD:.2f}\n")
 			count += 1
 
 	# Class 2a: data > KRING_LIMITS_MAX (outer) & exclude the square corner Top-Right
@@ -88,7 +88,7 @@ def generate_dataSet(fd, ax, colors, title):
 		if in_outer and (not in_top_right_corner):
 			xn, yn = normalize_point(x, y)
 			ax.plot(xn, yn, colors[1])
-			fd.write(f"{xn / KABS_MAX_FUNCTION:.6f}\t{yn / KABS_MAX_FUNCTION:.6f}\t{KBAD:.2f}\t{KGOOD:.2f}\t{KBAD:.2f}\n")
+			fd.write(f"{xn:.6f}\t{yn:.6f}\t{KBAD:.2f}\t{KGOOD:.2f}\t{KBAD:.2f}\n")
 			count += 1
 
 	# Class 2b: data < KRING_LIMITS_MIN (inner)
@@ -99,7 +99,7 @@ def generate_dataSet(fd, ax, colors, title):
 		if (r2 < KRING_LIMITS_MIN):
 			xn, yn = normalize_point(x, y)
 			ax.plot(xn, yn, colors[2])
-			fd.write(f"{xn / KABS_MAX_FUNCTION:.6f}\t{yn / KABS_MAX_FUNCTION:.6f}\t{KBAD:.2f}\t{KGOOD:.2f}\t{KBAD:.2f}\n")
+			fd.write(f"{xn:.6f}\t{yn:.6f}\t{KBAD:.2f}\t{KGOOD:.2f}\t{KBAD:.2f}\n")
 			count += 1
 
 	# Class 3: x > KSQUARE_LIMITS & y > KSQUARE_LIMITS
@@ -110,7 +110,7 @@ def generate_dataSet(fd, ax, colors, title):
 		if in_top_right_corner:
 			xn, yn = normalize_point(x, y)
 			ax.plot(xn, yn, colors[3])
-			fd.write(f"{xn / KABS_MAX_FUNCTION:.6f}\t{yn / KABS_MAX_FUNCTION:.6f}\t{KBAD:.2f}\t{KBAD:.2f}\t{KGOOD:.2f}\n")
+			fd.write(f"{xn:.6f}\t{yn:.6f}\t{KBAD:.2f}\t{KBAD:.2f}\t{KGOOD:.2f}\n")
 			count += 1
 
 # Main

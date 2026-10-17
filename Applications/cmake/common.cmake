@@ -6,6 +6,9 @@
 # Apply project settings
 include(${CMAKE_CURRENT_LIST_DIR}/proj_config.cmake)
 
+# SOC_BASE: the SoC an overlay SoC directory builds on (SOC itself otherwise)
+include(${PATH_UKOS}/Ports/cmake/soc-base.cmake)
+
 # Project path configuration
 # - PATH_UKOS   --> Main uKOS-X folder                  --> kernel_os
 # - PATH_BASE   --> MyProjects Root Base folders        --> MyProjects/Ports/Targets/xyz/Base

@@ -39,6 +39,15 @@ void board_get_unique_id(uint8_t id[], int max_len) {
     for (int i = 0; i < n; i++) { id[i] = uid.id[i]; }
 }
 
+// `TinyUSB_getProductName` is likewise referenced by our prebuilt
+// usb_descriptors.c, for the iProduct string. uKOS-X names the board there;
+// this harness is not a uKOS-X image and has no board name, so returning NULL
+// keeps the generic name held by the archive's own string table.
+
+const char *TinyUSB_getProductName(void) {
+    return NULL;
+}
+
 #include "hardware/gpio.h"
 
 int main(void) {

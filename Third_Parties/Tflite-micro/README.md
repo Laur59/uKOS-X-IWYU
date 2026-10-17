@@ -112,8 +112,8 @@ Downloadable examples are available in the package.
 cd ${PATH_UKOS_X_PACKAGE}/Applications/uKOS_Appls_Downloadable/l_Neuros/class_TFL/_Training
 ./build.sh
 
-# Ex. class_TFL: Build the application example (e.g for Nucleo_H743)
+# Ex. class_TFL: Build the application example (e.g for Nucleo_H753)
 
-cd ${PATH_UKOS_X_PACKAGE}/Applications/uKOS_Appls_Downloadable/l_Neuros/class_TFL/Nucleo_H743
+cd ${PATH_UKOS_X_PACKAGE}/Applications/uKOS_Appls_Downloadable/l_Neuros/class_TFL/Nucleo_H753
 make -j USER_MODE=1
 ```

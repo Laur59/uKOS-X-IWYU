@@ -51,7 +51,7 @@ add_compile_options(
 
 # First piece of code (privileged)
 set(FIRST_P
-    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Runtime/first.c
+    ${PATH_PORT}/EquatesModels/SOCs/${SOC_BASE}/Runtime/first.c
 )
 
 # Runtime & common components (privileged) -> librtcb_p.a
@@ -113,7 +113,6 @@ add_source_with_define(libx_p ${PATH_OSYS}/Lib_peripherals/switch/switch.c CONFI
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/serial/serial.c CONFIG_MAN_SERIAL_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/urt0/urt0.c CONFIG_MAN_URT0_S)
 target_sources(libx_p PRIVATE
-    ${PATH_PORT}/EquatesModels/SOCs/${SOC}/Models/stub_random.c
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
     ${PATH_COMX}/Lib_generics/asmp/stub_asmp_hsem.c
     ${PATH_VARI}/Lib_peripherals/led/stub_led.c

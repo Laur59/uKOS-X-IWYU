@@ -157,8 +157,8 @@ static  void    local_USB_Configuration(void) {
 // The PHY was initialised under the GPIO_Configuration
 // Enable USB HS & ULPI Clocks
 
-    RCC->AHB1ENR |= RCC_AHB1ENR_USB1ULPIEN;
-    RCC->AHB1ENR |= RCC_AHB1ENR_USB1OTGEN;
+    RCC->AHB1ENR |= RCC_AHB1ENR_USB1OTGHSULPIEN;
+    RCC->AHB1ENR |= RCC_AHB1ENR_USB1OTGHSEN;
 
 // No VBUS sense
 // B-peripheral session valid override enable
@@ -688,8 +688,8 @@ static  void    local_RCC_Configuration(void) {
 // RNG & USB clocks
 // ----------------
 
-    RCC->D2CCIP2R = (1U * RCC_D2CCIP2R_RNGSRC_0)        // Set the clock for the RNG @ KFREQUENCY_PLL1Q (240-MHz)
-                  | (2U * RCC_D2CCIP2R_USBSRC_0);       // Set the clock for the USB @ KFREQUENCY_PLL3Q (48-MHz)
+    RCC->D2CCIP2R = (1U * RCC_D2CCIP2R_RNGSEL_0)        // Set the clock for the RNG @ KFREQUENCY_PLL1Q (240-MHz)
+                  | (2U * RCC_D2CCIP2R_USBSEL_0);       // Set the clock for the USB @ KFREQUENCY_PLL3Q (48-MHz)
 
 // Flash latency (for 4x0-MHz ... 4 wait states)
 // ---------------------------------------------
@@ -700,6 +700,36 @@ static  void    local_RCC_Configuration(void) {
     RCC->CFGR = (4U * RCC_CFGR_MCO1SEL_0)               // MCO1 HSI48
               | (1U * RCC_CFGR_MCO1PRE_0)               // prescaler / 1
               | (3U * RCC_CFGR_SW_0);                   // CPU clock = PLL
+
+    #if (KCALENDAR_WITH_HW_RTC_S == true)
+
+// RTC
+// ---
+
+    PWR->CR1 |= PWR_CR1_DBP;                            //
+    while ((PWR->CR1 & PWR_CR1_DBP) == 0U) { ; }        // Disable backup domain write protection
+
+// Prepare the LSE (disable bypass),
+
+    RCC->BDCR &= ~RCC_BDCR_LSEBYP;                      // LSE oscillator not bypassed
+    RCC->BDCR &= ~RCC_BDCR_LSEDRV;                      //
+    RCC->BDCR |=  (3U * RCC_BDCR_LSEDRV_0);             // Highest drive
+    RCC->BDCR |=  RCC_BDCR_LSEON;                       //
+    while ((RCC->BDCR & RCC_BDCR_LSERDY) == 0U) { ; }   // LSE on
+
+// LSE as a clock for the RTC
+
+    RCC->BDCR &= ~RCC_BDCR_RTCSRC;                      //
+    RCC->BDCR |=  (1U * RCC_BDCR_RTCSRC_0);             // LSE is the source for the RTC
+    RCC->BDCR |=  RCC_BDCR_RTCEN;                       // RTC enable
+
+    RTC->WPR = RTC_WPR_UNLOCK_KEY1;                     //
+    RTC->WPR = RTC_WPR_UNLOCK_KEY2;                     // Unlock
+
+    RTC->CR &= ~RTC_CR_BYPSHAD;                         // Disable the bypass
+
+    RTC->WPR = RTC_WPR_LOCK_KEY;                        // Lock
+    #endif
 }
 
 /*

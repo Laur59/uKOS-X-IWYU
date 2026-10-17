@@ -1,0 +1,45 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+ *
+ * Nucleo_H753 – Board pin and peripheral mapping.
+ */
+
+#pragma once
+
+#ifndef Nucleo_H753_S
+#define Nucleo_H753_S
+#endif
+
+#include    "soc_reg.h"
+
+// GPIO settings
+// -------------
+
+#define LED_RED_ON          (GPIOB->ODR |=            (1U<<BLED_2))         //
+#define LED_RED_OFF         (GPIOB->ODR &= (uint32_t)~(1U<<BLED_2))         //
+#define LED_RED_TOGGLE      (GPIOB->ODR ^=            (1U<<BLED_2))         //
+#define LED_YELLOW_ON       (GPIOE->ODR |=            (1U<<BLED_1))         //
+#define LED_YELLOW_OFF      (GPIOE->ODR &= (uint32_t)~(1U<<BLED_1))         //
+#define LED_YELLOW_TOGGLE   (GPIOE->ODR ^=            (1U<<BLED_1))         //
+#define LED_GREEN_ON        (GPIOB->ODR |=            (1U<<BLED_0))         //
+#define LED_GREEN_OFF       (GPIOB->ODR &= (uint32_t)~(1U<<BLED_0))         //
+#define LED_GREEN_TOGGLE    (GPIOB->ODR ^=            (1U<<BLED_0))         // Led macros
+
+#define ANALYSER_ON         (GPIOB->ODR &= (uint32_t)~(1<<BANALYSER))       //
+#define ANALYSER_OFF        (GPIOB->ODR |=            (1<<BANALYSER))       //
+#define ANALYSER_TOGGLE     do { \
+                                GPIOB->ODR ^= (1U<<BANALYSER);       \
+                                (void)(GPIOB->ODR);                 \
+                            } while (0)                                     // Analyser macros
+
+#define KNB_LED             3U                                              // Number of LEDs
+
+// PORTs
+
+#define BLED_0              0U                                              // PORT B 0, LED
+#define BLED_1              1U                                              // PORT E 1, LED
+#define BLED_2              14U                                             // PORT B 14, LED
+#define BANALYSER           0U                                              // PORT B 0, Analyser
+#define BSW_0               13U                                             // PORT C 13, SW1

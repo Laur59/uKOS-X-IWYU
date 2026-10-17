@@ -43,7 +43,7 @@
  * - loop
  *
  */
-#if (!defined(Nucleo_H743_S) && !defined(Nucleo_N657_S))
+#if (!defined(Nucleo_H753_S) && !defined(Nucleo_N657_S))
 
 bool    bench_05(void) {
 

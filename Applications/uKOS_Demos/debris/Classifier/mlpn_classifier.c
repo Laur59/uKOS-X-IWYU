@@ -43,19 +43,19 @@ void    mlpn_init(void) {
  *
  */
 void    mlpn_classify(const dataBase_t *entry) {
-    float32_t   max;
+    float32_t   max_f;
     uint64_t    time[2];
     uint32_t    winner, winnerOut = 0U, delta = 0U;
     char_t      text[40];
 
-    vInput_L1[0] = entry->oDataSet[0];
-    vInput_L1[1] = entry->oDataSet[1];
-    vInput_L1[2] = entry->oDataSet[2];
-    vInput_L1[3] = entry->oDataSet[3];
-    vInput_L1[4] = entry->oDataSet[4];
-    vInput_L1[5] = entry->oDataSet[5];
-    vInput_L1[6] = entry->oDataSet[6];
-    vInput_L1[7] = entry->oDataSet[7];
+    vInput_L1_f[0] = entry->oDataSet_f[0];
+    vInput_L1_f[1] = entry->oDataSet_f[1];
+    vInput_L1_f[2] = entry->oDataSet_f[2];
+    vInput_L1_f[3] = entry->oDataSet_f[3];
+    vInput_L1_f[4] = entry->oDataSet_f[4];
+    vInput_L1_f[5] = entry->oDataSet_f[5];
+    vInput_L1_f[6] = entry->oDataSet_f[6];
+    vInput_L1_f[7] = entry->oDataSet_f[7];
 
     kern_readTickCount(&time[0]);
     mlpn_compute(&aNetwork);
@@ -64,27 +64,27 @@ void    mlpn_classify(const dataBase_t *entry) {
 
 // The winner take all
 
-    winner = 0U; max = 0.0F;
-    if (vOutput_L3[0] > max) { max = vOutput_L3[0]; winner = 2U; winnerOut = 0U;}
-    if (vOutput_L3[1] > max) { max = vOutput_L3[1]; winner = 1U; winnerOut = 1U;}
-    if (vOutput_L3[2] > max) {                      winner = 0U; winnerOut = 2U;}
+    winner = 0U; max_f = 0.0F;
+    if (vOutput_L3_f[0] > max_f) { max_f = vOutput_L3_f[0]; winner = 2U; winnerOut = 0U;}
+    if (vOutput_L3_f[1] > max_f) { max_f = vOutput_L3_f[1]; winner = 1U; winnerOut = 1U;}
+    if (vOutput_L3_f[2] > max_f) {                          winner = 0U; winnerOut = 2U;}
 
 // Display the results
 
     #if (defined(PRINT_THE_RESULTS_S))
     (void)dprintf(KSYST, "uKOS-X mlpn: result Out-Expected: %7.3f, %7.3f    %7.3f, %7.3f    %7.3f, %7.3f    Class DB = %s   Class Recognised = %s   "
-                         "Exec time %"PRIu32" [us]\n", vOutput_L3[0],
-                                                       entry->oDataSet[8],
-                                                       vOutput_L3[1],
-                                                       entry->oDataSet[9],
-                                                       vOutput_L3[2],
-                                                       entry->oDataSet[10],
+                         "Exec time %"PRIu32" [us]\n", vOutput_L3_f[0],
+                                                       entry->oDataSet_f[8],
+                                                       vOutput_L3_f[1],
+                                                       entry->oDataSet_f[9],
+                                                       vOutput_L3_f[2],
+                                                       entry->oDataSet_f[10],
                                                        entry->oClassLabel,
                                                        aClass[winner],
                                                        delta);
     #endif
 
-    (void)snprintf(text, sizeof(text), "Probability: %4.1f %%", (vOutput_L3[winnerOut] * 100.0));
+    (void)snprintf(text, sizeof(text), "Probability: %4.1f %%", (vOutput_L3_f[winnerOut] * 100.0));
     ui_drawProbability(text);
 
     ui_drawClass(aClass[winner]);

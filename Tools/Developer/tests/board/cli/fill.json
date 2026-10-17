@@ -31,7 +31,7 @@
       ],
       "timeout": 10,
       "unsafe": true,
-      "requires": ["unsafe"],
+      "requires": ["unsafe", "sym:linker_lnUMemo"],
       "note": "the end address is exclusive: the byte at +0x110 stays 00. The first fill clears it, so a previous run cannot make this pass"
     },
     {
@@ -43,7 +43,7 @@
       ],
       "timeout": 10,
       "unsafe": true,
-      "requires": ["unsafe"]
+      "requires": ["unsafe", "sym:linker_lnUMemo"]
     },
     {
       "id": "fill/empty-range-writes-nothing",
@@ -56,7 +56,7 @@
       ],
       "timeout": 10,
       "unsafe": true,
-      "requires": ["unsafe"],
+      "requires": ["unsafe", "sym:linker_lnUMemo"],
       "note": "start == end: zero bytes. The row writes its own 55 pattern first, so it holds whatever ran before it (it used to rely on fill/privileged-round-trip, and failed when -t left that row out)"
     },
     {
@@ -71,7 +71,7 @@
       ],
       "timeout": 10,
       "unsafe": true,
-      "requires": ["unsafe"],
+      "requires": ["unsafe", "sym:linker_lnUMemo"],
       "note": "end below start: refused, nothing written. Against an image without the fix this row writes ~4 GB and faults the board"
     },
     {
@@ -86,7 +86,7 @@
       ],
       "timeout": 10,
       "unsafe": true,
-      "requires": ["unsafe"],
+      "requires": ["unsafe", "sym:linker_lnUMemo"],
       "note": "the -S form refuses the same way, before elevating"
     }
   ]

@@ -17,7 +17,7 @@ prints it, marks it, and repeats; the marks are the loop's termination
 condition. So a single dump does exercise the mark mechanism end to end: if the
 marks were not set the oldest record would print forever, and if the clearing
 loop added in 92f41db34 sat inside the print loop rather than after it the same
-thing would happen. Strictly increasing timestamps with no repeat is therefore
+thing would happen. Ascending timestamps with no record repeated is therefore
 a real assertion about that code, not just a smoke test.
 
 What it does not prove. The defect the marks were leaking into - dumplog
@@ -49,7 +49,7 @@ KSERIAL = os.path.normpath(os.path.join(KHERE, "..", "..", "ukos-serial"))
 # the bus reports PRECISERR), so the exception class is never asserted.
 KBOARDS = {
     "Discovery_U5G9": {"addr": "F0000000", "device": "STM32U5xx"},
-    "Nucleo_H743":    {"addr": "F0000000", "device": "STM32H7xx"},
+    "Nucleo_H753":    {"addr": "F0000000", "device": "STM32H7xx"},
     "Nucleo_L4R5":    {"addr": "F0000000", "device": "STM32L4Rxxx/STM32L4Sxxx"},
 }
 
@@ -128,7 +128,9 @@ def check(capture, board, verbose):
     stamps = [int(t) for t, _ in records]
     if stamps != sorted(stamps):
         fails.append("records are not in ascending time order: %s" % stamps)
-    if len(set(stamps)) != len(stamps):
+    # Two records logged within the same microsecond share a timestamp, so a
+    # repeat is the same timestamp with the same text
+    if len(set(records)) != len(records):
         fails.append("a record was printed more than once - marks are not being set")
     if verbose:
         print("  %d log records, %d-us .. %d-us" % (len(stamps), stamps[0], stamps[-1]))

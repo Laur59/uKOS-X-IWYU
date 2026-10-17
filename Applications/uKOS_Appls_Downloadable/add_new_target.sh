@@ -8,7 +8,7 @@
 #           ./add_new_target.sh Target SOC Core [refTarget]
 #
 #           i.e
-#           ./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H743
+#           ./add_new_target.sh XYZ_H743 STM32H743 CORTEX_M7 Nucleo_H753
 
 set -euo pipefail
 

@@ -34,7 +34,7 @@
 
 ENTRY(Reset_C0_Handler)
 
-INCLUDE     STM32H747xI.ld
+INCLUDE     STM32H7x7xI.ld
 
 /* Mapping:                                                 */
 /*                                                          */

@@ -9,7 +9,7 @@
 #include    <stdint.h>
 
 #include    "MX25R6435/MX25R6435.h"         // IWYU pragma: export
-#include    "Registers/stm32H743_gpio.h"
+#include    "Registers/stm32H7x3_gpio.h"
 #include    "board.h"
 #include    "kern/kern.h"
 #include    "shared_spi0/shared_spi0.h"

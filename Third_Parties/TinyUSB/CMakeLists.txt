@@ -82,7 +82,7 @@ message("")
 
 # Package version and commit hash
 set(TINYUSB_VERSION "0.21.0")
-set(TINYUSB_HASH "3174e76")
+set(TINYUSB_HASH "98741b5")
 
 message(STATUS "Fetching TinyUSB version ${TINYUSB_VERSION} (commit ${TINYUSB_HASH})")
 
@@ -288,8 +288,8 @@ install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Construction/Interface/OSAL/"
 set(SUPPORTED_SOCS
     "nrf|nRF5340|cdc_cdc,cdc_msc"
     "f2|STM32F207|cdc_cdc,cdc_msc"
-    "h7|STM32H743|cdc_cdc,cdc_msc"
-    "h7|STM32H747|cdc_cdc,cdc_msc,cdc_video"
+    "h7|STM32H7x3|cdc_cdc,cdc_msc"
+    "h7|STM32H7x7|cdc_cdc,cdc_msc,cdc_video"
     "l4|STM32L4R5|cdc_cdc,cdc_msc"
     "u5|STM32U5G9|cdc_cdc,cdc_msc,cdc_video"
     "n6|STM32N657|cdc_cdc,cdc_msc,cdc_video"

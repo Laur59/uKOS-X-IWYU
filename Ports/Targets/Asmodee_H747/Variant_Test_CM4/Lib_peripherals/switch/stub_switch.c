@@ -10,7 +10,7 @@
 
 #include    <stdint.h>
 
-#include    "Registers/stm32H747_CM4_gpio.h"
+#include    "Registers/stm32H7x7_CM4_gpio.h"
 #include    "board.h"
 #include    "macros_core.h"
 #include    "os_errors.h"

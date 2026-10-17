@@ -110,12 +110,12 @@ static void aProcess_0([[maybe_unused]] const void *argument) {
  */
 [[noreturn]]
 static void aProcess_1([[maybe_unused]] const void *argument) {
-    float64_t   temperature;
+    float64_t   temperature_f;
 
     while (true) {
         kern_suspendProcess(1000U);
-        temperature_read(&temperature);
-        (void)dprintf(KSYST, "Temperature = %5.2f [K]\n", temperature);
+        temperature_read(&temperature_f);
+        (void)dprintf(KSYST, "Temperature = %5.2f [K]\n", temperature_f);
     }
 }
 

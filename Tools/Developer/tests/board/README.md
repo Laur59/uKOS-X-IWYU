@@ -14,6 +14,9 @@ Two entry points share one library (`ukos_board.py`) and the same specs:
 - **`run-board-tests`** — the bare runner: an existing session, no recovery,
   every row printed. For writing and debugging specs.
 
+Two more tools sit beside them: **`coredump-test`** (see *The core dump test*) and
+**`board-matrix`**, the only one that flashes (see *Every configuration*).
+
 ```sh
 ukos-serial start --port /dev/cu.usbmodem21403      # once, by hand
 Tools/Developer/bin/run-board-tests                 # the per-CLI specs, for the board that answers
@@ -34,7 +37,7 @@ half-pass on a Pico2 and leave you reading the failures as firmware bugs.
 ## Regression runs
 
 ```sh
-Tools/Developer/bin/board-regression --board Nucleo_H743      # or --port /dev/cu.usbmodemXXXX
+Tools/Developer/bin/board-regression --board Nucleo_H753      # or --port /dev/cu.usbmodemXXXX
 Tools/Developer/bin/board-regression --board Discovery_N657 --expect-libc llvmlibc --allow-unsafe
 ```
 
@@ -107,11 +110,14 @@ without an ST-Link console (Firefly, K210, Pico2) run, but a crash ends them.
 `KNOWN-FAILURES` lists rows that fail today, and how - one line each:
 
 ```
-<Board>  <row id>  <fail|crash|hang>  <reference>
+<Board>[/<Variant>]  <row id>  <fail|crash|hang>  <reference>
 ```
 
-It is empty today; its last entry was `Discovery_N657 test_ram/one-pass crash`,
-until `test_ram` was fixed.
+`<Board>/<Variant>` limits a line to one variant, for a row that fails on one
+core of a dual-core board and passes on the other: `bench/all` runs out of heap
+on `Asmodee_H747/Variant_Test_CM4` only. The other entry today is
+`Alastor_H743 X/sensor-range`; `Discovery_N657 test_ram/one-pass crash` went
+when `test_ram` was fixed.
 
 A result matching its line is reported **known** and does not fail the run. A
 different failure of a listed row is a regression, and a listed row that now
@@ -169,7 +175,7 @@ from a hand-maintained per-board table (the runner's original form, whose
 | Placeholder | Value |
 |---|---|
 | `${BOARD}`, `${VARIANT}` | the variant directory's parent and own name |
-| `${SOC}` | the variant's `set(SOC …)` |
+| `${SOC}` | the variant's `set(SOC …)`, or the SoC the board reports when it builds on that one or on the same base (`soc_base()`: `SOCs/<SoC>/soc_base.cmake`, else the `STM32H7x<n>` family directory, as in `Ports/cmake/soc-base.cmake`) |
 | `${CORE}` | its `set(CORE …)`; on `Pico2_rp2350`, which declares two, the one the board reports — which must be one of them |
 | `${CONSOLE}` | the serial manager of the console running the tests - the one `process` shows `Running`; offline, the variant's `KDEF_COMM` |
 | `${sym:NAME}`, `${sym:NAME+HEX}` | the address of symbol `NAME` in the variant's `Artefacts/FLASH.elf`, plus an optional hex offset, as bare uppercase hex (what `dump` and `fill` take). Only when that ELF is the build on the board (`build/version.h` equals the board's `VCS#`): an address from another build is plausible and wrong, and `fill` writes to it. Otherwise the rows that use it **skip with the reason**; the rest of the spec runs |
@@ -340,6 +346,38 @@ Some rows are not read-only, and the spec says so in their `note`:
 
 Order matters for those. Keep read-only rows first.
 
+## Every configuration
+
+`Tools/Developer/bin/board-matrix` builds, flashes and tests one board in every
+compiler / C library / mode combination, then flashes the default build back:
+
+```sh
+board-matrix --board Nucleo_H753 -n                          # list the 20 configurations
+board-matrix --board Nucleo_H753                             # all of them
+board-matrix --board Nucleo_H753 --compilers gcc --modes default,UY --tests coredump
+```
+
+Per configuration: build from HEAD in the variant's own `build/` and `Artefacts/`
+(the logs go to a scratch directory, `--logs` to choose it), flash through the
+probe behind the board's
+console port (never a probe found by connecting under reset, which reboots the
+other boards), wait for the boot banner, `ukos-serial verify` plus the compiler
+the board reports, then `board-regression` and `coredump-test`. A board
+coredump-test has no faulting address for reports `n/a`. LLVM libc is built with
+Clang only, so the full set is 20, not 24.
+
+It must build in the variant directory: `board-regression` takes the addresses
+of its `sym:` rows (`dump`, `fill`, `test_ram`, `X`) from `Artefacts/FLASH.elf`
+and accepts that file only when its `build/version.h` names the revision the
+board runs. An image built elsewhere leaves a stale one there, and those rows are
+skipped. The check compares the revision only, so an image of the same commit
+built with another compiler or C library would pass it with wrong addresses -
+another reason the image there has to be the flashed one.
+
+Only boards flashed through an ST-Link are listed in `KFLASH`. A board that needs
+a physical action before it can be flashed - Pico2_rp2350 (BOOTSEL), Firefly_H743
+(DFU), the N657 boards (a jumper) - needs a flashing method of its own there.
+
 ## The core dump test
 
 `Tools/Developer/bin/coredump-test` is a separate script rather than a row in
@@ -404,7 +442,7 @@ pre-fix firmware `35f7ba715`, which has no mark-clearing loop at all, produces a
 capture that **passes every assertion here**. Only the host suite covers that
 defect. See `Tools/Developer/tests/DEFECTS.md`.
 
-`KBOARDS` carries `Discovery_U5G9`, `Nucleo_H743` and `Nucleo_L4R5`, all three
+`KBOARDS` carries `Discovery_U5G9`, `Nucleo_H753` and `Nucleo_L4R5`, all three
 verified end to end including the SWD recovery. Between them they cover two C
 libraries — the L4R5 image is `llvmlibc`, the other two `newlib` — so the dump's
 own `snprintf` formatting is exercised under both.

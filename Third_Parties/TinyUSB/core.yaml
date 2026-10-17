@@ -26,12 +26,12 @@ f2:
 
 h7:
   - dependency: null
-    soc: STM32H743
+    soc: STM32H7x3
     profiles:
       - cdc_cdc
       - cdc_msc
   - dependency: null
-    soc: STM32H747
+    soc: STM32H7x7
     profiles:
       - cdc_cdc
       - cdc_msc

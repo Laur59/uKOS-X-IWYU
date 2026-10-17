@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: MIT
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  *
- * Goal:     random manager.
+ * Random number manager API: read a pool of numbers from the soft or the hardware generator.
  */
 
 #pragma once
@@ -35,12 +35,6 @@ typedef enum {
 extern  "C" {
 #endif
 
-extern  void    model_random_soft_init(void);
-extern  void    model_random_soft_read(uint32_t *number);
-
-extern  int32_t stub_random_init(void);
-extern  int32_t stub_random_read(randomGenerator_t generator, uint32_t *number);
-
 /*!
  * \brief Read a pool of random numbers
  *
@@ -64,12 +58,6 @@ extern  int32_t stub_random_read(randomGenerator_t generator, uint32_t *number);
  *
  */
 extern  int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers);
-
-// Stub functions (target-specific implementations)
-// -------------------------------------------------
-
-int32_t stub_random_init(void);
-int32_t stub_random_read(randomGenerator_t generator, uint32_t *number);
 
 #ifdef __cplusplus
 }

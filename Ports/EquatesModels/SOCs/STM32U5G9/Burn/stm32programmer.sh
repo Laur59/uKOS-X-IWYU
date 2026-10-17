@@ -23,6 +23,7 @@ readonly ITALIC=$'\033[3m'
 readonly NC=$'\033[0m' # No Color
 
 readonly target_device='STM32U5xx'
+readonly target_board='STM32U5[AG]9J-DK*'
 readonly HEX='FLASH.hex'
 
 # Detection of the STM32_Programmer_CLI on different OS
@@ -59,23 +60,44 @@ detect_cli() {
     fi
 }
 
-# Extract serial numbers and associated device names from all connected ST-Links
-# Find the ST-Link whose device matches $1 and set the global SN variable
+# Find the ST-Link of the target and set the global SN variable
+#
+# "-l st" reports every attached ST-Link with the board name it carries,
+# without connecting to any target: the probe whose board name matches $2 is
+# taken directly. Only the probes that report no board name (an external
+# ST-Link, an older firmware) are connected to, under reset, to read the
+# device name and compare it with $1. A probe naming another board is never
+# touched: connecting under reset reboots its target, and even a hot-plug
+# connect hangs a running STM32U5A9J-DK until it is reset
 
 extract_targets() {
     local target_device="$1"
+    local target_board="$2"
     local -a serials
-    local sn
+    local -A boards
+    local line sn='' in_probes=false
 
-    # -getTargetSelList outputs to stderr; redirect accordingly
     local list
-    list=$("${CLI}" -getTargetSelList 2>&1 >/dev/null)
+    list=$("${CLI}" -l st 2>&1 | sed $'s/\033\\[[0-9;]*m//g') || true
 
-    # Parse lines of the form:  Serial: "XXXX" , Name: "VXJYYMZ"
+    # Parse the probe section only; the serial ports listed after it repeat
+    # the board names in another order
     while IFS= read -r line; do
-        [[ "${line}" == *'Serial:'* ]] || continue
-        sn=$(printf '%s' "${line}" | sed 's/.*Serial:[[:space:]]*"\([^"]*\)".*/\1/')
-        [[ -n "${sn}" ]] && serials+=("${sn}")
+        if [[ "${line}" == *'ST-Link Probe '*':'* ]]; then
+            in_probes=true
+            continue
+        fi
+        ${in_probes} || continue
+        if [[ "${line}" == *'-----'* ]]; then
+            break
+        fi
+        if [[ "${line}" == *'ST-LINK SN'*':'* ]]; then
+            sn="${${line##*:}//[[:space:]]/}"
+            serials+=("${sn}")
+            boards[${sn}]=''
+        elif [[ "${line}" == *'Board Name'*':'* && -n "${sn}" ]]; then
+            boards[${sn}]="${${line##*:}//[[:space:]]/}"
+        fi
     done <<< "${list}"
 
     if (( ${#serials[@]} == 0 )); then
@@ -85,8 +107,21 @@ extract_targets() {
 
     printf '%s\n' "${BLUE}${BOLD}Detected targets : ${#serials[@]}${NC}"
 
+    for sn in "${serials[@]}"; do
+        printf '  %sSN%s : %s%s%s\n'         "${BOLD}" "${NC}" "${YELLOW}" "${sn}"                    "${NC}"
+        printf '  %sBoard name%s : %s%s%s\n' "${BOLD}" "${NC}" "${GREEN}"  "${boards[${sn}]:-unknown}" "${NC}"
+        printf '\n'
+
+        if [[ -n "${boards[${sn}]}" && "${boards[${sn}]}" == ${~target_board} ]]; then
+            SN="${sn}"
+            return 0
+        fi
+    done
+
     local info device_name fw_name
     for sn in "${serials[@]}"; do
+        [[ -z "${boards[${sn}]}" ]] || continue
+
         # Connect briefly (Under Reset) just to read the device info
         # A probe that does not answer (its target held in a boot mode, or
         # wired to another board) is not this target: skip it rather than
@@ -108,7 +143,7 @@ extract_targets() {
         fi
     done
 
-    printf '%s\n' "${RED}No ST-Link found for device '${target_device}'.${NC}"
+    printf '%s\n' "${RED}No ST-Link found for board '${target_board}' or device '${target_device}'.${NC}"
     exit 1
 }
 
@@ -128,7 +163,7 @@ if [[ ! -f "${HEX}" ]]; then
     exit 1
 fi
 
-extract_targets ${target_device}
+extract_targets "${target_device}" "${target_board}"
 
 printf '%s\n' "${GREEN}ST-Link detected : ${SN}${NC}"
 printf '%s\n' "${GREEN}Device name : ${target_device}${NC}"

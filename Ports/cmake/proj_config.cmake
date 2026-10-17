@@ -3,6 +3,9 @@
 #
 # Configuring options to build kernel and os
 
+# SOC_BASE: the SoC an overlay SoC directory builds on (SOC itself otherwise)
+include(soc-base)
+
 # TinyUSB integration (derive_soc_properties, add_TinyUSB)
 include(tinyusb)
 

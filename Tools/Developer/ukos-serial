@@ -67,6 +67,7 @@ KDEFAULT_PROMPT = "uKOS-X > "
 KDEFAULT_TIMEOUT = 10.0
 KBUFFER_MAX = 4 * 1024 * 1024
 KSETTLE = 0.025
+KSTART_TIMEOUT = 30.0
 
 KEOL = {"cr": b"\r", "lf": b"\n", "crlf": b"\r\n"}
 
@@ -363,14 +364,35 @@ def serve(args):
     if os.path.exists(sock_path):
         os.unlink(sock_path)
 
-    session = Session(args.port, args.baud, args.stopbits, args.eol,
-                      args.prompt, log_path, args.assert_dtr,
-                      args.settle)
+    # Bind before opening the port, not after.  Opening a serial device can
+    # take seconds on some boards, and a client that connects while the port
+    # is still opening then waits in the listen backlog until the loop below
+    # starts accepting, instead of being told there is no session.  The socket
+    # says nothing about the port, though: `start` waits for the metadata file
+    # written below, which exists only once the port is open.
 
     srv = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     srv.bind(sock_path)
     srv.listen(8)
     os.chmod(sock_path, 0o600)
+
+    # The socket now exists, so a failure to open the port must take it away
+    # again - otherwise every later command would meet a socket with nothing
+    # behind it.
+
+    try:
+        session = Session(args.port, args.baud, args.stopbits, args.eol,
+                          args.prompt, log_path, args.assert_dtr,
+                          args.settle)
+    except Exception as exc:                            # noqa: BLE001
+        sys.stderr.write("error: cannot open %s: %s: %s\n"
+                         % (args.port, type(exc).__name__, exc))
+        srv.close()
+        try:
+            os.unlink(sock_path)
+        except OSError:
+            pass
+        return 1
 
     with open(meta_path, "w") as fd:
         json.dump({"port": args.port, "baud": args.baud, "pid": os.getpid(),
@@ -481,7 +503,7 @@ def emit(rep, prompt, strip_prompt):
 
 def cmd_start(args):
     name = args.name or session_name(args.port)
-    sock_path, log_path, _ = paths(name)
+    sock_path, log_path, meta_path = paths(name)
 
     if os.path.exists(sock_path):
         try:
@@ -512,17 +534,66 @@ def cmd_start(args):
     if args.assert_dtr:
         cmdline.append("--assert-dtr")
 
-    subprocess.Popen(cmdline, start_new_session=True,
-                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # Keep the daemon's stderr: with it on DEVNULL a failure to open the port
+    # left no trace anywhere, so a start that went wrong could only be guessed
+    # at.  stdout stays discarded - the daemon prints nothing on it.  The file
+    # is truncated, so that what it holds is about this start and not the tail
+    # of an older failure.
 
-    for _ in range(50):
-        if os.path.exists(sock_path):
+    err_path = log_path + ".err"
+    with open(err_path, "wb", buffering=0) as err:
+        proc = subprocess.Popen(cmdline, start_new_session=True,
+                                stdout=subprocess.DEVNULL, stderr=err)
+
+    # The daemon binds its socket before it opens the port, so the socket is
+    # no sign that the session works.  The metadata file is: it is written
+    # once the port is open, and carries the pid of the daemon that wrote it,
+    # which tells it from one left behind by a daemon that was killed.  A
+    # daemon that exits ends the wait at once, with its reason on stderr.
+
+    deadline = time.monotonic() + KSTART_TIMEOUT
+    while time.monotonic() < deadline:
+        try:
+            with open(meta_path) as fd:
+                ready = json.load(fd).get("pid") == proc.pid
+        except (OSError, ValueError):
+            ready = False
+        if ready:
             print("session '%s' holding %s @ %d 8N%d DTR %s (log: %s)"
                   % (name, args.port, args.baud, args.stopbits,
                      "high" if args.assert_dtr else "low", log_path))
             return 0
-        time.sleep(0.1)
-    sys.stderr.write("error: the daemon did not come up; check %s\n" % log_path)
+        if proc.poll() is not None:
+            break
+        time.sleep(0.05)
+
+    # Still opening after all that time: the daemon must not be left to open
+    # the port later and hold it behind a start that reported a failure.
+
+    if proc.poll() is None:
+        proc.terminate()
+        try:
+            proc.wait(2)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+            proc.wait()
+        for path in (sock_path, meta_path):
+            try:
+                os.unlink(path)
+            except OSError:
+                pass
+        sys.stderr.write("error: %s was not open after %d s; the daemon was "
+                         "stopped\n" % (args.port, KSTART_TIMEOUT))
+        return 1
+
+    sys.stderr.write("error: the daemon did not come up; check %s\n" % err_path)
+    try:
+        with open(err_path, "rb") as err:
+            tail = err.read()[-500:].decode("utf-8", "replace").strip()
+        if tail:
+            sys.stderr.write("%s\n" % tail)
+    except OSError:
+        pass
     return 1
 
 

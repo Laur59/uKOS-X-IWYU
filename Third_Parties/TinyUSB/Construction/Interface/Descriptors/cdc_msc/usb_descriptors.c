@@ -244,6 +244,14 @@ enum {
 
 // Array of pointer to string descriptors
 
+// The product name is board specific, while this archive is shared by every
+// board with the same SoC, profile and speed, so uKOS-X supplies it at run
+// time (OS/Processes/TinyUSB/TinyUSB.c). It is declared here rather than by
+// including OS/Processes/TinyUSB/TinyUSB.h, which this archive's include path
+// does not cover. Returning nullptr keeps the generic name below.
+
+extern  const   char_t  *TinyUSB_getProductName(void);
+
 char_t  const   *string_desc_arr [] = {
 
     (const char_t[]) { 0x09, 0x04 },    // 0: Is supported language is English (0x0409)
@@ -261,6 +269,15 @@ uint16_t    const   *tud_descriptor_string_cb(uint8_t index, [[maybe_unused]] ui
             size_t      i, chr_count;
     static  uint16_t    vDesc_str[1 + 32];
     const   char_t      *str = string_desc_arr[index];
+
+// Let uKOS-X name the board. A nullptr keeps the generic name, and either way
+// the default branch below formats the string exactly as before.
+
+    if (index == STRID_PRODUCT) {
+        const   char_t  *name = TinyUSB_getProductName();
+
+        if (name != nullptr) { str = name; }
+    }
 
     switch (index) {
         case STRID_LANGID: {

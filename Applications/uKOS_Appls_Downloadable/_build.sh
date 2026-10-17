@@ -5,7 +5,8 @@
 # Purpose:
 #   Building all the uKOS downloadable applications using CMake.
 #   Applications tied to a single C library (see CLIB_ONLY_GROUPS) are
-#   skipped when another C library is selected.
+#   skipped when another C library is selected, and those that do not fit
+#   under one (see CLIB_EXCLUDED) when that one is.
 #
 # Usage:
 #    cd cloned_directory/Applications/uKOS_Appls_Downloadable
@@ -60,6 +61,14 @@ C_LIB="newlib"
 
 typeset -rA CLIB_ONLY_GROUPS=(
     n_NewLibs newlib
+)
+
+# Application builds that do not fit under one C library, keyed by
+# group/project/board. cortexFPU on the soft-float Cortex-M3 of Nucleo_F207
+# overflows its 17 KB prgm_code region by about 1 KB under LLVM libc, whose
+# software float and printf routines are larger than newlib's.
+typeset -rA CLIB_EXCLUDED=(
+    k_Mathematicals/cortexFPU/Nucleo_F207 llvmlibc
 )
 
 # Cleanup trap (runs on Ctrl-C)
@@ -301,6 +310,13 @@ while IFS= read -r CURRENT_TARGET; do
     required_clib="${CLIB_ONLY_GROUPS[${CURRENT_TARGET%%/*}]:-}"
     if [[ -n "${required_clib}" && "${required_clib}" != "${C_LIB}" ]]; then
         build_skipped+=$'\n'"${CURRENT_TARGET} (requires ${required_clib})"
+        printf "%bSKIP%b\n" "${BLUE}" "${NC}"
+        continue
+    fi
+
+    # Skip the builds that do not fit under the selected C library
+    if [[ "${CLIB_EXCLUDED[${CURRENT_TARGET}]:-}" == "${C_LIB}" ]]; then
+        build_skipped+=$'\n'"${CURRENT_TARGET} (does not fit under ${C_LIB})"
         printf "%bSKIP%b\n" "${BLUE}" "${NC}"
         continue
     fi

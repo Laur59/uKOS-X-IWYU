@@ -207,7 +207,7 @@ interim workaround it names is `-DCFLAGS_APPEND=-D__CLK_TCK=1000000`.
 | `llvm-llvmlibc` | Clang | LLVM libc |
 
 ```bash
-cd Ports/Targets/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H753/Variant_Test
 cmake --preset llvm-picolibc -B build
 cmake --build build
 ```
@@ -282,6 +282,12 @@ automatically under the others — currently `n_NewLibs`, which demonstrates the
 manager and includes `newlib/newlib.h`, pulling in a `<sys/reent.h>` that picolibc and
 LLVM libc do not provide. The mapping is the `CLIB_ONLY_GROUPS` table, kept in both
 `Applications/uKOS_Appls_Downloadable/_build.sh` and `Tools/Developer/run-regression.sh`.
+
+The opposite case is the `CLIB_EXCLUDED` table in the same two scripts: single builds,
+keyed `group/project/board`, that are skipped under one C library only. Its one entry is
+`k_Mathematicals/cortexFPU/Nucleo_F207` under `llvmlibc`: on the soft-float Cortex-M3 the
+LLVM libc float and `printf` routines take the application to 18,328 B, 920 B over the
+17 KB `prgm_code` region of `Ports/Targets/Nucleo_F207/Base/Runtime/link_App.ld`.
 
 ---
 
@@ -837,4 +843,4 @@ Common configuration errors:
 | `OS/Lib_generics/lib_generics.h` | header switch on `CONFIG_MAN_*_S` |
 | `OS/Lib_kernels/kern/xLibrary.c` | per-process C library state at context switch |
 | `Ports/EquatesModels/*/Runtime/*.ld` | TLS assertions |
-| `Tools/Developer/run-regression.sh` | full regression matrix, `CLIB_ONLY_GROUPS` |
+| `Tools/Developer/run-regression.sh` | full regression matrix, `CLIB_ONLY_GROUPS`, `CLIB_EXCLUDED` |

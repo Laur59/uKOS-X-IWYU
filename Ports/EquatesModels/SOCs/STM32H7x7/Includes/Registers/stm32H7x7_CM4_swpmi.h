@@ -1,0 +1,109 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Generated using the .svd description
+ * Goal:     stm32H7x7_CM4_swpmi equates.
+ */
+
+#pragma once
+
+#include    <stdint.h>
+
+// SWPMI address definitions
+// -------------------------
+
+typedef struct {
+    volatile    uint32_t    CR;
+    volatile    uint32_t    BRR;
+    volatile    uint32_t    RESERVED0;
+    volatile    uint32_t    ISR;
+    volatile    uint32_t    ICR;
+    volatile    uint32_t    IER;
+    volatile    uint32_t    RFL;
+    volatile    uint32_t    TDR;
+    volatile    uint32_t    RDR;
+    volatile    uint32_t    OR;
+} SWPMI_TypeDef;
+
+#ifdef __cplusplus
+#define SWPMI   reinterpret_cast<SWPMI_TypeDef *>(0x40008800U)
+
+#else
+#define SWPMI   ((SWPMI_TypeDef *)0x40008800U)
+#endif
+
+// CR Configuration
+
+#define SWPMI_CR_SWPTEN     (0x1U<<11U)
+#define SWPMI_CR_DEACT      (0x1U<<10U)
+#define SWPMI_CR_SWPACT     (0x1U<<5U)
+#define SWPMI_CR_LPBK       (0x1U<<4U)
+#define SWPMI_CR_TXMODE     (0x1U<<3U)
+#define SWPMI_CR_RXMODE     (0x1U<<2U)
+#define SWPMI_CR_TXDMA      (0x1U<<1U)
+#define SWPMI_CR_RXDMA      (0x1U<<0U)
+
+// BRR Configuration
+
+#define SWPMI_BRR_BR        (0xFFU<<0U)
+#define SWPMI_BRR_BR_0      (0x1U<<0U)
+
+// ISR Configuration
+
+#define SWPMI_ISR_RDYF      (0x1U<<11U)
+#define SWPMI_ISR_DEACTF    (0x1U<<10U)
+#define SWPMI_ISR_SUSP      (0x1U<<9U)
+#define SWPMI_ISR_SRF       (0x1U<<8U)
+#define SWPMI_ISR_TCF       (0x1U<<7U)
+#define SWPMI_ISR_TXE       (0x1U<<6U)
+#define SWPMI_ISR_RXNE      (0x1U<<5U)
+#define SWPMI_ISR_TXUNRF    (0x1U<<4U)
+#define SWPMI_ISR_RXOVRF    (0x1U<<3U)
+#define SWPMI_ISR_RXBERF    (0x1U<<2U)
+#define SWPMI_ISR_TXBEF     (0x1U<<1U)
+#define SWPMI_ISR_RXBFF     (0x1U<<0U)
+
+// ICR Configuration
+
+#define SWPMI_ICR_CRDYF     (0x1U<<11U)
+#define SWPMI_ICR_CSRF      (0x1U<<8U)
+#define SWPMI_ICR_CTCF      (0x1U<<7U)
+#define SWPMI_ICR_CTXUNRF   (0x1U<<4U)
+#define SWPMI_ICR_CRXOVRF   (0x1U<<3U)
+#define SWPMI_ICR_CRXBERF   (0x1U<<2U)
+#define SWPMI_ICR_CTXBEF    (0x1U<<1U)
+#define SWPMI_ICR_CRXBFF    (0x1U<<0U)
+
+// IER Configuration
+
+#define SWPMI_IER_RDYIE     (0x1U<<11U)
+#define SWPMI_IER_SRIE      (0x1U<<8U)
+#define SWPMI_IER_TCIE      (0x1U<<7U)
+#define SWPMI_IER_TIE       (0x1U<<6U)
+#define SWPMI_IER_RIE       (0x1U<<5U)
+#define SWPMI_IER_TXUNRIE   (0x1U<<4U)
+#define SWPMI_IER_RXOVRIE   (0x1U<<3U)
+#define SWPMI_IER_RXBERIE   (0x1U<<2U)
+#define SWPMI_IER_TXBEIE    (0x1U<<1U)
+#define SWPMI_IER_RXBFIE    (0x1U<<0U)
+
+// RFL Configuration
+
+#define SWPMI_RFL_RFL       (0x1FU<<0U)
+#define SWPMI_RFL_RFL_0     (0x1U<<0U)
+
+// TDR Configuration
+
+#define SWPMI_TDR_TD        (0xFFFFFFFFU<<0U)
+#define SWPMI_TDR_TD_0      (0x1U<<0U)
+
+// RDR Configuration
+
+#define SWPMI_RDR_RD        (0xFFFFFFFFU<<0U)
+#define SWPMI_RDR_RD_0      (0x1U<<0U)
+
+// OR Configuration
+
+#define SWPMI_OR_SWP_CLASS  (0x1U<<1U)
+#define SWPMI_OR_SWP_TBYP   (0x1U<<0U)

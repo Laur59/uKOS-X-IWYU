@@ -33,7 +33,7 @@ extern  const   char_t  *aClass[];
 typedef struct  dataBase    dataBase_t;
 
 struct  dataBase {
-        const   float32_t       oDataSet[KNB_COLUMNS];  // The data
+        const   float32_t       oDataSet_f[KNB_COLUMNS];  // The data
         const   char_t          *oClassLabel;           // The class labels
         const   lv_image_dsc_t  *oClassImage;           // The class image
         };

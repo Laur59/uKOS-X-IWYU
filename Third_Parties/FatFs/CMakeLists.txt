@@ -74,7 +74,7 @@ message("")
 
 # Package version and commit hash
 set(FATFS_VERSION "0.16")
-set(FATFS_HASH "30ca13c")
+set(FATFS_HASH "ab992fc")
 
 message(STATUS "Fetching FatFs version ${FATFS_VERSION} (commit ${FATFS_HASH})")
 

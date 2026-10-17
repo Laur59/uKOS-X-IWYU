@@ -94,7 +94,6 @@
 #include    "tensorflow/lite/micro/micro_profiler.h"
 #include    "tensorflow/lite/micro/recording_micro_interpreter.h"
 #include    "tensorflow/lite/micro/system_setup.h"
-#include    "tensorflow/lite/schema/schema_generated.h"
 
 #ifdef CORTEX
 #include    "tensorflow/lite/micro/cortex_m_generic/debug_log_callback.h"
@@ -207,8 +206,8 @@ void    aProcess_0([[maybe_unused]] const void *argument) {
     uint32_t                        random[2], delta = 0U;
     uint32_t                        minUkos = 0xFFFFFFFFU, minTFL = 0xFFFFFFFFU;
     uint32_t                        maxUkos = 0U, maxTFL = 0U;
-    float32_t                       x, y;
-    const float32_t                 gain = 2.0F;
+    float32_t                       x_f, y_f;
+    const float32_t                 gain_f = 2.0F;
 
     #ifdef CORTEX
     RegisterDebugLogCallback(debuglog);
@@ -243,16 +242,16 @@ void    aProcess_0([[maybe_unused]] const void *argument) {
 // --------------------------
 
         random_read(KRANDOM_SOFT, &random[0], 2U);
-        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
-        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
+        x_f = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5F) * gain_f;
+        y_f = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5F) * gain_f;
 
 // For TensorFlowLite
 // Prepare the inputs
 
         kern_suspendProcess(500U);
         input = interpreter.input(0);
-        input->data.f[0] = x;
-        input->data.f[1] = y;
+        input->data.f[0] = x_f;
+        input->data.f[1] = y_f;
 
         kern_readTickCount(&time[0]);
         if (interpreter.Invoke() != tflite::micro::kTfLiteOk) {
@@ -271,8 +270,8 @@ void    aProcess_0([[maybe_unused]] const void *argument) {
 // Prepare the inputs
 
         kern_suspendProcess(500U);
-        vInput_L1[0] = x;
-        vInput_L1[1] = y;
+        vInput_L1_f[0] = x_f;
+        vInput_L1_f[1] = y_f;
 
         kern_readTickCount(&time[0]);
         mlpn_compute(&aNetwork);

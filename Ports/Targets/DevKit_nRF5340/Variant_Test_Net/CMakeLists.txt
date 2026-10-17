@@ -128,7 +128,6 @@ add_source_with_define(libx_p ${PATH_OSYS}/Lib_peripherals/switch/switch.c CONFI
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/serial/serial.c CONFIG_MAN_SERIAL_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/urt0/urt0.c CONFIG_MAN_URT0_S)
 target_sources(libx_p PRIVATE
-    ${PATH_PORT}/EquatesModels/Generic/Models/stub_random.c
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
     ${PATH_BASE}/Lib_peripherals/led/stub_led.c
     ${PATH_BASE}/Lib_peripherals/switch/stub_switch.c

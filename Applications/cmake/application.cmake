@@ -31,6 +31,7 @@ target_compile_definitions(system_compiler_flags INTERFACE
     UKOS_S
     ${BOARD}_S
     ${SOC}_S
+    ${SOC_BASE}_S
     ${CORE}_S
 )
 
@@ -194,12 +195,15 @@ target_include_directories(system_compiler_flags INTERFACE
     ${PATH_BASE}/Includes/Board
     ${PATH_UKOS}/Ports/EquatesModels/Devices
     ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Models
+    ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC_BASE}/Models
     ${PATH_UKOS}/Ports/EquatesModels/Generic/Models
     ${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Includes
     ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Includes
+    ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC_BASE}/Includes
     ${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Runtime
     ${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Models
     ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
+    ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC_BASE}/Runtime
     ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
     ${PATH_UKOS}/Third_Parties
     # "TinyUSB_interface.h", for the applications that call the TinyUSB

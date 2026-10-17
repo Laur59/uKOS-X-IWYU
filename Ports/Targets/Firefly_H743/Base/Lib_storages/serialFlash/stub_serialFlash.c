@@ -5,8 +5,8 @@
  * Goal:        stub for the connection of the "serialFlash" manager device by qspi device.
  */
 
-#include    "Registers/stm32H743_quadspi.h"  // for QUADSPI
-#include    "Registers/stm32H743_rcc.h"
+#include    "Registers/stm32H7x3_quadspi.h"  // for QUADSPI
+#include    "Registers/stm32H7x3_rcc.h"
 #include    "W25Q128J/W25Q128J.h"            // IWYU pragma: export
 #include    "clockTree.h"                    // for KFREQUENCY_AHB3
 

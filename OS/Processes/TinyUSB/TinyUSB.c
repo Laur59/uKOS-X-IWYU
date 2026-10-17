@@ -108,6 +108,23 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
     return EXIT_OS_SUCCESS_CLI;
 }
 
+/*
+ * \brief TinyUSB_getProductName
+ *
+ * - Return the USB product name string of this board
+ *
+ */
+const   char_t  *TinyUSB_getProductName(void) {
+
+// The string descriptors live in the prebuilt TinyUSB archive, which is shared
+// by every board with the same SoC, profile and speed - Firefly_H743 and
+// Nucleo_H743 link the very same file - so the name cannot be baked in there.
+// It is built here instead, where the system build defines BOARD, and the
+// archive asks for it when the host reads the product string descriptor.
+
+    return "uKOS-X " STRG(BOARD);
+}
+
 // Local routines
 // ==============
 

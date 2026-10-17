@@ -73,7 +73,6 @@
 #include    "tensorflow/lite/micro/micro_profiler.h"
 #include    "tensorflow/lite/micro/recording_micro_interpreter.h"
 #include    "tensorflow/lite/micro/system_setup.h"
-#include    "tensorflow/lite/schema/schema_generated.h"
 
 #ifdef CORTEX
 #include    "tensorflow/lite/micro/cortex_m_generic/debug_log_callback.h"
@@ -182,8 +181,8 @@ void    aProcess_0([[maybe_unused]] const void *argument) {
             tflite::micro::TfLiteTensor     *output;
             uint64_t                        time[2];
             uint32_t                        random[2], delta = 0;
-            float32_t                       x, y, result;
-    const   float32_t                       gain = 2.0F;
+            float32_t                       x_f, y_f, result_f;
+    const   float32_t                       gain_f = 2.0F;
     const   char_t                          *winner;
 
     #ifdef CORTEX
@@ -219,12 +218,12 @@ void    aProcess_0([[maybe_unused]] const void *argument) {
 // Prepare the inputs
 
         random_read(KRANDOM_SOFT, &random[0], 2U);
-        x = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
-        y = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5F) * gain;
+        x_f = (((float32_t)random[0] / (float32_t)(KRAND_MAX)) - 0.5F) * gain_f;
+        y_f = (((float32_t)random[1] / (float32_t)(KRAND_MAX)) - 0.5F) * gain_f;
 
         input  = interpreter.input(0);
-        input->data.f[0] = x;
-        input->data.f[1] = y;
+        input->data.f[0] = x_f;
+        input->data.f[1] = y_f;
 
         kern_readTickCount(&time[0]);
         if (interpreter.Invoke() != tflite::micro::kTfLiteOk) {
@@ -241,19 +240,19 @@ void    aProcess_0([[maybe_unused]] const void *argument) {
 
         output = interpreter.output(0);
 
-                                          result = output->data.f[0]; winner = "Class A                ";
-        if (output->data.f[1] > result) { result = output->data.f[1]; winner = "Class B                "; }
-        if (output->data.f[2] > result) { result = output->data.f[2]; winner = "Class C                "; }
-        if (output->data.f[3] > result) { result = output->data.f[3]; winner = "Class D                "; }
-        if (output->data.f[4] > result) { result = output->data.f[4]; winner = "Inter-class area       "; }
+                                            result_f = output->data.f[0]; winner = "Class A                ";
+        if (output->data.f[1] > result_f) { result_f = output->data.f[1]; winner = "Class B                "; }
+        if (output->data.f[2] > result_f) { result_f = output->data.f[2]; winner = "Class C                "; }
+        if (output->data.f[3] > result_f) { result_f = output->data.f[3]; winner = "Class D                "; }
+        if (output->data.f[4] > result_f) { result_f = output->data.f[4]; winner = "Inter-class area       "; }
 
-        if (result < 0.3) {                                           winner = "Not well classified    "; }
+        if (result_f < 0.3) {                                             winner = "Not well classified    "; }
 
         (void)dprintf(KSYST, "In-0 %6.3f, In-1 %6.3f, "
                              "result: Out-0 %6.1f%%, Out-1 %6.1f%%, Out-2 %6.1f%%, Out-3 %6.1f%%, Out-4 %6.1f%% "
                              "    %s "
-                             "Exec time %" PRIu32" [us]\n", x,
-                                                            y,
+                             "Exec time %" PRIu32" [us]\n", x_f,
+                                                            y_f,
                                                             output->data.f[0] * 100,
                                                             output->data.f[1] * 100,
                                                             output->data.f[2] * 100,

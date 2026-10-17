@@ -16,7 +16,7 @@
       "expect": ["^[0-9]+$"],
       "refute": ["^Protocol error\\.$"],
       "timeout": 10,
-      "note": "boards without a TRNG link the generic stub_random.c; only the shape is assertable, never a value"
+      "note": "boards whose SoC has no RNG block include the Generic model_random_hard.c_inc, which serves -hard from the soft generator; only the shape is assertable, never a value"
     }
   ]
 }

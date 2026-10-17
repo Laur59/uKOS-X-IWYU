@@ -3,7 +3,8 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Random number manager — mutex-protected pool read, soft LCG implementation.
+ * Random number manager: mutex-protected pool read, soft LCG generator, and the
+ * hardware generator model of the SoC (model_random_hard.c_inc, Generic fallback).
  */
 
 #include    "random.h"
@@ -55,7 +56,11 @@ static  mutx_t  *vMutex_Reserve_Random[KNB_CORES];
 
 // Prototypes
 
-static  int32_t     local_init(void);
+static  void    local_init(void);
+static  void    model_random_soft_init(void);
+static  void    model_random_soft_read(uint32_t *number);
+static  void    model_random_hard_init(void);
+static  void    model_random_hard_read(uint32_t *number);
 
 /*
  * \brief Read a pool of random numbers
@@ -81,22 +86,21 @@ static  int32_t     local_init(void);
  */
 int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNumbers) {
     uint32_t    core, i, *wkNumber = number;
-    int32_t     status;
 
     core = GET_RUNNING_CORE;
 
     PRIVILEGE_ELEVATE;
-    status = local_init();
-    if (status != KERR_RANDOM_NOERR) { PRIVILEGE_RESTORE; return status; }
+    local_init();
 
-    if ((number == nullptr) || (nbNumbers == 0U)) {
+    if ((number == nullptr) || (nbNumbers == 0U) || ((generator != KRANDOM_SOFT) && (generator != KRANDOM_HARD))) {
         PRIVILEGE_RESTORE;
         return KERR_RANDOM_GEERR;
     }
 
     kern_lockMutex(vMutex_Reserve_Random[core], KWAIT_INFINITY);
     for (i = 0U; i < nbNumbers; i++) {
-        stub_random_read(generator, wkNumber);
+        if (generator == KRANDOM_SOFT) { model_random_soft_read(wkNumber); }
+        else                           { model_random_hard_read(wkNumber); }
         wkNumber++;
     }
     kern_unlockMutex(vMutex_Reserve_Random[core]);
@@ -107,6 +111,36 @@ int32_t random_read(randomGenerator_t generator, uint32_t *number, uint32_t nbNu
 // Local routines
 // ==============
 
+/*
+ * \brief local_init
+ *
+ * - This function initialises the manager and
+ *   has to be called at least once
+ *
+ */
+static  void    local_init(void) {
+            uint32_t    core;
+    static  bool        vInit[KNB_CORES] = MCSET(false);
+
+    core = GET_RUNNING_CORE;
+
+    INTERRUPTION_OFF;
+    if (!vInit[core]) {
+        vInit[core] = true;
+
+        if (kern_createMutex(aStrIdSRandom, &vMutex_Reserve_Random[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "rand: create mutx"); exit(EXIT_OS_PANIC); }
+
+        model_random_soft_init();
+        model_random_hard_init();
+    }
+    INTERRUPTION_RESTORE;
+}
+
+// Soft generator
+// ==============
+
+// Linear congruential generator (LCG) with the BSD constants
+// X[n + 1] = (Ka * X[n] + Kc) mod Km, X[0] = the crt0 seed
 // !!! Only positive constants
 
 #define Ka  1103515245U
@@ -122,7 +156,7 @@ static  uint32_t    vSeed[KNB_CORES] = MCSET(0U);
  * - Initialise the seed
  *
  */
-void    model_random_soft_init(void) {
+static  void    model_random_soft_init(void) {
     uint32_t    core;
 
     core = GET_RUNNING_CORE;
@@ -136,13 +170,10 @@ void    model_random_soft_init(void) {
  * - Read a pseudo random number
  *
  */
-void    model_random_soft_read(uint32_t *number) {
+static  void    model_random_soft_read(uint32_t *number) {
     uint32_t    core;
 
     core = GET_RUNNING_CORE;
-
-// X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
-// With X[n] = vSeed
 
     INTERRUPTION_OFF;
     vSeed[core] = ((Ka * vSeed[core]) + Kc) % Km;
@@ -150,29 +181,13 @@ void    model_random_soft_read(uint32_t *number) {
     INTERRUPTION_RESTORE;
 }
 
-/*
- * \brief local_init
- *
- * - This function initialises the manager and
- *   has to be called at least once
- *
- */
-static  int32_t local_init(void) {
-            int32_t     status = KERR_RANDOM_NOERR;
-            uint32_t    core;
-    static  bool        vInit[KNB_CORES] = MCSET(false);
+// Hardware generator
+// ==================
 
-    core = GET_RUNNING_CORE;
+// The model of the SoC (Ports/EquatesModels/SOCs/<SOC>/Models), or the Generic
+// fallback that serves KRANDOM_HARD from the soft generator: the include path
+// lists the SoC directory before the Generic one, so the bare name selects it.
 
-    INTERRUPTION_OFF;
-    if (!vInit[core]) {
-        vInit[core] = true;
-
-        if (kern_createMutex(aStrIdSRandom, &vMutex_Reserve_Random[core]) != KERR_KERN_NOERR) { LOG(KFATAL_MANAGER, "rand: create mutx"); exit(EXIT_OS_PANIC); }
-
-        status = stub_random_init();
-    }
-    RETURN_INT_RESTORE(status);
-}
+#include    "model_random_hard.c_inc"   // IWYU pragma: keep
 
 #endif

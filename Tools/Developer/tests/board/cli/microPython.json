@@ -60,7 +60,7 @@
         {"await": "^RuntimeError: maximum recursion depth exceeded$", "timeout": 10},
         {"write": "def p(n): print('P_d', n, 1.5); return p(n+1)"},
         {"write": "p(0)"},
-        {"await": "^RuntimeError: maximum recursion depth exceeded$", "timeout": 20},
+        {"await": "^  File \"<stdin>\", in p\\nRuntimeError: maximum recursion depth exceeded$", "timeout": 20},
         {"write": "print('P_alive', 6*7)"},
         {"await": "P_alive 42$", "timeout": 5},
         {"write": "quit"},
@@ -68,7 +68,7 @@
         {"send": "uKOS", "timeout": 10, "expect": ["^Board:   ${BOARD}$"]}
       ],
       "timeout": 10,
-      "note": "unbounded recursion must end in an exception, not in the kernel's 'stack underflow' halt. The second function prints a float from every frame, so the deepest one runs the whole print chain below the last stack check: that is what MICROPY_STACK_CHECK_MARGIN has to cover (../DEFECTS.md)"
+      "note": "unbounded recursion must end in an exception, not in the kernel's 'stack underflow' halt. The second function prints a float from every frame, so the deepest one runs the whole print chain below the last stack check: that is what MICROPY_STACK_CHECK_MARGIN has to cover (../DEFECTS.md). The second await names p's last frame because every await reads from the start of the row: a bare RuntimeError line would match r(0)'s at once, and print and quit would be sent while p(0) still runs. Every console drops such lines (the REPL's text_waitString flushes at each >>>); the runner got away with it only while ukos-serial's 2 s quiet wait outlasted p(0), which a cdc0 console (Firefly_H743, 3 s) does not"
     },
     {
       "id": "microPython/only-quit-ends-the-session",

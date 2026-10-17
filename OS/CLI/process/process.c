@@ -317,8 +317,8 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
 
             #if (KKERN_WITH_STATISTICS_S == true)
             uint64_t    pRatio, kRatio, eRatio;
-            float64_t   pRatioF, kRatioF, eRatioF;
-            float64_t   sum;
+            float64_t   pRatio_f, kRatio_f, eRatio_f;
+            float64_t   sum_f;
             #endif
 
     const   char_t      *idSpacer;
@@ -328,10 +328,10 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
     kRatio = handle->oStatistic.oTimeKAvg * handle->oStatistic.oNbExecutions * 100U;
     eRatio = handle->oStatistic.oTimeEAvg * handle->oStatistic.oNbExecutions * 100U;
 
-    pRatioF = (float64_t)pRatio / (float64_t)vTotalTimeCPU[core];
-    kRatioF = (float64_t)kRatio / (float64_t)vTotalTimeCPU[core];
-    eRatioF = (float64_t)eRatio / (float64_t)vTotalTimeCPU[core];
-    sum = pRatioF + kRatioF + eRatioF;
+    pRatio_f = (float64_t)pRatio / (float64_t)vTotalTimeCPU[core];
+    kRatio_f = (float64_t)kRatio / (float64_t)vTotalTimeCPU[core];
+    eRatio_f = (float64_t)eRatio / (float64_t)vTotalTimeCPU[core];
+    sum_f = pRatio_f + kRatio_f + eRatio_f;
     #endif
 
     local_compose(handle->oSpecification.oText, &idSpacer);
@@ -340,7 +340,7 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
         (void)dprintf(KSYST, "%2d  %s%s - Susp. time", number, handle->oSpecification.oText, idSpacer);
 
         #if (KKERN_WITH_STATISTICS_S == true)
-        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum_f);
         #endif
 
         return;
@@ -350,7 +350,7 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
         (void)dprintf(KSYST, "%2d  %s%s - Susp. sign", number, handle->oSpecification.oText, idSpacer);
 
         #if (KKERN_WITH_STATISTICS_S == true)
-        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum_f);
         #endif
 
         return;
@@ -360,7 +360,7 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
         (void)dprintf(KSYST, "%2d  %s%s - Susp. sema", number, handle->oSpecification.oText, idSpacer);
 
         #if (KKERN_WITH_STATISTICS_S == true)
-        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum_f);
         #endif
 
         return;
@@ -370,7 +370,7 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
         (void)dprintf(KSYST, "%2d  %s%s - Susp. mboE", number, handle->oSpecification.oText, idSpacer);
 
         #if (KKERN_WITH_STATISTICS_S == true)
-        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum_f);
         #endif
 
         return;
@@ -380,7 +380,7 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
         (void)dprintf(KSYST, "%2d  %s%s - Susp. mboF", number, handle->oSpecification.oText, idSpacer);
 
         #if (KKERN_WITH_STATISTICS_S == true)
-        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum_f);
         #endif
 
         return;
@@ -390,7 +390,7 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
         (void)dprintf(KSYST, "%2d  %s%s - Freezed   ", number, handle->oSpecification.oText, idSpacer);
 
         #if (KKERN_WITH_STATISTICS_S == true)
-        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum_f);
         #endif
 
         return;
@@ -400,7 +400,7 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
         (void)dprintf(KSYST, "%2d  %s%s - Running   ", number, handle->oSpecification.oText, idSpacer);
 
         #if (KKERN_WITH_STATISTICS_S == true)
-        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum_f);
         #endif
 
         return;
@@ -409,7 +409,7 @@ static  void    local_printParameter_P0([[maybe_unused]] uint8_t core, uint16_t 
         (void)dprintf(KSYST, "%2d  %s%s - Scheduled ", number, handle->oSpecification.oText, idSpacer);
 
         #if (KKERN_WITH_STATISTICS_S == true)
-        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum);
+        (void)dprintf(KSYST, " - used CPU %6.2f [%%]", sum_f);
         #endif
 }
 

@@ -120,7 +120,6 @@ add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/urt0/urt0.c CONFIG_MAN_UR
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/urt1/urt1.c CONFIG_MAN_URT1_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/wfi0/wfi0.c CONFIG_MAN_WFI0_S)
 target_sources(libx_p PRIVATE
-    ${PATH_PORT}/EquatesModels/Generic/Models/stub_random.c
     ${PATH_BASE}/Lib_generics/asmp/stub_asmp_msip.c
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
     ${PATH_BASE}/Lib_peripherals/imgk/imgk.c

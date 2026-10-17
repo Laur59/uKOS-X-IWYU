@@ -51,6 +51,7 @@ target_compile_definitions(system_compiler_flags INTERFACE
     UKOS_S
     ${BOARD}_S
     ${SOC}_S
+    ${SOC_BASE}_S
     ${CORE}_S
     ROMABLE_S
     "$<$<BOOL:${KERNEL_OPT}>:${KERNEL_OPT}_S>"
@@ -165,10 +166,13 @@ target_include_directories(system_compiler_flags INTERFACE
     ${PATH_BASE}/Includes/Board
     ${PATH_UKOS}/Ports/EquatesModels/Devices
     ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Models
+    ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC_BASE}/Models
     ${PATH_UKOS}/Ports/EquatesModels/Generic/Models
     ${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Includes
     ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Includes
+    ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC_BASE}/Includes
     ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
+    ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC_BASE}/Runtime
     ${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Runtime
     ${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Models
     ${PATH_UKOS}/Ports/EquatesModels/Generic/Runtime
@@ -240,11 +244,21 @@ target_link_libraries(first_object PUBLIC system_compiler_flags)
 add_executable(${TARGET_NOSIG_ELF})
 add_executable(${TARGET_ELF})
 
-# Link libraries (without signature)
+# Placeholder signature (64 '0') for the first link. It has the size of the
+# real signature, so both links give the same layout and NOSIG.bin is the
+# final image with the .signature section zero-filled
+set(SIG_PLACEHOLDER_C
+    "const char aFLASH_signature[] __attribute__((section(\".signature\"))) = \"0000000000000000000000000000000000000000000000000000000000000000\";\n"
+)
+file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.nosig.sig.c" CONTENT "${SIG_PLACEHOLDER_C}")
+add_library(nosig_sig_object OBJECT ${LOCAL_TARGET}.nosig.sig.c)
+target_link_libraries(nosig_sig_object PRIVATE system_compiler_flags)
+
+# Link libraries (with the placeholder signature inside whole-archive)
 target_link_libraries(${TARGET_NOSIG_ELF} PRIVATE
     system_compiler_flags
     first_object
-    "-Wl,-whole-archive" ${UKOS_COMPONENTS} "-Wl,-no-whole-archive"
+    "-Wl,-whole-archive" ${UKOS_COMPONENTS} nosig_sig_object "-Wl,-no-whole-archive"
     "-lm"
 )
 
@@ -268,6 +282,7 @@ endif()
 set(TARGET_COMMON_LINK_OPTIONS
     $<$<BOOL:${CANARY}>:-Wl,--wrap=__stack_chk_fail>
     -L${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Runtime
+    -L${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC_BASE}/Runtime
     -L${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}/Runtime
     -T${LINKS_LD}
     -nostartfiles
@@ -352,9 +367,7 @@ add_custom_command(
 )
 # Generate signature using portable CMake script (cross-platform)
 if(${CONSTANT_SIG})
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.sig.c"
-    "const char aFLASH_signature[] __attribute__((section(\".signature\"))) = \"0000000000000000000000000000000000000000000000000000000000000000\";\n"
-)
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.sig.c" "${SIG_PLACEHOLDER_C}")
 file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/${LOCAL_TARGET}.ck"
     "\n"
 )
@@ -437,10 +450,13 @@ add_custom_command(
     POST_BUILD
     COMMENT "Generating output formats and copying to ${ARTEFACTS_DIR}"
 
-    # Generate output formats
-    COMMAND ${CMAKE_OBJCOPY} -O ihex --strip-all ${TARGET_ELF} ${LOCAL_TARGET}.hex
-    COMMAND ${CMAKE_OBJCOPY} -O binary --strip-all ${TARGET_ELF} ${LOCAL_TARGET}.bin
-    COMMAND ${CMAKE_OBJCOPY} -O srec --strip-all ${TARGET_ELF} ${LOCAL_TARGET}.s3
+    # Generate output formats (gaps between sections filled with 0x00)
+    COMMAND ${CMAKE_COMMAND}
+        -DINPUT_ELF=${TARGET_ELF}
+        -DOUTPUT_NAME=${LOCAL_TARGET}
+        -DOBJCOPY=${CMAKE_OBJCOPY}
+        -DREADELF=${CMAKE_READELF}
+        -P ${CMAKE_CURRENT_LIST_DIR}/generate_images.cmake
 
     # Ensure artifact directory exists
     COMMAND ${CMAKE_COMMAND} -E make_directory ${ARTEFACTS_DIR}
@@ -517,10 +533,15 @@ add_custom_target(listing
 
 # Utility Targets
 
-# Program the SOC with binary
+# Program the SOC with binary (an overlay SoC uses the burn scripts of its
+# base unless it carries its own)
+set(BURN_SCRIPT ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Burn/${BURN}.sh)
+if(NOT EXISTS ${BURN_SCRIPT})
+    set(BURN_SCRIPT ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC_BASE}/Burn/${BURN}.sh)
+endif()
 add_custom_target(burn
     DEPENDS ${TARGET_ELF}
-    COMMAND ${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}/Burn/${BURN}.sh
+    COMMAND ${BURN_SCRIPT}
     VERBATIM
 )
 
@@ -536,6 +557,7 @@ list(APPEND TAG_SRC
     "${PATH_UKOS}/OS/Includes"
     "${PATH_UKOS}/Ports/EquatesModels/Cores/${CORE}"
     "${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC}"
+    "${PATH_UKOS}/Ports/EquatesModels/SOCs/${SOC_BASE}"
     "${PATH_BASE}"
     "${PATH_VARI}"
 )

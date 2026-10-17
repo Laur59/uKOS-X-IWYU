@@ -131,15 +131,6 @@ cmake --build build
 cmake --install build
 ```
 
-### Building IntelRDFPMath
-
-```bash
-cd Third_Parties/IntelRDFPMath
-cmake -S . -B build
-cmake --build build
-cmake --install build
-```
-
 ### Building LVGL
 
 ```bash
@@ -243,10 +234,10 @@ In the folder Targets you can read the document **README.md** for more informati
 
 For building one specific target we simply need to enter in the **Variant__** folder of the
 target and play with **cmake**. For example, if we need to **build** and **burn** the
-**FLASH** of the target **Nucleo_H743**.
+**FLASH** of the target **Nucleo_H753**.
 
 ```bash
-cd Ports/Targets/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H753/Variant_Test
 cmake --preset gcc
 cmake --build build --target burn
 ```

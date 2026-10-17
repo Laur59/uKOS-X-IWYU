@@ -78,7 +78,7 @@ all_targets=(
     "Discovery_U5G9/Variant_Test"
     "MAiXDUiNO_K210/Variant_Test"
     "Nucleo_F207/Variant_Test"
-    "Nucleo_H743/Variant_Test"
+    "Nucleo_H753/Variant_Test"
     "Nucleo_L4R5/Variant_Test"
     "Nucleo_N657/Variant_Test"
     "Pico2_rp2350/Variant_Test"

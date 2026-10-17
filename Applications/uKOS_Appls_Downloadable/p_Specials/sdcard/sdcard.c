@@ -508,7 +508,7 @@ static  void    aTest_4(void) {
  */
 static  void    aTest_5(void) {
     int32_t     status;
-    float64_t   *ref, *res;
+    float64_t   *ref_f, *res_f;
 
     VAR_DECLARED_ALIGN(static uint8_t vBufRef[KSDCARD_SZ_SECTOR], 8);
     VAR_DECLARED_ALIGN(static uint8_t vBufRes[KSDCARD_SZ_SECTOR], 8);
@@ -520,15 +520,15 @@ static  void    aTest_5(void) {
 // Ignore the GCC diagnostic
 //
     #pragma GCC diagnostic  ignored "-Wcast-align"
-    ref = (float64_t *)&vBufRef[0];
-    res = (float64_t *)&vBufRes[0];
+    ref_f = (float64_t *)&vBufRef[0];
+    res_f = (float64_t *)&vBufRes[0];
 
 // Restore the GCC diagnostic
 //
     #pragma GCC diagnostic  pop
 
-    *(ref + 0) = 3.141516;
-    *(ref + 1) = 1.843256;
+    *(ref_f + 0) = 3.141516;
+    *(ref_f + 1) = 1.843256;
 
     while (true) {
         led_toggle(KLED_1);
@@ -550,7 +550,7 @@ static  void    aTest_5(void) {
             exit(EXIT_OS_FAILURE);
         }
 
-        (void)dprintf(KSYST, "%6.3f %6.3f %6.3f %6.3f\n", *(ref + 0), *(ref + 1), *(res + 0), *(res + 1));
+        (void)dprintf(KSYST, "%6.3f %6.3f %6.3f %6.3f\n", *(ref_f + 0), *(ref_f + 1), *(res_f + 0), *(res_f + 1));
     }
 }
 

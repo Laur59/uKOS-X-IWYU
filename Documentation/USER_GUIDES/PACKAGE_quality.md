@@ -59,7 +59,7 @@ honest.
 ### Checking one variant
 
 ```bash
-cd Ports/Targets/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H753/Variant_Test
 checkiwyu                    # defaults to the llvm preset
 checkiwyu llvm-nouser        # any llvm* preset
 ```
@@ -72,7 +72,7 @@ clang invocations that CMake recorded. It wipes `build/`, reconfigures with
 ### Checking one application
 
 ```bash
-cd Applications/uKOS_Appls_Downloadable/a_Basics/basic/Nucleo_H743
+cd Applications/uKOS_Appls_Downloadable/a_Basics/basic/Nucleo_H753
 checkiwyu-app                # same argument as checkiwyu
 ```
 
@@ -150,7 +150,7 @@ in the variant you run them from.
 ### clang-tidy
 
 ```bash
-cd Ports/Targets/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H753/Variant_Test
 run-analyser
 ```
 
@@ -167,7 +167,7 @@ off there: it overlaps with IWYU and is noisier, so include hygiene is left to I
 ### Cppcheck
 
 ```bash
-cd Ports/Targets/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H753/Variant_Test
 Third_Parties/Cppcheck/Construction/Tools/code_analysis.sh        # open source
 Third_Parties/Cppcheck/Construction/Tools/code_analysis.sh -P     # Premium
 Third_Parties/Cppcheck/Construction/Tools/code_analysis.sh -c     # clear previous results

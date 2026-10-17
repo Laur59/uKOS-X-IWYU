@@ -242,9 +242,12 @@ parse_variants_yaml() {
         exit 1
     fi
 
-    # Parse YAML: iterate through families and their variants. The third field
-    # is the optional cmake_core, empty for every single-architecture variant.
-    yq eval 'to_entries[] | .key as $family | .value[] | (.cmake_core // "") as $c | "\($family)\t\(.name)\t\($c)"' "${yaml_file}"
+    # Parse YAML: iterate through families and their variants. The third and
+    # fourth fields are the optional cmake_core and cmake_soc, empty for every
+    # variant that builds a single core and SoC. The separator is '|', not a
+    # tab: read collapses consecutive tabs, so an empty cmake_core would shift
+    # cmake_soc into its place.
+    yq eval 'to_entries[] | .key as $family | .value[] | (.cmake_core // "") as $c | (.cmake_soc // "") as $s | "\($family)|\(.name)|\($c)|\($s)"' "${yaml_file}"
 }
 
 build_failure=""
@@ -254,23 +257,28 @@ readonly LOG_FILE="build/compilation.log"
 printf "%bUsing cmake (%s) and %s (%s) to build all the systems with\n" "${YELLOW}" "${cmake_version}" "${COMPILER_TOOL}" "${COMPILER_VERSIONS}"
 printf "   %bcmake --preset %s -DC_LIBRARY=%s -DUSER_MODE=%s -DCANARY=%s%b\n" "${BOLD}" "${CMAKE_PRESET}" "${C_LIB}" "${USER_MODE}" "${CANARY_MODE}" "${NC}"
 # Parse YAML and iterate through all build targets
-while IFS=$'\t' read -r family variant_name cmake_core; do
+while IFS='|' read -r family variant_name cmake_core cmake_soc; do
     VARIANT_DIR="${family}/Variant_${variant_name}"
 
-    # A board that builds several architectures out of a single variant
-    # directory (Pico2_rp2350) carries cmake_core. The directory is unchanged;
-    # only the label, the CORE selection and the artefacts directory differ, so
-    # the two rows cannot overwrite each other's images.
+    # A board that builds several architectures (Pico2_rp2350) or several SoCs
+    # (none today) out of a single variant directory
+    # carries cmake_core or cmake_soc. The directory is unchanged; only the
+    # label, the CORE / SOC selection and the artefacts directory differ, so
+    # the rows cannot overwrite each other's images.
 
+    core_args=()
+    suffix=""
     if [[ -n "${cmake_core}" ]]; then
-        CURRENT_VARIANT="${VARIANT_DIR}-${cmake_core}"
-        core_args=(
-            -DCORE="${cmake_core}"
-            -DARTEFACTS_DIR="${PATH_PRG}/${VARIANT_DIR}/Artefacts-${cmake_core}"
-        )
-    else
-        CURRENT_VARIANT="${VARIANT_DIR}"
-        core_args=()
+        core_args+=(-DCORE="${cmake_core}")
+        suffix+="-${cmake_core}"
+    fi
+    if [[ -n "${cmake_soc}" ]]; then
+        core_args+=(-DSOC="${cmake_soc}")
+        suffix+="-${cmake_soc}"
+    fi
+    CURRENT_VARIANT="${VARIANT_DIR}${suffix}"
+    if [[ -n "${suffix}" ]]; then
+        core_args+=(-DARTEFACTS_DIR="${PATH_PRG}/${VARIANT_DIR}/Artefacts${suffix}")
     fi
 
     printf "%-40s " "${CURRENT_VARIANT}"

@@ -1,0 +1,235 @@
+/*
+ * SPDX-License-Identifier: MIT
+ * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+ *
+ * Generated using the .svd description
+ * Goal:     stm32H7x7_CM4_ramecc1 equates.
+ */
+
+#pragma once
+
+#include    <stdint.h>
+
+// RAMECC1 address definitions
+// ---------------------------
+
+typedef struct {
+    volatile    uint32_t    IER;
+    volatile    uint32_t    RESERVED0[7];
+    volatile    uint32_t    M1CR;
+    volatile    uint32_t    M1SR;
+    volatile    uint32_t    M1FAR;
+    volatile    uint32_t    M1FDRL;
+    volatile    uint32_t    M1FDRH;
+    volatile    uint32_t    M1FECR;
+    volatile    uint32_t    RESERVED1[2];
+    volatile    uint32_t    M2CR;
+    volatile    uint32_t    M2SR;
+    volatile    uint32_t    M2FAR;
+    volatile    uint32_t    M2FDRL;
+    volatile    uint32_t    M2FDRH;
+    volatile    uint32_t    RESERVED2;
+    volatile    uint32_t    M2FECR;
+    volatile    uint32_t    RESERVED3;
+    volatile    uint32_t    M3CR;
+    volatile    uint32_t    M3SR;
+    volatile    uint32_t    M3FAR;
+    volatile    uint32_t    M3FDRL;
+    volatile    uint32_t    M3FDRH;
+    volatile    uint32_t    RESERVED4[2];
+    volatile    uint32_t    M3FECR;
+    volatile    uint32_t    M4CR;
+    volatile    uint32_t    M4SR;
+    volatile    uint32_t    M4FAR;
+    volatile    uint32_t    M4FDRL;
+        union {
+    volatile    uint32_t    M4FDRH;
+    volatile    uint32_t    M4FECR;
+        };
+    volatile    uint32_t    RESERVED5[3];
+    volatile    uint32_t    M5CR;
+    volatile    uint32_t    M5SR;
+    volatile    uint32_t    M5FAR;
+    volatile    uint32_t    M5FDRL;
+    volatile    uint32_t    M5FDRH;
+    volatile    uint32_t    M5FECR;
+} RAMECC1_TypeDef;
+
+#ifdef __cplusplus
+#define RAMECC1 reinterpret_cast<RAMECC1_TypeDef *>(0x52009000U)
+
+#else
+#define RAMECC1 ((RAMECC1_TypeDef *)0x52009000U)
+#endif
+
+// IER Configuration
+
+#define RAMECC1_IER_GECCDEBWIE      (0x1U<<3U)
+#define RAMECC1_IER_GECCDEIE        (0x1U<<2U)
+#define RAMECC1_IER_GECCSEIE_       (0x1U<<1U)
+#define RAMECC1_IER_GIE             (0x1U<<0U)
+
+// M1CR Configuration
+
+#define RAMECC1_M1CR_ECCELEN        (0x1U<<5U)
+#define RAMECC1_M1CR_ECCDEBWIE      (0x1U<<4U)
+#define RAMECC1_M1CR_ECCDEIE        (0x1U<<3U)
+#define RAMECC1_M1CR_ECCSEIE        (0x1U<<2U)
+
+// M1SR Configuration
+
+#define RAMECC1_M1SR_DEBWDF         (0x1U<<2U)
+#define RAMECC1_M1SR_DEDF           (0x1U<<1U)
+#define RAMECC1_M1SR_SEDCF          (0x1U<<0U)
+
+// M1FAR Configuration
+
+#define RAMECC1_M1FAR_FADD          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M1FAR_FADD_0        (0x1U<<0U)
+
+// M1FDRL Configuration
+
+#define RAMECC1_M1FDRL_FDATAL       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M1FDRL_FDATAL_0     (0x1U<<0U)
+
+// M1FDRH Configuration
+
+#define RAMECC1_M1FDRH_FDATAH       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M1FDRH_FDATAH_0     (0x1U<<0U)
+
+// M1FECR Configuration
+
+#define RAMECC1_M1FECR_FEC          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M1FECR_FEC_0        (0x1U<<0U)
+
+// M2CR Configuration
+
+#define RAMECC1_M2CR_ECCELEN        (0x1U<<5U)
+#define RAMECC1_M2CR_ECCDEBWIE      (0x1U<<4U)
+#define RAMECC1_M2CR_ECCDEIE        (0x1U<<3U)
+#define RAMECC1_M2CR_ECCSEIE        (0x1U<<2U)
+
+// M2SR Configuration
+
+#define RAMECC1_M2SR_DEBWDF         (0x1U<<2U)
+#define RAMECC1_M2SR_DEDF           (0x1U<<1U)
+#define RAMECC1_M2SR_SEDCF          (0x1U<<0U)
+
+// M2FAR Configuration
+
+#define RAMECC1_M2FAR_FADD          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M2FAR_FADD_0        (0x1U<<0U)
+
+// M2FDRL Configuration
+
+#define RAMECC1_M2FDRL_FDATAL       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M2FDRL_FDATAL_0     (0x1U<<0U)
+
+// M2FDRH Configuration
+
+#define RAMECC1_M2FDRH_FDATAH       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M2FDRH_FDATAH_0     (0x1U<<0U)
+
+// M2FECR Configuration
+
+#define RAMECC1_M2FECR_FEC          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M2FECR_FEC_0        (0x1U<<0U)
+
+// M3CR Configuration
+
+#define RAMECC1_M3CR_ECCELEN        (0x1U<<5U)
+#define RAMECC1_M3CR_ECCDEBWIE      (0x1U<<4U)
+#define RAMECC1_M3CR_ECCDEIE        (0x1U<<3U)
+#define RAMECC1_M3CR_ECCSEIE        (0x1U<<2U)
+
+// M3SR Configuration
+
+#define RAMECC1_M3SR_DEBWDF         (0x1U<<2U)
+#define RAMECC1_M3SR_DEDF           (0x1U<<1U)
+#define RAMECC1_M3SR_SEDCF          (0x1U<<0U)
+
+// M3FAR Configuration
+
+#define RAMECC1_M3FAR_FADD          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M3FAR_FADD_0        (0x1U<<0U)
+
+// M3FDRL Configuration
+
+#define RAMECC1_M3FDRL_FDATAL       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M3FDRL_FDATAL_0     (0x1U<<0U)
+
+// M3FDRH Configuration
+
+#define RAMECC1_M3FDRH_FDATAH       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M3FDRH_FDATAH_0     (0x1U<<0U)
+
+// M3FECR Configuration
+
+#define RAMECC1_M3FECR_FEC          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M3FECR_FEC_0        (0x1U<<0U)
+
+// M4CR Configuration
+
+#define RAMECC1_M4CR_ECCELEN        (0x1U<<5U)
+#define RAMECC1_M4CR_ECCDEBWIE      (0x1U<<4U)
+#define RAMECC1_M4CR_ECCDEIE        (0x1U<<3U)
+#define RAMECC1_M4CR_ECCSEIE        (0x1U<<2U)
+
+// M4SR Configuration
+
+#define RAMECC1_M4SR_DEBWDF         (0x1U<<2U)
+#define RAMECC1_M4SR_DEDF           (0x1U<<1U)
+#define RAMECC1_M4SR_SEDCF          (0x1U<<0U)
+
+// M4FAR Configuration
+
+#define RAMECC1_M4FAR_FADD          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M4FAR_FADD_0        (0x1U<<0U)
+
+// M4FDRL Configuration
+
+#define RAMECC1_M4FDRL_FDATAL       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M4FDRL_FDATAL_0     (0x1U<<0U)
+
+// M4FDRH Configuration
+
+#define RAMECC1_M4FDRH_FDATAH       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M4FDRH_FDATAH_0     (0x1U<<0U)
+
+// M4FECR Configuration
+
+#define RAMECC1_M4FECR_FEC          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M4FECR_FEC_0        (0x1U<<0U)
+
+// M5CR Configuration
+
+#define RAMECC1_M5CR_ECCELEN        (0x1U<<5U)
+#define RAMECC1_M5CR_ECCDEBWIE      (0x1U<<4U)
+#define RAMECC1_M5CR_ECCDEIE        (0x1U<<3U)
+#define RAMECC1_M5CR_ECCSEIE        (0x1U<<2U)
+
+// M5SR Configuration
+
+#define RAMECC1_M5SR_DEBWDF         (0x1U<<2U)
+#define RAMECC1_M5SR_DEDF           (0x1U<<1U)
+#define RAMECC1_M5SR_SEDCF          (0x1U<<0U)
+
+// M5FAR Configuration
+
+#define RAMECC1_M5FAR_FADD          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M5FAR_FADD_0        (0x1U<<0U)
+
+// M5FDRL Configuration
+
+#define RAMECC1_M5FDRL_FDATAL       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M5FDRL_FDATAL_0     (0x1U<<0U)
+
+// M5FDRH Configuration
+
+#define RAMECC1_M5FDRH_FDATAH       (0xFFFFFFFFU<<0U)
+#define RAMECC1_M5FDRH_FDATAH_0     (0x1U<<0U)
+
+// M5FECR Configuration
+
+#define RAMECC1_M5FECR_FEC          (0xFFFFFFFFU<<0U)
+#define RAMECC1_M5FECR_FEC_0        (0x1U<<0U)

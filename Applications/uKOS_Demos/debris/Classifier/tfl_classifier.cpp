@@ -26,7 +26,6 @@
 #include    "tensorflow/lite/micro/micro_profiler.h"
 #include    "tensorflow/lite/micro/recording_micro_interpreter.h"
 #include    "tensorflow/lite/micro/system_setup.h"
-#include    "tensorflow/lite/schema/schema_generated.h"
 #include    "tensorflow/lite/micro/cortex_m_generic/debug_log_callback.h"
 
 #pragma GCC diagnostic pop
@@ -116,14 +115,14 @@ void    tfl_classify(const dataBase_t *entry) {
 // Prepare the inputs
 
     input = interpreter.input(0);
-    input->data.f[0] = entry->oDataSet[0];
-    input->data.f[1] = entry->oDataSet[1];
-    input->data.f[2] = entry->oDataSet[2];
-    input->data.f[3] = entry->oDataSet[3];
-    input->data.f[4] = entry->oDataSet[4];
-    input->data.f[5] = entry->oDataSet[5];
-    input->data.f[6] = entry->oDataSet[6];
-    input->data.f[7] = entry->oDataSet[7];
+    input->data.f[0] = entry->oDataSet_f[0];
+    input->data.f[1] = entry->oDataSet_f[1];
+    input->data.f[2] = entry->oDataSet_f[2];
+    input->data.f[3] = entry->oDataSet_f[3];
+    input->data.f[4] = entry->oDataSet_f[4];
+    input->data.f[5] = entry->oDataSet_f[5];
+    input->data.f[6] = entry->oDataSet_f[6];
+    input->data.f[7] = entry->oDataSet_f[7];
 
     kern_readTickCount(&time[0]);
     if (interpreter.AllocateTensors() != tflite::micro::kTfLiteOk) {
@@ -137,26 +136,26 @@ void    tfl_classify(const dataBase_t *entry) {
 // The winner take all
 
     #if (defined(PRINT_THE_RESULTS_S))
-    float32_t       max;
+    float32_t       max_f;
     uint32_t        winner;
     tflite::micro::TfLiteTensor     *output;;
 
     output = interpreter.output(0);
 
-    winner = 0u; max = 0.0f;
-    if (output->data.f[0] > max) { max = output->data.f[0]; winner = 2u; }
-    if (output->data.f[1] > max) { max = output->data.f[1]; winner = 1u; }
-    if (output->data.f[2] > max) {                          winner = 0u; }
+    winner = 0u; max_f = 0.0f;
+    if (output->data.f[0] > max_f) { max_f = output->data.f[0]; winner = 2u; }
+    if (output->data.f[1] > max_f) { max_f = output->data.f[1]; winner = 1u; }
+    if (output->data.f[2] > max_f) {                            winner = 0u; }
 
 // Display the results
 
     (void)dprintf(KSYST, "TensorFlow:  result Out-Expected: %7.3f, %7.3f    %7.3f, %7.3f    %7.3f, %7.3f    Class DB = %s   Class Recognised = %s   "
                          "Exec time %" PRIu32 " [us]\n", output->data.f[0],
-                                                         entry->oDataSet[8],
+                                                         entry->oDataSet_f[8],
                                                          output->data.f[1],
-                                                         entry->oDataSet[9],
+                                                         entry->oDataSet_f[9],
                                                          output->data.f[2],
-                                                         entry->oDataSet[10],
+                                                         entry->oDataSet_f[10],
                                                          entry->oClassLabel,
                                                          aClass[winner],
                                                          delta);

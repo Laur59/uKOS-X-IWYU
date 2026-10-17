@@ -74,7 +74,7 @@
 #endif
 
 #ifndef KASMP_MBOX_ENTRY_SIZE
-#define KASMP_MBOX_ENTRY_SIZE   0U                              // Entry size (0 = mbox with copy)
+#define KASMP_MBOX_ENTRY_SIZE   0U                              // Entry size (0 = data referenced by pointers)
 #endif
 
 typedef struct asmpShared   asmpShared_t;

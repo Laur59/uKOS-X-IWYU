@@ -3,18 +3,9 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
- * Goal:     Model for generating pseudo random numbers.
- *           The generator is implemented using on a
- *           linear congruential generator (LCG)
- *
- *           X[n + 1] = (Ka * X[n] + Kc) * mod(Km)
- *
- *           For the BSD formula
- *           Ka = 1103515245
- *           Kc = 12345
- *           X0: use the crt0_randomSeed initial seed
- *
- *           See wikipedia "Linear congruential generator"
+ * Fallback hardware random number generator model for SoCs without an RNG block:
+ * KRANDOM_HARD is served by the soft generator.
+ * Included by OS/Lib_cryptographics/random/random.c, which declares the model functions static.
  */
 
 #include    <stdint.h>
@@ -27,7 +18,7 @@
  * - Initialise the seed
  *
  */
-void    model_random_hard_init(void) {
+static  void    model_random_hard_init(void) {
 
 }
 
@@ -37,7 +28,7 @@ void    model_random_hard_init(void) {
  * - Read a pseudo random number
  *
  */
-void    model_random_hard_read(uint32_t *number) {
+static  void    model_random_hard_read(uint32_t *number) {
 
     model_random_soft_read(number);
 }

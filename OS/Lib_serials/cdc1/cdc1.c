@@ -543,11 +543,18 @@ static  int32_t local_read(uint8_t *buffer, uint32_t *size) {
  *
  */
 static  int32_t local_flush(void) {
-    uint8_t     i, buffer[32];
-    uint32_t    size;
+    uint8_t     buffer[32];
+    uint32_t    i, size;
+
+// Drain the TinyUSB RX FIFO a buffer at a time until it is empty: size is the
+// room in buffer on the way in and the bytes read on the way out
 
     INTERRUPTION_OFF;
-    for (i = 0U; i < (512U / 32U); i++) { TinyUSB_cdc_read(KPORT1, &buffer[0], &size); }
+    for (i = 0U; i < (CFG_TUD_CDC_RX_BUFSIZE / sizeof(buffer)); i++) {
+        size = sizeof(buffer);
+        TinyUSB_cdc_read(KPORT1, &buffer[0], &size);
+        if (size == 0U) { break; }
+    }
     RETURN_INT_RESTORE(KERR_SERIAL_NOERR);
 }
 

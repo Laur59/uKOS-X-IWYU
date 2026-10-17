@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+#
+# uKOS-X build system
+# Builds libTinyUSB.a for the STM32H743 and STM32H753 (Cortex-M7)
+
+cmake_minimum_required(VERSION 3.15)
+
+# Include common TinyUSB setup
+include(${CMAKE_CURRENT_LIST_DIR}/../../cmake/common-setup.cmake)
+set(CMAKE_C_COMPILER_TARGET thumbv7em-unknown-none-eabihf)   # Clang only; ignored by GCC
+
+project(TinyUSB_STM32H7x3 C)
+
+# Microcontroller description (mandatory variables)
+set(SOC STM32H7x3)
+set(CORE CORTEX_M7)
+
+# Include common TinyUSB build module
+include(${CMAKE_CURRENT_SOURCE_DIR}/../../cmake/TinyUSB.cmake)
+
+# Options selecting profiles to build
+option(BUILD_CDC_CDC "Build profile cdc_cdc" ON)
+option(BUILD_CDC_MSC "Build profile cdc_msc" ON)
+
+# List of profiles to build
+set(PROFILES_TO_BUILD "")
+if(BUILD_CDC_CDC)
+    list(APPEND PROFILES_TO_BUILD "cdc_cdc")
+endif()
+if(BUILD_CDC_MSC)
+    list(APPEND PROFILES_TO_BUILD "cdc_msc")
+endif()
+
+# Call function creating TinyUSB libraries
+add_tinyusb_libraries(
+    FAMILY "h7"
+    CPU_SPEC "-mcpu=cortex-m7"
+    FLAGS_FP "-mfloat-abi=hard -mfpu=fpv5-sp-d16"
+    DEFS_UKOS_EXTRA ""
+    PROFILES_LIST ${PROFILES_TO_BUILD}
+    PROVIDER "st"
+)

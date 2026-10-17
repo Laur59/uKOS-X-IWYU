@@ -5,7 +5,11 @@
 #
 # <Board>  <row id>  <fail|crash|hang>  <reference>
 #
+# <Board>/<Variant> instead of <Board> limits the line to one variant, for a
+# row that fails on one core of a dual-core board and passes on the other.
+#
 # Discovery_N657 test_ram/one-pass crash went when test_ram started sweeping
 # the external RAM privileged (DEFECTS.md).
 
 Alastor_H743  X/sensor-range  fail  DEFECTS.md: the LSM9DS1 does not answer on SPI
+Asmodee_H747/Variant_Test_CM4  bench/all  fail  heap = SRAM2 (Base_CM4/Runtime/link_pu.ld) is too small for Bench 03; left to upstream

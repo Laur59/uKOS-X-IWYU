@@ -86,7 +86,7 @@ MODULE(
 static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
     uint16_t    nbDeamons = 2U;
     int32_t     szTEXT, szRODATA, szDATA, szBSS;
-    float64_t   szTEXTf, szRODATAf, szDATAf, szBSSf;
+    float64_t   szTEXT_f, szRODATA_f, szDATA_f, szBSS_f;
 
     #if (KKERN_WITH_STATISTICS_S == true)
     nbDeamons += 1U;
@@ -97,10 +97,10 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
     szDATA   = (int32_t)((uintptr_t)local_linker_enDATA_KERN_p   - (uintptr_t)local_linker_stDATA_KERN_p);
     szBSS    = (int32_t)((uintptr_t)local_linker_enBSS_KERN_p    - (uintptr_t)local_linker_stBSS_KERN_p) + (int32_t)(nbDeamons * (KKERN_SZ_STACK_SS * sizeof(uintptr_t)));
 
-    szTEXTf   = (float64_t)szTEXT   / 1024.0;
-    szRODATAf = (float64_t)szRODATA / 1024.0;
-    szDATAf   = (float64_t)szDATA   / 1024.0;
-    szBSSf    = (float64_t)szBSS    / 1024.0;
+    szTEXT_f   = (float64_t)szTEXT   / 1024.0;
+    szRODATA_f = (float64_t)szRODATA / 1024.0;
+    szDATA_f   = (float64_t)szDATA   / 1024.0;
+    szBSS_f    = (float64_t)szBSS    / 1024.0;
 
     (void)dprintf(KSYST, "uKernel memory footprint information.\n");
 
@@ -134,9 +134,9 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
     #endif
 
     (void)dprintf(KSYST, "\nuKernel memory footprint including the daemons stacks\n");
-    (void)dprintf(KSYST, "Section text:      addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n",   (uintptr_t)local_linker_stTEXT_KERN_p,   szTEXT,   szTEXTf);
-    (void)dprintf(KSYST, "Section rodata:    addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n",   (uintptr_t)local_linker_stRODATA_KERN_p, szRODATA, szRODATAf);
-    (void)dprintf(KSYST, "Section data:      addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n",   (uintptr_t)local_linker_stDATA_KERN_p,   szDATA,   szDATAf);
-    (void)dprintf(KSYST, "Section bss:       addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n\n", (uintptr_t)local_linker_stBSS_KERN_p,    szBSS,    szBSSf);
+    (void)dprintf(KSYST, "Section text:      addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n",   (uintptr_t)local_linker_stTEXT_KERN_p,   szTEXT,   szTEXT_f);
+    (void)dprintf(KSYST, "Section rodata:    addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n",   (uintptr_t)local_linker_stRODATA_KERN_p, szRODATA, szRODATA_f);
+    (void)dprintf(KSYST, "Section data:      addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n",   (uintptr_t)local_linker_stDATA_KERN_p,   szDATA,   szDATA_f);
+    (void)dprintf(KSYST, "Section bss:       addr = 0x%016"PRIXPTR", size = 0x%08"PRIX32" %5.2f [KBytes]\n\n", (uintptr_t)local_linker_stBSS_KERN_p,    szBSS,    szBSS_f);
     return EXIT_OS_SUCCESS_CLI;
 }

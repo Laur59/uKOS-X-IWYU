@@ -314,6 +314,42 @@ def resolve_core(variant, ident):
                                                      ", ".join(cores)))
 
 
+RX_SOC_BASE = re.compile(r"^\s*set\(\s*SOC_BASE\s+(\S+?)\s*\)", re.M)
+RX_SOC_FAMILY = re.compile(r"^STM32H7[0-9]([0-9])$")
+
+
+def soc_base(soc):
+    """The SoC an overlay SoC directory builds on, or the SoC itself for a
+    complete directory. Same rule as Ports/cmake/soc-base.cmake: the explicit
+    soc_base.cmake first, then the STM32H7x<n> family directory if it exists."""
+
+    socs = os.path.join(KROOT, "Ports", "EquatesModels", "SOCs")
+    path = os.path.join(socs, soc, "soc_base.cmake")
+    if os.path.exists(path):
+        with open(path) as handle:
+            found = RX_SOC_BASE.search(handle.read())
+        return found.group(1) if found else soc
+    family = RX_SOC_FAMILY.match(soc)
+    if family and os.path.isdir(os.path.join(socs, "STM32H7x" + family.group(1))):
+        return "STM32H7x" + family.group(1)
+    return soc
+
+
+def resolve_soc(variant, ident):
+    """The SOC under test: the one declared, or the one the board reports when
+    it is an overlay on it or on the same base (Nucleo_H753 builds STM32H753 by
+    default, and a NUCLEO-H743ZI2 built with -DSOC=STM32H743 reports that)."""
+
+    declared = variant["soc"]
+    reported = (ident or {}).get("SoC")
+    if reported is None or reported == declared:
+        return declared
+    if soc_base(reported) not in (declared, soc_base(declared)):
+        raise Refusal("the board reports SoC %s, %s declares %s"
+                      % (reported, variant["path"], declared))
+    return reported
+
+
 def expand(text, values, where):
     """Replace ${NAME} placeholders. Values are regex-escaped where the text is
     a pattern; an unknown name is an error, so a typo cannot quietly match."""
@@ -492,7 +528,8 @@ def prepare(ident, modules, variant_dir, specs_dir, expect_sha):
                           % (variant["path"], variant[fact], ident.get(key)))
 
     facts = {"BOARD": variant["board"], "VARIANT": variant["variant"],
-             "SOC": variant["soc"], "CORE": resolve_core(variant, ident)}
+             "SOC": resolve_soc(variant, ident),
+             "CORE": resolve_core(variant, ident)}
     console = ident.get("Console") or variant["console"]
     if console:
         facts["CONSOLE"] = console

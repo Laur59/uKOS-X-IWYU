@@ -69,6 +69,15 @@ SECTIONS {
         linker_enPreInitArray = ABSOLUTE(.);
     } > prgm_code
 
+    .preinit_array : {
+        . = ALIGN(4);
+        linker_stPreInitArray = ABSOLUTE(.);
+        KEEP(*(SORT_BY_INIT_PRIORITY(.preinit_array.*)))
+        KEEP(*(.preinit_array))
+        . = ALIGN(4);
+        linker_enPreInitArray = ABSOLUTE(.);
+    } > prgm_code
+
     .init_array : {
         . = ALIGN(4);
         linker_stInitArray = ABSOLUTE(.);

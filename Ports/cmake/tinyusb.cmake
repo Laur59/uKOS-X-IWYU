@@ -99,14 +99,16 @@ function(add_TinyUSB)
         message(FATAL_ERROR "add_TinyUSB: SOC must be defined before calling add_TinyUSB()")
     endif()
 
-    # Derive FAMILY from SOC
-    derive_soc_properties(${SOC})
+    # Derive FAMILY from SOC_BASE; an overlay SoC links its own archives when
+    # TinyUSB was built for it, else those of its base
+    derive_soc_properties(${SOC_BASE})
 
     set(PATH_TINYUSB ${PATH_UKOS}/Third_Parties/TinyUSB)
     set(PATH_TINYUSB ${PATH_TINYUSB} PARENT_SCOPE)
 
     find_package(TinyUSB REQUIRED
         PATHS ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC}/${TUSB_PROFILE}
+              ${PATH_TP_LIBRARY}/TinyUSB/Family/${FAMILY}/${SOC_BASE}/${TUSB_PROFILE}
         NO_DEFAULT_PATH
     )
 

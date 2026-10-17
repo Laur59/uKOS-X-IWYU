@@ -23,7 +23,6 @@
 #include    "os_errors.h"
 #include    "record/record.h"
 #include    "serial/serial.h"
-#include    "TinyUSB_interface.h"
 #include    "types.h"
 
 // uKOS-X specific (see the module.h)
@@ -133,7 +132,7 @@ int32_t viewer_uvc0_clean([[maybe_unused]] uint32_t argc, [[maybe_unused]] const
 [[noreturn]]
 static void aProcess(const void *argument) {
             uint32_t    w, h;
-            float64_t   frameRate;
+            float64_t   frameRate_f;
             uint8_t     *image_0, *image_1;
             uint64_t    time[2];
             graphic_t   pack_0, pack_1;
@@ -187,9 +186,9 @@ static void aProcess(const void *argument) {
 // streams, nothing was sent and the two calls just waited
 
         if (sent_0 && sent_1) {
-            frameRate = (1000000.0 / (float64_t)(time[1] - time[0])) * 2.0;
+            frameRate_f = (1000000.0 / (float64_t)(time[1] - time[0])) * 2.0;
 
-            (void)dprintf(KSYST, "Image size: %"PRIu32" x %"PRIu32", Frame rate = %5.2f-fps\n", w, h, frameRate);
+            (void)dprintf(KSYST, "Image size: %"PRIu32" x %"PRIu32", Frame rate = %5.2f-fps\n", w, h, frameRate_f);
         }
     }
 

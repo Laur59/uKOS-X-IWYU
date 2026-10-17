@@ -14,8 +14,8 @@ Third_Parties/TinyUSB/Construction/Family/
 │   ├── TinyUSB.cmake       # Module CMake commun (support ST + Nordic)
 │   └── common-setup.cmake  # Configuration compilateur commune
 ├── f2/STM32F207/CMakeLists.txt      # Cortex-M3, soft float
-├── h7/STM32H743/CMakeLists.txt      # Cortex-M7
-├── h7/STM32H747/CMakeLists.txt      # Cortex-M7 (avec cdc_video)
+├── h7/STM32H7x3/CMakeLists.txt      # Cortex-M7
+├── h7/STM32H7x7/CMakeLists.txt      # Cortex-M7 (avec cdc_video)
 ├── l4/STM32L4R5/CMakeLists.txt      # Cortex-M4
 ├── n6/STM32N657/CMakeLists.txt      # Cortex-M55 (avec SECURE_S)
 ├── u5/STM32U5G9/CMakeLists.txt      # Cortex-M33 (avec SECURE_S)
@@ -51,8 +51,8 @@ export PATH_LLVM_RVXX=/path/to/llvm-riscv
 Pour construire les bibliothèques TinyUSB pour un SOC spécifique :
 
 ```bash
-# Exemple pour STM32H743
-cd Third_Parties/TinyUSB/Construction/Family/h7/STM32H743
+# Exemple pour STM32H7x3 (STM32H743 et STM32H753)
+cd Third_Parties/TinyUSB/Construction/Family/h7/STM32H7x3
 cmake -S . -B build_cmake -G Ninja                 # Clang/LLVM
 cmake -S . -B build_cmake -G Ninja -DUSE_LLVM=OFF  # ou GNU gcc
 cmake --build build_cmake
@@ -82,8 +82,8 @@ cmake -DBUILD_CDC_VIDEO=ON ..
 | SOC        | Core       | FPU              | Profils disponibles           | Flags spéciaux        |
 |------------|------------|------------------|-------------------------------|-----------------------|
 | STM32F207  | Cortex-M3  | soft             | cdc_cdc, cdc_msc              | -                     |
-| STM32H743  | Cortex-M7  | fpv5-sp-d16      | cdc_cdc, cdc_msc              | -                     |
-| STM32H747  | Cortex-M7  | fpv5-sp-d16      | cdc_cdc, cdc_msc, cdc_video   | CORTEX_M7_S, CORE_CM7 |
+| STM32H7x3  | Cortex-M7  | fpv5-sp-d16      | cdc_cdc, cdc_msc              | -                     |
+| STM32H7x7  | Cortex-M7  | fpv5-sp-d16      | cdc_cdc, cdc_msc, cdc_video   | CORTEX_M7_S, CORE_CM7 |
 | STM32L4R5  | Cortex-M4  | fpv4-sp-d16      | cdc_cdc, cdc_msc              | -                     |
 | STM32N657  | Cortex-M55 | fpv5-sp-d16      | cdc_cdc, cdc_msc, cdc_video   | SECURE_S              |
 | STM32U5G9  | Cortex-M33 | fpv5-sp-d16      | cdc_cdc, cdc_msc, cdc_video   | SECURE_S              |
@@ -103,7 +103,7 @@ Pour chaque profil, deux bibliothèques statiques sont générées :
 
 Les bibliothèques sont placées dans les sous-répertoires de chaque profil :
 ```
-STM32H743/
+STM32H7x3/
 ├── cdc_cdc/
 │   ├── libTinyUSB_FS.a
 │   └── libTinyUSB_HS.a
@@ -237,7 +237,7 @@ cd Third_Parties/TinyUSB
 # Comparaison automatique (recommandé)
 ./compare_all_socs.sh                         # Tous les SOCs
 ./compare_builds.sh l4 STM32L4R5              # Un SOC, tous profils
-./compare_builds.sh h7 STM32H747 cdc_cdc      # Un SOC, profil spécifique
+./compare_builds.sh h7 STM32H7x7 cdc_cdc      # Un SOC, profil spécifique
 ```
 
 Ce script :

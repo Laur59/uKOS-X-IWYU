@@ -8,7 +8,7 @@ a_Basics:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -21,7 +21,7 @@ a_Basics:
     - Discovery_U5G9
     - Firefly_H743
     - MAiXDUiNO_K210
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -35,7 +35,7 @@ a_Basics:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -49,7 +49,7 @@ a_Basics:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -63,7 +63,7 @@ a_Basics:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -86,7 +86,7 @@ a_Basics:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -101,7 +101,7 @@ b_MailBoxes:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -115,7 +115,7 @@ b_MailBoxes:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -129,7 +129,7 @@ b_MailBoxes:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -141,7 +141,7 @@ b_MailBoxes:
     - Discovery_U5G9
     - Firefly_H743
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -156,7 +156,7 @@ c_Semaphores:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -171,7 +171,7 @@ d_Mutexes:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -186,7 +186,7 @@ e_SoftwareTimers:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -201,7 +201,7 @@ f_Signals:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -215,7 +215,7 @@ f_Signals:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -229,7 +229,7 @@ g_PreciseSignals:
     - Discovery_U5G9
     - Firefly_H743
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
 
@@ -243,7 +243,7 @@ i_MoreKernels:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -257,7 +257,7 @@ i_MoreKernels:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -271,7 +271,7 @@ i_MoreKernels:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -283,7 +283,7 @@ i_MoreKernels:
     - Discovery_U5G9
     - Firefly_H743
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
 
@@ -291,7 +291,7 @@ j_LowLevels:
   hsPWM:
     - Discovery_N657
     - Firefly_H743
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_N657
 
   intIO:
@@ -300,7 +300,7 @@ j_LowLevels:
     - Discovery_U5G9
     - Firefly_H743
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
 
   intTimer:
@@ -310,7 +310,7 @@ j_LowLevels:
     - Discovery_U5G9
     - Firefly_H743
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -323,7 +323,7 @@ k_Mathematicals:
     - Discovery_U5G9
     - Firefly_H743
     - MAiXDUiNO_K210
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_N657
 
   bid64_xyz-intel:
@@ -345,7 +345,7 @@ k_Mathematicals:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -357,7 +357,7 @@ k_Mathematicals:
     - Discovery_N657
     - Discovery_U5G9
     - Firefly_H743
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -370,7 +370,7 @@ k_Mathematicals:
     - Discovery_U5G9
     - Firefly_H743
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -382,7 +382,7 @@ k_Mathematicals:
     - Discovery_U5G9
     - Firefly_H743
     - MAiXDUiNO_K210
-    - Nucleo_H743
+    - Nucleo_H753
 
 l_MLPs:
   class_Py:
@@ -392,7 +392,7 @@ l_MLPs:
     - Discovery_U5G9
     - Firefly_H743
     - MAiXDUiNO_K210
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_N657
     - Pico2_rp2350
 
@@ -403,7 +403,7 @@ l_MLPs:
     - Discovery_U5G9
     - Firefly_H743
     - MAiXDUiNO_K210
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_N657
     - Pico2_rp2350
 
@@ -414,7 +414,7 @@ l_MLPs:
     - Discovery_U5G9
     - Firefly_H743
     - MAiXDUiNO_K210
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_N657
     - Pico2_rp2350
 
@@ -425,7 +425,7 @@ l_MLPs:
     - Discovery_U5G9
     - Firefly_H743
     - MAiXDUiNO_K210
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_N657
     - Pico2_rp2350
 
@@ -440,7 +440,7 @@ l_MLPs:
     - Discovery_U5G9
     - Firefly_H743
     - MAiXDUiNO_K210
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_N657
     - Pico2_rp2350
 
@@ -452,7 +452,7 @@ m_MicroPythons:
     - Discovery_N657
     - Discovery_U5G9
     - Firefly_H743
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -464,7 +464,7 @@ m_MicroPythons:
     - Discovery_N657
     - Discovery_U5G9
     - Firefly_H743
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -473,7 +473,7 @@ n_NewLibs:
   basic:
     - Alastor_H743
     - Firefly_H743
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
 
 o_Imagings:
@@ -499,7 +499,7 @@ p_Specials:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -517,7 +517,7 @@ p_Specials:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -531,7 +531,7 @@ p_Specials:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350
@@ -549,7 +549,7 @@ p_Specials:
     - Firefly_H743
     - MAiXDUiNO_K210
     - Nucleo_F207
-    - Nucleo_H743
+    - Nucleo_H753
     - Nucleo_L4R5
     - Nucleo_N657
     - Pico2_rp2350

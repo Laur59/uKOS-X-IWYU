@@ -1,6 +1,6 @@
 {
   "module": "dump",
-  "note": "Reads the user-application memory (linker_stUMemo + 0x100): free while nothing is downloaded, readable in user mode on every board, and away from the header that run and the loaders use at its start. ${sym:...} comes from the variant's FLASH.elf and only when that ELF is the build on the board; otherwise these rows skip. The content is whatever is there - fill's round trip asserts values.",
+  "note": "Reads the user-application memory (linker_stUMemo + 0x100): free while nothing is downloaded, readable in user mode on every board that has one (the rows need a non-zero linker_lnUMemo; Asmodee_H747 CM4 has none and skips them), and away from the header that run and the loaders use at its start. ${sym:...} comes from the variant's FLASH.elf and only when that ELF is the build on the board; otherwise these rows skip. The content is whatever is there - fill's round trip asserts values.",
 
   "tests": [
     {
@@ -29,6 +29,7 @@
     },
     {
       "id": "dump/sixteen-bytes-print-one-line",
+      "requires": ["sym:linker_lnUMemo"],
       "cmd": "dump ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+110}",
       "expect": ["^0x0*${sym:linker_stUMemo+100}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$"],
       "refute": ["^0x0*${sym:linker_stUMemo+110}:", "^Protocol error\\.$"],
@@ -37,6 +38,7 @@
     },
     {
       "id": "dump/seventeen-bytes-print-two-lines",
+      "requires": ["sym:linker_lnUMemo"],
       "cmd": "dump ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+111}",
       "expect": ["^0x0*${sym:linker_stUMemo+100}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$",
                  "^0x0*${sym:linker_stUMemo+110}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$"],
@@ -46,12 +48,14 @@
     },
     {
       "id": "dump/empty-range-prints-nothing",
+      "requires": ["sym:linker_lnUMemo"],
       "cmd": "dump ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+100}",
       "refute": ["^0x0*${sym:linker_stUMemo+100}:", "^Protocol error\\.$"],
       "timeout": 10
     },
     {
       "id": "dump/one-byte-prints-one-line",
+      "requires": ["sym:linker_lnUMemo"],
       "cmd": "dump ${sym:linker_stUMemo+100} ${sym:linker_stUMemo+101}",
       "expect": ["^0x0*${sym:linker_stUMemo+100}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$"],
       "refute": ["^0x0*${sym:linker_stUMemo+110}:"],
@@ -59,6 +63,7 @@
     },
     {
       "id": "dump/end-below-start-is-a-length",
+      "requires": ["sym:linker_lnUMemo"],
       "cmd": "dump ${sym:linker_stUMemo+100} 10",
       "expect": ["^0x0*${sym:linker_stUMemo+100}: "],
       "refute": ["^0x0*${sym:linker_stUMemo+110}: "],
@@ -67,6 +72,7 @@
     },
     {
       "id": "dump/privileged",
+      "requires": ["sym:linker_lnUMemo"],
       "cmd": "dump -S ${sym:linker_stUMemo+100} 10",
       "expect": ["^0x0*${sym:linker_stUMemo+100}: ([0-9A-F]{2},){15}[0-9A-F]{2}  .{16}$"],
       "refute": ["^Protocol error\\.$"],

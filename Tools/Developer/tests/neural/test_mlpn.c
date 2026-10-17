@@ -697,8 +697,8 @@ static  const   float32_t   vSample[5][5] = {
  */
 static  void    local_classify(uint32_t sample) {
 
-    vInput_L1[0] = vSample[sample][0];
-    vInput_L1[1] = vSample[sample][1];
+    vInput_L1_f[0] = vSample[sample][0];
+    vInput_L1_f[1] = vSample[sample][1];
 
     EXPECT_EQ_I(mlpn_compute(&aNetwork), KERR_MLPN_NOERR);
 }
@@ -720,9 +720,9 @@ TEST(mlpn_the_shipped_network_produces_a_probability_distribution) {
 
         sum = 0.0F;
         for (k = 0U; k < 3U; k++) {
-            EXPECT_TRUE(vOutput_L3[k] >= 0.0F);
-            EXPECT_TRUE(vOutput_L3[k] <= 1.0F);
-            sum += vOutput_L3[k];
+            EXPECT_TRUE(vOutput_L3_f[k] >= 0.0F);
+            EXPECT_TRUE(vOutput_L3_f[k] <= 1.0F);
+            sum += vOutput_L3_f[k];
         }
         EXPECT_NEAR_F32(sum, 1.0F, 1.0e-6F);
     }
@@ -740,13 +740,13 @@ TEST(mlpn_the_shipped_network_is_deterministic) {
 // is the property that makes the golden below meaningful at all.
 
     local_classify(1U);
-    for (k = 0U; k < 3U; k++) { first[k] = vOutput_L3[k]; }
+    for (k = 0U; k < 3U; k++) { first[k] = vOutput_L3_f[k]; }
 
     local_classify(0U);                                 // perturb the state
     EXPECT_EQ_I(mlpn_configure(&aNetwork), KERR_MLPN_NOERR);
     local_classify(1U);
 
-    for (k = 0U; k < 3U; k++) { EXPECT_EQ_F32(vOutput_L3[k], first[k]); }
+    for (k = 0U; k < 3U; k++) { EXPECT_EQ_F32(vOutput_L3_f[k], first[k]); }
 }
 
 TEST(mlpn_the_shipped_network_golden) {
@@ -779,7 +779,7 @@ TEST(mlpn_the_shipped_network_golden) {
     for (sample = 0U; sample < 5U; sample++) {
         local_classify(sample);
         for (k = 0U; k < 3U; k++) {
-            EXPECT_NEAR_F32(vOutput_L3[k], vGolden[sample][k],
+            EXPECT_NEAR_F32(vOutput_L3_f[k], vGolden[sample][k],
                             (fabsf(vGolden[sample][k]) * 1.0e-4F) + 1.0e-30F);
         }
     }
@@ -808,7 +808,7 @@ TEST(mlpn_the_shipped_network_classifies_its_validation_set) {
         argmax = 0U;
         want   = 0U;
         for (k = 1U; k < 3U; k++) {
-            if (vOutput_L3[k]              > vOutput_L3[argmax])       { argmax = k; }
+            if (vOutput_L3_f[k]              > vOutput_L3_f[argmax])       { argmax = k; }
             if (vSample[sample][2U + k] > vSample[sample][2U + want])  { want   = k; }
         }
         EXPECT_EQ_U(argmax, want);
@@ -816,6 +816,6 @@ TEST(mlpn_the_shipped_network_classifies_its_validation_set) {
 // And it is confident about each one, rather than scraping in - the winning
 // class takes more than 99% of the probability mass in every case.
 
-        EXPECT_TRUE(vOutput_L3[argmax] > 0.99F);
+        EXPECT_TRUE(vOutput_L3_f[argmax] > 0.99F);
     }
 }

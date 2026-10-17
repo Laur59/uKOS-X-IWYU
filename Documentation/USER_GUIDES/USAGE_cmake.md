@@ -39,10 +39,10 @@ The preset selects the Ninja generator and puts the build tree in `build/`, so
 cmake --build build --target burn
 ```
 
-### Complete Example: Nucleo_H743
+### Complete Example: Nucleo_H753
 
 ```shell
-cd Ports/Targets/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H753/Variant_Test
 cmake --preset llvm
 cmake --build build
 cmake --build build --target burn
@@ -54,7 +54,7 @@ Presets are the normal path, but any variant can be configured directly. Use the
 `-S` (source) and `-B` (build) options rather than creating the build directory by hand:
 
 ```shell
-cd Ports/Targets/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H753/Variant_Test
 cmake -S . -B build
 cmake --build build --parallel
 ```
@@ -114,16 +114,16 @@ CMake can handle the entire build process beyond just configuration.
 
 ### Advanced Configuration Example
 
-To build a Nucleo_H743 system with user mode disabled and the LLVM toolchain, either use
+To build a Nucleo_H753 system with user mode disabled and the LLVM toolchain, either use
 the matching preset or pass the options:
 
 ```shell
-cd Ports/Targets/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H753/Variant_Test
 cmake --preset llvm-nouser
 ```
 
 ```shell
-cd Ports/Targets/Nucleo_H743/Variant_Test
+cd Ports/Targets/Nucleo_H753/Variant_Test
 cmake -S . -B build -DUSER_MODE=OFF -DUSE_LLVM=ON
 ```
 
@@ -157,7 +157,7 @@ cmake --install build --prefix <dir>
 The build tree can live anywhere outside the source tree:
 
 ```shell
-cmake -S Ports/Targets/Nucleo_H743/Variant_Test -B ${HOME}/mybuilds
+cmake -S Ports/Targets/Nucleo_H753/Variant_Test -B ${HOME}/mybuilds
 cmake --build ${HOME}/mybuilds --parallel
 ```
 
