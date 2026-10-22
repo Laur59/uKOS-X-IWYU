@@ -9,6 +9,8 @@
 #include    <stdint.h>
 #include    <string.h>
 
+#include    "Registers/stm32N657_gpioq.h"
+#include    "Registers/stm32N657_rcc.h"
 #include    "ulvgl.h"
 #include    "board.h"
 #include    "kern/kern.h"

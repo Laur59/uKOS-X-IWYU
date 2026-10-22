@@ -3,7 +3,11 @@
  * SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
  * SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
  *
+<<<<<<<< HEAD:Ports/EquatesModels/SOCs/STM32H7x7/Models/model_random_hard.c_inc
+ * STM32H7x7 – Hardware random number generator model (RNG block).
+========
  * STM32H7x3 – Hardware random number generator model (RNG block).
+>>>>>>>> develop:Ports/EquatesModels/SOCs/STM32H7x3/Models/model_random_hard.c_inc
  * Included by OS/Lib_cryptographics/random/random.c, which declares the model functions static.
  */
 

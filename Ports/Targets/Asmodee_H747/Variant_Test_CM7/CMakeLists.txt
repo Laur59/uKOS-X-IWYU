@@ -42,7 +42,7 @@ add_compile_definitions(
 )
 
 # Flash programming script selection
-set(BURN jlinkexe)
+set(BURN swd_FT4232_b)
 
 # Extra compilation options
 add_compile_options(

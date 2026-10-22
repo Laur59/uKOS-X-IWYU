@@ -12,6 +12,7 @@
 
 #include    "init.h"
 
+#include    "clockTree.h"
 #include    "core_reg.h"
 #include    "macros.h"
 #include    "macros_core.h"
@@ -349,6 +350,9 @@ static  void    local_GPIO_Configuration(void) {
  * - Clock, PLL configuration
  *
  */
+#define KCFG_MCOSEL         2U                                              // msi_ck
+#define KCFG_MCOPRE         0U                                              // Div 1 (2^0)
+
 static  void    local_RCC_Configuration(void) {
 
     RCC->CSR     |= RCC_CSR_LSION;                      // Enable the LSI
@@ -382,24 +386,29 @@ static  void    local_RCC_Configuration(void) {
                | FLASH_ACR_PRFTEN                       //
                | (5U * FLASH_ACR_LATENCY_0);            // Enable caches and prefetch
 
-// For f(ck in) = 16-MHz
-// f(out) = f(vco) / R          f(out) = 120-MHz, R = 2     ---> f(vco) = 240-MHz
-// f(vco) = f(ck in) * (N/M)    N/M = 30/2 = 15             ---> N = 30, M = 2
-// f(usb) = f(vco) / Q          Q = 6                       ---> f(xx) = 40-MHz
+// FVCO min..max, 64-MHz..344-MHz
+// For f(ck in) = 16-MHz (HSI)
+// f(ref) = f(ck in) / M        M = 2       ---> f(ref) = 8-MHz
+// f(vco) = f(ref) * N          N = 30      ---> f(vco) = 240-MHz
+// f(P)   = f(vco) / P          P = 7       ---> f(P)   = 34.29-MHz
+// f(Q)   = f(vco) / Q          Q = 6       ---> f(Q)   = 40-MHz
+// f(R)   = f(vco) / R          R = 2       ---> f(R)   = 120-MHz
 
-    RCC->PLLCFGR = (0U * RCC_PLLCFGR_PLLPDIV_0)         // PLLPDIV (not available)
-                 | (0U * RCC_PLLCFGR_PLLR_0)            // R = 2
+    KPLL_STATIC_CHECKS(KCFG_PLLDIVM, KCFG_PLLDIVN, KCFG_PLLDIVP, KCFG_PLLDIVQ, KCFG_PLLDIVR);
+
+    RCC->PLLCFGR = (0U * RCC_PLLCFGR_PLLPDIV_0)                             // PLLPDIV (not used)
+                 | (((KCFG_PLLDIVR / 2U) - 1U) * RCC_PLLCFGR_PLLR_0)        // R
                  | RCC_PLLCFGR_PLLREN                   // PLLR enabled
-                 | (2U * RCC_PLLCFGR_PLLQ_0)            // Q = 6
+                 | (((KCFG_PLLDIVQ / 2U) - 1U) * RCC_PLLCFGR_PLLQ_0)        // Q
                  | RCC_PLLCFGR_PLLQEN                   // PLLQ enabled
-                 | (0U * RCC_PLLCFGR_PLLP)              // P = 7
+                 | (((KCFG_PLLDIVP == 17U) ? 1U : 0U) * RCC_PLLCFGR_PLLP)   // P
                  | RCC_PLLCFGR_PLLPEN                   // PLLP enabled
-                 | (30U * RCC_PLLCFGR_PLLN_0)           // N = 30
-                 | (1U * RCC_PLLCFGR_PLLM_0)            // M = 2
+                 | (KCFG_PLLDIVN * RCC_PLLCFGR_PLLN_0)                      // N
+                 | ((KCFG_PLLDIVM - 1U) * RCC_PLLCFGR_PLLM_0)               // M
                  | (2U * RCC_PLLCFGR_PLLSRC_0);         // HSI16 as a PLL source
 
-    RCC->CFGR = (0U * RCC_CFGR_MCOPRE_0)                // MCO (no division)
-              | (2U * RCC_CFGR_MCOSEL_0)                // MSI output
+    RCC->CFGR = (KCFG_MCOPRE * RCC_CFGR_MCOPRE_0)                           // MCO prescaler
+              | (KCFG_MCOSEL * RCC_CFGR_MCOSEL_0)                           // MCO
               | (0U * RCC_CFGR_PPRE2_0)                 // APB2 bus @ 120/1 = 120-MHz
               | (0U * RCC_CFGR_PPRE1_0)                 // APB1 bus @ 120/1 = 120-MHz
               | (0U * RCC_CFGR_HPRE_0)                  // HPRE bus @ 120-MHz

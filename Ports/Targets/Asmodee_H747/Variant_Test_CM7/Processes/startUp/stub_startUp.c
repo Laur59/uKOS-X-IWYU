@@ -14,6 +14,7 @@
 #include    <time.h>
 
 #include    "calendar/calendar.h"
+#include    "cdc0/cdc0.h"
 #include    "ip.h"
 #include    "kern/kern.h"
 #include    "macros.h"
@@ -39,13 +40,13 @@ struct  boot {
                 uint8_t             oBaudrate;          // Baudrate
         };
 
-static  const   char_t  *argv_cnsUrt0[] = { "console", "urt0" };
+static  const   char_t  *argv_cnsCdc0[] = { "console", "cdc0" };
 
 static  const   boot_t  aFunction[] = {
-                            { .oFunction="console", .oSerialManager=KURT0, .oArgV=argv_cnsUrt0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
+                            { .oFunction="console", .oSerialManager=KCDC0, .oArgV=argv_cnsCdc0, .oArgC=2U, .oSW=0x00U, .oBaudrate=KSERIAL_BAUDRATE_460800 },
                         };
 
-#define KDEF_COMM       KURT0
+#define KDEF_COMM       KCDC0
 #define KNB_FUNCTIONS   (sizeof(aFunction) / sizeof(boot_t))
 
 // Module strings
@@ -58,7 +59,7 @@ STRG_GLB_CONST(aStartUp_StrHelp[]) = "StartUp process\n"
                                      "460800-bit/s, 8-bits, 2-stop-bits, no parity.\n\n"
 
                                      "   SW3\n"
-                                     "    0   KURT0, console (460800-bit/s).\n\n";
+                                     "    0   KCDC0, console (460800-bit/s).\n\n";
 
 STRG_LOC_CONST(aStrLogo[]) = STRG_LOGO;
 
@@ -75,6 +76,7 @@ void    stub_startUp_launch(void) {
             tm_t            localTime;
             bool            error = false;
             urtxCnf_t       configureURTx;
+            cdcxCnf_t       configureCDCx;
             proc_t          *process;
     const   uKOS_module_t   *module;
     const   char_t          *identifier, *signature;
@@ -94,7 +96,9 @@ void    stub_startUp_launch(void) {
     configureURTx.oParity   = KSERIAL_PARITY_NONE;
     configureURTx.oBaudRate = aFunction[mode].oBaudrate;
     configureURTx.oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX);
+    configureCDCx.oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX);
     serial_configure(KURT0, &configureURTx);
+    serial_configure(KCDC0, &configureCDCx);
 
 // Bootstrap ...
 // -------------
@@ -111,6 +115,14 @@ void    stub_startUp_launch(void) {
 
     system_getSystemId(&identifier);
     system_getSystemSignature(&signature);
+
+// Waiting for the first CDC0 connection and display the splash screen
+// Core uses CDC0 which has no host connected at boot time
+
+    while (cdc0_isConnected() == KERR_SERIAL_NOTCO) {
+        kern_suspendProcess(10U);
+    }
+    kern_suspendProcess(100U);
 
     (void)dprintf(KSYST, "%s", aStrLogo);
     (void)dprintf(KSYST, "Signature:\n%s\n\n", signature);

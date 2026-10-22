@@ -248,6 +248,10 @@ static  int32_t local_init(void) {
 
         #if (KCALENDAR_WITH_HW_RTC_S == true)
         model_rtc_readUnixTime(&vUnixTime[core]);
+
+// The RTC time is the time now: count the ticks from here, not from the boot
+
+        kern_readTickCount(&vOldTickCount[core]);
         #endif
 
     }

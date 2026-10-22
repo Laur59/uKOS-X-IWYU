@@ -371,6 +371,13 @@ INTERRUPT_SPECIFIC_HANDLER(WAKEUP_C0)
  */
 void    Reset_C0_Handler(void) {
 
+// Point the VTOR on our vectors
+// The reset value is the boot address, which is not ours behind a bootloader
+
+    SCB->VTOR = (uint32_t)(uintptr_t)&g_pfnVectors_C0[0];
+    DATA_SYNC_BARRIER;
+    INST_SYNC_BARRIER;
+
     RCC->AHB2ENR |= RCC_AHB2ENR_SRAM1EN | RCC_AHB2ENR_SRAM2EN | RCC_AHB2ENR_SRAM3EN;
     RCC->AHB4ENR |= RCC_AHB4ENR_BKPRAMEN;
 

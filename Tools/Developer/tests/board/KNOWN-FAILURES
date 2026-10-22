@@ -13,3 +13,4 @@
 
 Alastor_H743  X/sensor-range  fail  DEFECTS.md: the LSM9DS1 does not answer on SPI
 Asmodee_H747/Variant_Test_CM4  bench/all  fail  heap = SRAM2 (Base_CM4/Runtime/link_pu.ld) is too small for Bench 03; left to upstream
+Portenta_H747/Variant_Test_CM4  bench/all  fail  heap = SRAM2 (Base_CM4/Runtime/link_pu.ld) is too small for Bench 03; left to upstream

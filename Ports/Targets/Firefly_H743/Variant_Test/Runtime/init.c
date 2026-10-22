@@ -14,6 +14,7 @@
 #include    <stdint.h>
 
 #include    "cache.h"
+#include    "clockTree.h"
 #include    "core_reg.h"
 #include    "macros.h"
 #include    "macros_core.h"
@@ -445,6 +446,9 @@ static  void    local_GPIO_Configuration(void) {
  * TIM 1,2,3,4,5,6,7,8,12,13,14,15,16,17    ck = ??? -> A??
  *
  */
+#define KCFG_MCO1SEL        4U                                          // hsi48_ck
+#define KCFG_MCO1PRE_DIV    1U                                          // Clock / 1
+
 static  void    local_RCC_Configuration(void) {
 
     RCC->CSR       |= RCC_CSR_LSION;                    // Enable the LSI
@@ -477,29 +481,34 @@ static  void    local_RCC_Configuration(void) {
 
 // Source for the PLL 1 , 2 & 3 input clock (see DM00314099 pages 296, 309 & 348)
 
-    RCC->PLLCKSELR = (0U * RCC_PLLCKSELR_PLLSRC_0)      // PLL1, 2, 3 source HSI (64-MHz)
-                   | (4U * RCC_PLLCKSELR_DIVM1_0)       // DivM1 / 4
-                   | (4U * RCC_PLLCKSELR_DIVM2_0)       // DivM2 / 4
-                   | (4U * RCC_PLLCKSELR_DIVM3_0);      // DivM3 / 4
+    RCC->PLLCKSELR = (0U * RCC_PLLCKSELR_PLLSRC_0)              // PLL1, 2, 3 source HSI (64-MHz)
+                   | (KCFG_PLL1DIVM * RCC_PLLCKSELR_DIVM1_0)    // M1
+                   | (KCFG_PLL2DIVM * RCC_PLLCKSELR_DIVM2_0)    // M2
+                   | (KCFG_PLL3DIVM * RCC_PLLCKSELR_DIVM3_0);   // M3
 
-// PLL 1 CPU
-// ---------
+// PLL 1, CPU
+// ----------
 
-// For f(ck in) = 16-MHz
-// f(vco) = f(ck in) * (N + 1)   f(vco) = 16-MHz, N = 59 ---> f(vco) = 960-MHz
-// f(P) = f(vco) / (P + 1) P = 1                         ---> f(P) = 480
-// f(Q) = f(vco) / (Q + 1) Q = 3                         ---> f(Q) = 240
-// f(R) = f(vco) / (R + 1) R = 7                         ---> f(R) = 120
+// FVCO min..max, 192-MHz..960-MHz
+// For f(ck in) = 64-MHz (HSI)
+// f(ref) = f(ck in) / M        M = 4       ---> f(ref) = 16-MHz
+// f(vco) = f(ref) * N          N = 60      ---> f(vco) = 960-MHz
+// f(P)   = f(vco) / P          P = 2       ---> f(P)   = 480-MHz
+// f(Q)   = f(vco) / Q          Q = 4       ---> f(Q)   = 240-MHz
+// f(R)   = f(vco) / R          R = 8       ---> f(R)   = 120-MHz
 
-    RCC->PLLCFGR |= RCC_PLLCFGR_DIVR1EN                 // Div R enable
-                  | RCC_PLLCFGR_DIVQ1EN                 // Div Q enable
-                  | RCC_PLLCFGR_DIVP1EN                 // Div P enable
-                  | (3U * RCC_PLLCFGR_PLL1RGE_0);       // Input 16-MHz
+    KPLL_STATIC_CHECKS(1, KCFG_PLL1DIVM, KCFG_PLL1RGE, KCFG_PLL1DIVN, KCFG_PLL1DIVP, KCFG_PLL1DIVQ, KCFG_PLL1DIVR);
+    static_assert((KCFG_PLL1DIVP % 2U) == 0U, "PLL1: DIVP shall be even");
 
-    RCC->PLL1DIVR = (7U * RCC_PLL1DIVR_DIVR1_0)         // Div R
-                  | (3U * RCC_PLL1DIVR_DIVQ1_0)         // Div Q
-                  | (1U * RCC_PLL1DIVR_DIVP1_0)         // Div P
-                  | (59U * RCC_PLL1DIVR_DIVN1_0);       // Div N 59 = 960-MHz
+    RCC->PLLCFGR |= RCC_PLLCFGR_DIVR1EN                     // Div R enable
+                  | RCC_PLLCFGR_DIVQ1EN                     // Div Q enable
+                  | RCC_PLLCFGR_DIVP1EN                     // Div P enable
+                  | (KCFG_PLL1RGE * RCC_PLLCFGR_PLL1RGE_0); // f(ref) range
+
+    RCC->PLL1DIVR = ((KCFG_PLL1DIVR - 1U) * RCC_PLL1DIVR_DIVR1_0)       // R
+                  | ((KCFG_PLL1DIVQ - 1U) * RCC_PLL1DIVR_DIVQ1_0)       // Q
+                  | ((KCFG_PLL1DIVP - 1U) * RCC_PLL1DIVR_DIVP1_0)       // P
+                  | ((KCFG_PLL1DIVN - 1U) * RCC_PLL1DIVR_DIVN1_0);      // N
 
     RCC->PLL1FRACR = 0x00000000U;                       // Reset PLL1FRACR register
     RCC->CR       |= RCC_CR_PLL1ON;                     // PLL1 on
@@ -508,24 +517,28 @@ static  void    local_RCC_Configuration(void) {
 
     while ((RCC->CR & RCC_CR_PLL1RDY) == 0U) { ; }      // Waiting for the lock of the PLL
 
-// PLL 2 CPU
-// ---------
+// PLL 2, ADC
+// ----------
 
-// For f(ck in) = 16-MHz
-// f(vco) = f(ck in) * (N + 1)   f(vco) = 16-MHz, N = 24 ---> f(vco) = 400-MHz
-// f(P) = f(vco) / (P + 1) P = 3                         ---> f(P) = 100
-// f(Q) = f(vco) / (Q + 1) Q = 7                         ---> f(Q) = 50
-// f(R) = f(vco) / (R + 1) R = 15                        ---> f(R) = 25
+// FVCO min..max, 192-MHz..960-MHz
+// For f(ck in) = 64-MHz (HSI)
+// f(ref) = f(ck in) / M        M = 4       ---> f(ref) = 16-MHz
+// f(vco) = f(ref) * N          N = 25      ---> f(vco) = 400-MHz
+// f(P)   = f(vco) / P          P = 4       ---> f(P)   = 100-MHz
+// f(Q)   = f(vco) / Q          Q = 8       ---> f(Q)   = 50-MHz
+// f(R)   = f(vco) / R          R = 16      ---> f(R)   = 25-MHz
 
-    RCC->PLLCFGR |= RCC_PLLCFGR_DIVR2EN                 // Div R enable
-                  | RCC_PLLCFGR_DIVQ2EN                 // Div Q enable
-                  | RCC_PLLCFGR_DIVP2EN                 // Div P enable
-                  | (3U * RCC_PLLCFGR_PLL2RGE_0);       // Input 16-MHz
+    KPLL_STATIC_CHECKS(2, KCFG_PLL2DIVM, KCFG_PLL2RGE, KCFG_PLL2DIVN, KCFG_PLL2DIVP, KCFG_PLL2DIVQ, KCFG_PLL2DIVR);
 
-    RCC->PLL2DIVR = (15U * RCC_PLL2DIVR_DIVR2_0)        // Div R
-                  | (7U  * RCC_PLL2DIVR_DIVQ2_0)        // Div Q
-                  | (3U  * RCC_PLL2DIVR_DIVP2_0)        // Div P
-                  | (24U * RCC_PLL2DIVR_DIVN2_0);       // Div N 24 = 400-MHz
+    RCC->PLLCFGR |= RCC_PLLCFGR_DIVR2EN                     // Div R enable
+                  | RCC_PLLCFGR_DIVQ2EN                     // Div Q enable
+                  | RCC_PLLCFGR_DIVP2EN                     // Div P enable
+                  | (KCFG_PLL2RGE * RCC_PLLCFGR_PLL2RGE_0); // f(ref) range
+
+    RCC->PLL2DIVR = ((KCFG_PLL2DIVR - 1U) * RCC_PLL2DIVR_DIVR2_0)   // R
+                  | ((KCFG_PLL2DIVQ - 1U) * RCC_PLL2DIVR_DIVQ2_0)   // Q
+                  | ((KCFG_PLL2DIVP - 1U) * RCC_PLL2DIVR_DIVP2_0)   // P
+                  | ((KCFG_PLL2DIVN - 1U) * RCC_PLL2DIVR_DIVN2_0);  // N
 
     RCC->PLL2FRACR = 0x00000000U;                       // Reset PLL2FRACR register
     RCC->CR       |= RCC_CR_PLL2ON;                     // PLL2 on
@@ -534,24 +547,28 @@ static  void    local_RCC_Configuration(void) {
 
     while ((RCC->CR & RCC_CR_PLL2RDY) == 0U) { ; }      // Waiting for the lock of the PLL
 
-// PLL 3 CPU
-// ---------
+// PLL 3, USB, LTDC
+// ----------------
 
-// For f(ck in) = 16-MHz
-// f(vco) = f(ck in) * (N + 1)   f(vco) = 16-MHz, N = 14 ---> f(vco) = 240-MHz
-// f(P) = f(vco) / (P + 1) P = 1                         ---> f(P) = 120
-// f(Q) = f(vco) / (Q + 1) Q = 4                         ---> f(Q) = 48
-// f(R) = f(vco) / (R + 1) R = 1                         ---> f(R) = 24
+// FVCO min..max, 192-MHz..960-MHz
+// For f(ck in) = 64-MHz (HSI)
+// f(ref) = f(ck in) / M        M = 4       ---> f(ref) = 16-MHz
+// f(vco) = f(ref) * N          N = 15      ---> f(vco) = 240-MHz
+// f(P)   = f(vco) / P          P = 2       ---> f(P)   = 120-MHz
+// f(Q)   = f(vco) / Q          Q = 5       ---> f(Q)   = 48-MHz
+// f(R)   = f(vco) / R          R = 10      ---> f(R)   = 24-MHz
 
-    RCC->PLLCFGR |= RCC_PLLCFGR_DIVR3EN                 // Div R enable
-                  | RCC_PLLCFGR_DIVQ3EN                 // Div Q enable
-                  | RCC_PLLCFGR_DIVP3EN                 // Div P enable
-                  | (3U * RCC_PLLCFGR_PLL3RGE_0);       // Input 16-MHz
+    KPLL_STATIC_CHECKS(3, KCFG_PLL3DIVM, KCFG_PLL3RGE, KCFG_PLL3DIVN, KCFG_PLL3DIVP, KCFG_PLL3DIVQ, KCFG_PLL3DIVR);
 
-    RCC->PLL3DIVR = (9U  * RCC_PLL3DIVR_DIVR3_0)        // Div R
-                  | (4U  * RCC_PLL3DIVR_DIVQ3_0)        // Div Q
-                  | (1U  * RCC_PLL3DIVR_DIVP3_0)        // Div P
-                  | (14U * RCC_PLL3DIVR_DIVN3_0);       // Div N 14 = 240-MHz
+    RCC->PLLCFGR |= RCC_PLLCFGR_DIVR3EN                     // Div R enable
+                  | RCC_PLLCFGR_DIVQ3EN                     // Div Q enable
+                  | RCC_PLLCFGR_DIVP3EN                     // Div P enable
+                  | (KCFG_PLL3RGE * RCC_PLLCFGR_PLL3RGE_0); // f(ref) range
+
+    RCC->PLL3DIVR = ((KCFG_PLL3DIVR - 1U) * RCC_PLL3DIVR_DIVR3_0)       // R
+                  | ((KCFG_PLL3DIVQ - 1U) * RCC_PLL3DIVR_DIVQ3_0)       // Q
+                  | ((KCFG_PLL3DIVP - 1U) * RCC_PLL3DIVR_DIVP3_0)       // P
+                  | ((KCFG_PLL3DIVN - 1U) * RCC_PLL3DIVR_DIVN3_0);      // N
 
     RCC->PLL3FRACR = 0x00000000U;                       // Reset PLL3FRACR register
     RCC->CR       |= RCC_CR_PLL3ON;                     // PLL3 on
@@ -575,7 +592,7 @@ static  void    local_RCC_Configuration(void) {
 // RNG & USB clocks
 // ----------------
 
-    RCC->D2CCIP2R = (1U * RCC_D2CCIP2R_RNGSRC_0)        // Set the clock for the RNG @ KFREQUENCY_PLL1Q (200-MHz)
+    RCC->D2CCIP2R = (1U * RCC_D2CCIP2R_RNGSRC_0)        // Set the clock for the RNG @ KFREQUENCY_PLL1Q (240-MHz)
                   | (2U * RCC_D2CCIP2R_USBSRC_0);       // Set the clock for the USB @ KFREQUENCY_PLL3Q (48-MHz)
 
 // Flash latency (for 4x0-MHz ... 4 wait states)
@@ -584,8 +601,8 @@ static  void    local_RCC_Configuration(void) {
     FLASH->ACR = (3U * FLASH_ACR_WRHIGHFREQ_0)          // Bus > 385-MHz
                | (4U * FLASH_ACR_LATENCY_0);            // 4 wait states
 
-    RCC->CFGR = (4U * RCC_CFGR_MCO1SEL_0)               // MCO1 HSI48
-              | (1U * RCC_CFGR_MCO1PRE_0)               // prescaler / 1
+    RCC->CFGR = (KCFG_MCO1SEL * RCC_CFGR_MCO1SEL_0)     // MCO1
+              | (KCFG_MCO1PRE_DIV * RCC_CFGR_MCO1PRE_0) // MCO1 prescaler
               | (3U * RCC_CFGR_SW_0);                   // CPU clock = PLL
 
     #if (KCALENDAR_WITH_HW_RTC_S == true)

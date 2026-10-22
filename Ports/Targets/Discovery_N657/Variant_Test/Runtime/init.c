@@ -703,24 +703,24 @@ static  void    local_GPIO_Configuration(void) {
  * Fcpu:            800-MHz     sysa_ck (ic1)
  * Fnpu:            800-MHz     sysc_ck (ic6)
  * Faxi:            400-MHz     sysb_ck (ic2)
- * FaxiRAMNPU:      400-MHz     sysd_ck (1c11)
+ * FaxiRAMNPU:      400-MHz     sysd_ck (ic11)
  *
  * Faxi, 400-MHz, FBusMax
  * - Timer group 1, 100-MHz
  * - Timer group 2, 100-MHz
- * - sys_bus2_ck (pclkx), 200-MHz, Faxi / 2
- *      - APB1,2,4,5, 50-MHz, sys_bus2_ck / 8
+ * - sys_bus2_ck (pclkx), 100-MHz, Faxi / 4
+ *      - APB1,2,4,5, 100-MHz, sys_bus2_ck / 1
  *
  * Simple peripherals
- * Fadc12,      pclk5 50-MHz
- * Fi2cx,       pclk5 50-MHz (x=1, 2, 3 ,4)
- * Fi3cx,       pclk5 50-MHz (x=1, 2)
- * Fsaix,       pclk2 50-MHz (x=1, 2)
- * Fspix,       pclk4 50-MHz (x=1, 2, 3, 4, 5, 6)
- * Flptimx,     pclk4 50-MHz (x=1, 2, 3, 4, 5)
- * Fusartx,     pclk1 50-MHz (x=1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
- * Flpusartx,   pclk4 50-MHz (x=1, 2)
- * Flpuartx,    pclk4 50-MHz (x=1)
+ * Fadc12,      pclk5 100-MHz
+ * Fi2cx,       pclk5 100-MHz (x=1, 2, 3 ,4)
+ * Fi3cx,       pclk5 100-MHz (x=1, 2)
+ * Fsaix,       pclk2 100-MHz (x=1, 2)
+ * Fspix,       pclk4 100-MHz (x=1, 2, 3, 4, 5, 6)
+ * Flptimx,     pclk4 100-MHz (x=1, 2, 3, 4, 5)
+ * Fusartx,     pclk1 100-MHz (x=1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+ * Flpusartx,   pclk4 100-MHz (x=1, 2)
+ * Flpuartx,    pclk4 100-MHz (x=1)
  *
  */
 static  void    local_RCC_Configuration(void) {
@@ -764,27 +764,29 @@ static  void    local_RCC_Configuration(void) {
 // f(vco) = 1600-MHz, N/M = 25
 // N = 125, M = 5
 
-    REG(RCC)->PLL1CFGR1 = (0U   * RCC_PLL1CFGR1_PLL1SEL_0)      // f(input) HSI
-                        | (0U   * RCC_PLL1CFGR1_PLL1BYP)        // No bypass
-                        | (5U   * RCC_PLL1CFGR1_PLL1DIVM_0)     // M = 5
-                        | (125U * RCC_PLL1CFGR1_PLL1DIVN_0);    // N = 125
+    KPLL_STATIC_CHECKS(1, KCFG_PLL1DIVM, KCFG_PLL1DIVN, KCFG_PLL1PDIV1, KCFG_PLL1PDIV2, KFREQUENCY_PLL1);
+
+    REG(RCC)->PLL1CFGR1 = (0U * RCC_PLL1CFGR1_PLL1SEL_0)                // f(input) HSI
+                        | (0U * RCC_PLL1CFGR1_PLL1BYP)                  // No bypass
+                        | (KCFG_PLL1DIVM * RCC_PLL1CFGR1_PLL1DIVM_0)    // M
+                        | (KCFG_PLL1DIVN * RCC_PLL1CFGR1_PLL1DIVN_0);   // N
 
     REG(RCC)->PLL1CFGR2 = 0U;                                   // No fractional
 
     REG(RCC)->PLL1CFGR3 = RCC_PLL1CFGR3_PLL1PDIVEN              // Post div activate
-                        | (2U * RCC_PLL1CFGR3_PLL1PDIV1_0)      //
-                        | (1U * RCC_PLL1CFGR3_PLL1PDIV2_0)      // VCO / 2
-                        | (0U * RCC_PLL1CFGR3_PLL1MODSPR_0)     //
-                        | (0U * RCC_PLL1CFGR3_PLL1MODDIV_0)     //
-                        | (0U * RCC_PLL1CFGR3_PLL1MODSPRDW)     //
-                        | (0U * RCC_PLL1CFGR3_PLL1MODDSEN)      //
-                        | (1U * RCC_PLL1CFGR3_PLL1MODSSDIS)     //
-                        | (0U * RCC_PLL1CFGR3_PLL1DACEN)        //
-                        | (1U * RCC_PLL1CFGR3_PLL1MODSSRST);    //
+                        | (KCFG_PLL1PDIV1 * RCC_PLL1CFGR3_PLL1PDIV1_0)  //
+                        | (KCFG_PLL1PDIV2 * RCC_PLL1CFGR3_PLL1PDIV2_0)  // VCO / (PDIV1 * PDIV2)
+                        | (0U * RCC_PLL1CFGR3_PLL1MODSPR_0)             //
+                        | (0U * RCC_PLL1CFGR3_PLL1MODDIV_0)             //
+                        | (0U * RCC_PLL1CFGR3_PLL1MODSPRDW)             //
+                        | (0U * RCC_PLL1CFGR3_PLL1MODDSEN)              //
+                        | (1U * RCC_PLL1CFGR3_PLL1MODSSDIS)             //
+                        | (0U * RCC_PLL1CFGR3_PLL1DACEN)                //
+                        | (1U * RCC_PLL1CFGR3_PLL1MODSSRST);            //
 
-    REG(RCC)->CR |= RCC_CR_PLL1ON;                              // PLL1 on
-    (void)(REG(RCC)->CR);                                       //
-    while ((REG(RCC)->SR & RCC_SR_PLL1RDY) == 0U) { ; }         // Waiting for the PLL 1 stable
+    REG(RCC)->CR |= RCC_CR_PLL1ON;                                      // PLL1 on
+    (void)(REG(RCC)->CR);                                               //
+    while ((REG(RCC)->SR & RCC_SR_PLL1RDY) == 0U) { ; }                 // Waiting for the PLL 1 stable
 
 // PLL 2, 800-MHz, clocks to NPU and audio peripherals
 // ---------------------------------------------------
@@ -795,23 +797,25 @@ static  void    local_RCC_Configuration(void) {
 // f(vco) = 1600-MHz, N/M = 25
 // N = 125, M = 5
 
-    REG(RCC)->PLL2CFGR1 = (0U   * RCC_PLL2CFGR1_PLL2SEL_0)      // f(input) HSI
-                        | (0U   * RCC_PLL2CFGR1_PLL2BYP)        // No bypass
-                        | (5U   * RCC_PLL2CFGR1_PLL2DIVM_0)     // M = 5
-                        | (125U * RCC_PLL2CFGR1_PLL2DIVN_0);    // N = 125
+    KPLL_STATIC_CHECKS(2, KCFG_PLL2DIVM, KCFG_PLL2DIVN, KCFG_PLL2PDIV1, KCFG_PLL2PDIV2, KFREQUENCY_PLL2);
+
+    REG(RCC)->PLL2CFGR1 = (0U * RCC_PLL2CFGR1_PLL2SEL_0)                // f(input) HSI
+                        | (0U * RCC_PLL2CFGR1_PLL2BYP)                  // No bypass
+                        | (KCFG_PLL2DIVM * RCC_PLL2CFGR1_PLL2DIVM_0)    // M
+                        | (KCFG_PLL2DIVN * RCC_PLL2CFGR1_PLL2DIVN_0);   // N
 
     REG(RCC)->PLL2CFGR2 = 0U;                                   // No fractional
 
     REG(RCC)->PLL2CFGR3 = RCC_PLL2CFGR3_PLL2PDIVEN              // Post div activate
-                        | (2U * RCC_PLL2CFGR3_PLL2PDIV1_0)      //
-                        | (1U * RCC_PLL2CFGR3_PLL2PDIV2_0)      // VCO / 2
-                        | (0U * RCC_PLL2CFGR3_PLL2MODSPR_0)     //
-                        | (0U * RCC_PLL2CFGR3_PLL2MODDIV_0)     //
-                        | (0U * RCC_PLL2CFGR3_PLL2MODSPRDW)     //
-                        | (0U * RCC_PLL2CFGR3_PLL2MODDSEN)      //
-                        | (1U * RCC_PLL2CFGR3_PLL2MODSSDIS)     //
-                        | (0U * RCC_PLL2CFGR3_PLL2DACEN)        //
-                        | (1U * RCC_PLL2CFGR3_PLL2MODSSRST);    //
+                        | (KCFG_PLL2PDIV1 * RCC_PLL2CFGR3_PLL2PDIV1_0)  //
+                        | (KCFG_PLL2PDIV2 * RCC_PLL2CFGR3_PLL2PDIV2_0)  // VCO / (PDIV1 * PDIV2)
+                        | (0U * RCC_PLL2CFGR3_PLL2MODSPR_0)             //
+                        | (0U * RCC_PLL2CFGR3_PLL2MODDIV_0)             //
+                        | (0U * RCC_PLL2CFGR3_PLL2MODSPRDW)             //
+                        | (0U * RCC_PLL2CFGR3_PLL2MODDSEN)              //
+                        | (1U * RCC_PLL2CFGR3_PLL2MODSSDIS)             //
+                        | (0U * RCC_PLL2CFGR3_PLL2DACEN)                //
+                        | (1U * RCC_PLL2CFGR3_PLL2MODSSRST);            //
 
     REG(RCC)->CR |= RCC_CR_PLL2ON;                              // PLL2 on
     (void)(REG(RCC)->CR);                                       //
@@ -826,16 +830,18 @@ static  void    local_RCC_Configuration(void) {
 // f(vco) = 1600-MHz, N/M = 25
 // N = 125, M = 5
 
+    KPLL_STATIC_CHECKS(3, KCFG_PLL3DIVM, KCFG_PLL3DIVN, KCFG_PLL3PDIV1, KCFG_PLL3PDIV2, KFREQUENCY_PLL3);
+
     REG(RCC)->PLL3CFGR1 = (0U   * RCC_PLL3CFGR1_PLL3SEL_0)      // f(input) HSI
                         | (0U   * RCC_PLL3CFGR1_PLL3BYP)        // No bypass
-                        | (5U   * RCC_PLL3CFGR1_PLL3DIVM_0)     // M = 5
-                        | (125U * RCC_PLL3CFGR1_PLL3DIVN_0);    // N = 125
+                        | (KCFG_PLL3DIVM * RCC_PLL3CFGR1_PLL3DIVM_0)    // M
+                        | (KCFG_PLL3DIVN * RCC_PLL3CFGR1_PLL3DIVN_0);   // N
 
     REG(RCC)->PLL3CFGR2 = 0U;                                   // No fractional
 
     REG(RCC)->PLL3CFGR3 = RCC_PLL3CFGR3_PLL3PDIVEN              // Post div activate
-                        | (4U * RCC_PLL3CFGR3_PLL3PDIV1_0)      //
-                        | (1U * RCC_PLL3CFGR3_PLL3PDIV2_0)      // VCO / 4
+                        | (KCFG_PLL3PDIV1 * RCC_PLL3CFGR3_PLL3PDIV1_0)  //
+                        | (KCFG_PLL3PDIV2 * RCC_PLL3CFGR3_PLL3PDIV2_0)  // VCO / (PDIV1 * PDIV2)
                         | (0U * RCC_PLL3CFGR3_PLL3MODSPR_0)     //
                         | (0U * RCC_PLL3CFGR3_PLL3MODDIV_0)     //
                         | (0U * RCC_PLL3CFGR3_PLL3MODSPRDW)     //
@@ -857,23 +863,25 @@ static  void    local_RCC_Configuration(void) {
 // f(vco) = 1600-MHz, N/M = 25
 // N = 125, M = 5
 
-    REG(RCC)->PLL4CFGR1 = (0U   * RCC_PLL4CFGR1_PLL4SEL_0)      // f(input) HSI
-                        | (0U   * RCC_PLL4CFGR1_PLL4BYP)        // No bypass
-                        | (5U   * RCC_PLL4CFGR1_PLL4DIVM_0)     // M = 5
-                        | (125U * RCC_PLL4CFGR1_PLL4DIVN_0);    // N = 125
+    KPLL_STATIC_CHECKS(4, KCFG_PLL4DIVM, KCFG_PLL4DIVN, KCFG_PLL4PDIV1, KCFG_PLL4PDIV2, KFREQUENCY_PLL4);
+
+    REG(RCC)->PLL4CFGR1 = (0U * RCC_PLL4CFGR1_PLL4SEL_0)                // f(input) HSI
+                        | (0U * RCC_PLL4CFGR1_PLL4BYP)                  // No bypass
+                        | (KCFG_PLL4DIVM * RCC_PLL4CFGR1_PLL4DIVM_0)    // M
+                        | (KCFG_PLL4DIVN * RCC_PLL4CFGR1_PLL4DIVN_0);   // N
 
     REG(RCC)->PLL4CFGR2 = 0U;                                   // No fractional
 
     REG(RCC)->PLL4CFGR3 = RCC_PLL4CFGR3_PLL4PDIVEN              // Post div activate
-                        | (4U * RCC_PLL4CFGR3_PLL4PDIV1_0)      //
-                        | (1U * RCC_PLL4CFGR3_PLL4PDIV2_0)      // VCO / 4
-                        | (0U * RCC_PLL4CFGR3_PLL4MODSPR_0)     //
-                        | (0U * RCC_PLL4CFGR3_PLL4MODDIV_0)     //
-                        | (0U * RCC_PLL4CFGR3_PLL4MODSPRDW)     //
-                        | (0U * RCC_PLL4CFGR3_PLL4MODDSEN)      //
-                        | (1U * RCC_PLL4CFGR3_PLL4MODSSDIS)     //
-                        | (0U * RCC_PLL4CFGR3_PLL4DACEN)        //
-                        | (1U * RCC_PLL4CFGR3_PLL4MODSSRST);    //
+                        | (KCFG_PLL4PDIV1 * RCC_PLL4CFGR3_PLL4PDIV1_0)  //
+                        | (KCFG_PLL4PDIV2 * RCC_PLL4CFGR3_PLL4PDIV2_0)  // VCO / (PDIV1 * PDIV2)
+                        | (0U * RCC_PLL4CFGR3_PLL4MODSPR_0)             //
+                        | (0U * RCC_PLL4CFGR3_PLL4MODDIV_0)             //
+                        | (0U * RCC_PLL4CFGR3_PLL4MODSPRDW)             //
+                        | (0U * RCC_PLL4CFGR3_PLL4MODDSEN)              //
+                        | (1U * RCC_PLL4CFGR3_PLL4MODSSDIS)             //
+                        | (0U * RCC_PLL4CFGR3_PLL4DACEN)                //
+                        | (1U * RCC_PLL4CFGR3_PLL4MODSSRST);            //
 
     REG(RCC)->CR |= RCC_CR_PLL4ON;                              // PLL4 on
     (void)(REG(RCC)->CR);                                       //
@@ -884,40 +892,40 @@ static  void    local_RCC_Configuration(void) {
 
 // System clock (IC1 mux)
 
-    REG(RCC)->IC1CFGR = (0U * RCC_IC1CFGR_IC1SEL_0)             // PLL1
-                      | (0U * RCC_IC1CFGR_IC1INT_0);            // IC1 = PLL1 / 1, ~800-MHz
+    REG(RCC)->IC1CFGR = (KCFG_IC1SEL * RCC_IC1CFGR_IC1SEL_0)
+                      | ((KCFG_IC1INT_DIV - 1U) * RCC_IC1CFGR_IC1INT_0);
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC1EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC2 mux)
 
-    REG(RCC)->IC2CFGR = (0U * RCC_IC2CFGR_IC2SEL_0)             // PLL1
-                      | ((2U - 1U) * RCC_IC2CFGR_IC2INT_0);     // IC2 = PLL1 / 2, ~400_MHz
+    REG(RCC)->IC2CFGR = (KCFG_IC2SEL * RCC_IC2CFGR_IC2SEL_0)
+                      | ((KCFG_IC2INT_DIV - 1U) * RCC_IC2CFGR_IC2INT_0);
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC2EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC15 mux) (for MCO2)
 
-    REG(RCC)->IC15CFGR = (0U * RCC_IC15CFGR_IC15SEL_0)          // PLL1
-                       | ((2U - 1U) * RCC_IC15CFGR_IC15INT_0);  // IC15 = PLL1 / 2, ~400-MHz
+    REG(RCC)->IC15CFGR = (KCFG_IC15SEL * RCC_IC15CFGR_IC15SEL_0)
+                       | ((KCFG_IC15INT_DIV - 1U) * RCC_IC15CFGR_IC15INT_0);
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC15EN;                      //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC20 mux) (for MCO2)
 
-    REG(RCC)->IC20CFGR = (2U * RCC_IC20CFGR_IC20SEL_0)          // PLL3
-                       | ((10U - 1U) * RCC_IC20CFGR_IC20INT_0); // IC20 = PLL3 / 10, ~40-MHz
+    REG(RCC)->IC20CFGR = (KCFG_IC20SEL * RCC_IC20CFGR_IC20SEL_0)
+                       | ((KCFG_IC20INT_DIV - 1U) * RCC_IC20CFGR_IC20INT_0);
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC20EN;                      //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC9 mux) (for ....)
 
-    REG(RCC)->IC9CFGR = (2U * RCC_IC9CFGR_IC9SEL_0)             // PLL3
-                      | ((4U - 1U) * RCC_IC9CFGR_IC9INT_0);     // IC9 = PLL3 / 4, ~100-MHz
+    REG(RCC)->IC9CFGR = (KCFG_IC9SEL * RCC_IC9CFGR_IC9SEL_0)
+                      | ((KCFG_IC9INT_DIV - 1U) * RCC_IC9CFGR_IC9INT_0);
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC9EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
@@ -925,24 +933,24 @@ static  void    local_RCC_Configuration(void) {
 // System clock (IC3 mux) for xspi2 (set in the FSBL)
 // System clock (IC4 mux) for xspi1
 
-    REG(RCC)->IC4CFGR = (3U * RCC_IC4CFGR_IC4SEL_0)             // PLL4
-                      | ((2U - 1U) * RCC_IC4CFGR_IC4INT_0);     // IC4 = PLL4 / 2, ~200_MHz
+    REG(RCC)->IC4CFGR = (KCFG_IC4SEL * RCC_IC4CFGR_IC4SEL_0)
+                      | ((KCFG_IC4INT_DIV - 1U) * RCC_IC4CFGR_IC4INT_0);
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC4EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC6 mux) (for NPU)
 
-    REG(RCC)->IC6CFGR = (1U * RCC_IC6CFGR_IC6SEL_0)             // PLL2
-                      | (0U * RCC_IC6CFGR_IC6INT_0);            // IC6 = PLL2 / 1, ~800-MHz
+    REG(RCC)->IC6CFGR = (KCFG_IC6SEL * RCC_IC6CFGR_IC6SEL_0)
+                      | ((KCFG_IC6INT_DIV - 1U) * RCC_IC6CFGR_IC6INT_0);
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC6EN;                       //
     (void)(REG(RCC)->DIVENR);                                   //
 
 // System clock (IC11 mux) (for AXISRAM3..6)
 
-    REG(RCC)->IC11CFGR = (2U * RCC_IC11CFGR_IC11SEL_0)          // PLL3
-                       | (0U * RCC_IC11CFGR_IC11INT_0);         // IC11 = PLL3 / 1, ~400-MHz
+    REG(RCC)->IC11CFGR = (KCFG_IC11SEL * RCC_IC11CFGR_IC11SEL_0)
+                       | ((KCFG_IC11INT_DIV - 1U) * RCC_IC11CFGR_IC11INT_0);
     STRONG_BARRIER;                                             //
     REG(RCC)->DIVENR |= RCC_DIVENR_IC11EN;                      //
     (void)(REG(RCC)->DIVENR);                                   //
@@ -958,7 +966,7 @@ static  void    local_RCC_Configuration(void) {
 // - PERCK -> HSI
 
     REG(RCC)->CFGR1 = (3U * RCC_CFGR1_CPUSW_0)                  // IC1 (PLL1 / 1) as a CPU clock
-                    | (3U * RCC_CFGR1_SYSSW_0);                 // IC2 (PLL1 / 1) as a SYS clock
+                    | (3U * RCC_CFGR1_SYSSW_0);                 // IC2 (PLL1 / 2) as a SYS clock
 
     REG(RCC)->CCIPR7 = (0U * RCC_CCIPR7_PERSEL_0);              // per_ck (periph kernel = HSI)
 
@@ -1051,6 +1059,9 @@ static  void    local_MPU_Configuration(void) {
  * - Select of the clocks via MCO1-2
  *
  */
+#define KCFG_MCO2SEL        5U                                          // ic15_ck
+#define KCFG_MCO2PRE_DIV    10U                                         // Clock / 10
+
 static  void    local_MCO2_Configuration(void) {
     volatile    uint32_t    value;
 
@@ -1071,12 +1082,10 @@ static  void    local_MCO2_Configuration(void) {
 // n = 4, hse_ck        (OK, ~48-MHz !!!)
 // n = 5, ic15_ck       (OK, ~400-MHz !!!) = pll1 / 2  -> pll1 = 800-MHz
 // n = 6, ic20_ck       (OK, ~40-MHz !!!)  = pll3 / 10 -> pll3 = 400-MHz
-// n = 7, sysb_ck       (OK, ~400-MHz !!!) = pll4
+// n = 7, sysb_ck       (OK, ~400-MHz !!!) = ic2 = pll1 / 2
 
-#define n   5U
-
-    value |= (n          * RCC_CCIPR5_MCO2SEL_0)    //
-           | ((10U - 1U) * RCC_CCIPR5_MCO2PRE_0);   // Clock / 10
+    value |= (KCFG_MCO2SEL * RCC_CCIPR5_MCO2SEL_0)                      //
+           | ((KCFG_MCO2PRE_DIV - 1U) * RCC_CCIPR5_MCO2PRE_0);          //
     REG(RCC)->CCIPR5 = value;                       //
 }
 
@@ -1130,8 +1139,13 @@ static  void    cb_enable(void) {
  * - Set the power of the TCPP0203 to normal
  *
  */
-#define KI2C_ADD_TCPP0203   0x34U
-#define KTCPP0203_NB_MONO   2U
+#define KI2C_ADD_TCPP0203   0x34U                                               // Address
+#define KCFG_I2C_PRESC_DIV  5U                                                  // tPRESC  = 5 x tI2CCLK
+#define KCFG_I2C_SCLDEL_DIV 10U                                                 // tSCLDEL = 10 x tPRESC
+#define KCFG_I2C_SDADEL     1U                                                  // tSDADEL = 1 x tPRESC
+#define KCFG_I2C_SCLH_DIV   53U                                                 // tSCLH   = 53 x tPRESC
+#define KCFG_I2C_SCLL_DIV   53U                                                 // tSCLL   = 53 x tPRESC
+#define KTCPP0203_NB_MONO   2U                                                  //
 
 static  void    local_write_TCPP0203(uint8_t addresse, uint8_t value) {
 
@@ -1139,11 +1153,11 @@ static  void    local_write_TCPP0203(uint8_t addresse, uint8_t value) {
 
     REG(I2C2)->CR2 &= (uint32_t)~I2C_CR1_PE;
 
-    REG(I2C2)->TIMINGR = (4U * I2C_TIMINGR_PRESC_0)                     // Timing prescaler
-                       | (9U * I2C_TIMINGR_SCLDEL_0)                    // Data setup time
-                       | (1U * I2C_TIMINGR_SDADEL_0)                    // Data hold time
-                       | (52U * I2C_TIMINGR_SCLH_0)                     // SCL high period
-                       | (52U * I2C_TIMINGR_SCLL_0);                    // SCL Low period
+    REG(I2C2)->TIMINGR = ((KCFG_I2C_PRESC_DIV - 1U) * I2C_TIMINGR_PRESC_0)      // Timing prescaler
+                       | ((KCFG_I2C_SCLDEL_DIV - 1U) * I2C_TIMINGR_SCLDEL_0)    // Data setup time
+                       | (KCFG_I2C_SDADEL * I2C_TIMINGR_SDADEL_0)               // Data hold time
+                       | ((KCFG_I2C_SCLH_DIV - 1U) * I2C_TIMINGR_SCLH_0)        // SCL high period
+                       | ((KCFG_I2C_SCLL_DIV - 1U) * I2C_TIMINGR_SCLL_0);       // SCL Low period
 
     REG(I2C2)->CR1     = I2C_CR1_NOSTRETCH                              // Clock stretching disabled
                        | I2C_CR1_ANFOFF;                                // Analog noise filter disabled

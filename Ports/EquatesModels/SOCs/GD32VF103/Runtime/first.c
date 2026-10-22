@@ -8,7 +8,7 @@
 
 #include    <stdint.h>
 
-#include    "soc_reg.h"
+#include    "Registers/soc_vectors.h"
 #include    "macros_core.h"
 #include    "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
 

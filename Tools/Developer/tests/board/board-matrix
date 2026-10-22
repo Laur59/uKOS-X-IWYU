@@ -1,0 +1,440 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+
+"""Build, flash and test one board in every compiler / C library / mode.
+
+For each configuration it builds the board's variant from HEAD, flashes it,
+checks the console with `ukos-serial verify`, then runs board-regression and
+coredump-test. At the end the default build (LLVM, newlib, user mode, canary)
+is flashed again, so the board is left as it is normally found.
+
+A configuration is a compiler (llvm, gcc), a C library (newlib, picolibc,
+llvmlibc - Clang only) and a mode: default, U (privileged only, USER_MODE=OFF),
+Y (no canary, CANARY=OFF) or UY (both). The full set is 20 per board.
+
+Only boards flashed through an ST-Link are supported (KFLASH): the board is
+found by its console, and the probe behind that console port is the one that
+flashes and resets it. The Burn/ scripts instead find a probe by connecting
+under reset to every ST-Link in turn, which resets every board they try. A
+board that needs a physical action to be flashed (BOOTSEL, DFU, a jumper) gets
+its own flashing method in KFLASH; none is written yet.
+
+The SoC is the one the board reports when it differs from its variant's
+default, so a NUCLEO-H743ZI2 would be built with -DSOC=STM32H743 without being told.
+
+It builds in the variant's own build/ and Artefacts/, as _build.sh does:
+board-regression takes the symbol addresses its rows need from
+Artefacts/FLASH.elf, so the image there must be the one on the board. They hold
+the default build again after the restore. Every step's output is kept in a
+scratch directory under logs/.
+
+Exit codes: 0 every configuration passed, 1 setup error or refusal,
+3 at least one configuration failed.
+"""
+
+import argparse
+import importlib.machinery
+import importlib.util
+import itertools
+import os
+import re
+import shutil
+import subprocess
+import sys
+import tempfile
+import time
+
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from ukos_board import (KHERE, KROOT, Refusal, console_answers,  # noqa: E402
+                        find_programmer, identify, log_mark, log_since,
+                        read_variant, send_json, serial, session_for_port,
+                        stlink_ports)
+
+KCOMPILERS = ("llvm", "gcc")
+KLIBS      = ("newlib", "picolibc", "llvmlibc")
+KMODES     = ("default", "U", "Y", "UY")
+KTESTS     = ("regression", "coredump")
+KDEFAULT   = ("llvm", "newlib", "default")
+
+# Preset suffix and the cache values each mode must produce
+KMODE = {
+    "default": ("",                  "ON",  "ON"),
+    "U":       ("-nouser",           "OFF", "ON"),
+    "Y":       ("-nocanary",         "ON",  "OFF"),
+    "UY":      ("-nouser-nocanary",  "OFF", "OFF"),
+}
+
+# How each board is flashed. "stlink" needs no physical action; a board that
+# does (BOOTSEL, DFU, a jumper) needs a method of its own before it is listed.
+KFLASH = {
+    "Discovery_U5G9": "stlink",
+    "Nucleo_F207":    "stlink",
+    "Nucleo_H753":    "stlink",
+    "Nucleo_L4R5":    "stlink",
+}
+
+KBOOT_TRIES = 10
+KBOOT_WAIT  = 2            # seconds between attempts
+RX_BANNER   = re.compile(r"^uKOS-X, \(c\) ", re.M)
+
+RED = GREEN = YELLOW = BOLD = DIM = NC = ""
+
+
+def colours(enable):
+    global RED, GREEN, YELLOW, BOLD, DIM, NC
+    if enable:
+        RED, GREEN, YELLOW = "\033[0;31m", "\033[0;32m", "\033[0;33m"
+        BOLD, DIM, NC = "\033[1m", "\033[2m", "\033[0m"
+
+
+def coredump_boards():
+    """The boards coredump-test knows a faulting address for."""
+
+    path = os.path.join(KHERE, "coredump-test")
+    loader = importlib.machinery.SourceFileLoader("coredump_test", path)
+    spec = importlib.util.spec_from_loader("coredump_test", loader)
+    module = importlib.util.module_from_spec(spec)
+    loader.exec_module(module)
+    return set(module.KBOARDS)
+
+
+def split(value, allowed, what):
+    items = [v.strip() for v in value.split(",") if v.strip()]
+    for item in items:
+        if item not in allowed:
+            raise Refusal("unknown %s '%s' (one of %s)"
+                          % (what, item, ", ".join(allowed)))
+    return items
+
+
+def configurations(args):
+    """Every (compiler, library, mode) asked for, LLVM libc with Clang only."""
+
+    found = []
+    for lib, compiler, mode in itertools.product(
+            split(args.libs, KLIBS, "C library"),
+            split(args.compilers, KCOMPILERS, "compiler"),
+            split(args.modes, KMODES, "mode")):
+        if lib == "llvmlibc" and compiler != "llvm":
+            continue
+        found.append((compiler, lib, mode))
+    return found
+
+
+def label(config):
+    compiler, lib, mode = config
+    return "%s %s%s" % (compiler, lib, "" if mode == "default" else " -" +
+                        " -".join(mode))
+
+
+def git(*args):
+    return subprocess.run(["git", "-C", KROOT] + list(args),
+                          capture_output=True, text=True).stdout.strip()
+
+
+# The board
+# =========
+
+def find_board(board):
+    """(port, probe serial number, session name, started) of the board."""
+
+    for port, sn in stlink_ports():
+        name = session_for_port(port)
+        started = False
+        if not name:
+            name = "matrix-" + os.path.basename(port).replace("cu.", "")
+            if serial(["start", "--port", port], name)[0] != 0:
+                continue
+            started = True
+        rc, rep = send_json("uKOS", name, 6)
+        if rc == 0 and re.search(r"^Board:\s+%s\s*$" % re.escape(board),
+                                 rep.get("text", ""), re.M):
+            return port, sn, name, started
+        if started:
+            serial(["stop"], name)
+    raise Refusal("no ST-Link console answers as %s; flash it once by hand "
+                  "so that it boots, then run this again" % board)
+
+
+def wait_boot(name, mark):
+    """True once a new boot banner is in the log and the console answers."""
+
+    for _ in range(KBOOT_TRIES):
+        time.sleep(KBOOT_WAIT)
+        if RX_BANNER.search(log_since(name, mark)) and console_answers(name):
+            return True
+    return False
+
+
+# One configuration
+# =================
+
+def run_logged(cmd, log, cwd=None):
+    with open(log, "w") as handle:
+        handle.write("$ %s\n" % " ".join(cmd))
+        handle.flush()
+        return subprocess.run(cmd, cwd=cwd, stdout=handle,
+                              stderr=subprocess.STDOUT).returncode
+
+
+def build(config, variant, soc, logs):
+    """Configure and build in the variant's own build/ and Artefacts/;
+    returns (artefacts dir, problem or None)."""
+
+    compiler, lib, mode = config
+    tag = label(config).replace(" ", "")
+    build_dir = os.path.join(variant, "build")
+    # Explicit: the default is $PWD/Artefacts, and PWD is the caller's
+    artefacts = os.path.join(variant, "Artefacts")
+    shutil.rmtree(build_dir, ignore_errors=True)
+    suffix, user, canary = KMODE[mode]
+
+    cmd = ["cmake", "--preset", compiler + suffix, "-B", build_dir,
+           "-DC_LIBRARY=" + lib, "-DARTEFACTS_DIR=" + artefacts]
+    if soc:
+        cmd.append("-DSOC=" + soc)
+    log = os.path.join(logs, tag + "-configure.log")
+    if run_logged(cmd, log, cwd=variant) != 0:
+        return None, "configure failed (%s)" % log
+    log = os.path.join(logs, tag + "-build.log")
+    if run_logged(["cmake", "--build", build_dir], log) != 0:
+        return None, "build failed (%s)" % log
+    with open(log, errors="replace") as handle:
+        if re.search(r"\bwarning\b", handle.read(), re.I):
+            return None, "the build printed a warning (%s)" % log
+
+    # The mode really is the one asked for
+    with open(os.path.join(build_dir, "CMakeCache.txt")) as handle:
+        cache = dict(re.findall(r"^(\w+):\w+=(.*)$", handle.read(), re.M))
+    want = {"USE_LLVM": "ON" if compiler == "llvm" else "OFF",
+            "C_LIBRARY": lib, "USER_MODE": user, "CANARY": canary}
+    wrong = ["%s=%s" % (k, cache.get(k)) for k, v in want.items()
+             if cache.get(k) != v]
+    if wrong:
+        return None, "the cache has %s" % ", ".join(wrong)
+    return artefacts, None
+
+
+def flash(sn, artefacts, logs, tag):
+    """Flash FLASH.hex through the probe `sn`; None or the problem."""
+
+    cli = find_programmer()
+    if cli is None:
+        return "STM32_Programmer_CLI not found"
+    log = os.path.join(logs, tag + "-flash.log")
+    rc = run_logged([cli, "-c", "port=SWD", "mode=UR", "sn=" + sn,
+                     "freq=8000", "ap=0", "-e", "all",
+                     "-w", os.path.join(artefacts, "FLASH.hex"), "-v", "-rst"],
+                    log)
+    with open(log, errors="replace") as handle:
+        verified = "verified successfully" in handle.read()
+    return None if rc == 0 and verified else "flashing failed (%s)" % log
+
+
+def check_image(name, config, head):
+    """`verify` plus the compiler the image reports; None or the problem."""
+
+    compiler, lib, _ = config
+    rc, out, _ = serial(["verify", "--expect-sha", head, "--expect-libc", lib],
+                        name)
+    if rc != 0:
+        lines = [l for l in out.splitlines() if "FAIL" in l or "VERDICT" in l]
+        return "verify: %s" % ("; ".join(l.strip() for l in lines) or rc)
+    rc, ident, _ = identify(name)
+    reported = (ident or {}).get("Compiler", "")
+    if not reported.startswith("clang" if compiler == "llvm" else "gcc"):
+        return "the board reports compiler '%s'" % reported
+    return None
+
+
+def run_test(cmd, log):
+    """(passed, short result) of one test tool."""
+
+    rc = run_logged(cmd, log)
+    with open(log, errors="replace") as handle:
+        text = re.sub(r"\x1b\[[0-9;]*m", "", handle.read())
+    if cmd[0].endswith("board-regression"):
+        found = re.search(r"(\d+) pass, (\d+) skip", text)
+        short = "%s pass, %s skip" % found.groups() if found else "?"
+    else:
+        found = re.search(r"(\d+) log records", text)
+        short = "%s records" % found.group(1) if found else "?"
+    return rc == 0, short if rc == 0 else "rc %d, %s (%s)" % (rc, short, log)
+
+
+def one(config, ctx):
+    """Build, flash and test one configuration; returns its result row."""
+
+    tag = label(config).replace(" ", "")
+    row = {"config": label(config)}
+    artefacts, problem = build(config, ctx["variant"], ctx["soc"],
+                               ctx["logs"])
+    if problem:
+        row["error"] = problem
+        return row
+
+    mark = log_mark(ctx["name"])
+    problem = flash(ctx["sn"], artefacts, ctx["logs"], tag)
+    ctx["flashed"] = config
+    if not problem and not wait_boot(ctx["name"], mark):
+        problem = "the board did not boot after flashing"
+    if not problem:
+        problem = check_image(ctx["name"], config, ctx["head"])
+    if problem:
+        row["error"] = problem
+        return row
+
+    bindir = os.path.join(KROOT, "Tools", "Developer", "bin")
+    if "regression" in ctx["tests"]:
+        row["regression"] = run_test(
+            [os.path.join(bindir, "board-regression"), "--board", ctx["board"],
+             "--port", ctx["port"], "--expect-libc", config[1]],
+            os.path.join(ctx["logs"], tag + "-board-regression.log"))
+    if "coredump" in ctx["tests"]:
+        if ctx["board"] in ctx["coredump_boards"]:
+            row["coredump"] = run_test(
+                [os.path.join(bindir, "coredump-test"), "--name", ctx["name"],
+                 "--sn", ctx["sn"], "-v"],
+                os.path.join(ctx["logs"], tag + "-coredump-test.log"))
+        else:
+            row["coredump"] = (True, "n/a (no faulting address for %s)"
+                               % ctx["board"])
+    return row
+
+
+def passed(row):
+    return "error" not in row and all(row[t][0] for t in KTESTS if t in row)
+
+
+def show(row):
+    if "error" in row:
+        return "%sFAIL%s  %s" % (RED, NC, row["error"])
+    parts = []
+    for test in KTESTS:
+        if test in row:
+            ok, short = row[test]
+            parts.append("%s %s%s%s" % (test, GREEN if ok else RED, short, NC))
+    return "%s  %s" % ("%sPASS%s" % (GREEN, NC) if passed(row)
+                       else "%sFAIL%s" % (RED, NC), "   ".join(parts))
+
+
+# Main
+# ====
+
+def main():
+    ap = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--board", required=True,
+                    help="board name: %s" % ", ".join(sorted(KFLASH)))
+    ap.add_argument("--soc", help="SoC to build for (default: the one the "
+                    "board reports)")
+    ap.add_argument("--compilers", default=",".join(KCOMPILERS),
+                    help="comma-separated (default: %(default)s)")
+    ap.add_argument("--libs", default=",".join(KLIBS),
+                    help="comma-separated (default: %(default)s)")
+    ap.add_argument("--modes", default=",".join(KMODES),
+                    help="comma-separated (default: %(default)s)")
+    ap.add_argument("--tests", default=",".join(KTESTS),
+                    help="comma-separated (default: %(default)s)")
+    ap.add_argument("--logs", help="directory for the logs (default: a new "
+                    "temporary one)")
+    ap.add_argument("--no-restore", action="store_true",
+                    help="leave the last configuration on the board")
+    ap.add_argument("-n", "--dry-run", action="store_true",
+                    help="list the configurations, touch nothing")
+    args = ap.parse_args()
+    colours(sys.stdout.isatty())
+
+    if args.board not in KFLASH:
+        raise Refusal("%s cannot be flashed by this tool yet (supported: %s)"
+                      % (args.board, ", ".join(sorted(KFLASH))))
+    variant = os.path.join(KROOT, "Ports", "Targets", args.board,
+                           "Variant_Test")
+    facts = read_variant(variant)
+    configs = configurations(args)
+    tests = split(args.tests, KTESTS, "test")
+    if not configs:
+        raise Refusal("no configuration left to run")
+
+    head = git("rev-parse", "--short", "HEAD")
+    print("%sboard%s      %s" % (BOLD, NC, args.board))
+    print("%scommit%s     %s%s" % (BOLD, NC, head,
+                                   " (the tree is dirty: images will carry "
+                                   "-dirty)" if git("status", "--porcelain",
+                                                    "--untracked-files=no")
+                                   else ""))
+    print("%sconfigs%s    %d: %s" % (BOLD, NC, len(configs),
+                                     ", ".join(label(c) for c in configs)))
+    print("%stests%s      %s" % (BOLD, NC, ", ".join(tests)))
+    if args.dry_run:
+        print("\ndry run: nothing was built or flashed")
+        return 0
+
+    port, sn, name, started = find_board(args.board)
+    ident = identify(name)[1] or {}
+    soc = args.soc or ident.get("SoC")
+    soc = soc if soc and soc != facts["soc"] else None
+    logs = args.logs or tempfile.mkdtemp(prefix="board-matrix-")
+    os.makedirs(logs, exist_ok=True)
+    print("%sconsole%s    %s  probe %s  session %s" % (BOLD, NC, port, sn, name))
+    print("%ssoc%s        %s" % (BOLD, NC, soc or facts["soc"]))
+    print("%slogs%s       %s\n" % (BOLD, NC, logs))
+
+    ctx = {"board": args.board, "variant": variant, "soc": soc,
+           "logs": logs, "port": port, "sn": sn, "name": name, "head": head,
+           "tests": tests, "flashed": None,
+           "coredump_boards": coredump_boards()}
+    rows = []
+    try:
+        for index, config in enumerate(configs, 1):
+            print("[%2d/%d] %-26s " % (index, len(configs), label(config)),
+                  end="", flush=True)
+            started_at = time.time()
+            row = one(config, ctx)
+            rows.append(row)
+            print("%s  %s(%ds)%s" % (show(row), DIM,
+                                     time.time() - started_at, NC))
+    except KeyboardInterrupt:
+        print("\n%sinterrupted%s" % (YELLOW, NC))
+
+    restored = None
+    if ctx["flashed"] not in (None, KDEFAULT) and not args.no_restore:
+        print("\nrestoring %s ... " % label(KDEFAULT), end="", flush=True)
+        artefacts, problem = build(KDEFAULT, variant, soc, logs)
+        if not problem:
+            mark = log_mark(name)
+            problem = flash(sn, artefacts, logs, "restore")
+            if not problem and not wait_boot(name, mark):
+                problem = "the board did not boot"
+            if not problem:
+                problem = check_image(name, KDEFAULT, head)
+        restored = problem is None
+        print("%s" % ("%sdone%s" % (GREEN, NC) if restored
+                      else "%sFAILED%s: %s" % (RED, NC, problem)))
+    if started:
+        serial(["stop"], name)
+
+    failed = [r for r in rows if not passed(r)]
+    print("\n%s%d/%d configurations passed%s%s" % (
+        BOLD, len(rows) - len(failed), len(rows), NC,
+        "" if len(rows) == len(configs)
+        else " (%d not run)" % (len(configs) - len(rows))))
+    for row in failed:
+        print("  %s%s%s: %s" % (RED, row["config"], NC, show(row)))
+    if ctx["flashed"] not in (None, KDEFAULT) and not restored:
+        print("%sthe board is left on %s%s" % (YELLOW, label(ctx["flashed"]),
+                                               NC))
+    print("logs in %s" % logs)
+    return 3 if failed or len(rows) != len(configs) else 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except Refusal as error:
+        sys.stderr.write("board-matrix: %s\n" % error)
+        sys.exit(1)

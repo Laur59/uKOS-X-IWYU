@@ -14,6 +14,7 @@
 
 #include    <stdint.h>
 
+#include    "clockTree.h"
 #include    "core.h"
 #include    "core_reg.h"
 #include    "linker.h"
@@ -206,32 +207,35 @@ static  void    local_RCU_Configuration(void) {
 
 // Main PLL CPU
 
-// For f(ck in) = 8 / 2 = 4-MHz
-//      CK_SYS  = 108-MHz -> factor = 108 / 4 = 27 (108-MHz to permit the USB 54-MHz clock !!)
+// For f(ck in) = 8 / 2 = 4-MHz (IRC8M / 2)
+// f(PLL) = f(ck in) * PLLMF        PLLMF = 27  ---> CK_PLL = 108-MHz (108-MHz to permit the USB 54-MHz clock !!)
+//      CK_SYS  = 108-MHz
 //      CK AHB  = 108-MHz
 //      CK APB1 = 54-MHz
 //      CK APB2 = 54-MHz
 //      CK USB  = 54-MHz
 
-    RCU->CFG0 = (0x1U<<29U)                                 // PLLMF4 for 27 (1 1010)
-              | (0x0U<<28U)                                 // ADCPSC
-              | (0x4U<<24U)                                 // CLOCKOUT = CKSYS
-              | (0x3U<<22U)                                 // 54-MHz = CK_PLL / 2
-              | (0xAU<<18U)                                 // PLLMF3-0 for 27 (1 1010)
-              | (0x0U<<17U)                                 // PREDIV0 not used
-              | (0x0U<<16U)                                 // PLLSEL = IRC8M / 2
-              | (0x0U<<14U)                                 // ADC clock = CK_APB2 / 2
-              | (0x4U<<11U)                                 // APB2 = CK_AHB / 2 = 54-MHz
-              | (0x4U<<8U)                                  // APB1 = CK_AHB / 2 = 54-MHz
-              | (0x0U<<4U)                                  // AHB  = CK_SYS / 1 = 108-MHz
-              | (0x2U<<0U);                                 // CK_PLL as the CK_SYS source
+    KPLL_STATIC_CHECKS(KCFG_PLLMF);
 
-    RCU->CTL |= (0x0U<<28U)                                 // PLL2 off
-              | (0x0U<<26U)                                 // PLL1 off
-              | (0x1U<<24U)                                 // PLL on
-              | (0x0U<<19U)                                 // Clock monitor disable
-              | (0x0U<<18U)                                 // HXTAL bypassed
-              | (0x0U<<16U);                                // RC 8-MHz enable
+    RCU->CFG0 = ((KPLL_PLLMF(KCFG_PLLMF) >> 4U) * RCU_CFG0_PLLMF_4)         // PLLMF bit 4
+              | (0U * RCU_CFG0_ADCPSC_2)                                    // ADCPSC
+              | (4U * RCU_CFG0_CKOUT0SEL_0)                                 // CLOCKOUT = CKSYS
+              | (KCFG_USBFSPSC * RCU_CFG0_USBFSPSC_0)                       // 54-MHz = CK_PLL / 2
+              | ((KPLL_PLLMF(KCFG_PLLMF) & 0xFU) * RCU_CFG0_PLLMF_3_0_0)    // PLLMF bits 3-0
+              | (0U * RCU_CFG0_PREDV0_LSB)                                  // PREDIV0 not used
+              | (0U * RCU_CFG0_PLLSEL)                                      // PLLSEL = IRC8M / 2
+              | (0U * RCU_CFG0_ADCPSC_1_0_0)                                // ADC clock = CK_APB2 / 2
+              | (4U * RCU_CFG0_APB2PSC_0)                                   // APB2 = CK_AHB / 2 = 54-MHz
+              | (4U * RCU_CFG0_APB1PSC_0)                                   // APB1 = CK_AHB / 2 = 54-MHz
+              | (0U * RCU_CFG0_AHBPSC_0)                                    // AHB  = CK_SYS / 1 = 108-MHz
+              | (2U * RCU_CFG0_SCS_0);                                      // CK_PLL as the CK_SYS source
+
+    RCU->CTL |= (0U * RCU_CTL_PLL2EN)                                       // PLL2 off
+              | (0U * RCU_CTL_PLL1EN)                                       // PLL1 off
+              | (1U * RCU_CTL_PLLEN)                                        // PLL on
+              | (0U * RCU_CTL_CKMEN)                                        // Clock monitor disable
+              | (0U * RCU_CTL_HXTALBPS)                                     // HXTAL not bypassed
+              | (0U * RCU_CTL_HXTALEN);                                     // HXTAL off
 
     RCU->AHBEN |= RCU_AHBEN_USBFSEN;                        // USBFS clock enable
 

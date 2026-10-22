@@ -192,13 +192,14 @@ MAIN_ENTRY(argc, argv[]) {
 // printf internals (decimal_digits, then the 320-bit DyadicFloat exact-decimal routines),
 // which KKERN_SZ_STACK_MM's 1600 bytes cannot hold; the overflow destroys the magic word
 // at the bottom of the stack and the kernel reports "stack underflow" at the next context
-// switch. picolibc and newlib use lighter float printf implementations and stay inside
-// KKERN_SZ_STACK_MM.
+// switch. picolibc and newlib use lighter float printf implementations, but not light
+// enough for KKERN_SZ_STACK_MM either: newlib needs 1632 bytes on a Cortex-M85,
+// so they get KKERN_SZ_STACK_LL.
 
     #ifdef CONFIG_MAN_LLVMLIBC_S
     #define KLOCAL_SZ_STACK_PROCESS     KKERN_SZ_STACK_XLIB
     #else
-    #define KLOCAL_SZ_STACK_PROCESS     KKERN_SZ_STACK_MM
+    #define KLOCAL_SZ_STACK_PROCESS     KKERN_SZ_STACK_LL
     #endif
     PROCESS_STACKMALLOC(
         0,                                  // Index

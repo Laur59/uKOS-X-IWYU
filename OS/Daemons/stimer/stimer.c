@@ -251,8 +251,7 @@ static void local_process([[maybe_unused]] const void *argument) {
 // If yes, check if there is a new software timer that
 // need to be included
 
-        if (!gotMailBox &&
-            (kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR)) {
+        if (!gotMailBox && (kern_getMailboxById(KMBOX_SOFTWARE_TIMER, &mailBox) == KERR_KERN_NOERR)) {
             gotMailBox = true;
         }
 

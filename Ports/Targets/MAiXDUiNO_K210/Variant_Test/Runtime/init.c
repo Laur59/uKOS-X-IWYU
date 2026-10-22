@@ -15,6 +15,7 @@
 #include    <stdint.h>
 
 #include    "board.h"
+#include    "clockTree.h"
 #include    "macros.h"
 #include    "macros_core.h"
 #include    "modules.h"
@@ -289,25 +290,43 @@ static  void    local_RCU_Configuration(void) {
     pll2 = sysctl->pll2;
 
 // Values for sysctl_pll_set_freq(SYSCTL_PLL0, 800000000)
+// For f(ck in) = 26-MHz (IN0)
+// f(ref) = f(ck in) / R        R = 1       ---> f(ref) = 26-MHz
+// f(vco) = f(ref) * F          F = 62      ---> f(vco) = 1612-MHz
+// f(out) = f(vco) / OD         OD = 2      ---> f(out) = 806-MHz
 
-    pll0.clkr0  = 0x00U;
-    pll0.clkf0  = 0x3DU;
-    pll0.clkod0 = 0x01U;
-    pll0.bwadj0 = 0x3DU;
+    KPLL_STATIC_CHECKS(0, KCFG_PLL0DIVR, KCFG_PLL0DIVF, KCFG_PLL0DIVOD);
+
+    pll0.clkr0  = KCFG_PLL0DIVR - 1U;
+    pll0.clkf0  = KCFG_PLL0DIVF - 1U;
+    pll0.clkod0 = KCFG_PLL0DIVOD - 1U;
+    pll0.bwadj0 = KCFG_PLL0DIVF - 1U;
 
 // Values for sysctl_pll_set_freq(SYSCTL_PLL1, 160000000)
+// For f(ck in) = 26-MHz (IN0)
+// f(ref) = f(ck in) / R        R = 1       ---> f(ref) = 26-MHz
+// f(vco) = f(ref) * F          F = 43      ---> f(vco) = 1118-MHz
+// f(out) = f(vco) / OD         OD = 7      ---> f(out) = 159.7-MHz
 
-    pll1.clkr1  = 0x00U;
-    pll1.clkf1  = 0x2AU;
-    pll1.clkod1 = 0x06U;
-    pll1.bwadj1 = 0x2AU;
+    KPLL_STATIC_CHECKS(1, KCFG_PLL1DIVR, KCFG_PLL1DIVF, KCFG_PLL1DIVOD);
+
+    pll1.clkr1  = KCFG_PLL1DIVR - 1U;
+    pll1.clkf1  = KCFG_PLL1DIVF - 1U;
+    pll1.clkod1 = KCFG_PLL1DIVOD - 1U;
+    pll1.bwadj1 = KCFG_PLL1DIVF - 1U;
 
 // Values for sysctl_pll_set_freq(SYSCTL_PLL2,  45158400)
+// For f(ck in) = 26-MHz (IN0)
+// f(ref) = f(ck in) / R        R = 1       ---> f(ref) = 26-MHz
+// f(vco) = f(ref) * F          F = 26      ---> f(vco) = 676-MHz
+// f(out) = f(vco) / OD         OD = 15     ---> f(out) = 45.07-MHz
 
-    pll2.clkr2  = 0x00U;
-    pll2.clkf2  = 0x19U;
-    pll2.clkod2 = 0x0EU;
-    pll2.bwadj2 = 0x19U;
+    KPLL_STATIC_CHECKS(2, KCFG_PLL2DIVR, KCFG_PLL2DIVF, KCFG_PLL2DIVOD);
+
+    pll2.clkr2  = KCFG_PLL2DIVR - 1U;
+    pll2.clkf2  = KCFG_PLL2DIVF - 1U;
+    pll2.clkod2 = KCFG_PLL2DIVOD - 1U;
+    pll2.bwadj2 = KCFG_PLL2DIVF - 1U;
 
     sysctl->pll0 = pll0;
     sysctl->pll1 = pll1;

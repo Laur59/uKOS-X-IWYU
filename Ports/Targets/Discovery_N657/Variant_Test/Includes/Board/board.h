@@ -13,8 +13,8 @@
 #endif
 
 #include    "macros_core.h" // IWYU pragma: keep (required for REG)
-#include    "soc_reg.h"     // IWYU pragma: keep (required for GPIOG)
 #include    "Registers/stm32N657_gpiog.h"   // IWYU pragma: export (for GPIOG_S)
+#include    "Registers/stm32N657_gpioo.h"   // IWYU pragma: export (for GPIOO_S)
 
 // GPIO settings
 // -------------

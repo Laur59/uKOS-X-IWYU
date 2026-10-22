@@ -36,10 +36,12 @@ and `soc_vectors_CM7.c_inc`, included by nothing, follow the matching SVD;
 upstream keeps one `soc_vectors.c_inc`, the CM4 list since its 0.6.7
 delivery (the CM7 one before).
 
-`Burn/`: `swd_FT4232_b.sh` (the Asmodee_H747's own FT4232, channel B),
-`jlinkexe.sh` (the variants' default; its `device STM32H747XI` has not been
-tried on an STM32H757), `stlink.sh` (names no probe serial: with several
-ST-Links attached it flashes the first one), `stm32-dfu.sh`.
+`Burn/`: `swd_FT4232_b.sh` (the Asmodee_H747's own FT4232, channel B, and its
+default), `jlinkexe.sh` (its `device STM32H747XI` has not been tried on an
+STM32H757), `stlink.sh` (names no probe serial: with several ST-Links attached
+it flashes the first one), `stm32-dfu.sh`, `dfu-arduino.sh` (the DFU of the
+Arduino Portenta bootloader, `2341:035b`, the Portenta_H747's default; never
+follow it with `jlinkexe.sh`, whose full-chip `erase` wipes that bootloader).
 
 Upstream has `SOCs/STM32H747`; the files moved here with `git mv`, so a merge
 follows them as renames, but their contents still name `stm32H747_*` and need

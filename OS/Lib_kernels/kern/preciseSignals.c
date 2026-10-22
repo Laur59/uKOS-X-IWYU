@@ -30,9 +30,6 @@
 #include    "macros_soc.h"
 #include    "os_errors.h"
 #include    "record/record.h"
-#ifdef RV32IMAC_S
-#include    "soc_reg.h"
-#endif
 #include    "types.h"
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)

@@ -44,13 +44,10 @@
 
 #define BAUDRATE(UART, ck, baudrate)                                                                                            \
     do {                                                                                                                        \
-        const uint32_t _den  = 16U * (uint32_t)(baudrate);                                                                      \
-        const uint32_t _ibrd = (uint32_t)((uint32_t)(ck) / _den);                                                               \
-        const uint32_t _rem  = (uint32_t)((uint32_t)(ck) % _den);                                                               \
+        const uint32_t _div = (uint32_t)(((4ULL * (uint32_t)(ck)) + ((uint32_t)(baudrate) / 2U)) / (uint32_t)(baudrate));       \
                                                                                                                                 \
-        const uint32_t _fbrd = (uint32_t)((((uint64_t)_rem * (uint64_t)64U) + ((uint64_t)_den / 2U)) / (uint64_t)_den);         \
-        REG(UART)->UARTIBRD = _ibrd;                                                                                            \
-        REG(UART)->UARTFBRD = _fbrd;                                                                                            \
+        REG(UART)->UARTIBRD = _div >> 6;                                    /* round(64 ck/16b) = IBRD<<6 | FBRD */             \
+        REG(UART)->UARTFBRD = _div & 0x3FU;                                                                                     \
     } while (0)
 
 // Interruption macros

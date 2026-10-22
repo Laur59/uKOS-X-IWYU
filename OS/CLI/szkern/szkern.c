@@ -115,22 +115,22 @@ static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char
 // the sizeof values (size_t) are cast. %d and PRIu16 matched none of them
 
     (void)dprintf(KSYST, "Number of daemons          %3u\n", (unsigned int)nbDeamons);
-    (void)dprintf(KSYST, "Number of processes        %3u, object size %4u [Bytes]\n", (KKERN_NB_PROCESSES - nbDeamons),               (unsigned int)sizeof(proc_t));
-    (void)dprintf(KSYST, "Number of mailboxes        %3u, object size %4u [Bytes]\n", KKERN_NB_MAILBOXES,                     (unsigned int)sizeof(mbox_t));
-    (void)dprintf(KSYST, "Number of semaphores       %3u, object size %4u [Bytes]\n", KKERN_NB_SEMAPHORES,                    (unsigned int)sizeof(sema_t));
-    (void)dprintf(KSYST, "Number of mutex            %3u, object size %4u [Bytes]\n", KKERN_NB_MUTEXES,                       (unsigned int)sizeof(mutx_t));
-    (void)dprintf(KSYST, "Number of signals (x32)    %3u, object size %4u [Bytes]\n", KKERN_NB_SIGNALS,                       (unsigned int)sizeof(sign_t));
+    (void)dprintf(KSYST, "Number of processes        %3u, object size %4u [Bytes]\n", KKERN_NB_PROCESSES - nbDeamons, (unsigned int)sizeof(proc_t));
+    (void)dprintf(KSYST, "Number of mailboxes        %3u, object size %4u [Bytes]\n", KKERN_NB_MAILBOXES,             (unsigned int)sizeof(mbox_t));
+    (void)dprintf(KSYST, "Number of semaphores       %3u, object size %4u [Bytes]\n", KKERN_NB_SEMAPHORES,            (unsigned int)sizeof(sema_t));
+    (void)dprintf(KSYST, "Number of mutex            %3u, object size %4u [Bytes]\n", KKERN_NB_MUTEXES,               (unsigned int)sizeof(mutx_t));
+    (void)dprintf(KSYST, "Number of signals (x32)    %3u, object size %4u [Bytes]\n", KKERN_NB_SIGNALS,               (unsigned int)sizeof(sign_t));
 
     #if (KKERN_NB_SOFTWARE_TIMERS > 0)
-    (void)dprintf(KSYST, "Number of software timers  %3u, object size %4u [Bytes]\n", KKERN_NB_SOFTWARE_TIMERS,               (unsigned int)sizeof(stim_t));
+    (void)dprintf(KSYST, "Number of software timers  %3u, object size %4u [Bytes]\n", KKERN_NB_SOFTWARE_TIMERS,       (unsigned int)sizeof(stim_t));
     #endif
 
     #if (KKERN_NB_POOLS > 0)
-    (void)dprintf(KSYST, "Number of pools            %3u, object size %4u [Bytes]\n", KKERN_NB_POOLS,                         (unsigned int)sizeof(pool_t));
+    (void)dprintf(KSYST, "Number of pools            %3u, object size %4u [Bytes]\n", KKERN_NB_POOLS,                 (unsigned int)sizeof(pool_t));
     #endif
 
     #if (KKERN_NB_PRECISE_SIGNALS > 0)
-    (void)dprintf(KSYST, "Number of precise signals  %3u, object size %4u [Bytes]\n", KKERN_NB_PRECISE_SIGNALS,               (unsigned int)sizeof(prcs_t));
+    (void)dprintf(KSYST, "Number of precise signals  %3u, object size %4u [Bytes]\n", KKERN_NB_PRECISE_SIGNALS,       (unsigned int)sizeof(prcs_t));
     #endif
 
     (void)dprintf(KSYST, "\nuKernel memory footprint including the daemons stacks\n");

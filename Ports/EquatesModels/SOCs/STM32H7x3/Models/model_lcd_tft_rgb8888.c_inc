@@ -11,9 +11,9 @@
 
 #include    <stdint.h>
 
+#include    "Registers/stm32H7x3_ltdc.h"
 #include    "kern/temporal.h"
 #include    "macros_core.h"
-#include    "soc_reg.h"
 
 // Prototypes
 

@@ -11,7 +11,7 @@
 #include    <stdint.h>
 
 #include    "macros_soc.h"      // KNB_CORES
-#include    "soc_reg.h"         // KNB_EXCEPTIONS, KNB_INTERRUPTIONS (via Registers/soc_vectors*.h)
+#include    "Registers/soc_vectors.h"   // KNB_EXCEPTIONS, KNB_INTERRUPTIONS
 
 #ifdef __cplusplus
 extern  "C" {

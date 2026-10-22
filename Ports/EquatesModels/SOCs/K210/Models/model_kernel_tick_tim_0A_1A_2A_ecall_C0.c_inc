@@ -28,6 +28,8 @@
 #include    <stdint.h>
 #include    <stdlib.h>
 
+#include    "Registers/K210_sysctl.h"
+#include    "Registers/K210_timer.h"
 #include    "clockTree.h"
 #include    "kern/private/private_preciseSignals.h"
 #include    "kern/private/private_processes.h"

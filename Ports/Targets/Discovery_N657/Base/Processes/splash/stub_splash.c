@@ -11,12 +11,13 @@
 #include    <stdint.h>
 #include    <string.h>
 
+#include    "Registers/stm32N657_gpioq.h"
+#include    "Registers/stm32N657_rcc.h"
 #include    "ulvgl.h"
 #include    "board.h"
 #include    "kern/kern.h"
 #include    "lcd_display.h"
 #include    "macros_core.h"
-#include    "soc_reg.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------

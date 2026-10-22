@@ -5,63 +5,102 @@
  *
  * STM32H7x7 – Hardware random number generator model (RNG block).
  * Included by OS/Lib_cryptographics/random/random.c, which declares the model functions static.
+ *
+ * The CM7 and the CM4 share the one RNG block, and its interrupt reaches both NVICs.
+ * A read therefore holds the hardware semaphore 31 (HSEM->R31) for the whole conversion and
+ * enables the RNG line of its own NVIC only meanwhile: otherwise the handler of the
+ * other core runs too, stores the number through its own vNumber (still pointing at
+ * the buffer of its last caller) and stops the RNG under the reader.
  */
 
 #include    <stdint.h>
 
 #include    "Registers/nvic.h"
+#include    "Registers/scb.h"
 #include    "kern/kern.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
 #include    "random/random.h"
 #include    "soc_reg.h"
 
-static              bool        vTerminated = false;
-static  volatile    uint32_t    *vNumber;
+#define KSIGNATURE_CM4          0xC24U              // SCB->CPUID part number of the cortex-M4 (HSEM 31 owns the RNG; asmp uses 0, 1, 4 and 5)
+#define KHSEM_COREID_CM4        1U                  // Core ID cortex-M4 (see table 9.4 RM0399 Rev 3)
+#define KHSEM_COREID_CM7        3U                  // Core ID cortex-M7 (see table 9.4 RM0399 Rev 3)
+
+static  volatile    bool        vTerminated = false;
+static  volatile    uint32_t    *volatile vNumber = nullptr;
 
 // Prototypes
 
-static  void    local_RNG_IRQHandler(void);
+static  void        local_RNG_IRQHandler(void);
+static  uint32_t    local_coreId(void);
 
 /*
  * \brief model_random_hard_init
  *
  * - Initialise the hardware
+ *   The RNG line of the NVIC stays disabled until a read of this core
  *
  */
 static  void    model_random_hard_init(void) {
 
     RCC->AHB2ENR |= RCC_AHB2ENR_RNGEN;
+    RCC->AHB4ENR |= RCC_AHB4ENR_HSEMEN;
 
     INTERRUPT_VECTOR(HASH_RNG_C0_IRQn, local_RNG_IRQHandler);
     NVIC_SetPriority(HASH_RNG_C0_IRQn, KINT_LEVEL_PERIPHERALS);
-    NVIC_EnableIRQ(HASH_RNG_C0_IRQn);
 }
 
 /*
  * \brief model_random_hard_read
  *
  * - Get a random number
+ *   - Own the RNG (HSEM 1-step lock: the read returns our core ID when we got it)
+ *   - Convert with the RNG line enabled on this core only
+ *   - Forget the buffer and give the RNG back
  *
  */
 static  void    model_random_hard_read(uint32_t *number) {
+    uint32_t    coreId;
 
-    vNumber = number;
+    coreId = local_coreId();
+    while (HSEM->RLR31 != (HSEM_RLR31_LOCK | coreId)) {
+        kern_switchFast();
+    }
+
+    vNumber     = number;
+    vTerminated = false;
+    NVIC_ClearPendingIRQ(HASH_RNG_C0_IRQn);
+    NVIC_EnableIRQ(HASH_RNG_C0_IRQn);
 
 // Turn on the RNG
 // The RNG delivers a new random number every 16 x (480-MHz / 48-MHz) = 160-ns
 // Configuration proposed by ST to comply with NIST SP800-90B
 
-    vTerminated = false;
     RNG->CR |= (RNG_CR_RNGEN | RNG_CR_IE);
 
     while (!vTerminated) {
         kern_switchFast();
     }
+
+    NVIC_DisableIRQ(HASH_RNG_C0_IRQn);
+    vNumber   = nullptr;
+    HSEM->R31 = coreId;
 }
 
 // Local routines
 // ==============
+
+/*
+ * \brief local_coreId
+ *
+ * - HSEM core ID of the running core, already in place (bits 11..8)
+ *
+ */
+static  uint32_t    local_coreId(void) {
+
+    return ((((SCB->CPUID & 0x0000FFF0U)>>4U) == KSIGNATURE_CM4) ? KHSEM_COREID_CM4 : KHSEM_COREID_CM7)<<8U;
+}
 
 /*
  * \brief local_RNG_IRQHandler
@@ -71,6 +110,12 @@ static  void    model_random_hard_read(uint32_t *number) {
  */
 static  void    local_RNG_IRQHandler(void) {
     uint8_t     i;
+
+// Not reading (a request left pending by the other core)
+
+    if (vNumber == nullptr) {
+        return;
+    }
 
 // Is data ready, no seed error, no clock error
 

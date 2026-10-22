@@ -10,7 +10,8 @@
 
 #include    <stdint.h>
 
-#include    "soc_reg.h"
+#include    "Registers/GD32VF103_exti.h"    // IWYU pragma: export (for EXTI)
+#include    "Registers/soc_addendum.h"      // IWYU pragma: export (for ECLIC)
 
 // Multicore macro
 // ---------------
@@ -34,11 +35,7 @@
 // --------------
 
 [[maybe_unused]] static inline uint32_t BAUDRATE(uint32_t ck, uint32_t baudrate) {
-    uint32_t divisor = baudrate * 16U;
-    uint32_t div = ck / divisor;
-    uint32_t remainder = ck % divisor;
-    uint32_t rem = ((remainder * 16U) + (divisor / 2U)) / divisor;
-    return (div << 4) | rem;
+    return (ck + (baudrate / 2U)) / baudrate;                  // round(ck/b) = mantissa<<4 | fraction
 }
 
 // Interruption macros

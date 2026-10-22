@@ -38,7 +38,7 @@ add_compile_definitions(
 )
 
 # Flash programming script selection
-set(BURN jlinkexe)
+set(BURN swd_FT4232_b)
 
 # Extra compilation options
 add_compile_options(
@@ -133,6 +133,7 @@ add_library(proc_p)
 target_sources(proc_p PRIVATE
     ${PATH_OSYS}/Daemons/idle/idle.c
     ${PATH_OSYS}/Daemons/mcore/mcore.c
+    ${PATH_OSYS}/Daemons/rtc/rtc.c
     ${PATH_OSYS}/Daemons/stack/stack.c
     ${PATH_OSYS}/Daemons/stimer/stimer.c
 )
@@ -200,6 +201,9 @@ add_compile_definitions(
     KDAEMONS_TIME_STACK_INT=10000
     KDAEMONS_WITH_STACK_INT_S=true
 )
+
+# Hardware RTC support (the one RTC of the chip, clocked by the CM7 init)
+add_compile_definitions(KCALENDAR_WITH_HW_RTC_S=true)
 
 # Apply system configuration
 include(system)

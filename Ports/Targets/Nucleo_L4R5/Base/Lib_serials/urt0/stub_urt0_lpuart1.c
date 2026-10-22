@@ -16,6 +16,7 @@
 #define USART                   LPUART1
 #define USART_VECTOR_NUMBER     LPUART1_C0_IRQn
 #define USART_FREQUENCY         KFREQUENCY_APB1
+#define USART_BAUDRATE          BAUDRATE_LP
 
 #define model_usart_init        stub_urt0_init
 #define model_usart_configure   stub_urt0_configure

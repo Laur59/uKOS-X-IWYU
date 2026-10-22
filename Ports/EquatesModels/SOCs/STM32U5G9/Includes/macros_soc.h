@@ -34,10 +34,10 @@
 // --------------
 
 [[maybe_unused]] static inline uint32_t BAUDRATE_LP(uint32_t ck, uint32_t baudrate) {
-    return (uint32_t)((256 * (uint64_t)ck) / baudrate);
+    return (uint32_t)(((256ULL * ck) + (baudrate / 2U)) / baudrate);  // round(256 ck/b)
 }
 [[maybe_unused]] static inline uint32_t BAUDRATE(uint32_t ck, uint32_t baudrate) {
-    return ck / baudrate;
+    return (ck + (baudrate / 2U)) / baudrate;                  // round(ck/b)
 }
 
 // Interruption macros

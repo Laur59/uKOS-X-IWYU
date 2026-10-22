@@ -10,12 +10,12 @@
 
 #include    <tusb.h>             // for SystemCoreClock
 
+#include    "Registers/soc_vectors.h"
 #include    "TinyUSB/TinyUSB.h"
 #include    "clockTree.h"
 #include    "core_reg.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"
-#include    "soc_reg.h"
 #include    "tusb_option.h"      // for BOARD_TUD_RHPORT, CFG_TUD_CDC, CFG_TUD_MSC
 
 // Save the GCC diagnostic
