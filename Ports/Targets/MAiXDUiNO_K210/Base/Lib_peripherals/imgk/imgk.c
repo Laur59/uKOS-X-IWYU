@@ -14,8 +14,6 @@
 #include    <stdlib.h>
 
 #include    "Registers/K210_dvp.h"
-#include    "Registers/K210_plic.h"
-#include    "Registers/soc_vectors.h"
 #include    "clockTree.h"
 #include    "kern/kern.h"
 #include    "macros.h"

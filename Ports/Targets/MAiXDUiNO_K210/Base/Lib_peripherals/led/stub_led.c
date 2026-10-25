@@ -10,7 +10,6 @@
 
 #include    <stdint.h>
 
-#include    "Registers/K210_gpiohs.h"
 #include    "board.h"
 #include    "macros_core.h"
 #include    "macros_soc.h"

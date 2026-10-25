@@ -12,7 +12,6 @@
 #include    "core_reg.h"
 #include    "crt0.h"
 #include    "macros_soc.h"
-#include    "soc_reg.h"
 
 // Prototypes
 

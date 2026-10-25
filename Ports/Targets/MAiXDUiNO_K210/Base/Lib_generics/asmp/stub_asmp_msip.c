@@ -45,7 +45,6 @@
 
 #include    "Registers/rv64_csr.h"
 #include    "Registers/K210_clint.h"
-#include    "Registers/soc_vectors.h"
 #include    "core.h"
 #include    "kern/kern.h"
 #include    "macros_core.h"

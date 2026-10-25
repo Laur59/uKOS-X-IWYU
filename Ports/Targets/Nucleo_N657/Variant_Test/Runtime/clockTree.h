@@ -79,7 +79,7 @@
     static_assert(((pdiv1) >= 1U) && ((pdiv1) <= 7U), "PLL" #x ": PDIV1 shall be in 1..7");                                         \
     static_assert(((pdiv2) >= 1U) && ((pdiv2) <= 7U), "PLL" #x ": PDIV2 shall be in 1..7");                                         \
     static_assert((KPLL_FVCO(m, n) >= KPLL_FVCO_MIN) && (KPLL_FVCO(m, n) <= KPLL_FVCO_MAX), "PLL" #x ": FVCO out of range");        \
-    static_assert((KPLL_FVCO(m, n) / ((pdiv1) * (pdiv2))) == (freq), "PLL" #x ": configuration does not match KFREQUENCY_PLL" #x)
+    static_assert((KPLL_FVCO(m, n) / ((uint64_t)(pdiv1) * (pdiv2))) == (freq), "PLL" #x ": configuration does not match KFREQUENCY_PLL" #x)
 
 // PLL 1
 
@@ -153,4 +153,3 @@
 
 #define KCFG_IC20SEL        KICSEL_PLL3_CK                              // PLL3
 #define KCFG_IC20INT_DIV    10U                                         // IC20 = PLL3 / 10, ~40-MHz
-

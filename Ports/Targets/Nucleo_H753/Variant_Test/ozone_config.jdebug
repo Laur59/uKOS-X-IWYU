@@ -4,7 +4,7 @@
 *                         www.segger.com                             *
 **********************************************************************
 
-File          : Nucleo_H753/Variant_Test/System/ozone_config.jdebug
+File          : Nucleo_H743/Variant_Test/System/ozone_config.jdebug
 Created       : 15 Mar 2024 20:59
 Ozone Version : V3.32a
 */
@@ -27,12 +27,13 @@ void OnProjectLoad (void) {
   Project.SetTargetIF ("SWD");
   Project.SetTIFSpeed ("4 MHz");
   Project.AddSvdFile ("$(InstallDir)/Config/CPU/Cortex-M7F.svd");
-  Project.AddSvdFile ("$(ProjectDir)/../../../../../Ports/EquatesModels/SOCs/STM32H7x3/Includes/Registers/STM32H743.svd");
+  Project.AddSvdFile ("$(ProjectDir)/../../../../../Ports/EquatesModels/SOCs/STM32H743/Includes/Registers/STM32H743.svd");
   //
   // User settings
   //
   File.Open ("$(ProjectDir)/FLASH.elf");
-  Project.SetSmartViewPlugin("$(ProjectDir)/../../../../../Tools/Ozone_Plugin/uKOS.js");
+  Project.SetSmartViewPlugin("$(ProjectDir)/../../../../../Tools/Ozone_Plugin/uKOS-X.js");
+  Project.SetOSPlugin("$(ProjectDir)/../../../../../Tools/Ozone_Plugin/uKOS-X_OS.js");
 }
 
 /*********************************************************************

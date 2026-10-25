@@ -12,6 +12,7 @@
 #include    <string.h>
 
 #include    "Registers/stm32H7x3_gpio.h"
+#include    "Registers/stm32H7x3_ltdc.h"  // for LTDC
 #include    "Registers/stm32H7x3_rcc.h"
 #include    "ulvgl.h"
 #include    "board.h"

@@ -10,7 +10,6 @@
 
 #include    <stdint.h>
 
-#include    "Registers/stm32H7x3_gpio.h"
 #include    "board.h"
 #include    "os_errors.h"
 

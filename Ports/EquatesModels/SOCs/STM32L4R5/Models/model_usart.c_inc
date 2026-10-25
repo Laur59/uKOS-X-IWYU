@@ -26,7 +26,7 @@
 #include    "serial/serial.h"
 #include    "serial_common.h"
 
-#if !defined(USART_BAUDRATE)
+#ifndef USART_BAUDRATE
 #define USART_BAUDRATE          BAUDRATE
 #endif
 

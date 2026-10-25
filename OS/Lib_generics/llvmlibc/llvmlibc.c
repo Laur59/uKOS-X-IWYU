@@ -658,7 +658,9 @@ static  void    local_outLine(serialManager_t serialManager, const uint8_t *outp
  * Unix-time counter (1-us resolution):
  *
  * - time()          is absent from the baremetal libc.a,
- * - gettimeofday()  is declared by <time.h> but likewise not implemented,
+ * - gettimeofday()  is likewise not implemented. LLVM libc 23 declares it in
+ *                   <time.h>; from LLVM libc 24 on, only the uKOS-X
+ *                   compat/sys/time.h declares it,
  * - clock()         is in libc.a, but it is built on the platform hook
  *                   __llvm_libc_timespec_get_active, which uKOS-X does not
  *                   provide. Defining clock() here keeps clock.cpp.obj out of

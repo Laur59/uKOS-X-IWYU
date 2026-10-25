@@ -46,7 +46,7 @@
     do {                                                                                                                        \
         const uint32_t _div = (uint32_t)(((4ULL * (uint32_t)(ck)) + ((uint32_t)(baudrate) / 2U)) / (uint32_t)(baudrate));       \
                                                                                                                                 \
-        REG(UART)->UARTIBRD = _div >> 6;                                    /* round(64 ck/16b) = IBRD<<6 | FBRD */             \
+        REG(UART)->UARTIBRD = _div >> 6U;                                    /* round(64 ck/16b) = IBRD<<6 | FBRD */             \
         REG(UART)->UARTFBRD = _div & 0x3FU;                                                                                     \
     } while (0)
 

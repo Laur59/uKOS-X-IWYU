@@ -13,7 +13,6 @@
 #include    "board.h"
 #include    "macros_core.h"
 #include    "os_errors.h"
-#include    "soc_reg.h"
 
 static  bool    vMute;
 

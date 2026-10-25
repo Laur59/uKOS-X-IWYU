@@ -20,7 +20,6 @@
 
 #include    "Registers/K210_clint.h"
 #include    "Registers/rv64_csr.h"
-#include    "Registers/soc_vectors.h"
 #include    "core.h"
 #include    "macros.h"
 #include    "macros_core.h"

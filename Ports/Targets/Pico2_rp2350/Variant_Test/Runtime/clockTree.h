@@ -39,7 +39,7 @@
     static_assert(((pd1) >= 1U) && ((pd1) <= 7U), "PLL_" #x ": POSTDIV1 shall be in 1..7");                                             \
     static_assert(((pd2) >= 1U) && ((pd2) <= 7U), "PLL_" #x ": POSTDIV2 shall be in 1..7");                                             \
     static_assert(KPLL_FREF(r) >= KPLL_FREF_MIN, "PLL_" #x ": f(ref) out of range");                                                    \
-    static_assert((KPLL_FVCO(r, fb) / ((pd1) * (pd2))) == KFREQUENCY_PLL##x, "PLL_" #x ": configuration does not match KFREQUENCY_PLL" #x)
+    static_assert((KPLL_FVCO(r, fb) / ((uint64_t)(pd1) * (pd2))) == KFREQUENCY_PLL##x, "PLL_" #x ": configuration does not match KFREQUENCY_PLL" #x)
 
 #define KPLL_STATIC_CHECK_FVCO(x, r, fb)                                                                                                \
     static_assert((KPLL_FVCO(r, fb) >= KPLL_FVCO_MIN) && (KPLL_FVCO(r, fb) <= KPLL_FVCO_MAX), "PLL_" #x ": FVCO out of range")

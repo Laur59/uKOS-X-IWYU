@@ -7,6 +7,7 @@
  */
 
 #include    "clockTree.h"
+#include    "macros_soc.h"
 #include    "soc_reg.h"
 #include    "urt0/urt0.h"
 

@@ -9,6 +9,7 @@
 
 #include    <stdint.h>
 
+#include    "Registers/scb.h"  // for SCB
 #include    "crt0.h"
 #include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
 #include    "linker.h"
@@ -125,7 +126,7 @@ const   uintptr_t   g_pfnVectors_C0[] = {
     (uintptr_t)OTG_HS_WKUP_C0_IRQHandler,                       // Address: 0x0000_0170
     (uintptr_t)OTG_HS_C0_IRQHandler,                            // Address: 0x0000_0174
     (uintptr_t)DCMI_C0_IRQHandler,                              // Address: 0x0000_0178
-#if defined(STM32H757_S)
+#ifdef STM32H757_S
     (uintptr_t)CRYP_C0_IRQHandler,                              // Address: 0x0000_017C
 #else
     (uintptr_t)0,                                               // Address: 0x0000_017C
@@ -290,7 +291,7 @@ INTERRUPT_SPECIFIC_HANDLER(OTG_HS_EP1_IN_C0)
 INTERRUPT_SPECIFIC_HANDLER(OTG_HS_WKUP_C0)
 INTERRUPT_SPECIFIC_HANDLER(OTG_HS_C0)
 INTERRUPT_SPECIFIC_HANDLER(DCMI_C0)
-#if defined(STM32H757_S)
+#ifdef STM32H757_S
 INTERRUPT_SPECIFIC_HANDLER(CRYP_C0)
 #endif
 INTERRUPT_SPECIFIC_HANDLER(HASH_RNG_C0)
