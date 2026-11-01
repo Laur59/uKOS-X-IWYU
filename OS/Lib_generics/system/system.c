@@ -23,20 +23,20 @@
 
 #ifdef CONFIG_MAN_SYSTEM_S
 
-#include    "system.h"
+#include "system.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "linker.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "text/text.h"
-#include    "uKOSversion.h"
-#include    "types.h"
-#include    "version.h"
+#include "linker.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "text/text.h"
+#include "uKOSversion.h"
+#include "types.h"
+#include "version.h"
 
 #define uKOS_KBOARD             STRG(BOARD) PRIVILEGE_USER_MODE
 

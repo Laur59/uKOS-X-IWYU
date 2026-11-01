@@ -5,18 +5,18 @@
  *
  */
 
-#include    "cmns.h"
+#include "cmns.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/K210_sysctl.h"
-#include    "Registers/K210_uart.h"
-#include    "clockTree.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "types.h"
+#include "Registers/K210_sysctl.h"
+#include "Registers/K210_uart.h"
+#include "clockTree.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

@@ -22,10 +22,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "imager_common.h"
-#include    "types.h"
+#include "imager_common.h"
+#include "types.h"
 
 // Semaphores
 // ----------

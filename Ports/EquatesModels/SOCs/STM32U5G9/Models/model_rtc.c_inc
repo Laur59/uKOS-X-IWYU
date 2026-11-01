@@ -6,13 +6,13 @@
  *           In the rtc it stored the local time.
  */
 
-#include    <stdint.h>
-#include    <time.h>
+#include <stdint.h>
+#include <time.h>
 
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "soc_reg.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros_core.h"
+#include "soc_reg.h"
+#include "types.h"
 
 // Prototypes
 

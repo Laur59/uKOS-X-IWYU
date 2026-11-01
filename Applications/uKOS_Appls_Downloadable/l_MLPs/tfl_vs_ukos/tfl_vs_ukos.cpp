@@ -61,25 +61,25 @@
  *
  */
 
-#include    <stdio.h>
-#include    <stdlib.h>
-#include    <math.h>
-#include    <cinttypes>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <cinttypes>
 
-#include    "crt0.h"
-#include    "serial/serial.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_runtime.h"
-#include    "memo/memo.h"
-#include    "led/led.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "random/random.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "crt0.h"
+#include "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_runtime.h"
+#include "memo/memo.h"
+#include "led/led.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "random/random.h"
+#include "record/record.h"
+#include "types.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wconversion"
@@ -88,23 +88,23 @@
 #pragma GCC diagnostic ignored "-Wswitch-default"
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #pragma GCC diagnostic ignored "-Wpedantic"
-#include    "tensorflow/lite/micro/micro_interpreter.h"
-#include    "tensorflow/lite/micro/micro_log.h"
-#include    "tensorflow/lite/micro/micro_mutable_op_resolver.h"
-#include    "tensorflow/lite/micro/micro_profiler.h"
-#include    "tensorflow/lite/micro/recording_micro_interpreter.h"
-#include    "tensorflow/lite/micro/system_setup.h"
+#include "tensorflow/lite/micro/micro_interpreter.h"
+#include "tensorflow/lite/micro/micro_log.h"
+#include "tensorflow/lite/micro/micro_mutable_op_resolver.h"
+#include "tensorflow/lite/micro/micro_profiler.h"
+#include "tensorflow/lite/micro/recording_micro_interpreter.h"
+#include "tensorflow/lite/micro/system_setup.h"
 
 #ifdef CORTEX
-#include    "tensorflow/lite/micro/cortex_m_generic/debug_log_callback.h"
+#include "tensorflow/lite/micro/cortex_m_generic/debug_log_callback.h"
 #endif
 
 #pragma GCC diagnostic pop
 
 // TFLite & uKOS-X models
 
-#include    "./_Models/NN_model.c_inc"
-#include    "./_Models/network.c_inc"
+#include "./_Models/NN_model.c_inc"
+#include "./_Models/network.c_inc"
 
 // uKOS-X specific (see the module.h)
 // ==================================

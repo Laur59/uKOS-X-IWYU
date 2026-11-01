@@ -6,27 +6,27 @@
  *           This tool allows to send an image via the uvc0 manager.
  */
 
-#include    "viewer/viewer_uvc0.h"
+#include "viewer/viewer_uvc0.h"
 
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "Lib_peripherals/imager_common.h"
-#include    "MT9V03x/MT9V03x.h"
-#include    "TinyUSB_interface.h"
-#include    "imager/imager.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "TinyUSB_interface.h"
-#include    "types.h"
+#include "Lib_peripherals/imager_common.h"
+#include "MT9V03x/MT9V03x.h"
+#include "TinyUSB_interface.h"
+#include "imager/imager.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "TinyUSB_interface.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_IMAGER_S
 

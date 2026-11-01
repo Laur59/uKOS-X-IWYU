@@ -5,14 +5,14 @@
  * Goal:        stub for the "switch" manager module.
  */
 
-#include    "switch/switch.h"
+#include "switch/switch.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/stm32H7x3_gpio.h"
-#include    "board.h"
-#include    "macros_core.h"
-#include    "os_errors.h"
+#include "Registers/stm32H7x3_gpio.h"
+#include "board.h"
+#include "macros_core.h"
+#include "os_errors.h"
 
 /*
  * \brief stub_switch_init

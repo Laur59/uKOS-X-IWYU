@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "types.h"
+#include "types.h"
 
 /*!
  * \addtogroup Lib_serials
@@ -26,7 +26,7 @@
  * @{
  */
 
-#include    "Lib_serials/serial_common.h"
+#include "Lib_serials/serial_common.h"
 
 // Prototypes
 

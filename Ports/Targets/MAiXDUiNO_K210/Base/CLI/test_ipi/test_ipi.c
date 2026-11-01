@@ -15,19 +15,19 @@
 
 #define     _POSIX_C_SOURCE     200809L
 
-#include    <inttypes.h>
-#include    <stdio.h>
+#include <inttypes.h>
+#include <stdio.h>
 
-#include    "Registers/K210_clint.h"
-#include    "Registers/rv64_csr.h"
-#include    "core.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "text/text.h"
-#include    "types.h"
+#include "Registers/K210_clint.h"
+#include "Registers/rv64_csr.h"
+#include "core.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "text/text.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

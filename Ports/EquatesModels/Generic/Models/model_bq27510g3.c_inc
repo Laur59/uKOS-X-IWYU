@@ -10,11 +10,11 @@
  *   KBAT_TEMPERATURE KBAT_TIME_TO_EMPTY KBAT_VOLTAGE cb_configure cb_getValue
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "battery_common.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "battery_common.h"
+#include "os_errors.h"
+#include "types.h"
 
 /*
  * \brief model_bq27510g3_init

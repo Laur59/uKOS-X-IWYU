@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 // GTZC1_MPCBB2 address definitions
 // --------------------------------

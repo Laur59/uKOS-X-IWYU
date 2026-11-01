@@ -20,10 +20,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern_types.h"  // IWYU pragma: keep
-#include    "types.h"
+#include "kern_types.h"  // IWYU pragma: keep
+#include "types.h"
 
 /*!
  * \addtogroup Lib_kernels

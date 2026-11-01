@@ -35,28 +35,28 @@
  *
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "crt0.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "crt0.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // The Intel headers; the library is built with their default configuration:
 // arguments by value, the rounding mode as an argument and the exception
 // flags through a pointer.
 
-#include    "bid_conf.h"
-#include    "bid_functions.h"
+#include "bid_conf.h"
+#include "bid_functions.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

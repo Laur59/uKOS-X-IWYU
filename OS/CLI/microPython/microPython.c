@@ -7,19 +7,19 @@
 
 #ifdef CONFIG_MAN_MICROPYTHON_S
 
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "MicroPython/Construction/System/microPython.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "MicroPython/Construction/System/microPython.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

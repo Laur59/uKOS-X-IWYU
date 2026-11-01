@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #ifdef UKOS_S
-#include    "macros_soc.h"
+#include "macros_soc.h"
 #endif
 
 /*!

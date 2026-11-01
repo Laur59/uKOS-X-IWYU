@@ -11,33 +11,33 @@
  *           - System call implementations
  */
 
-#include    "picolibc.h"
+#include "picolibc.h"
 
-#include    <stddef.h>
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <string.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
-#include    <errno.h>
-#include    <sys/stat.h>
-#include    <sys/time.h>
-#include    <sys/times.h>
-#include    <sys/types.h>
-#include    <time.h>
-#include    <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
+#include <sys/time.h>
+#include <sys/times.h>
+#include <sys/types.h>
+#include <time.h>
+#include <unistd.h>
 
-#include    "calendar/calendar.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
-#include    "macros.h"
+#include "calendar/calendar.h"
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
+#include "macros.h"
 #if (KKERN_WITH_STATISTICS_S == true)
-#include    "macros_core.h"
+#include "macros_core.h"
 #endif
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_PICOLIBC_S
 

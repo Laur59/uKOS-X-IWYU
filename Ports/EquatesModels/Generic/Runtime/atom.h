@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include    <stdatomic.h>
+#include <stdatomic.h>
 
 // Structures for locks
 // --------------------

@@ -7,20 +7,20 @@
  *           For the moment this tool reserved for STM CPU32 SoCs!!
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "soc_reg.h"
-#include    "spi_common.h"
-#include    "spi/spi.h"
-#include    "text/text.h"
-#include    "types.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "soc_reg.h"
+#include "spi_common.h"
+#include "spi/spi.h"
+#include "text/text.h"
+#include "types.h"
 
 #ifdef REG
 #define device      REG

@@ -29,21 +29,21 @@
  *   core_setBitCSR
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/RP2350_resets.h"
-#include    "Registers/RP2350_timer.h"
-#include    "Registers/nvic.h"
-#include    "clockTree.h"
-#include    "core_reg.h"
-#include    "exce.h"
-#include    "first.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_scheduler.h"
-#include    "kern/private/private_temporal.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "syscallDispatcher.h"
+#include "Registers/RP2350_resets.h"
+#include "Registers/RP2350_timer.h"
+#include "Registers/nvic.h"
+#include "clockTree.h"
+#include "core_reg.h"
+#include "exce.h"
+#include "first.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_scheduler.h"
+#include "kern/private/private_temporal.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "syscallDispatcher.h"
 
 #define K1ms_C0         ((float64_t)(0.001))
 

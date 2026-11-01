@@ -16,18 +16,18 @@
  *           wkserial cdc0 -read
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "serial_common.h"
-#include    "text/text.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "serial_common.h"
+#include "text/text.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

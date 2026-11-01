@@ -22,10 +22,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "battery_common.h"
-#include    "types.h"
+#include "battery_common.h"
+#include "types.h"
 
 // Semaphores
 // ----------

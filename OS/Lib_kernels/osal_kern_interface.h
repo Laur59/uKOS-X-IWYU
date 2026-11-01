@@ -18,7 +18,7 @@
 // Only standalone libraries (TinyUSB) see this interface; uKOS-X itself uses
 // the real kernel headers.
 #ifndef UKOS_S
-#include    "types.h"
+#include "types.h"
 
 // Some necessary equates
 // ----------------------

@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/soc_vectors.h"
+#include "Registers/soc_vectors.h"
 
 // Multicore macro
 // ---------------

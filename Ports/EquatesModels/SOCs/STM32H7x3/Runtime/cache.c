@@ -5,12 +5,12 @@
  * Goal:    Cortex H743 L1 cache management.
  */
 
-#include    "cache.h"
+#include "cache.h"
 
 #define DCACHE_LINE_SIZE    32      // Cache line size of 32-bytes
 #define ICACHE_LINE_SIZE    32      // Cache line size of 32-bytes
 
-#include    "model_I_D_cache.c_inc"
+#include "model_I_D_cache.c_inc"
 
 /*
  * \brief cache_D_Enable

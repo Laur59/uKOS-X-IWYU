@@ -6,18 +6,18 @@
  * Stub for the "machine" manager module.
  */
 
-#include    "machine/machine.h"
+#include "machine/machine.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/RP2350_ticks.h"
-#include    "Registers/RP2350_watchdog.h"
-#include    "macros_core.h"
+#include "Registers/RP2350_ticks.h"
+#include "Registers/RP2350_watchdog.h"
+#include "macros_core.h"
 #ifdef __riscv
-#include    "macros_soc.h"
+#include "macros_soc.h"
 #endif
-#include    "os_errors.h"
-#include    "types.h"
+#include "os_errors.h"
+#include "types.h"
 
 /*
  * \brief stub_machine_restart

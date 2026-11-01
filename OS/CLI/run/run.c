@@ -5,20 +5,20 @@
  * Goal:     Launch a function module.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <string.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
-#include    "linker.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "system/system.h"
-#include    "types.h"
+#include "linker.h"
+#include "macros.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "system/system.h"
+#include "types.h"
 
 #ifdef CACHE_D_S
-#include    "cache.h"
-#include    "macros_core.h"
+#include "cache.h"
+#include "macros_core.h"
 #endif
 
 // uKOS-X specific (see the module.h)

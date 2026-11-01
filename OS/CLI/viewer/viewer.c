@@ -6,13 +6,13 @@
  *           This tool allows to send an image via the xfer manager.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "types.h"
-#include    "viewer/viewer_uvc0.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "types.h"
+#include "viewer/viewer_uvc0.h"
 
 static  int32_t     prgm(uint32_t argc, const char_t *argv[]);
 

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 // TIMER1 address definitions
 // --------------------------

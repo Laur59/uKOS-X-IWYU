@@ -7,15 +7,15 @@
  * Simple UI for the basic demo.
  */
 
-#include    "ui.h"
+#include "ui.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "ulvgl.h"
-#include    "kern/kern.h"
-#include    "kern/kern_types.h"
-#include    "macros_soc.h"
-#include    "random/random.h"
+#include "ulvgl.h"
+#include "kern/kern.h"
+#include "kern/kern_types.h"
+#include "macros_soc.h"
+#include "random/random.h"
 
 extern  mutx_t      *vLVGL_API[KNB_CORES];
         lv_obj_t    *vL1[KNB_CORES];

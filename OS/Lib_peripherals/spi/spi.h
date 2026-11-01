@@ -22,10 +22,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "spi_common.h"
-#include    "types.h"
+#include "spi_common.h"
+#include "types.h"
 
 typedef enum {
             KSPI0 = (((uint32_t)'s'<<24U) | ((uint32_t)'p'<<16U) | ((uint32_t)'i'<<8U) | (uint32_t)'0'),    // spi0 manager

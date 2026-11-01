@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "led/led.h"
+#include "led/led.h"
 
 #define KLED_ALIVE          KLED_0
 #define KTIME_ALIVE_ON      50U

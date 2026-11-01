@@ -6,15 +6,15 @@
  * Goal:     alive process; the system is working.
  */
 
-#include    "alive/alive.h"
+#include "alive/alive.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "led/led.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros_core.h"
+#include "led/led.h"
+#include "types.h"
 
 #define KLED_TARGET_ALIVE   KLED_1
 

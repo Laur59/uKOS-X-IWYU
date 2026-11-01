@@ -5,23 +5,23 @@
  * Goal:     imager process; continuous acquisition of an image.
  */
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "MT9V03x/MT9V03x.h"
-#include    "cdc0/cdc0.h"
-#include    "serial/serial.h"
-#include    "imager/imager.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "led/led.h"
+#include "MT9V03x/MT9V03x.h"
+#include "cdc0/cdc0.h"
+#include "serial/serial.h"
+#include "imager/imager.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "led/led.h"
 // memo/memo.h is required for PROCESS_STACKMALLOC
-#include    "memo/memo.h"       // IWYU pragma: keep
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "memo/memo.h"       // IWYU pragma: keep
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

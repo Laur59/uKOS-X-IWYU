@@ -7,18 +7,18 @@
 
 #ifdef CONFIG_MAN_SWITCH_S
 
-#include    "switch.h"
+#include "switch.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #ifdef PRIVILEGED_USER_S
-#include    "kern/kern.h"       // IWYU pragma: keep (for KPROC_PRIVILEGED)
+#include "kern/kern.h"       // IWYU pragma: keep (for KPROC_PRIVILEGED)
 #endif
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

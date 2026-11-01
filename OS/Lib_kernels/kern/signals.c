@@ -21,23 +21,23 @@
  *           int32_t kern_getSignalGroupById(char_t *identifier, sign_t **handle) *
  */
 
-#include    "signals.h"
-#include    "kern/private/private_signals.h"
+#include "signals.h"
+#include "kern/private/private_signals.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_identifiers.h"
-#include    "kern/private/private_lists.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_kern.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "syscallDispatcher.h"       // IWYU pragma: keep
-#include    "types.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_identifiers.h"
+#include "kern/private/private_lists.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_kern.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "syscallDispatcher.h"       // IWYU pragma: keep
+#include "types.h"
 
 sign_t      vKern_sign[KNB_CORES][KKERN_NB_SIGNALS];
 list_t      vKern_listSign[KNB_CORES];

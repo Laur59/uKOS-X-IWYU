@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "modules.h"
+#include "modules.h"
 
 // Lib_kernels managers
 // ====================

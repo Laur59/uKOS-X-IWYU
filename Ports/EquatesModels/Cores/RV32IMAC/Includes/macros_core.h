@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include    "Registers/rv32_bumblebee.h"
-#include    "Registers/rv32_csr.h"
-#include    "core.h"            // IWYU pragma: keep for core_clrBitCSR, core_setBitCSR
-#include    "exce.h"
-#include    "kern/kern.h"       // IWYU pragma: keep for KKERN_PRIORITY_LOW_00
-#include    "macros_soc.h"
-#include    "memo/memo.h"       // IWYU pragma: keep for KMEMO_ALIGN_16
+#include "Registers/rv32_bumblebee.h"
+#include "Registers/rv32_csr.h"
+#include "core.h"            // IWYU pragma: keep for core_clrBitCSR, core_setBitCSR
+#include "exce.h"
+#include "kern/kern.h"       // IWYU pragma: keep for KKERN_PRIORITY_LOW_00
+#include "macros_soc.h"
+#include "memo/memo.h"       // IWYU pragma: keep for KMEMO_ALIGN_16
 // #include "macros_core_stackFrame.h"
 
 // uKernel macros

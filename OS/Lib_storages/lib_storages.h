@@ -29,13 +29,13 @@
  */
 
 #ifdef CONFIG_MAN_SDCARD_S
-#include    "sdcard/sdcard.h"
+#include "sdcard/sdcard.h"
 #endif
 #ifdef CONFIG_MAN_SERIAL_FLASH_S
-#include    "serialFlash/serialFlash.h"
+#include "serialFlash/serialFlash.h"
 #endif
 #ifdef CONFIG_MAN_STORAGE_S
-#include    "storage/storage.h"
+#include "storage/storage.h"
 #endif
 
 /**!@}*/

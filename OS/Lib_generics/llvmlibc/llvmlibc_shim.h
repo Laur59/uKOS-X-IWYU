@@ -28,7 +28,7 @@
 
 #ifdef CONFIG_MAN_LLVMLIBC_S
 
-#include    <stdarg.h>
+#include <stdarg.h>
 
 // LLVM libc qualifies every declaration with __NOEXCEPT, which expands to
 // noexcept in C++. A redeclaration without it is a hard error ("exception

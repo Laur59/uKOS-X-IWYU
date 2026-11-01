@@ -99,7 +99,7 @@
  * @{
  */
 
-#include    "kern/kern.h"
+#include "kern/kern.h"
 
 // Prototypes
 

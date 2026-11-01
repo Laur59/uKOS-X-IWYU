@@ -8,8 +8,8 @@
  * of the module registration mechanism (modules.h / man discovery).
  */
 
-#include    "macros.h"
-#include    "modules.h"
+#include "macros.h"
+#include "modules.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

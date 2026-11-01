@@ -6,14 +6,14 @@
  * Goal:     stub for the "led" manager module.
  */
 
-#include    "led/led.h"
+#include "led/led.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "macros_core.h"
-#include    "os_errors.h"
-#include    "soc_reg.h"
+#include "board.h"
+#include "macros_core.h"
+#include "os_errors.h"
+#include "soc_reg.h"
 
 static  bool    vMute;
 

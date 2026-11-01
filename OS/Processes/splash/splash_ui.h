@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include    "splash.h"
+#include "splash.h"
 
 // Logo
 // The logo of ip.h is an ASCII art made of '_' and '/', each one drawn

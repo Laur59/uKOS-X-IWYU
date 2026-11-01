@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "cache.h"
+#include "cache.h"
 
 // Multicore macro
 // ---------------

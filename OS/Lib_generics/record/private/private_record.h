@@ -9,9 +9,9 @@
 
 #pragma once
 
-#include    "kern/kern.h"
-#include    "macros_soc.h"
-#include    "record/record.h"
+#include "kern/kern.h"
+#include "macros_soc.h"
+#include "record/record.h"
 
 /*!
  * \addtogroup Lib_generics

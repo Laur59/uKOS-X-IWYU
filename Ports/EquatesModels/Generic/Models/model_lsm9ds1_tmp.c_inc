@@ -9,12 +9,12 @@
  *   KTEMPERATURE_INIT KTEMPERATURE_RELEASE KTEMPERATURE_RESERVE cb_control cb_readTemp
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "LSM9DS1/LSM9DS1.h"
-#include    "os_errors.h"
-#include    "temperature/temperature.h"
-#include    "types.h"
+#include "LSM9DS1/LSM9DS1.h"
+#include "os_errors.h"
+#include "temperature/temperature.h"
+#include "types.h"
 
 /*
  * \brief model_lsM9ds1tmp_init

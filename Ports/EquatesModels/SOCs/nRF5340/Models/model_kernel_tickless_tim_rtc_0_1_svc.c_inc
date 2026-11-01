@@ -25,26 +25,26 @@
  *           - model_kernel_stopProcessTimeout
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/nvic.h"
-#include    "clockTree.h"
-#include    "core_reg.h"
-#include    "exce.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
+#include "Registers/nvic.h"
+#include "clockTree.h"
+#include "core_reg.h"
+#include "exce.h"
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
 
 #if KKERN_NB_PRECISE_SIGNALS > 0
-#include    "kern/private/private_preciseSignals.h"
+#include "kern/private/private_preciseSignals.h"
 #endif
-#include    "kern/private/private_scheduler.h"
-#include    "kern/private/private_temporal.h"
-#include    "kern/privileges.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "soc_reg.h"
-#include    "types.h"
+#include "kern/private/private_scheduler.h"
+#include "kern/private/private_temporal.h"
+#include "kern/privileges.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "soc_reg.h"
+#include "types.h"
 
 #define K1ms        ((float64_t)(0.001))
 

@@ -20,25 +20,25 @@
  *           int32_t kern_getMailboxById(const char_t *identifier, mbox_t **handle) *
  */
 
-#include    "mailboxes.h"
-#include    "kern/private/private_mailboxes.h"
+#include "mailboxes.h"
+#include "kern/private/private_mailboxes.h"
 
-#include    <stdint.h>
-#include    <string.h>
+#include <stdint.h>
+#include <string.h>
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_identifiers.h"
-#include    "kern/private/private_lists.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_kern.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "os_errors.h"
-#include    "syscallDispatcher.h"           // IWYU pragma: keep
-#include    "types.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_identifiers.h"
+#include "kern/private/private_lists.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_kern.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "os_errors.h"
+#include "syscallDispatcher.h"           // IWYU pragma: keep
+#include "types.h"
 
 mbox_t      vKern_mbox[KNB_CORES][KKERN_NB_MAILBOXES];
 uint16_t    vKern_nbMbox[KNB_CORES];

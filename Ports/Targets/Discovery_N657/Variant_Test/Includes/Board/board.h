@@ -12,9 +12,9 @@
 #define Discovery_N657_S
 #endif
 
-#include    "macros_core.h" // IWYU pragma: keep (required for REG)
-#include    "Registers/stm32N657_gpiog.h"   // IWYU pragma: export (for GPIOG_S)
-#include    "Registers/stm32N657_gpioo.h"   // IWYU pragma: export (for GPIOO_S)
+#include "macros_core.h" // IWYU pragma: keep (required for REG)
+#include "Registers/stm32N657_gpiog.h"   // IWYU pragma: export (for GPIOG_S)
+#include "Registers/stm32N657_gpioo.h"   // IWYU pragma: export (for GPIOO_S)
 
 // GPIO settings
 // -------------

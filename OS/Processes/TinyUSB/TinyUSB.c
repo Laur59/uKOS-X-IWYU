@@ -5,24 +5,24 @@
  * Goal:     "TinyUSB" management.
  */
 
-#include    "TinyUSB.h"
+#include "TinyUSB.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
-#include    <usbd.h>                    // for tud_mount_cb, tud_resume_cb, tud...
+#include <stdint.h>
+#include <stdlib.h>
+#include <usbd.h>                    // for tud_mount_cb, tud_resume_cb, tud...
 
-#include    "serial/serial.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"              // for GET_RUNNING_CORE, KNB_CORES
+#include "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"              // for GET_RUNNING_CORE, KNB_CORES
 // memo/memo.h is required for PROCESS_STACKMALLOC
-#include    "memo/memo.h"       // IWYU pragma: keep
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "memo/memo.h"       // IWYU pragma: keep
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 // Save the GCC diagnostic
 //
@@ -31,7 +31,7 @@
 // Ignore the GCC diagnostic
 //
 #pragma GCC diagnostic  ignored "-Wpedantic"
-#include    "tusb.h"    // IWYU pragma: keep
+#include "tusb.h"    // IWYU pragma: keep
 
 // Restore the GCC diagnostic
 //

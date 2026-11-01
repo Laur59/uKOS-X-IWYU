@@ -7,16 +7,16 @@
  * Simple UI for the team demo.
  */
 
-#include    "ui.h"
+#include "ui.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "ulvgl.h"
-#include    "kern/kern.h"
-#include    "kern/kern_types.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "team.h"
+#include "ulvgl.h"
+#include "kern/kern.h"
+#include "kern/kern_types.h"
+#include "macros.h"
+#include "macros_soc.h"
+#include "team.h"
 
 typedef struct  labeledBar  labeledBar_t;
 

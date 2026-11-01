@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 // OTG1_HS_DEVICE address definitions
 // ----------------------------------

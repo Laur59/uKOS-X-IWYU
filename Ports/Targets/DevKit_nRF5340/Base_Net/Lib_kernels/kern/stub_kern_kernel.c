@@ -6,7 +6,7 @@
  * Goal:     stub for the connection of the "kern" manager to the uKernel device.
  */
 
-#include    "kern/kern.h"
+#include "kern/kern.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -19,4 +19,4 @@
 #define model_kernel_newProcessTimeout      stub_kern_newProcessTimeout
 #define model_kernel_stopProcessTimeout     stub_kern_stopProcessTimeout
 
-#include    "model_kernel_tickless_tim_rtc_0_1_svc.c_inc"
+#include "model_kernel_tickless_tim_rtc_0_1_svc.c_inc"

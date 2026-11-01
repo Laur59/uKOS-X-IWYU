@@ -29,25 +29,25 @@
  * @{
  */
 
-#include    <string.h>      // IWYU pragma: keep
+#include <string.h>      // IWYU pragma: keep
 
-#include    "kern/kern.h"
-#include    "macros_soc.h"
+#include "kern/kern.h"
+#include "macros_soc.h"
 
 #ifdef CONFIG_MAN_NEWLIB_S
-#include    <reent.h>
-#include    "newlib/newlib.h"
+#include <reent.h>
+#include "newlib/newlib.h"
 
 extern  reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];    // Array of impure pointer for newlib
 
 #elif defined(CONFIG_MAN_PICOLIBC_S)
-#include    "picolibc/picolibc.h"
+#include "picolibc/picolibc.h"
 
 // No global impure data for picolibc - errno is picolibc's own global, parked
 // in proc_t.oErrno while a process is not running
 
 #elif defined(CONFIG_MAN_LLVMLIBC_S)
-#include    "llvmlibc/llvmlibc.h"
+#include "llvmlibc/llvmlibc.h"
 
 // No global impure data for llvmlibc - errno is LLVM libc's own global, parked
 // in proc_t.oErrno while a process is not running

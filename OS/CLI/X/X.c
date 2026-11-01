@@ -5,19 +5,19 @@
  * Goal:     Control the temperature.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <string.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

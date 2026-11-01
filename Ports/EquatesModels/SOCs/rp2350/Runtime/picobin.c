@@ -8,10 +8,10 @@
  *          track the real addresses if the image is relaid out.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #define NO_PICO_PLATFORM
-#include    "picobin.h"
+#include "picobin.h"
 
 // Item header layout in flash: low byte = item id, high byte = item size in
 // 32-bit words (counted from the start of the item to the start of the next)

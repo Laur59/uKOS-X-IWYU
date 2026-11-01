@@ -6,15 +6,15 @@
  * Goal:     Octo SPI manager (for lcd).
  */
 
-#include    "oct0.h"
+#include "oct0.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/K210_spi.h"
-#include    "Registers/K210_sysctl.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "modules.h"
+#include "Registers/K210_spi.h"
+#include "Registers/K210_sysctl.h"
+#include "macros.h"
+#include "macros_soc.h"
+#include "modules.h"
 
 #undef      WITH_DMA_S
 

@@ -25,22 +25,22 @@
  *   KFREQUENCY_T14 KFREQUENCY_T15 KFREQUENCY_T16 KFREQUENCY_T17
  */
 
-#include    <stdint.h>
-#include    <stdlib.h>          // IWYU pragma: keep (for CHECK_STACK_SANITY)
+#include <stdint.h>
+#include <stdlib.h>          // IWYU pragma: keep (for CHECK_STACK_SANITY)
 
-#include    "Registers/nvic.h"
-#include    "clockTree.h"
-#include    "exce.h"
-#include    "kern/private/private_preciseSignals.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_scheduler.h"
-#include    "kern/private/private_temporal.h"
-#include    "kern/privileges.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "record/record.h"   // IWYU pragma: keep (for CHECK_STACK_SANITY)
-#include    "soc_reg.h"
+#include "Registers/nvic.h"
+#include "clockTree.h"
+#include "exce.h"
+#include "kern/private/private_preciseSignals.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_scheduler.h"
+#include "kern/private/private_temporal.h"
+#include "kern/privileges.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "record/record.h"   // IWYU pragma: keep (for CHECK_STACK_SANITY)
+#include "soc_reg.h"
 
 #define K1ms        ((float64_t)(0.001))
 

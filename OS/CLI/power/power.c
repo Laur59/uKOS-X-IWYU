@@ -5,17 +5,17 @@
  * Goal:     Give the battery information.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "battery/battery.h"
-#include    "battery_common.h"
-#include    "kern/kern.h"       // IWYU pragma: keep (symbol KWAIT_INFINITY)
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "battery/battery.h"
+#include "battery_common.h"
+#include "kern/kern.h"       // IWYU pragma: keep (symbol KWAIT_INFINITY)
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

@@ -29,10 +29,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "macros_soc.h"
+#include "kern/kern.h"
+#include "macros_soc.h"
 
 extern              list_t      vKern_listWait[KNB_CORES];                  // Wait list (processes waiting for a time)
 extern  volatile    uint32_t    vKern_TimeException[KNB_CORES];             // Sum of time spent inside all the exceptions

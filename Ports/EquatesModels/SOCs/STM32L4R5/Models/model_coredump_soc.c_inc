@@ -13,16 +13,16 @@
  *   cb_signal local_printCore local_printFunction local_printStackFrame vExceptionNb vStackAfter vStackBefore vStackCoreDump
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "cmns.h"
-#include    "core.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "record/private/private_recordDump.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "cmns.h"
+#include "core.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "record/private/private_recordDump.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // Prototypes
 

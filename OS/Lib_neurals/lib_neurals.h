@@ -30,7 +30,7 @@
  */
 
 #ifdef CONFIG_MAN_MLPN_S
-#include    "mlpn/mlpn.h"       // IWYU pragma: export
+#include "mlpn/mlpn.h"       // IWYU pragma: export
 #endif
 
 /**!@}*/

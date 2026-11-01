@@ -5,21 +5,21 @@
  * Goal:     alive process; blink the LED 0.
  */
 
-#include    "alive.h"
+#include "alive.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "serial/serial.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"       // IWYU pragma: keep (required for PROCESS_STACKMALLOC)
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "memo/memo.h"       // IWYU pragma: keep (required for PROCESS_STACKMALLOC)
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

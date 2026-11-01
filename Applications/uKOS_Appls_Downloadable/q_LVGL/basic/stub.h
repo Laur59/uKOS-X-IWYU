@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "ulvgl.h"
+#include "ulvgl.h"
 
 // Provided by the board stub, used by the application
 

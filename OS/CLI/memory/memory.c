@@ -5,22 +5,22 @@
  * Goal:     Give the memory information.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
+#include <inttypes.h>
+#include <stdio.h>
 
-#include    "kern/kern.h"
-#include    "linker.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
+#include "kern/kern.h"
+#include "linker.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
 #if (KNB_CORES > 1)
-#include    "memo/memo.h"               // vMemo is only referenced via SPIN_LOCK on multi-core builds
+#include "memo/memo.h"               // vMemo is only referenced via SPIN_LOCK on multi-core builds
 #endif
-#include    "memo/private/private_memo.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "spin.h"
-#include    "types.h"
+#include "memo/private/private_memo.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "spin.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

@@ -11,23 +11,23 @@
  *           on every switch.
  */
 
-#include    "kern/private/private_xLibrary.h"
+#include "kern/private/private_xLibrary.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
-#include    "macros_soc.h"
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
+#include "macros_soc.h"
 
 #ifdef CONFIG_MAN_NEWLIB_S
-#include    <sys/reent.h>
-#include    "newlib/newlib.h"
+#include <sys/reent.h>
+#include "newlib/newlib.h"
 
 // Per-process reentrancy structures for newlib
 reent_t     vKern_impureData[KNB_CORES][KKERN_NB_PROCESSES];
 
 #elif defined(CONFIG_MAN_PICOLIBC_S) || defined(CONFIG_MAN_LLVMLIBC_S)
-#include    <errno.h>
+#include <errno.h>
 
 // No global storage needed - the parked value of errno for a process that is
 // not running lives in proc_t.oErrno

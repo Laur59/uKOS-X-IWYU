@@ -7,27 +7,27 @@
  *           This module is responsible for controlling the logic of the uKernel.
  */
 
-#include    "kern/private/private_scheduler.h"
+#include "kern/private/private_scheduler.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "kern/private/private_lists.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_kern.h"
-#include    "kern/private/private_mailboxes.h"
-#include    "kern/private/private_mutexes.h"
-#include    "kern/private/private_semaphores.h"
-#include    "kern/private/private_signals.h"
-#include    "kern/private/private_temporal.h"
-#include    "kern/private/private_xLibrary.h"
+#include "kern/kern.h"
+#include "kern/private/private_lists.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_kern.h"
+#include "kern/private/private_mailboxes.h"
+#include "kern/private/private_mutexes.h"
+#include "kern/private/private_semaphores.h"
+#include "kern/private/private_signals.h"
+#include "kern/private/private_temporal.h"
+#include "kern/private/private_xLibrary.h"
 #ifdef __arm__
-#include    "macros_core.h"
+#include "macros_core.h"
 #endif
-#include    "macros_soc.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "macros_soc.h"
+#include "record/record.h"
+#include "types.h"
 
 uintptr_t   *vKern_stackProc[KNB_CORES];
 

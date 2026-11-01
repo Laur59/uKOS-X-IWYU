@@ -28,25 +28,25 @@
  *               "05" execution address
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <string.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
 
-#include    "kern/kern.h"
-#include    "led/led.h"
-#include    "linker.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "system/system.h"
-#include    "text/text.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "led/led.h"
+#include "linker.h"
+#include "macros.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "system/system.h"
+#include "text/text.h"
+#include "types.h"
 
 #ifdef CACHE_D_S
-#include    "cache.h"
-#include    "macros_core.h"
+#include "cache.h"
+#include "macros_core.h"
 #endif
 
 // uKOS-X specific (see the module.h)

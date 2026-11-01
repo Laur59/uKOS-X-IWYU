@@ -7,17 +7,17 @@
  *  – Connect the "led" manager to the GPIO SIO hardware.
  */
 
-#include    "led/led.h"
+#include "led/led.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "macros_core.h"
+#include "board.h"
+#include "macros_core.h"
 #ifdef __riscv
-#include    "macros_soc.h"
+#include "macros_soc.h"
 #endif
-#include    "os_errors.h"
-#include    "soc_reg.h"
+#include "os_errors.h"
+#include "soc_reg.h"
 
 static  bool    vMute;
 

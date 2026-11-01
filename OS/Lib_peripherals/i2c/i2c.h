@@ -22,10 +22,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "i2c_common.h"
-#include    "types.h"
+#include "i2c_common.h"
+#include "types.h"
 
 typedef enum {
             KI2C0 = (((uint32_t)'i'<<24U) | ((uint32_t)'2'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'0'),    // i2c0 manager

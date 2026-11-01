@@ -18,23 +18,23 @@
  *           int32_t kern_getSemaphoreById(const char_t identifier, sema_t **handle) *
  */
 
-#include    "semaphores.h"
-#include    "kern/private/private_semaphores.h"
+#include "semaphores.h"
+#include "kern/private/private_semaphores.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_identifiers.h"
-#include    "kern/private/private_lists.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_kern.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "syscallDispatcher.h"       // IWYU pragma: keep
-#include    "types.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_identifiers.h"
+#include "kern/private/private_lists.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_kern.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "syscallDispatcher.h"       // IWYU pragma: keep
+#include "types.h"
 
 sema_t      vKern_sema[KNB_CORES][KKERN_NB_SEMAPHORES];
 uint16_t    vKern_nbSema[KNB_CORES];

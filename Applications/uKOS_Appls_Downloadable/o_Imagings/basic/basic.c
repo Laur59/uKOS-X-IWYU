@@ -21,25 +21,25 @@
  *
  */
 
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "board.h"
-#include    "crt0.h"
-#include    "serial/serial.h"
-#include    "imager/imager.h"
-#include    "imager_common.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "led/led.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
-#include    "urt0/urt0.h"
+#include "board.h"
+#include "crt0.h"
+#include "serial/serial.h"
+#include "imager/imager.h"
+#include "imager_common.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "led/led.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
+#include "urt0/urt0.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

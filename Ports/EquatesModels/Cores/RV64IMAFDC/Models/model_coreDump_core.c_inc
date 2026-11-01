@@ -14,18 +14,18 @@
  *   cb_signal local_printFunction
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
+#include <inttypes.h>
+#include <stdio.h>
 
-#include    "cmns.h"
-#include    "core.h"
-#include    "core_reg.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "record/private/private_recordDump.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "cmns.h"
+#include "core.h"
+#include "core_reg.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "record/private/private_recordDump.h"
+#include "serial/serial.h"
+#include "types.h"
 
 static  uintptr_t   *vStackBefore[KNB_CORES], *vStackAfter[KNB_CORES], vStackCoreDump[KNB_CORES][ENDREG];
 static  uint64_t    vExceptionNb[KNB_CORES];

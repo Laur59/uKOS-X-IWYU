@@ -7,23 +7,23 @@
  * Split out of crt0.c so that the C-runtime bootstrap stays kernel-agnostic.
  */
 
-#include    "crt0.h"
+#include "crt0.h"
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "cmns.h"
+#include "cmns.h"
 #ifndef RV32IMAC_S
-#include    "core.h"  // for core_getMSP, core_getPSP
+#include "core.h"  // for core_getMSP, core_getPSP
 #endif
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "record/private/private_recordDump.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "record/private/private_recordDump.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // Prototypes
 

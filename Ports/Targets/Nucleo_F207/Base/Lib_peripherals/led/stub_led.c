@@ -6,16 +6,16 @@
  * Goal:     stub for the "led" manager module.
  */
 
-#include    "led/led.h"
+#include "led/led.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "soc_reg.h"
-#include    "macros_core.h"
+#include "board.h"
+#include "soc_reg.h"
+#include "macros_core.h"
 // macros_soc.h is required because INTERRUPTION_OFF uses KINT_IMASK_OFF, KNVIC_PRIORITY_SHIFT
-#include    "macros_soc.h"      // IWYU pragma: keep
-#include    "os_errors.h"
+#include "macros_soc.h"      // IWYU pragma: keep
+#include "os_errors.h"
 
 static  bool    vMute;
 

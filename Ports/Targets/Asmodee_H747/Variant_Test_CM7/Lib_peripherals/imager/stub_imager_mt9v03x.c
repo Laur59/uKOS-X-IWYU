@@ -7,19 +7,19 @@
  *           MT9V03x device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Lib_peripherals/imager_common.h"
-#include    "MT9V03x/MT9V03x.h"
-#include    "board.h"
-#include    "i2c_common.h"
-#include    "i2c0/i2c0.h"
-#include    "i2c/i2c.h"
-#include    "imager/imager.h"
-#include    "kern/kern.h"
-#include    "os_errors.h"
-#include    "soc_reg.h"
-#include    "types.h"
+#include "Lib_peripherals/imager_common.h"
+#include "MT9V03x/MT9V03x.h"
+#include "board.h"
+#include "i2c_common.h"
+#include "i2c0/i2c0.h"
+#include "i2c/i2c.h"
+#include "imager/imager.h"
+#include "kern/kern.h"
+#include "os_errors.h"
+#include "soc_reg.h"
+#include "types.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -255,4 +255,4 @@ static  int32_t local_setAptina(mt9v03x_t *cnfTable) {
     }
 }
 
-#include    "model_imager_dcmi_dma2.c_inc"
+#include "model_imager_dcmi_dma2.c_inc"

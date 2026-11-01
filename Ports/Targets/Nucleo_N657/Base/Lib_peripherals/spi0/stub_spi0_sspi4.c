@@ -6,9 +6,9 @@
  * Goal:     stub for the connection of the "spi0" manager to the sspi4 device.
  */
 
-#include    "clockTree.h"
-#include    "macros_core.h"
-#include    "soc_reg.h"
+#include "clockTree.h"
+#include "macros_core.h"
+#include "soc_reg.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -37,4 +37,4 @@ static  void    cb_enable(void) {
     REG(RCC)->APB2LPENR |= RCC_APB2LPENR_SPI4LPEN;
 }
 
-#include    "model_spi.c_inc"
+#include "model_spi.c_inc"

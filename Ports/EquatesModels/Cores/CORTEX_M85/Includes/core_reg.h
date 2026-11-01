@@ -10,17 +10,17 @@
 
 // IWYU pragma: begin_exports
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/core_addendum.h"
-#include    "Registers/core_debug.h"
-#include    "Registers/fpe.h"
-#include    "Registers/icb.h"
-#include    "Registers/memsys.h"
-#include    "Registers/mpu.h"
-#include    "Registers/nvic.h"
-#include    "Registers/sau.h"
-#include    "Registers/scb.h"
-#include    "Registers/systick.h"
+#include "Registers/core_addendum.h"
+#include "Registers/core_debug.h"
+#include "Registers/fpe.h"
+#include "Registers/icb.h"
+#include "Registers/memsys.h"
+#include "Registers/mpu.h"
+#include "Registers/nvic.h"
+#include "Registers/sau.h"
+#include "Registers/scb.h"
+#include "Registers/systick.h"
 
 // IWYU pragma: end_exports

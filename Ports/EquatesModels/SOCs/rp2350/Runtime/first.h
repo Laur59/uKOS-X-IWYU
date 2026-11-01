@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #ifdef __riscv
 
-#include    "macros_soc.h"
+#include "macros_soc.h"
 
 // Ecall context-switch state, per hart: the trap handler stores the kernel
 // message (a0) and the stack pointer here, and reloads sp from it before mret.

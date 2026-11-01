@@ -31,11 +31,11 @@
  * this: dprintf is uKOS-X's own, and is exported from the system image.
  */
 
-#include    <stddef.h>
-#include    <stdint.h>
-#include    <sys/types.h>   // for ssize_t (llvmlibc compat header)
+#include <stddef.h>
+#include <stdint.h>
+#include <sys/types.h>   // for ssize_t (llvmlibc compat header)
 
-#include    "llvmlibc/llvmlibc.h"
+#include "llvmlibc/llvmlibc.h"
 
 #ifdef CONFIG_MAN_LLVMLIBC_S
 

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 /*!
  * \addtogroup Lib_peripherals

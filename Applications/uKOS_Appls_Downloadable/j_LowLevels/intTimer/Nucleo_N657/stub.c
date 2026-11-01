@@ -5,19 +5,19 @@
  * Hardware specific stub.
  */
 
-#include    "stub.h"
+#include "stub.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "clockTree.h"
-#include    "core_reg.h"
-#include    "exce.h"
-#include    "soc_reg.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "macros_core.h"
-#include    "kern/kern.h"
-#include    "led/led.h"
+#include "clockTree.h"
+#include "core_reg.h"
+#include "exce.h"
+#include "soc_reg.h"
+#include "macros.h"
+#include "macros_soc.h"
+#include "macros_core.h"
+#include "kern/kern.h"
+#include "led/led.h"
 
 #define KTTIM1MS        1000U                                   // For 1-ms (1000-Hz)
 #define KFPRET7         1000000U                                // 1'000'000-Hz

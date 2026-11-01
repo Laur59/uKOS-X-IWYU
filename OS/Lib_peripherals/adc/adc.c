@@ -5,17 +5,17 @@
  * Goal:     adc manager.
  */
 
-#include    "adc.h"
+#include "adc.h"
 
-#include    <stdlib.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

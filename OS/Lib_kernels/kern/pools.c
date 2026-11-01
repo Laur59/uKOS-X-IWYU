@@ -18,21 +18,21 @@
  *           int32_t kern_getPoolById(const char_t *identifier, pool_t **handle) *
  */
 
-#include    "pools.h"
-#include    "kern/private/private_pools.h"
+#include "pools.h"
+#include "kern/private/private_pools.h"
 
-#include    <stddef.h>
-#include    <stdint.h>
+#include <stddef.h>
+#include <stdint.h>
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_identifiers.h"
-#include    "kern/private/private_processes.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_identifiers.h"
+#include "kern/private/private_processes.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "os_errors.h"
+#include "types.h"
 
 #if (KKERN_NB_POOLS > 0)
 pool_t      vKern_pool[KNB_CORES][KKERN_NB_POOLS];

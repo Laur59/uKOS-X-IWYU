@@ -9,22 +9,22 @@
 #define     _POSIX_C_SOURCE     200809L
 
 // C Standard Library headers
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 // uKOS-X specific headers
-#include    "../../Lib_peripherals/lcd0/lcd0.h"
-#include    "../../Lib_peripherals/imgk/imgk.h"
-#include    "serial/serial.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"       // IWYU pragma: keep
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "../../Lib_peripherals/lcd0/lcd0.h"
+#include "../../Lib_peripherals/imgk/imgk.h"
+#include "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"       // IWYU pragma: keep
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

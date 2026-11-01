@@ -14,25 +14,25 @@
  *           void    kern_privilegeElevate(void) * !!! Not for user applications
  */
 
-#include    "privileges.h"
+#include "privileges.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 #ifdef PRIVILEGED_USER_S
-#include    <stdlib.h>
+#include <stdlib.h>
 #endif
 
-#include    "Registers/core_addendum.h" // IWYU pragma: keep
-#include    "core.h"                    // IWYU pragma: keep
-#include    "debug.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "syscallDispatcher.h"       // IWYU pragma: keep
+#include "Registers/core_addendum.h" // IWYU pragma: keep
+#include "core.h"                    // IWYU pragma: keep
+#include "debug.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "syscallDispatcher.h"       // IWYU pragma: keep
 #ifdef PRIVILEGED_USER_S
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
-#include    "macros_core.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
+#include "macros_core.h"
+#include "record/record.h"
+#include "types.h"
 #else
 #endif
 

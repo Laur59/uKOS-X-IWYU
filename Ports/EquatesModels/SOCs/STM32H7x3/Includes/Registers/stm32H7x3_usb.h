@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 // USB_OTG_Core_register
 // ---------------------

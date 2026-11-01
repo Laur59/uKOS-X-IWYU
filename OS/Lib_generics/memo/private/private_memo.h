@@ -29,8 +29,8 @@
  * @{
  */
 
-#include    "kern/kern.h"
-#include    "memo/memo.h"
+#include "kern/kern.h"
+#include "memo/memo.h"
 
 #define KMAB_SIGNATURE      (((uint32_t)'m'<<24U) | ((uint32_t)'a'<<16U) | ((uint32_t)'b'<<8U) | (uint32_t)'_')
 

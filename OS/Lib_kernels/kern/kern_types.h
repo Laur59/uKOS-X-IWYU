@@ -49,9 +49,9 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "types.h"       // IWYU pragma: keep
+#include "types.h"       // IWYU pragma: keep
 
 // Default I/O channel of a process
 // --------------------------------

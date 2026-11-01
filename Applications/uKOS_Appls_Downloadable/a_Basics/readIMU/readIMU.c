@@ -30,34 +30,34 @@
  *
  */
 
-#include    <stdio.h>
+#include <stdio.h>
 
-#include    <fcntl.h>
+#include <fcntl.h>
 
-#include    "crt0.h"
-#include    "serial/serial.h"
-#include    "imu/imu.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "led/led.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "crt0.h"
+#include "serial/serial.h"
+#include "imu/imu.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "led/led.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 #define     DISP_COOLTERM_S             // Display on the CoolTerm
                                         // Display on Sysquake
 
 #ifdef Alastor_H743_S
-#include    "urt1/urt1.h"
+#include "urt1/urt1.h"
 #define     KCHANNEL    KURT1
 #endif
 
 #ifdef Asmodee_H747_S
-#include    "cdc0/cdc0.h"
+#include "cdc0/cdc0.h"
 #define     KCHANNEL    KCDC0
 #endif
 

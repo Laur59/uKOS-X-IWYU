@@ -7,19 +7,19 @@
  * hardware generator model of the SoC (model_random_hard.c_inc, Generic fallback).
  */
 
-#include    "random.h"
+#include "random.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_RANDOM_S
 
@@ -188,6 +188,6 @@ static  void    model_random_soft_read(uint32_t *number) {
 // fallback that serves KRANDOM_HARD from the soft generator: the include path
 // lists the SoC directory before the Generic one, so the bare name selects it.
 
-#include    "model_random_hard.c_inc"   // IWYU pragma: keep
+#include "model_random_hard.c_inc"   // IWYU pragma: keep
 
 #endif

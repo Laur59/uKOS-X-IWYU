@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include    <stdint.h>
-#include    <stdatomic.h>
+#include <stdint.h>
+#include <stdatomic.h>
 
-#include    "macros_soc.h"
-#include    "core_reg.h"
+#include "macros_soc.h"
+#include "core_reg.h"
 
 #define core_getBASEPRI     core_getBASEPRI_S
 #define core_setBASEPRI     core_setBASEPRI_S

@@ -78,8 +78,8 @@
 /*
  * Standard file descriptor constants (matching newlib.h)
  */
-#include    <unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
-#include    <stdio.h>         // for dprintf declaration (if available)
+#include <unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
+#include <stdio.h>         // for dprintf declaration (if available)
 
 // Integer equivalence of stdin, stdout, stderr
 

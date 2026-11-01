@@ -6,9 +6,9 @@
  *          uKOS-X rocket_05 image.
  */
 
-#include    "rockets.h"
+#include "rockets.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #ifndef LV_ATTRIBUTE_MEM_ALIGN
 #define LV_ATTRIBUTE_MEM_ALIGN

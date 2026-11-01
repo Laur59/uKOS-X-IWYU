@@ -5,16 +5,16 @@
  * Goal:     echo tool; echo from a Serial Communication Manager.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "kern/kern.h"
-#include    "led/led.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "led/led.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

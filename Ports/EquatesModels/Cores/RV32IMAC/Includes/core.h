@@ -8,11 +8,11 @@
 
 #pragma once
 
-#include    <stdint.h>
-#include    <stdatomic.h>
+#include <stdint.h>
+#include <stdatomic.h>
 
-#include    "core_reg.h"
-#include    "macros_soc.h"
+#include "core_reg.h"
+#include "macros_soc.h"
 
 /*
  * \brief core_getCSR

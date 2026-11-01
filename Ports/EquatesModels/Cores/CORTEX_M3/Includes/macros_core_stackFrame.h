@@ -10,14 +10,14 @@
 
 #pragma once
 
-#include    <stdlib.h>      // IWYU pragma: keep (for exit)
+#include <stdlib.h>      // IWYU pragma: keep (for exit)
 
-#include    "Registers/core_debug.h"
-#include    "crt0.h"        // IWYU pragma: keep (for exit_terminate)
-#include    "kern/kern.h"
-#include    "macros_soc.h"
-#include    "record/record.h"
-#include    "types.h"       // IWYU pragma: keep (for EXIT_OS_PANIC_STACK_UNDERFLOW)
+#include "Registers/core_debug.h"
+#include "crt0.h"        // IWYU pragma: keep (for exit_terminate)
+#include "kern/kern.h"
+#include "macros_soc.h"
+#include "record/record.h"
+#include "types.h"       // IWYU pragma: keep (for EXIT_OS_PANIC_STACK_UNDERFLOW)
 
 // For the stack sanity
 

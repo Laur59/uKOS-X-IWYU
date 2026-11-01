@@ -8,13 +8,13 @@
  *           the uKernel.
  */
 
-#include    "statistics.h"
+#include "statistics.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
-#include    "macros_soc.h"
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
+#include "macros_soc.h"
 
 #if (KKERN_WITH_STATISTICS_S == true)
 

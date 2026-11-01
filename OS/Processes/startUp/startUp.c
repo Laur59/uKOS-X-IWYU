@@ -6,21 +6,21 @@
  *           before jumping to the selected function.
  */
 
-#include    "startUp/startUp.h"
+#include "startUp/startUp.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "serial/serial.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
+#include "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core_stackFrame.h"
 // memo/memo.h is required for PROCESS_STACKMALLOC
-#include    "memo/memo.h"       // IWYU pragma: keep
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "memo/memo.h"       // IWYU pragma: keep
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

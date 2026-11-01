@@ -16,21 +16,21 @@
  *           int32_t kern_getSoftwareTimerById(const char_t *identifier, stim_t **handle) *
  */
 
-#include    "softwareTimers.h"
-#include    "kern/private/private_softwareTimer.h"
+#include "softwareTimers.h"
+#include "kern/private/private_softwareTimer.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_identifiers.h"
-#include    "kern/private/private_processes.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_identifiers.h"
+#include "kern/private/private_processes.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)
 #define KNB_MAX_STIM_IN_QUEUE   10U

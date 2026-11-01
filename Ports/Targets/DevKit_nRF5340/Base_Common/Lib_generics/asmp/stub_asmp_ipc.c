@@ -39,17 +39,17 @@
  *           In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
  */
 
-#include    "asmp/asmp.h"
+#include "asmp/asmp.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "core_reg.h"
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "soc_reg.h"
-#include    "types.h"
+#include "core_reg.h"
+#include "kern/kern.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "soc_reg.h"
+#include "types.h"
 
 #define IPC_0_PROCESS_0     0U              // Process ID for IPC, message valid for core 0
 #define IPC_1_PROCESS_1     1U              // Process ID for IPC, message valid for core 1

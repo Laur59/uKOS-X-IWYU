@@ -5,28 +5,28 @@
  * Goal:     Bootstrap of the system
  */
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 #ifdef RV32IMAC_S
-#include    "core.h"    // IWYU pragma: keep (for core_setBitCSR)
+#include "core.h"    // IWYU pragma: keep (for core_setBitCSR)
 #endif
-#include    "crt0.h"
-#include    "kern/kern.h"
-#include    "macros.h"
+#include "crt0.h"
+#include "kern/kern.h"
+#include "macros.h"
 #ifndef RV64IMAFDC_S
-#include    "macros_core.h"
+#include "macros_core.h"
 #endif
-#include    "macros_runtime.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
+#include "macros_runtime.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
 #ifdef CONFIG_MAN_SERIAL_S
-#include    "serial/serial.h"
+#include "serial/serial.h"
 #endif
-#include    "system/system.h"
-#include    "types.h"
+#include "system/system.h"
+#include "types.h"
 
 
 // uKOS-X specific (see the module.h)

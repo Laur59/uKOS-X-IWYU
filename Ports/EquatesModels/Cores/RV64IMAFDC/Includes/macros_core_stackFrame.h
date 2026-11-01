@@ -10,15 +10,15 @@
 
 #pragma once
 
-#include    <stdlib.h>      // IWYU pragma: keep (for exit)
+#include <stdlib.h>      // IWYU pragma: keep (for exit)
 
-#include    "Registers/rv64_csr.h"
-#include    "crt0.h"        // IWYU pragma: keep (for exit_terminate)
-#include    "kern/kern.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"       // IWYU pragma: keep for KMEMO_ALIGN_8
-#include    "record/record.h"
-#include    "types.h"       // IWYU pragma: keep (for EXIT_OS_PANIC_STACK_UNDERFLOW)
+#include "Registers/rv64_csr.h"
+#include "crt0.h"        // IWYU pragma: keep (for exit_terminate)
+#include "kern/kern.h"
+#include "macros_soc.h"
+#include "memo/memo.h"       // IWYU pragma: keep for KMEMO_ALIGN_8
+#include "record/record.h"
+#include "types.h"       // IWYU pragma: keep (for EXIT_OS_PANIC_STACK_UNDERFLOW)
 
 // For the stack sanity
 
@@ -90,9 +90,9 @@ extern              proc_t  *vKern_runProc[KNB_CORES];
 // ------------------
 
 #if ((!defined(__clang__)) && (__GNUC__ >= 14))
-#include    "macros_core_stackFrame_gcc.h"          // IWYU pragma: export
+#include "macros_core_stackFrame_gcc.h"          // IWYU pragma: export
 #endif
 
 #ifdef __clang__
-#include    "macros_core_stackFrame_clang.h"        // IWYU pragma: export
+#include "macros_core_stackFrame_clang.h"        // IWYU pragma: export
 #endif

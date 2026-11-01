@@ -5,15 +5,15 @@
  * Goal:     Kill a module (process or other).
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "system/system.h"
-#include    "types.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "system/system.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

@@ -33,7 +33,7 @@
 // struct timeval, suseconds_t and time_t live in <time.h> under baremetal
 // LLVM libc; gettimeofday() is declared below.
 
-#include    <time.h>    // IWYU pragma: export
+#include <time.h>    // IWYU pragma: export
 
 #ifdef __cplusplus
 extern "C" {

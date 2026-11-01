@@ -10,10 +10,10 @@
  *   local_APSRamWriteRegistar
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros_core.h"
-#include    "soc_reg.h"
+#include "macros_core.h"
+#include "soc_reg.h"
 
 // Prototypes
 

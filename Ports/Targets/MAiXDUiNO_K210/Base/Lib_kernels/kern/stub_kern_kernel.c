@@ -6,11 +6,11 @@
  * Goal:     stub for the connection of the "kern" manager to the uKernel device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "clockTree.h"
-#include    "kern/kern.h"
-#include    "macros_soc.h"
+#include "clockTree.h"
+#include "kern/kern.h"
+#include "macros_soc.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -20,8 +20,8 @@
 #define KFREQUENCY_T3   KFREQUENCY_TIM
 #define KFREQUENCY_T4   KFREQUENCY_TIM
 
-#include    "model_kernel_tick_tim_0A_1A_2A_ecall_C0.c_inc"
-#include    "model_kernel_tick_tim_0B_1B_2B_ecall_C1.c_inc"
+#include "model_kernel_tick_tim_0A_1A_2A_ecall_C0.c_inc"
+#include "model_kernel_tick_tim_0B_1B_2B_ecall_C1.c_inc"
 
 void    stub_kern_init(void) {
     uint32_t    core;

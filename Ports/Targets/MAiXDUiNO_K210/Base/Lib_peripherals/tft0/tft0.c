@@ -6,16 +6,16 @@
  * Goal:     tft0 manager (for nt35310).
  */
 
-#include    "tft0.h"
+#include "tft0.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "../oct0/oct0.h"
-#include    "Registers/K210_gpiohs.h"
-#include    "board.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "modules.h"
+#include "../oct0/oct0.h"
+#include "Registers/K210_gpiohs.h"
+#include "board.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "modules.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

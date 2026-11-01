@@ -5,29 +5,29 @@
  * Goal:     Display the structure of a uKOS-X object.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "kern/private/private_mailboxes.h"
-#include    "kern/private/private_mutexes.h"
+#include "kern/kern.h"
+#include "kern/private/private_mailboxes.h"
+#include "kern/private/private_mutexes.h"
 #if KKERN_NB_PRECISE_SIGNALS!=0
-#include    "kern/private/private_preciseSignals.h"
+#include "kern/private/private_preciseSignals.h"
 #endif
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_semaphores.h"
-#include    "kern/private/private_signals.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_semaphores.h"
+#include "kern/private/private_signals.h"
 #if KKERN_NB_SOFTWARE_TIMERS!=0
-#include    "kern/private/private_softwareTimer.h"
+#include "kern/private/private_softwareTimer.h"
 #endif
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "text/text.h"
-#include    "types.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "text/text.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

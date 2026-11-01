@@ -7,20 +7,20 @@
  *           every 2h the Unix time Timer is updated from the RTC.
  */
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "calendar/calendar.h"
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "calendar/calendar.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

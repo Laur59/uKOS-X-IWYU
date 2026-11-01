@@ -39,19 +39,19 @@
 
 #ifdef CONFIG_MAN_ASMP_S
 
-#include    "asmp.h"
+#include "asmp.h"
 
-#include    <stdint.h>
-#include    <string.h>
+#include <stdint.h>
+#include <string.h>
 
-#include    "kern/kern.h"
-#include    "linker.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "linker.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

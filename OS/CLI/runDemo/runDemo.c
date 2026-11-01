@@ -7,15 +7,15 @@
  *          APSRam and executed.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <string.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <string.h>
 
-#include    "linker.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "linker.h"
+#include "macros.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "types.h"
 
 
 // uKOS-X specific (see the module.h)

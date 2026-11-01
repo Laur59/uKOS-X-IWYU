@@ -7,21 +7,21 @@
  *           before jumping to the selected function.
  */
 
-#include    "startUp/startUp.h"
+#include "startUp/startUp.h"
 
-#include    <inttypes.h>
-#include    <stdio.h>
+#include <inttypes.h>
+#include <stdio.h>
 
-#include    "serial_common.h"
-#include    "serial/serial.h"
-#include    "ip.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "switch/switch.h"
-#include    "os_errors.h"
-#include    "system/system.h"
-#include    "types.h"
+#include "serial_common.h"
+#include "serial/serial.h"
+#include "ip.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "modules.h"
+#include "switch/switch.h"
+#include "os_errors.h"
+#include "system/system.h"
+#include "types.h"
 
 // Bootstrap function table
 // ------------------------

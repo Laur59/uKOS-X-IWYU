@@ -6,18 +6,18 @@
  *           This tool allows to operate with an i2c device.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "i2c/i2c.h"
-#include    "i2c_common.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "text/text.h"
-#include    "types.h"
+#include "i2c/i2c.h"
+#include "i2c_common.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "text/text.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

@@ -7,15 +7,15 @@
  *           via the spi2 device.
  */
 
-#include    "temperature/temperature.h"
+#include "temperature/temperature.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "LSM9DS1/LSM9DS1.h"
-#include    "kern/kern.h"
+#include "LSM9DS1/LSM9DS1.h"
+#include "kern/kern.h"
 // os_errors.h is required for KERR_TMP0_NOERR, KERR_TMP0_SYCNA
-#include    "os_errors.h"       // IWYU pragma: keep
-#include    "shared_spi0/shared_spi0.h"
+#include "os_errors.h"       // IWYU pragma: keep
+#include "shared_spi0/shared_spi0.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -169,4 +169,4 @@ static  uint8_t local_writeReadSPI(uint8_t data) {
     return wRData;
 }
 
-#include    "model_lsm9ds1_tmp.c_inc"
+#include "model_lsm9ds1_tmp.c_inc"

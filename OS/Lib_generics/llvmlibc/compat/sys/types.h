@@ -25,11 +25,11 @@
 #error "LLVM libc compatibility <sys/types.h> reached from a non-llvmlibc build"
 #endif
 
-#include    <llvm-libc-types/size_t.h>       // IWYU pragma: export
-#include    <llvm-libc-types/ssize_t.h>      // IWYU pragma: export
-#include    <llvm-libc-types/off_t.h>        // IWYU pragma: export
-#include    <llvm-libc-types/time_t.h>       // IWYU pragma: export
-#include    <llvm-libc-types/suseconds_t.h>  // IWYU pragma: export
-#include    <llvm-libc-types/clock_t.h>      // IWYU pragma: export
+#include <llvm-libc-types/size_t.h>       // IWYU pragma: export
+#include <llvm-libc-types/ssize_t.h>      // IWYU pragma: export
+#include <llvm-libc-types/off_t.h>        // IWYU pragma: export
+#include <llvm-libc-types/time_t.h>       // IWYU pragma: export
+#include <llvm-libc-types/suseconds_t.h>  // IWYU pragma: export
+#include <llvm-libc-types/clock_t.h>      // IWYU pragma: export
 
 #endif  // LLVMLIBC_COMPAT_SYS_TYPES_H_

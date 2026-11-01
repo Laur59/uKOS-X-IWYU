@@ -11,20 +11,20 @@
 // for that configuration and wrong for every other one, which needs them all.
 //
 // IWYU pragma: begin_keep
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_softwareTimer.h"
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_softwareTimer.h"
+#include "macros.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "types.h"
 // IWYU pragma: end_keep
 
 #if (KKERN_NB_SOFTWARE_TIMERS > 0)

@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/RP2350_sio.h"
+#include "Registers/RP2350_sio.h"
 
 // Multicore macro
 // ---------------

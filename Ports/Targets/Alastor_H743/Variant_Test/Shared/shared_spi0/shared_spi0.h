@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "os_errors.h"
+#include "os_errors.h"
 
 // Served managers
 // ---------------

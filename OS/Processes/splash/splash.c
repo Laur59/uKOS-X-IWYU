@@ -5,23 +5,23 @@
  * Splash process; draw the boot banner on the LCD display, then terminate.
  */
 
-#include    "splash.h"
+#include "splash.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "ulvgl.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "splash_ui.h"
-#include    "types.h"
+#include "ulvgl.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "splash_ui.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

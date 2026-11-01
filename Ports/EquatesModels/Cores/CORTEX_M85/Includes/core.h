@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include    "core_reg.h"
-#include    "macros_soc.h"
+#include "core_reg.h"
+#include "macros_soc.h"
 
 #define core_getBASEPRI     core_getBASEPRI_S
 #define core_setBASEPRI     core_setBASEPRI_S

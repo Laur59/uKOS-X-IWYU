@@ -9,11 +9,11 @@
  *   LCD_VFP LCD_VSYNC LCD_W cb_enable cb_powerLCD
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/stm32N657_ltdc.h"
-#include    "kern/temporal.h"
-#include    "macros_core.h"
+#include "Registers/stm32N657_ltdc.h"
+#include "kern/temporal.h"
+#include "macros_core.h"
 
 // Prototypes
 

@@ -22,10 +22,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "i2c_common.h"
-#include    "types.h"
+#include "i2c_common.h"
+#include "types.h"
 
 // Semaphores
 // ----------

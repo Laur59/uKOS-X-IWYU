@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "exit_codes.h"      // IWYU pragma: export
+#include "exit_codes.h"      // IWYU pragma: export
 
 // uKOS-X misc
 

@@ -18,19 +18,19 @@
  *   KIMG_TRIGGER cb_configure cb_control cb_getRegister cb_putRegister
  */
 
-#include    <stdint.h>
-#include    <string.h>
+#include <stdint.h>
+#include <string.h>
 
-#include    "Registers/nvic.h"
-#include    "exce.h"
-#include    "imager_common.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "model_I_D_cache.c_inc"
-#include    "os_errors.h"
-#include    "soc_reg.h"
+#include "Registers/nvic.h"
+#include "exce.h"
+#include "imager_common.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "model_I_D_cache.c_inc"
+#include "os_errors.h"
+#include "soc_reg.h"
 
 static              void        (*vHSyncCodeRoutine)(void) = nullptr;
 static              void        (*vFrameCodeRoutine)(void) = nullptr;

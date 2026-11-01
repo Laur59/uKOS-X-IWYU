@@ -5,27 +5,27 @@
  * Goal:     i2c manager.
  */
 
-#include    "i2c.h"
+#include "i2c.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "i2c_common.h"
+#include "i2c_common.h"
 #ifdef CONFIG_MAN_I2C0_S
-#include    "i2c0/i2c0.h"
+#include "i2c0/i2c0.h"
 #endif
 #ifdef CONFIG_MAN_I2C1_S
-#include    "i2c1/i2c1.h"
+#include "i2c1/i2c1.h"
 #endif
 #ifdef CONFIG_MAN_I2C2_S
-#include    "i2c2/i2c2.h"
+#include "i2c2/i2c2.h"
 #endif
 #ifdef CONFIG_MAN_I2C3_S
-#include    "i2c3/i2c3.h"
+#include "i2c3/i2c3.h"
 #endif
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_I2C_S
 

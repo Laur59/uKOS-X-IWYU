@@ -7,16 +7,16 @@
  *           bq27510g3 device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "BQ27510G3/BQ27510G3.h"
-#include    "i2c/i2c.h"
-#include    "i2c0/i2c0.h"
-#include    "i2c_common.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "BQ27510G3/BQ27510G3.h"
+#include "i2c/i2c.h"
+#include "i2c0/i2c0.h"
+#include "i2c_common.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "os_errors.h"
+#include "types.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -137,4 +137,4 @@ static  bool    local_readSubRegister(uint16_t command, uint16_t subCommand, uin
     return status;
 }
 
-#include    "model_bq27510g3.c_inc"
+#include "model_bq27510g3.c_inc"

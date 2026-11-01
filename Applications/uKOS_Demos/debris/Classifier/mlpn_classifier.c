@@ -6,20 +6,20 @@
  *          mlpn classifier.
  */
 
-#include    <math.h>
-#include    <stdio.h>
-#include    <stdlib.h>
-#include    <string.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include    "ulvgl.h"
-#include    "database.h"
-#include    "kern/temporal.h"
-#include    "mlpn/mlpn.h"
-#include    "serial/serial.h"
+#include "ulvgl.h"
+#include "database.h"
+#include "kern/temporal.h"
+#include "mlpn/mlpn.h"
+#include "serial/serial.h"
 
 // MLP model
 
-#include    "./_Models/network.c_inc"
+#include "./_Models/network.c_inc"
 
 extern  void    ui_drawProbability(const char_t *s);
 extern  void    ui_drawClass(const char_t *s);

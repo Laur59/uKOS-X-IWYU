@@ -20,19 +20,19 @@
  *           Discovery_U5G9 @ 160-MHz    1519    1771    1522    2018
  */
 
-#include    "bench.h"
+#include "bench.h"
 
-#include    <stdint.h>
-#include    <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "kern/kern.h"
-#include    "macros_core.h" // for PRIVILEGE_ELEVATE / PRIVILEGE_RESTORE, needed on
+#include "kern/kern.h"
+#include "macros_core.h" // for PRIVILEGE_ELEVATE / PRIVILEGE_RESTORE, needed on
                             // both architectures; on ARM also INTERRUPTION_OFF_HARD
 #ifdef __riscv
-#include    "macros_soc.h"  // RISC-V: INTERRUPTION_OFF in soc
+#include "macros_soc.h"  // RISC-V: INTERRUPTION_OFF in soc
 #endif
-#include    "memo/memo.h"
-#include    "serial/serial.h"
+#include "memo/memo.h"
+#include "serial/serial.h"
 
 // CLI tool specific
 // =================

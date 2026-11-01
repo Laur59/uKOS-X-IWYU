@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "types.h"
 
 /*!
  * \addtogroup Lib_generics

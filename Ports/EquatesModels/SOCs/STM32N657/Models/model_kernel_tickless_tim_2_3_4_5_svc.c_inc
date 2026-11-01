@@ -25,22 +25,22 @@
  *   KFREQUENCY_T2 KFREQUENCY_T3 KFREQUENCY_T4 KFREQUENCY_T5
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/core_debug.h"
-#include    "Registers/nvic.h"
-#include    "clockTree.h"
-#include    "exce.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_preciseSignals.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_scheduler.h"
-#include    "kern/private/private_temporal.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "soc_reg.h"
-#include    "types.h"
+#include "Registers/core_debug.h"
+#include "Registers/nvic.h"
+#include "clockTree.h"
+#include "exce.h"
+#include "kern/kern.h"
+#include "kern/private/private_preciseSignals.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_scheduler.h"
+#include "kern/private/private_temporal.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "soc_reg.h"
+#include "types.h"
 
 #define K1ms        ((float64_t)(0.001))
 

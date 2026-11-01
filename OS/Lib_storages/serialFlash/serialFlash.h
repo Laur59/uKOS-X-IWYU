@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "storage/storage.h"
-#include    "types.h"
+#include "storage/storage.h"
+#include "types.h"
 
 /*!
  * \addtogroup Lib_storages

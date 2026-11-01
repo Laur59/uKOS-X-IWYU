@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include    "../ulvgl.h"
+#include "../ulvgl.h"
 
 extern  const lv_image_dsc_t    debri_01;
 extern  const lv_image_dsc_t    debri_02;

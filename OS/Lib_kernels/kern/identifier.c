@@ -7,11 +7,11 @@
  *           This module is responsible for manipulating the identifiers of the uKernel.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "kern/private/private_identifiers.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "kern/private/private_identifiers.h"
+#include "types.h"
 
 /*
  * \brief Compare 2 identifiers (string_1 -> string_2)

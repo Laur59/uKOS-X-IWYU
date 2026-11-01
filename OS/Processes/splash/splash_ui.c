@@ -5,16 +5,16 @@
  * Drawing of the boot banner of the splash process.
  */
 
-#include    "splash_ui.h"
+#include "splash_ui.h"
 
-#include    <inttypes.h>
+#include <inttypes.h>
 
-#include    "ulvgl.h"
-#include    "ip.h"
-#include    "macros.h"
-#include    "switch/switch.h"
-#include    "system/system.h"
-#include    "types.h"
+#include "ulvgl.h"
+#include "ip.h"
+#include "macros.h"
+#include "switch/switch.h"
+#include "system/system.h"
+#include "types.h"
 
 typedef struct  line    line_t;
 

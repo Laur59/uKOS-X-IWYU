@@ -7,18 +7,18 @@
 
 #ifdef CONFIG_MAN_TEXT_S
 
-#include    "text.h"
+#include "text.h"
 
-#include    <stdint.h>
-#include    <string.h>
+#include <stdint.h>
+#include <string.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "serial_common.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "serial_common.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

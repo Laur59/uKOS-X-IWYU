@@ -7,10 +7,10 @@
  *           Multiple profiles
  */
 
-#include    <tusb.h>             // for SystemCoreClock
+#include <tusb.h>             // for SystemCoreClock
 
-#include    "TinyUSB/TinyUSB.h"
-#include    "tusb_option.h"      // for BOARD_TUD_RHPORT, CFG_TUD_CDC, CFG_TUD_MSC
+#include "TinyUSB/TinyUSB.h"
+#include "tusb_option.h"      // for BOARD_TUD_RHPORT, CFG_TUD_CDC, CFG_TUD_MSC
 
 // Save the GCC diagnostic
 //
@@ -19,7 +19,7 @@
 // Ignore the GCC diagnostic
 //
 #pragma GCC diagnostic ignored "-Wpedantic"
-#include    "tusb_types.h"
+#include "tusb_types.h"
 
 #ifdef __clang__
 
@@ -28,20 +28,20 @@
 #pragma GCC diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
 #endif
 
-#include    "usbd.h"
+#include "usbd.h"
 
 #if (CFG_TUD_CDC > 0)
-#include    "Interface/Models/model_TinyUSB_cdc.c_inc"      // IWYU pragma: keep
+#include "Interface/Models/model_TinyUSB_cdc.c_inc"      // IWYU pragma: keep
 #endif
 
 #if (CFG_TUD_MSC > 0)
-#include    "msc/msc_device.h"
-#include    "Interface/Models/model_TinyUSB_msc.c_inc"      // IWYU pragma: keep
+#include "msc/msc_device.h"
+#include "Interface/Models/model_TinyUSB_msc.c_inc"      // IWYU pragma: keep
 #endif
 
 #if (CFG_TUD_VIDEO > 0)
-#include    "video/video_device.h"
-#include    "Interface/Models/model_TinyUSB_video.c_inc"    // IWYU pragma: keep
+#include "video/video_device.h"
+#include "Interface/Models/model_TinyUSB_video.c_inc"    // IWYU pragma: keep
 #endif
 
 // Restore the GCC diagnostic

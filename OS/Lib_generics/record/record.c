@@ -9,20 +9,20 @@
 
 #ifdef CONFIG_MAN_RECORD_S
 
-#include    "record.h"
-#include    "private/private_record.h"
+#include "record.h"
+#include "private/private_record.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "core_reg.h"        // IWYU pragma: keep (for IS_EXCEPTION)
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "core_reg.h"        // IWYU pragma: keep (for IS_EXCEPTION)
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

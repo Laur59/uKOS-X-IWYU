@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #define PLIC_NUM_SOURCES        (EINT_MAX - 1U)
 #define PLIC_NUM_PRIORITIES     7U

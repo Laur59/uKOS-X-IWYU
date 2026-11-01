@@ -30,9 +30,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/core_addendum.h"
+#include "Registers/core_addendum.h"
 
 // h3irq_EnableIRQ
 // Enable external interrupt `irq` via Hazard3 MEIEA.

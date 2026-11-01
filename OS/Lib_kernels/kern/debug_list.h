@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern_types.h"  // IWYU pragma: keep
+#include "kern_types.h"  // IWYU pragma: keep
 
 /*!
  * \addtogroup Lib_kernels

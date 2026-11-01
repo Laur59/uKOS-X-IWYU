@@ -6,22 +6,22 @@
  * Goal:     lcd0 manager.
  */
 
-#include    "lcd0.h"
+#include "lcd0.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
-#include    <string.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include    "../tft0/tft0.h"
-#include    "font.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "../tft0/tft0.h"
+#include "font.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

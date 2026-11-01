@@ -31,7 +31,7 @@
 //         code = EXIT_OS_PANIC_ELEVATION       --->        Failure; panic. System is stopped
 //         code = default                       --->        Failure; panic. System is stopped
 
-#include    <stdint.h>
+#include <stdint.h>
 
 enum : int32_t {
         EXIT_OS_SUCCESS = 0,

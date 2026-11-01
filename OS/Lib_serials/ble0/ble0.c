@@ -5,14 +5,14 @@
  * Goal:    ble0 manager.
  */
 
-#include    "ble0.h"
+#include "ble0.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros.h"
-#include    "modules.h"
-#include    "serial_common.h"  // for urtxCnf_t
-#include    "types.h"
+#include "macros.h"
+#include "modules.h"
+#include "serial_common.h"  // for urtxCnf_t
+#include "types.h"
 
 #ifdef CONFIG_MAN_BLE0_S
 

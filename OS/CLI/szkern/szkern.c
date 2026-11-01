@@ -5,28 +5,28 @@
  * Goal:     Give the uKernel memory footprint.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
+#include <inttypes.h>
+#include <stdio.h>
 
-#include    "kern/kern.h"
-#include    "kern/private/private_mailboxes.h"  // IWYU pragma: keep (for sizeof(mbox_t))
-#include    "kern/private/private_mutexes.h"    // IWYU pragma: keep (for sizeof(mutx_t))
+#include "kern/kern.h"
+#include "kern/private/private_mailboxes.h"  // IWYU pragma: keep (for sizeof(mbox_t))
+#include "kern/private/private_mutexes.h"    // IWYU pragma: keep (for sizeof(mutx_t))
 #if (KKERN_NB_POOLS > 0)
-#include    "kern/private/private_pools.h"      // IWYU pragma: keep (for sizeof(pool_t))
+#include "kern/private/private_pools.h"      // IWYU pragma: keep (for sizeof(pool_t))
 #endif
-#include    "kern/private/private_semaphores.h" // IWYU pragma: keep (for sizeof(sema_t))
+#include "kern/private/private_semaphores.h" // IWYU pragma: keep (for sizeof(sema_t))
 #if (KKERN_NB_SIGNALS > 0)
-#include    "kern/private/private_signals.h"    // IWYU pragma: keep (for sizeof(signgrp_t))
+#include "kern/private/private_signals.h"    // IWYU pragma: keep (for sizeof(signgrp_t))
 #endif
 #if (KKERN_NB_SIGNALS > 0)
-#include    "kern/private/private_softwareTimer.h"  // IWYU pragma: keep (for sizeof(stim_t))
+#include "kern/private/private_softwareTimer.h"  // IWYU pragma: keep (for sizeof(stim_t))
 #endif
-#include    "linker.h"
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "linker.h"
+#include "macros.h"
+#include "macros_core_stackFrame.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

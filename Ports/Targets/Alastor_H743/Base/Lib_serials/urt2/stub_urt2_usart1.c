@@ -9,9 +9,9 @@
 
 #ifdef CONFIG_MAN_URT2_S
 
-#include    "clockTree.h"
-#include    "soc_reg.h"
-#include    "urt2/urt2.h"
+#include "clockTree.h"
+#include "soc_reg.h"
+#include "urt2/urt2.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -72,5 +72,5 @@ static  void    cb_init(void) {
 
 }
 
-#include    "model_usart.c_inc"
+#include "model_usart.c_inc"
 #endif

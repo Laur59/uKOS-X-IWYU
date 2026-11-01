@@ -6,7 +6,7 @@
  * Goal:     Model for controlling the watchdog device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
 /*
  * \brief Arm the watchdog
@@ -16,8 +16,8 @@
  *   I.e for the gd32vf103 series the min-max time is 6.4 < time < 26214.4-ms
  *
  */
-#include    <stdint.h>
-#include    "soc_reg.h"
+#include <stdint.h>
+#include "soc_reg.h"
 
 #define KTIME_WATCHDOG_RES  (256U / 40U)                                        // Resolution of 6-ms; 1 / (40000 / 256)
 #define KTIME_WATCHDOG_GAIN 4096U                                               //

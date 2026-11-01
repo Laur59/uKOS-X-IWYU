@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 // tim1 additional definitions
 // ---------------------------

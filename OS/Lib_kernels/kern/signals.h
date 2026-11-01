@@ -38,10 +38,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern_types.h"  // IWYU pragma: keep
-#include    "types.h"
+#include "kern_types.h"  // IWYU pragma: keep
+#include "types.h"
 
 #define KSIGN_NB_SIGNALS_PER_GROUP              32U             // Number of signals per group (always 32 ... uint32_t)
 #define KSIGN_SIGNALE_WITH_CONTEXT_SWITCH       0U              // Signal with the context switching

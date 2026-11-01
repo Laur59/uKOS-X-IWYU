@@ -5,18 +5,18 @@
  * Goal:     storage manager.
  */
 
-#include    "storage.h"
+#include "storage.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros.h"
-#include    "modules.h"
-#include    "sdcard/sdcard.h"
-#include    "os_errors.h"
+#include "macros.h"
+#include "modules.h"
+#include "sdcard/sdcard.h"
+#include "os_errors.h"
 #ifdef CONFIG_MAN_SERIAL_FLASH_S
-#include    "serialFlash/serialFlash.h"
+#include "serialFlash/serialFlash.h"
 #endif
-#include    "types.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_STORAGE_S
 

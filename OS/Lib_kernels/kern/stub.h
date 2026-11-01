@@ -35,9 +35,9 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern_types.h"  // IWYU pragma: keep
+#include "kern_types.h"  // IWYU pragma: keep
 
 // Modifiable in the makefile: use the PSPLIM & MSPLIM to check the stack overflow (implemented only in armv8.1)
 

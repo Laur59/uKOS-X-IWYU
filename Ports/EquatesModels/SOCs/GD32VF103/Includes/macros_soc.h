@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/GD32VF103_exti.h"    // IWYU pragma: export (for EXTI)
-#include    "Registers/soc_addendum.h"      // IWYU pragma: export (for ECLIC)
+#include "Registers/GD32VF103_exti.h"    // IWYU pragma: export (for EXTI)
+#include "Registers/soc_addendum.h"      // IWYU pragma: export (for ECLIC)
 
 // Multicore macro
 // ---------------

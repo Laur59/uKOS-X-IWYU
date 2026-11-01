@@ -6,13 +6,13 @@
  * Goal:     stub for the connection of the "urt0" manager to the uart1 device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "clockTree.h"
-#include    "macros_soc.h"
-#include    "serial_common.h"
-#include    "soc_reg.h"
-#include    "urt0/urt0.h"
+#include "clockTree.h"
+#include "macros_soc.h"
+#include "serial_common.h"
+#include "soc_reg.h"
+#include "urt0/urt0.h"
 
 // Model callbacks
 // ---------------
@@ -89,8 +89,8 @@ static  void    cb_init_C1(void) {
 #define KUSART_SEMA_TX_C0_S
 #define KUSART_SEMA_TX_C1_S
 
-#include    "model_usart_C0.c_inc"
-#include    "model_usart_C1.c_inc"
+#include "model_usart_C0.c_inc"
+#include "model_usart_C1.c_inc"
 
 int32_t stub_urt0_init(void) {
     uint32_t    core;

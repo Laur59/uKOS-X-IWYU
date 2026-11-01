@@ -6,13 +6,13 @@
  *          Simple UI for the debris demo.
  */
 
-#include    <stdint.h>
-#include    <string.h>
+#include <stdint.h>
+#include <string.h>
 
-#include    "kern/kern.h"
-#include    "macros_soc.h"
-#include    "ulvgl.h"
-#include    "ui.h"
+#include "kern/kern.h"
+#include "macros_soc.h"
+#include "ulvgl.h"
+#include "ui.h"
 
 extern  mutx_t          *vLVGL_API[KNB_CORES];
 extern  lv_image_dsc_t  background;

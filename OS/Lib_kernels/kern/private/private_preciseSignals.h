@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "macros_soc.h"
+#include "kern/kern.h"
+#include "macros_soc.h"
 
 /*!
  * \addtogroup Lib_kernels

@@ -29,10 +29,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "macros_soc.h"
+#include "kern/kern.h"
+#include "macros_soc.h"
 
 enum {
         KSCHE_FORCE_SWITCH_NORM = 0U,                           // Switching process nprmal

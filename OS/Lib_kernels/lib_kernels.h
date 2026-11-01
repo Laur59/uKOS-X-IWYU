@@ -31,8 +31,8 @@
 
 // IWYU pragma: begin_exports
 
-#include    "modules.h"
-#include    "kern/kern.h"
+#include "modules.h"
+#include "kern/kern.h"
 
 // IWYU pragma: end_exports
 

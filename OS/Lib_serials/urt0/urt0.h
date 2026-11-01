@@ -22,10 +22,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "serial_common.h"
-#include    "types.h"
+#include "serial_common.h"
+#include "types.h"
 
 // Semaphores
 // ----------

@@ -20,21 +20,21 @@
  *           int32_t kern_hasPendingTimeoutProcesses(bool *nonInfTOActive) *
  */
 
-#include    "temporal.h"
-#include    "kern/private/private_temporal.h"
+#include "temporal.h"
+#include "kern/private/private_temporal.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_lists.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_kern.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "syscallDispatcher.h"       // IWYU pragma: keep
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_lists.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_kern.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "syscallDispatcher.h"       // IWYU pragma: keep
 
             list_t      vKern_listWait[KNB_CORES];
 volatile    uint32_t    vKern_TimeException[KNB_CORES] = MCSET(0U);

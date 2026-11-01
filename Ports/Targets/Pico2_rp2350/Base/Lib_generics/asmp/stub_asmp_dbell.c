@@ -41,18 +41,18 @@
  *           In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
  */
 
-#include    "asmp/asmp.h"
+#include "asmp/asmp.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/RP2350_sio.h"
-#include    "Registers/nvic.h"
-#include    "Registers/soc_vectors.h"
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "Registers/RP2350_sio.h"
+#include "Registers/nvic.h"
+#include "Registers/soc_vectors.h"
+#include "kern/kern.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "types.h"
 
 #define KMESSAGE_SENT   (1U<<0U)                // Door bell to indicate that the message was sent to the other core
 #define KMESSAGE_ACK    (1U<<1U)                // Door bell to indicate to the other core the the message was read

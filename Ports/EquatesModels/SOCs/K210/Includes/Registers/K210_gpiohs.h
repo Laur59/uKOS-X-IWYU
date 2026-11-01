@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 // GPIOHS address definitions
 // --------------------------

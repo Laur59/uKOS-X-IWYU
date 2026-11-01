@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "types.h"
+#include "types.h"
 
 extern  const   char_t      aStrApplication[];
 extern  const   char_t      aStrHelp[];

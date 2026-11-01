@@ -53,8 +53,8 @@
 
 #pragma once
 
-#include    <sys/reent.h>
-#include    <unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
+#include <sys/reent.h>
+#include <unistd.h>        // for STDERR_FILENO, STDIN_FILENO, STDOUT_FILENO
 
 /*!
  * \addtogroup Lib_generics

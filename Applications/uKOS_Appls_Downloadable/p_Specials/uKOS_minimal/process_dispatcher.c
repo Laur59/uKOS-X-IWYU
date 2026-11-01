@@ -7,21 +7,21 @@
  *         process it
  */
 
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "led/led.h"
-#include    "os_errors.h"
-#include    "queue.h"
-#include    "record/record.h"
-#include    "types.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "led/led.h"
+#include "os_errors.h"
+#include "queue.h"
+#include "record/record.h"
+#include "types.h"
+#include "record/record.h"
+#include "serial/serial.h"
 
 extern  mbox_t  *vQueue_dispatcher;
 

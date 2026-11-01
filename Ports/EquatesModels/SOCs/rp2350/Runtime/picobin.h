@@ -42,10 +42,10 @@
 
 #pragma once
 
-#include    <stdint.h>  // for uint32_t, int32_t
+#include <stdint.h>  // for uint32_t, int32_t
 
 #ifndef NO_PICO_PLATFORM
-#include    "pico/platform.h"
+#include "pico/platform.h"
 #else
 #ifndef _u
 #ifdef  __ASSEMBLER__

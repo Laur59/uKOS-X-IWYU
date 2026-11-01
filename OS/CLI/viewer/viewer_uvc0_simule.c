@@ -6,24 +6,24 @@
  *           This tool allows to send a simulated image via the uvc0 manager.
  */
 
-#include    "viewer/viewer_uvc0.h"
+#include "viewer/viewer_uvc0.h"
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
-#include    <string.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include    "TinyUSB_interface.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "TinyUSB_interface.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

@@ -10,26 +10,26 @@
  *           !!! the variable into the RAM.
  */
 
-#include    "init.h"
+#include "init.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "clockTree.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "soc_reg.h"
+#include "board.h"
+#include "clockTree.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "soc_reg.h"
 
 #ifdef __riscv
 
-#include    <stdlib.h>          // for exit
+#include <stdlib.h>          // for exit
 
-#include    "cmns.h"
-#include    "core.h"            // IWYU pragma: keep (core_setBitCSR used via INTERRUPTION_ON_HARD)
-#include    "crt0.h"            // for exce_init, init_relocate, boot
-#include    "memo/private/private_memo.h"   // for vMemo_heapInfo
+#include "cmns.h"
+#include "core.h"            // IWYU pragma: keep (core_setBitCSR used via INTERRUPTION_ON_HARD)
+#include "crt0.h"            // for exce_init, init_relocate, boot
+#include "memo/private/private_memo.h"   // for vMemo_heapInfo
 #ifdef PRIVILEGED_USER_S
-#include    "Registers/pmp.h"   // SET_PMP_REGION – static PMP partition
+#include "Registers/pmp.h"   // SET_PMP_REGION – static PMP partition
 #endif
 
 // RISC-V specific runtime
@@ -466,11 +466,11 @@ void    main_C1(void) {              // NOLINT(misc-use-internal-linkage): calle
 
 #else
 
-#include    "core_reg.h"
-#include    "first.h"
-#include    "linker.h"
-#include    "macros.h"
-#include    "modules.h"
+#include "core_reg.h"
+#include "first.h"
+#include "linker.h"
+#include "macros.h"
+#include "modules.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

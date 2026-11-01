@@ -5,10 +5,10 @@
  * Goal:        stub for the connection of the "serialFlash" manager device by qspi device.
  */
 
-#include    "Registers/stm32H7x3_quadspi.h"  // for QUADSPI
-#include    "Registers/stm32H7x3_rcc.h"
-#include    "W25Q128J/W25Q128J.h"            // IWYU pragma: export
-#include    "clockTree.h"                    // for KFREQUENCY_AHB3
+#include "Registers/stm32H7x3_quadspi.h"  // for QUADSPI
+#include "Registers/stm32H7x3_rcc.h"
+#include "W25Q128J/W25Q128J.h"            // IWYU pragma: export
+#include "clockTree.h"                    // for KFREQUENCY_AHB3
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -39,4 +39,4 @@ static  void    cb_enable(void) {
     RCC->AHB3ENR |= RCC_AHB3ENR_QSPIEN;
 }
 
-#include    "model_flash_qspi.c_inc"
+#include "model_flash_qspi.c_inc"

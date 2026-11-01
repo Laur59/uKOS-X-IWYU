@@ -5,11 +5,11 @@
  * Goal:    stub for the connection of the "sdcard" manager with the SDMMC1 device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "clockTree.h"
-#include    "sdcard/sdcard.h"
-#include    "soc_reg.h"
+#include "clockTree.h"
+#include "sdcard/sdcard.h"
+#include "soc_reg.h"
 
 #undef  WITH_SD_INSERTED_S
 
@@ -45,4 +45,4 @@ static  void    cb_control([[maybe_unused]] uint8_t mode) {
     RCC->AHB3ENR |= RCC_AHB3ENR_SDMMC1EN;
 }
 
-#include    "model_sdcard_SDMMC.c_inc"
+#include "model_sdcard_SDMMC.c_inc"

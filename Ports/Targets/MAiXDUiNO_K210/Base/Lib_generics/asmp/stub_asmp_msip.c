@@ -39,19 +39,19 @@
  *           In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
  */
 
-#include    "asmp/asmp.h"
+#include "asmp/asmp.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/rv64_csr.h"
-#include    "Registers/K210_clint.h"
-#include    "core.h"
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "spin.h"
-#include    "types.h"
+#include "Registers/rv64_csr.h"
+#include "Registers/K210_clint.h"
+#include "core.h"
+#include "kern/kern.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "spin.h"
+#include "types.h"
 
 static  const       char_t      *tableCoreReference[KNB_CORES] = {
                                     "RISC-V_C0",

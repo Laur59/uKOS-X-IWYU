@@ -6,16 +6,16 @@
  * Goal:     Exceptions for the Longan_Nano_F103 module.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "cmns.h"
-#include    "exce.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "soc_reg.h"
+#include "board.h"
+#include "cmns.h"
+#include "exce.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -171,6 +171,6 @@ static  void    local_cpyLEDs(uint8_t value) {
     }
 }
 
-#include    "model_coreDump_generic.c_inc"      // IWYU pragma: keep
-#include    "model_coreDump_core.c_inc"         // IWYU pragma: keep
-#include    "model_coredump_soc.c_inc"          // IWYU pragma: keep
+#include "model_coreDump_generic.c_inc"      // IWYU pragma: keep
+#include "model_coreDump_core.c_inc"         // IWYU pragma: keep
+#include "model_coredump_soc.c_inc"          // IWYU pragma: keep

@@ -25,20 +25,20 @@
  *   KFREQUENCY_T1 KFREQUENCY_T2 KFREQUENCY_T3
  */
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "clockTree.h"
-#include    "core.h"
-#include    "exce.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_scheduler.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "record/record.h"
-#include    "soc_reg.h"
+#include "clockTree.h"
+#include "core.h"
+#include "exce.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_scheduler.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "record/record.h"
+#include "soc_reg.h"
 
 #define K1ms        ((float64_t)(0.001))
 

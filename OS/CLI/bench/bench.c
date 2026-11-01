@@ -9,17 +9,17 @@
  *           - P0: bench performance
  */
 
-#include    "bench.h"
+#include "bench.h"
 
-#include    <stdio.h>
-#include    <stdint.h>
+#include <stdio.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

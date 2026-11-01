@@ -24,12 +24,12 @@
  *           Discovery_U5G9 @ 160-MHz    -
  */
 
-#include    "bench.h"
+#include "bench.h"
 
-#include    <stdio.h>
+#include <stdio.h>
 
-#include    "board.h"       // IWYU pragma: keep (for board_S)
-#include    "serial/serial.h"
+#include "board.h"       // IWYU pragma: keep (for board_S)
+#include "serial/serial.h"
 
 // CLI tool specific
 // =================
@@ -53,9 +53,9 @@ bool    bench_05(void) {
 
 #else
 
-#include    <stdint.h>
-#include    "kern/kern.h"
-#include    "macros_core.h"
+#include <stdint.h>
+#include "kern/kern.h"
+#include "macros_core.h"
 
 static  void     local_loop(uint32_t nb, uint64_t *time);
 

@@ -6,9 +6,9 @@
  * Goal:     Model for controlling the watchdog device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "soc_reg.h"
+#include "soc_reg.h"
 
 /*
  * \brief Arm the watchdog

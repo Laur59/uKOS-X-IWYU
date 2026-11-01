@@ -34,24 +34,24 @@
  *
  */
 
-#include    <cstdlib>
-#include    <stdio.h>
+#include <cstdlib>
+#include <stdio.h>
 
-#include    "crt0.h"
-#include    "serial/serial.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_runtime.h"
-#include    "memo/memo.h"
-#include    "led/led.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "crt0.h"
+#include "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_runtime.h"
+#include "memo/memo.h"
+#include "led/led.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "types.h"
 
 // Include our process manager
-#include    "demo_class.hpp"
+#include "demo_class.hpp"
 
 // uKOS-X specific (see the module.h)
 // ==================================

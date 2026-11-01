@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/scb.h"
+#include "Registers/scb.h"
 
 // NVIC address definitions
 // -----------------------

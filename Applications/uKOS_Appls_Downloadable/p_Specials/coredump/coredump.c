@@ -35,14 +35,14 @@
  *
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "crt0.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "crt0.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "modules.h"
+#include "record/record.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

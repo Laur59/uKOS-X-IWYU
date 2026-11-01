@@ -29,29 +29,29 @@
  *             (xLibrary_update() in OS/Lib_kernels/kern/xLibrary.c).
  */
 
-#include    "llvmlibc.h"
+#include "llvmlibc.h"
 
-#include    <stdarg.h>
-#include    <stddef.h>
-#include    <stdint.h>
-#include    <stdio.h>       // for vsnprintf and ssize_t
-#include    <string.h>
+#include <stdarg.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdio.h>       // for vsnprintf and ssize_t
+#include <string.h>
 
-#include    <errno.h>
-#include    <time.h>        // for time_t and the time() prototype
+#include <errno.h>
+#include <time.h>        // for time_t and the time() prototype
 
-#include    "calendar/calendar.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
-#include    "macros.h"
-#include    "macros_core.h" // for INTERRUPTION_OFF / INTERRUPTION_RESTORE and
+#include "calendar/calendar.h"
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
+#include "macros.h"
+#include "macros_core.h" // for INTERRUPTION_OFF / INTERRUPTION_RESTORE and
                             // PRIVILEGE_ELEVATE / PRIVILEGE_RESTORE
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h" // for LOG / KFATAL_MANAGER
-#include    "serial/serial.h"
-#include    "types.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h" // for LOG / KFATAL_MANAGER
+#include "serial/serial.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_LLVMLIBC_S
 

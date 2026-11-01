@@ -10,17 +10,17 @@
  *           !!! the variable into the RAM.
  */
 
-#include    "init.h"
+#include "init.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "core.h"
-#include    "core_reg.h"
-#include    "linker.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "modules.h"
-#include    "soc_reg.h"
+#include "core.h"
+#include "core_reg.h"
+#include "linker.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "modules.h"
+#include "soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -311,4 +311,4 @@ static  void    local_CACHE_Enable(void) {
     cache_I_Enable();
 }
 
-#include    "model_I_cache.c_inc"       // IWYU pragma: keep
+#include "model_I_cache.c_inc"       // IWYU pragma: keep

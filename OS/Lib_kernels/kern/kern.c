@@ -144,21 +144,21 @@
  *           xLibrary                -                   -
  */
 
-#include    "kern.h"
-#include    "kern/private/private_kern.h"
+#include "kern.h"
+#include "kern/private/private_kern.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "debug.h"
+#include "debug.h"
 #if (KKERN_NB_POOLS > 0)
-#include    "kern/pools.h"
+#include "kern/pools.h"
 #endif
-#include    "kern/private/private_processes.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
+#include "kern/private/private_processes.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
 
 #define KKERN_VERSION   " 1.3"
 

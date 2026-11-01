@@ -49,19 +49,19 @@
  *
  */
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "crt0.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "memo/memo.h"
-#include    "led/led.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
-#include    "record/record.h"
+#include "crt0.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "memo/memo.h"
+#include "led/led.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
+#include "record/record.h"
 
 // Prototypes
 

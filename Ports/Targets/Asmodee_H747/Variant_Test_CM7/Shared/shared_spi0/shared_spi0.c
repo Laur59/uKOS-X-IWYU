@@ -6,19 +6,19 @@
  * Goal:     For the shared_spi0 manager module.
  */
 
-#include    "shared_spi0.h"
+#include "shared_spi0.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "soc_reg.h"
-#include    "spi/spi.h"
-#include    "spi_common.h"
-#include    "types.h"
+#include "board.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "soc_reg.h"
+#include "spi/spi.h"
+#include "spi_common.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

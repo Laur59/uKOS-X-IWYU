@@ -15,20 +15,20 @@
  * reported by local_printCore() are always accurate.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "cmns.h"
+#include "board.h"
+#include "cmns.h"
 #ifndef __riscv
-#include    "core.h"
+#include "core.h"
 #endif
-#include    "crt0.h"
-#include    "exce.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "soc_reg.h"
+#include "crt0.h"
+#include "exce.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -107,15 +107,15 @@ static void cb_signal(uint8_t mode) {
     }
 }
 
-#include    "model_coreDump_generic.c_inc"      // IWYU pragma: keep
-#include    "model_coreDump_core.c_inc"         // IWYU pragma: keep
+#include "model_coreDump_generic.c_inc"      // IWYU pragma: keep
+#include "model_coreDump_core.c_inc"         // IWYU pragma: keep
 
 #ifdef __riscv
 
 bool     vExce_isException[KNB_CORES] = MCSET(false);
-#include    "model_coredump_soc_riscv.c_inc"    // IWYU pragma: keep
+#include "model_coredump_soc_riscv.c_inc"    // IWYU pragma: keep
 
-#include    "syscallDispatcher.h"
+#include "syscallDispatcher.h"
 
 /*
  * \brief exce_init
@@ -140,7 +140,7 @@ void    exce_init(void) {
 
 #else
 
-#include    "model_coredump_soc.c_inc"          // IWYU pragma: keep
+#include "model_coredump_soc.c_inc"          // IWYU pragma: keep
 
 /*
  * \brief exce_init

@@ -6,8 +6,8 @@
  * Goal:     stub for the connection of the "kern" manager to the uKernel device.
  */
 
-#include    "clockTree.h"
-#include    "kern/kern.h"
+#include "clockTree.h"
+#include "kern/kern.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -25,4 +25,4 @@
 #define KFREQUENCY_T16                      KFREQUENCY_TIM
 #define KFREQUENCY_T17                      KFREQUENCY_TIM
 
-#include    "model_kernel_tickless_tim_14_15_16_17_svc.c_inc"
+#include "model_kernel_tickless_tim_14_15_16_17_svc.c_inc"

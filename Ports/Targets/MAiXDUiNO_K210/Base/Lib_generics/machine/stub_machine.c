@@ -6,15 +6,15 @@
  * Goal:     stub for the "machine" manager module.
  */
 
-#include    "machine/machine.h"
+#include "machine/machine.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros_core.h"     // IWYU pragma: keep (for symbol core_getCSR)
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "soc_reg.h"
-#include    "types.h"
+#include "macros_core.h"     // IWYU pragma: keep (for symbol core_getCSR)
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "soc_reg.h"
+#include "types.h"
 
 /*
  * \brief stub_machine_restart

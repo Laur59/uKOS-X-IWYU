@@ -8,13 +8,13 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/K210_gpiohs.h"       // IWYU pragma: export (for gpiohs)
-#include    "Registers/K210_plic.h"         // IWYU pragma: export (for plic)
-#include    "Registers/soc_vectors.h"       // IWYU pragma: export (for KNB_EXT_INTERRUPTIONS, KNB_INT_*)
-#include    "core.h"
-#include    "core_reg.h"
+#include "Registers/K210_gpiohs.h"       // IWYU pragma: export (for gpiohs)
+#include "Registers/K210_plic.h"         // IWYU pragma: export (for plic)
+#include "Registers/soc_vectors.h"       // IWYU pragma: export (for KNB_EXT_INTERRUPTIONS, KNB_INT_*)
+#include "core.h"
+#include "core_reg.h"
 
 
 // Multicore macro

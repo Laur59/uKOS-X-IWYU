@@ -5,19 +5,19 @@
  * Goal:     Minimal test of the RAM (hardware).
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "board.h"
-#include    "kern/kern.h"
-#include    "led/led.h"
-#include    "linker.h"
-#include    "macros.h"
-#include    "macros_core.h" // for PRIVILEGE_ELEVATE / PRIVILEGE_RESTORE
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "board.h"
+#include "kern/kern.h"
+#include "led/led.h"
+#include "linker.h"
+#include "macros.h"
+#include "macros_core.h" // for PRIVILEGE_ELEVATE / PRIVILEGE_RESTORE
+#include "modules.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

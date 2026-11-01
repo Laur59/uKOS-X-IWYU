@@ -10,17 +10,17 @@
  *           !!! the variable into the RAM.
  */
 
-#include    "init.h"
+#include "init.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "cache.h"        // for cache_D_Enable, cache_D_Invalidate, cache_I...#include    "core_reg.h"
-#include    "clockTree.h"
-#include    "core_reg.h"     // for KMPU_BUFFERABLE, KMPU_NOT_SHAREABLE, KMPU_T...
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "modules.h"
-#include    "soc_reg.h"
+#include "cache.h"        // for cache_D_Enable, cache_D_Invalidate, cache_I...#include "core_reg.h"
+#include "clockTree.h"
+#include "core_reg.h"     // for KMPU_BUFFERABLE, KMPU_NOT_SHAREABLE, KMPU_T...
+#include "macros.h"
+#include "macros_core.h"
+#include "modules.h"
+#include "soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

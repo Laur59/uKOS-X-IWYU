@@ -6,11 +6,11 @@
  * Goal:     Vectors for the uKOS-X system (first).
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/soc_vectors.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
+#include "Registers/soc_vectors.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,

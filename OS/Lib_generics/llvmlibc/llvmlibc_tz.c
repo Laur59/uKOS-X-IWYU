@@ -40,13 +40,13 @@
  * below.
  */
 
-#include    <errno.h>
-#include    <stdint.h>
-#include    <string.h>      // also for size_t
-#include    <time.h>
+#include <errno.h>
+#include <stdint.h>
+#include <string.h>      // also for size_t
+#include <time.h>
 
-#include    "macros_soc.h"  // for GET_RUNNING_CORE and KNB_CORES
-#include    "types.h"
+#include "macros_soc.h"  // for GET_RUNNING_CORE and KNB_CORES
+#include "types.h"
 
 #ifdef CONFIG_MAN_LLVMLIBC_S
 

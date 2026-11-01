@@ -6,14 +6,14 @@
  * Goal:     stub for the "switch" manager module.
  */
 
-#include    "switch/switch.h"
+#include "switch/switch.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "macros_core.h"
-#include    "os_errors.h"
-#include    "soc_reg.h"
+#include "board.h"
+#include "macros_core.h"
+#include "os_errors.h"
+#include "soc_reg.h"
 
 /*
  * \brief stub_switch_init

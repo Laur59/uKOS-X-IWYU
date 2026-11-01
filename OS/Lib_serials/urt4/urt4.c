@@ -5,20 +5,20 @@
  * Goal:     urt4 manager.
  */
 
-#include    "urt4.h"
+#include "urt4.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial_common.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial_common.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_URT4_S
 

@@ -37,9 +37,9 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern_types.h"  // IWYU pragma: keep
+#include "kern_types.h"  // IWYU pragma: keep
 
 #define KWAIT_INFINITY          ((uint32_t)(-1))                // Waiting forever
 #define KWAIT_REMAINING_TIMEOUT ((uint32_t)(-2))                // Waiting for the remaining timeout

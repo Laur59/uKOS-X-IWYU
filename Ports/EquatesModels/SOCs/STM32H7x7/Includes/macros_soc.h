@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #if (defined(CORTEX_M7_S))
-#include    "cache.h"
+#include "cache.h"
 #endif
 
 // Multicore macro

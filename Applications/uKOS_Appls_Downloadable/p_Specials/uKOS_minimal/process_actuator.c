@@ -7,20 +7,20 @@
  *         Send a new value to the dispatcher
  */
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "os_errors.h"
-#include    "queue.h"
-#include    "record/record.h"
-#include    "types.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "os_errors.h"
+#include "queue.h"
+#include "record/record.h"
+#include "types.h"
+#include "record/record.h"
+#include "serial/serial.h"
 
 #define KTIME_SAMPLING_ACTUATOR     1000U
 

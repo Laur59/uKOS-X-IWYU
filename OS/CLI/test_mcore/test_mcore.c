@@ -5,26 +5,26 @@
  * Goal:     Test of the multi-core communications layer ASMP.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <stdlib.h>
-#include    <string.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include    "asmp/asmp.h"
-#include    "kern/kern.h"
-#include    "led/led.h"
-#include    "macros.h"
-#include    "macros_core.h" // for PRIVILEGE_ELEVATE, needed on both architectures;
+#include "asmp/asmp.h"
+#include "kern/kern.h"
+#include "led/led.h"
+#include "macros.h"
+#include "macros_core.h" // for PRIVILEGE_ELEVATE, needed on both architectures;
                             // on ARM also INTERRUPTION_OFF (RISC-V takes it from
                             // macros_soc.h)
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

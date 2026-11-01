@@ -6,12 +6,12 @@
  * Nucleo_H753 – Stub for the switch manager.
  */
 
-#include    "switch/switch.h"
+#include "switch/switch.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "os_errors.h"
+#include "board.h"
+#include "os_errors.h"
 
 /*
  * \brief stub_switch_init

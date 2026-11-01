@@ -13,15 +13,15 @@
  * the buffer of its last caller) and stops the RNG under the reader.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/nvic.h"
-#include    "Registers/scb.h"
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "random/random.h"
-#include    "soc_reg.h"
+#include "Registers/nvic.h"
+#include "Registers/scb.h"
+#include "kern/kern.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "random/random.h"
+#include "soc_reg.h"
 
 #define KSIGNATURE_CM4          0xC24U              // SCB->CPUID part number of the cortex-M4 (HSEM 31 owns the RNG; asmp uses 0, 1, 4 and 5)
 #define KHSEM_COREID_CM4        1U                  // Core ID cortex-M4 (see table 9.4 RM0399 Rev 3)

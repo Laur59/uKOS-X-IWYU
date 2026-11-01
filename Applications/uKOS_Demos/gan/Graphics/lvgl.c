@@ -6,17 +6,17 @@
  *          Management of the LVGL.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "ui.h"
-#include    "ulvgl.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "ui.h"
+#include "ulvgl.h"
 
 #define KLVGL_MUTEX_API     "Protect_LVGL_API"
 

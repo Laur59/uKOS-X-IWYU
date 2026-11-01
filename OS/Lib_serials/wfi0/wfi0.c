@@ -8,15 +8,15 @@
 
 #ifdef CONFIG_MAN_WFI0_S
 
-#include    "wfi0.h"
+#include "wfi0.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros.h"
-#include    "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
-#include    "modules.h"
-#include    "serial_common.h"
-#include    "types.h"
+#include "macros.h"
+#include "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
+#include "modules.h"
+#include "serial_common.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

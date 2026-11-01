@@ -12,7 +12,7 @@
 #define Nucleo_H753_S
 #endif
 
-#include    "Registers/stm32H7x3_gpio.h"    // IWYU pragma: export (for GPIOB, GPIOE)
+#include "Registers/stm32H7x3_gpio.h"    // IWYU pragma: export (for GPIOB, GPIOE)
 
 // GPIO settings
 // -------------

@@ -8,17 +8,17 @@
 
 #pragma once
 
-#include    "Registers/core_addendum.h"
-#include    "Registers/scb.h"
-#include    "Registers/soc_vectors.h"
-#include    "core.h"    // IWYU pragma: keep
-#include    "exce.h"
-#include    "kern/kern.h"
-#include    "kern/processes.h"  // IWYU pragma: keep
-#include    "linker.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"       // IWYU pragma: keep for KMEMO_ALIGN_8
-#include    "syscallDispatcher.h"
+#include "Registers/core_addendum.h"
+#include "Registers/scb.h"
+#include "Registers/soc_vectors.h"
+#include "core.h"    // IWYU pragma: keep
+#include "exce.h"
+#include "kern/kern.h"
+#include "kern/processes.h"  // IWYU pragma: keep
+#include "linker.h"
+#include "macros_soc.h"
+#include "memo/memo.h"       // IWYU pragma: keep for KMEMO_ALIGN_8
+#include "syscallDispatcher.h"
 
 // uKernel macros
 // --------------

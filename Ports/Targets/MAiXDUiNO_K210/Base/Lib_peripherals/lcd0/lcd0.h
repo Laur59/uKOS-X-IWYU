@@ -23,10 +23,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "modules.h"
-#include    "types.h"
+#include "modules.h"
+#include "types.h"
 
 #define KLCD0_NUM   (((uint32_t)'_'<<8U) + (uint32_t)'2')
 #define KLCD0MAN    (KLCD0_NUM<<8U)

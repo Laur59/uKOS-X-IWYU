@@ -10,7 +10,7 @@
 
 // IWYU pragma: begin_exports
 
-#include    "Registers/rv64_csr.h"
-#include    "Registers/core_addendum.h"
+#include "Registers/rv64_csr.h"
+#include "Registers/core_addendum.h"
 
 // IWYU pragma: end_exports

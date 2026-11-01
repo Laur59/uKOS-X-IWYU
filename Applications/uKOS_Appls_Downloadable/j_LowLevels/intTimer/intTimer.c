@@ -51,22 +51,22 @@
 #define ALLOW_HARDWARE_ACCESS_S         // define: elevate the privilege for permitting hardware accesses
                                         // undef: do not permit hardware accesses
 
-#include    <inttypes.h>
-#include    <stdio.h>
+#include <inttypes.h>
+#include <stdio.h>
 
-#include    "crt0.h"
-#include    "kern/kern.h"
-#include    "led/led.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "stub.h"
-#include    "types.h"
+#include "crt0.h"
+#include "kern/kern.h"
+#include "led/led.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "stub.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

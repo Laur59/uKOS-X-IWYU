@@ -5,19 +5,19 @@
  * Hardware specific stub.
  */
 
-#include    "stub.h"
+#include "stub.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "types.h"
-#include    "os_errors.h"
-#include    "clockTree.h"
-#include    "core_reg.h"
-#include    "soc_reg.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "macros_core.h"
-#include    "kern/kern.h"
+#include "types.h"
+#include "os_errors.h"
+#include "clockTree.h"
+#include "core_reg.h"
+#include "soc_reg.h"
+#include "macros.h"
+#include "macros_soc.h"
+#include "macros_core.h"
+#include "kern/kern.h"
 
 #define KTIM_ESAMPLING_0    ((float64_t)(0.0001))                               // 100-us
 #define KDELTA_TIME_0       ((uint32_t)(KFREQUENCY_TIM * KTIM_ESAMPLING_0))     // Delta time

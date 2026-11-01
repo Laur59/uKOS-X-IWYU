@@ -10,4 +10,4 @@
 
 #define model_watchdog_arm  stub_watchdog_arm
 
-#include    "model_watchdog.c_inc"
+#include "model_watchdog.c_inc"

@@ -6,13 +6,13 @@
  * Goal:     stub for the "led" manager module.
  */
 
-#include    "led/led.h"
+#include "led/led.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "macros_core.h"
-#include    "os_errors.h"
+#include "board.h"
+#include "macros_core.h"
+#include "os_errors.h"
 
 // LED 2 was LD6 (green, active high) on PE15, which is also Arduino D13 and
 // now carries SPI5_SCK for spi0: LD6 shows the SPI clock instead. LED 2 is

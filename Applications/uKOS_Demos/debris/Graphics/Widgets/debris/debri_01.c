@@ -6,9 +6,9 @@
  *          uKOS-X debri_01 image.
  */
 
-#include    "debris.h"
+#include "debris.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #ifndef LV_ATTRIBUTE_MEM_ALIGN
 #define LV_ATTRIBUTE_MEM_ALIGN

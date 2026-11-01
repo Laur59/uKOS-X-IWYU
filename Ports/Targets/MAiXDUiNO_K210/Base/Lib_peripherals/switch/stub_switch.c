@@ -6,11 +6,11 @@
  * Goal:     stub for the "switch" manager module.
  */
 
-#include    "switch/switch.h"
+#include "switch/switch.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "os_errors.h"
+#include "os_errors.h"
 
 
 /*

@@ -6,13 +6,13 @@
  * Goal:     stub for the "machine" manager module.
  */
 
-#include    "machine/machine.h"
+#include "machine/machine.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros_core.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "macros_core.h"
+#include "os_errors.h"
+#include "types.h"
 
 /*
  * \brief stub_machine_restart

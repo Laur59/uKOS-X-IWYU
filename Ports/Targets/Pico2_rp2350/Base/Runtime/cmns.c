@@ -6,16 +6,16 @@
  * Goal:     Some common routines used in many modules.
  */
 
-#include    "cmns.h"
+#include "cmns.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "clockTree.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "modules.h"
-#include    "soc_reg.h"
-#include    "types.h"
+#include "clockTree.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "modules.h"
+#include "soc_reg.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

@@ -5,11 +5,11 @@
  * Hardware specific stub.
  */
 
-#include    "stub.h"
+#include "stub.h"
 
-#include    "core_reg.h"
-#include    "soc_reg.h"
-#include    "macros_core.h"
+#include "core_reg.h"
+#include "soc_reg.h"
+#include "macros_core.h"
 
 #define KPSCT1      0U                          // Prescaler for 240'000'000-Hz
 #define KARRT1      ((1U<<12U) - 1U)            // Autoreload (4096-bits for 58-KHz)

@@ -5,14 +5,14 @@
  * Goal:     Display the shared area of the multicore system.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
+#include <inttypes.h>
+#include <stdio.h>
 
-#include    "asmp/asmp.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "asmp/asmp.h"
+#include "macros.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

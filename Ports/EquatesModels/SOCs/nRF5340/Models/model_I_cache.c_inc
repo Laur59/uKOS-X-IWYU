@@ -8,8 +8,8 @@
  *   NCACHE
  */
 
-#include    "macros_core.h"
-#include    "soc_reg.h"
+#include "macros_core.h"
+#include "soc_reg.h"
 
 /*
  * \brief cache_I_Enable

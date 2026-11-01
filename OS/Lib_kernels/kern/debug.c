@@ -14,15 +14,15 @@
  *           int32_t kern_reactivateProcess(proc_t *handle) *
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_lists.h"
-#include    "kern/private/private_processes.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_lists.h"
+#include "kern/private/private_processes.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "os_errors.h"
 
 #if (KKERN_WITH_DEBUG_S == true)
 static  list_t      vKern_listStop[KNB_CORES];

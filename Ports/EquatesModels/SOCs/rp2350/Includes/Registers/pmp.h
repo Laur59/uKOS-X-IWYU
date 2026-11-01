@@ -18,10 +18,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/rv32_csr.h"
-#include    "core.h"                // IWYU pragma: keep (core_getCSR/core_putCSR used in SET_PMP_REGION)
+#include "Registers/rv32_csr.h"
+#include "core.h"                // IWYU pragma: keep (core_getCSR/core_putCSR used in SET_PMP_REGION)
 
 // PMP cfg byte – RP2350-E6 transposed permission bits.
 

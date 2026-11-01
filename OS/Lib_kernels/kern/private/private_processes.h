@@ -29,10 +29,10 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "macros_soc.h"
+#include "kern/kern.h"
+#include "macros_soc.h"
 
 #define KPROC_ANONYMOUS_ID  "Proc_anonymous"
 #define KPROC_ANONYMOUS_TX  "Process anonymous.                        (c) EFr-2026"

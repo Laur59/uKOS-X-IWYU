@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #define DMAC_CHANNEL_COUNT  DMAC_CHANNEL_MAX                        //
 

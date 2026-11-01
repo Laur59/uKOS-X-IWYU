@@ -6,22 +6,22 @@
  *          Interface between the lvgl and the hardware.
  */
 
-#include    "stub.h"
+#include "stub.h"
 
-#include    <stdint.h>
-#include    <string.h>
+#include <stdint.h>
+#include <string.h>
 
-#include    "Registers/stm32N657_gpioq.h"
-#include    "Registers/stm32N657_rcc.h"
-#include    "ulvgl.h"
-#include    "board.h"
-#include    "kern/kern.h"
-#include    "kern/kern_types.h"
-#include    "lcd_display.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
+#include "Registers/stm32N657_gpioq.h"
+#include "Registers/stm32N657_rcc.h"
+#include "ulvgl.h"
+#include "board.h"
+#include "kern/kern.h"
+#include "kern/kern_types.h"
+#include "lcd_display.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "os_errors.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -123,4 +123,4 @@ void    cb_powerLCD(void) {
     kern_suspendProcess(100);
 }
 
-#include    "model_lcd_tft_rgb8888.c_inc"
+#include "model_lcd_tft_rgb8888.c_inc"

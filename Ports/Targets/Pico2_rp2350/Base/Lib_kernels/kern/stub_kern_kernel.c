@@ -9,12 +9,12 @@
  * Core 1 uses TIMER1 (ALARM0 = 1-ms tick, ALARM1 = 20-ms quota).
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/soc_vectors.h"
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
+#include "Registers/soc_vectors.h"
+#include "kern/kern.h"
+#include "macros_core.h"
+#include "macros_soc.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -28,15 +28,15 @@
 
 #ifdef __riscv
 
-#include    "model_kernel_tim0_ecall_C0.c_inc"
-#include    "model_kernel_tim1_ecall_C1.c_inc"
+#include "model_kernel_tim0_ecall_C0.c_inc"
+#include "model_kernel_tim1_ecall_C1.c_inc"
 
 #else
 #define PendSV_VECTOR_NUMBER_C0         PendSV_C0_IRQn
 #define PendSV_VECTOR_NUMBER_C1         PendSV_C1_IRQn
 
-#include    "model_kernel_tim_0_a0_a1_svc_C0.c_inc"
-#include    "model_kernel_tim_1_a0_a1_svc_C1.c_inc"
+#include "model_kernel_tim_0_a0_a1_svc_C0.c_inc"
+#include "model_kernel_tim_1_a0_a1_svc_C1.c_inc"
 #endif
 
 void    stub_kern_init(void) {

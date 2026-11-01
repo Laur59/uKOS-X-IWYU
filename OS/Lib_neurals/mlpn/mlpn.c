@@ -5,20 +5,20 @@
  * Goal:     mlpn manager.
  */
 
-#include    "mlpn.h"
+#include "mlpn.h"
 
-#include    <float.h>
-#include    <math.h>
-#include    <stdint.h>
+#include <float.h>
+#include <math.h>
+#include <stdint.h>
 
 #if __has_include(<sys/cdefs.h>)
-#include    <sys/cdefs.h>   // for __restrict (a compiler builtin; header absent under LLVM libc)
+#include <sys/cdefs.h>   // for __restrict (a compiler builtin; header absent under LLVM libc)
 #endif
 
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "types.h"
 
 // __ARM_FEATURE_MVE Bit 0 indicates whether Helium integer instructions are available
 // __ARM_FEATURE_MVE Bit 1 indicates whether Helium floating-point instructions are available
@@ -28,7 +28,7 @@
 // 3 indicates that both the Helium integer and floating-point intrinsics are available
 
 #if (defined(__ARM_FEATURE_MVE) && (__ARM_FEATURE_MVE >= 3))
-#include    <arm_mve.h>
+#include <arm_mve.h>
 #endif
 
 #ifdef __clang__

@@ -24,7 +24,7 @@
 #pragma GCC diagnostic ignored "-Wconversion"
 #endif
 
-#include    "lvgl.h"
+#include "lvgl.h"
 
 #if (defined(__clang__))
 

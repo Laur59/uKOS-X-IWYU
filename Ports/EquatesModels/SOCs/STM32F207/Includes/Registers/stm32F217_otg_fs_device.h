@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 // OTG_FS_DEVICE address definitions
 // ---------------------------------

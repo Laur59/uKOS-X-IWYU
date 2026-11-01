@@ -22,13 +22,13 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros_soc.h"
+#include "macros_soc.h"
 #if (KNB_CORES > 1)
-#include    "spin.h"
+#include "spin.h"
 #endif
-#include    "types.h"
+#include "types.h"
 
 // memo_malloc memory alignments
 // -----------------------------

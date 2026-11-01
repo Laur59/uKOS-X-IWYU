@@ -52,9 +52,9 @@
 
 #ifdef CONFIG_MAN_LLVMLIBC_S
 
-#include    <stddef.h>      // for size_t
-#include    <stdint.h>      // for uint32_t
-#include    <sys/types.h>   // for ssize_t (llvmlibc compat header)
+#include <stddef.h>      // for size_t
+#include <stdint.h>      // for uint32_t
+#include <sys/types.h>   // for ssize_t (llvmlibc compat header)
 
 /*
  * Byte-level console access, exported for the downloadable applications.

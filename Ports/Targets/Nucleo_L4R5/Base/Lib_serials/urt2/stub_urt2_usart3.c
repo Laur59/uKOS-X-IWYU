@@ -6,9 +6,9 @@
  * Goal:     stub for the connection of the "urt2" manager to the usart3 device.
  */
 
-#include    "clockTree.h"
-#include    "soc_reg.h"
-#include    "urt2/urt2.h"
+#include "clockTree.h"
+#include "soc_reg.h"
+#include "urt2/urt2.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -69,4 +69,4 @@ static  void    cb_init(void) {
 
 }
 
-#include    "model_usart.c_inc"
+#include "model_usart.c_inc"

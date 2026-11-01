@@ -7,15 +7,15 @@
  *           via the i2c1 device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "i2c/i2c.h"
-#include    "i2c1/i2c1.h"       // IWYU pragma: keep (for RESERVE)
-#include    "i2c_common.h"
-#include    "kern/temporal.h"   // IWYU pragma: keep (for KWAITINFINITY in RESERVE)
-#include    "macros.h"
-#include    "temperature/temperature.h"
-#include    "types.h"
+#include "i2c/i2c.h"
+#include "i2c1/i2c1.h"       // IWYU pragma: keep (for RESERVE)
+#include "i2c_common.h"
+#include "kern/temporal.h"   // IWYU pragma: keep (for KWAITINFINITY in RESERVE)
+#include "macros.h"
+#include "temperature/temperature.h"
+#include "types.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -78,4 +78,4 @@ static  void    cb_readI2C(uint8_t address, uint8_t *buffer, uint16_t number) {
     RELEASE(I2C1, KMODE_READ_WRITE);
 }
 
-#include    "model_stts22h.c_inc"
+#include "model_stts22h.c_inc"

@@ -161,9 +161,9 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "types.h"       // IWYU pragma: keep
+#include "types.h"       // IWYU pragma: keep
 
 // Include Strategy (Hybrid Approach)
 // -----------------------------------
@@ -190,22 +190,22 @@
 // shared enums are in kern/kern_types.h (included by both kern.h and
 // individual module headers).
 
-#include    "kern/kern_types.h" // IWYU pragma: export
+#include "kern/kern_types.h" // IWYU pragma: export
 
 // IWYU pragma: begin_exports
-#include    "kern/privileges.h"
-#include    "kern/processes.h"
-#include    "kern/mailboxes.h"
-#include    "kern/statistics.h"
-#include    "kern/semaphores.h"
-#include    "kern/mutexes.h"
-#include    "kern/signals.h"
-#include    "kern/temporal.h"
-#include    "kern/debug_list.h"
-#include    "kern/softwareTimers.h"
-#include    "kern/pools.h"
-#include    "kern/preciseSignals.h"
-#include    "kern/stub.h"
+#include "kern/privileges.h"
+#include "kern/processes.h"
+#include "kern/mailboxes.h"
+#include "kern/statistics.h"
+#include "kern/semaphores.h"
+#include "kern/mutexes.h"
+#include "kern/signals.h"
+#include "kern/temporal.h"
+#include "kern/debug_list.h"
+#include "kern/softwareTimers.h"
+#include "kern/pools.h"
+#include "kern/preciseSignals.h"
+#include "kern/stub.h"
 // IWYU pragma: end_exports
 
 // Prototypes

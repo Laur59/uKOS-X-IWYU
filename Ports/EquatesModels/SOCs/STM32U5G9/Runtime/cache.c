@@ -5,8 +5,8 @@
  * Goal:    Cortex U5G9 L1 cache management.
  */
 
-#include    "cache.h"
-#include    "model_I_D_cache.c_inc"
+#include "cache.h"
+#include "model_I_D_cache.c_inc"
 
 #define KEXT_MEMORY_START   0x60000000U     // First address served by DCACHE1
 #define KEXT_MEMORY_END     0x9FFFFFFFU     // Last address served by DCACHE1

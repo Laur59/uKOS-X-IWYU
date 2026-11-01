@@ -6,15 +6,15 @@
  * Goal:     stub for the "switch" manager module.
  */
 
-#include    "switch/switch.h"
+#include "switch/switch.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/stm32H7x7_CM7_gpio.h"
-#include    "board.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"      // IWYU pragma: keep (for symbol KNVIC_PRIORITY_SHIFT)
-#include    "os_errors.h"
+#include "Registers/stm32H7x7_CM7_gpio.h"
+#include "board.h"
+#include "macros_core.h"
+#include "macros_soc.h"      // IWYU pragma: keep (for symbol KNVIC_PRIORITY_SHIFT)
+#include "os_errors.h"
 
 /*
  * \brief stub_switch_init

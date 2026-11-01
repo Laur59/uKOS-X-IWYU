@@ -6,15 +6,15 @@
  * Goal:     alive process; the system is working.
  */
 
-#include    "alive/alive.h"
+#include "alive/alive.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "led/led.h"
-#include    "macros_core.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "led/led.h"
+#include "macros_core.h"
+#include "types.h"
 
 /*
  * \brief stub_alive_process

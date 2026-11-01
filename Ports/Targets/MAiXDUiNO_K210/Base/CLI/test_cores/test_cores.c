@@ -9,17 +9,17 @@
 // uKOS-X specific headers
 #define     _POSIX_C_SOURCE     200809L
 
-#include    <inttypes.h>
-#include    <stdbool.h>
-#include    <stdint.h>
-#include    <stdio.h>
+#include <inttypes.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "serial/serial.h"
-#include    "core.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "types.h"
+#include "serial/serial.h"
+#include "core.h"
+#include "macros.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

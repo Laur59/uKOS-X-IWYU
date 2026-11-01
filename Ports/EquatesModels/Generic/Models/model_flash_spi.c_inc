@@ -12,11 +12,11 @@
  *   KFLASH_xSPI_SZ_SECTOR cb_control cb_writeRead
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/temporal.h"
-#include    "os_errors.h"
-#include    "storage/storage.h"
+#include "kern/temporal.h"
+#include "os_errors.h"
+#include "storage/storage.h"
 
 // Prototypes
 

@@ -7,19 +7,19 @@
 
 #ifdef CONFIG_MAN_SDCARD_S
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "sdcard/sdcard.h"
-#include    "storage/storage.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "sdcard/sdcard.h"
+#include "storage/storage.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

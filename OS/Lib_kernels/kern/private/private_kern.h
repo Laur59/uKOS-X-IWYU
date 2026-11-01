@@ -29,9 +29,9 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros_soc.h"
+#include "macros_soc.h"
 
 // Have to be used with the macros
 // GOTO_KERN_I and GOTO_KERN_M

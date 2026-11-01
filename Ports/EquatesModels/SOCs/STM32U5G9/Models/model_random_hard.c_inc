@@ -7,14 +7,14 @@
  * Included by OS/Lib_cryptographics/random/random.c, which declares the model functions static.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/nvic.h"
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"      // for KINT_LEVEL_PERIPHERALS
-#include    "random/random.h"
-#include    "soc_reg.h"
+#include "Registers/nvic.h"
+#include "kern/kern.h"
+#include "macros_core.h"
+#include "macros_soc.h"      // for KINT_LEVEL_PERIPHERALS
+#include "random/random.h"
+#include "soc_reg.h"
 
 static              bool        vTerminated = false;
 static  volatile    uint32_t    *vNumber;

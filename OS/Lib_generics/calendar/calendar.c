@@ -5,20 +5,20 @@
  * Goal:     calendar manager.
  */
 
-#include    "calendar.h"
+#include "calendar.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
-#include    <string.h>
-#include    <time.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_CALENDAR_S
 
@@ -274,7 +274,7 @@ static  void    local_composeTimeZone(char_t *timeZone, const char_t *utcLocatio
 }
 
 #if (KCALENDAR_WITH_HW_RTC_S == true)
-#include    "model_rtc.c_inc"   // IWYU pragma: keep (workaround for app)
+#include "model_rtc.c_inc"   // IWYU pragma: keep (workaround for app)
 #endif
 
 #endif

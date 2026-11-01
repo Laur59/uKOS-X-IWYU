@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 // GLITCH_DETECTOR address definitions
 // -----------------------------------

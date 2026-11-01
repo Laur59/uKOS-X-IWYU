@@ -6,12 +6,12 @@
  * Goal:     Vectors for the uKOS-X system (first).
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "core.h"
-#include    "core_reg.h"
-#include    "crt0.h"
-#include    "macros_soc.h"
+#include "core.h"
+#include "core_reg.h"
+#include "crt0.h"
+#include "macros_soc.h"
 
 // Prototypes
 

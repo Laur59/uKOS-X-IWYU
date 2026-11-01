@@ -6,17 +6,17 @@
  * Dump of the record trace fifo and log buffer, for the crash and exit paths.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <string.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <string.h>
 
-#include    "cmns.h"
-#include    "macros_soc.h"
-#include    "private/private_record.h"
-#include    "private/private_recordDump.h"
-#include    "record.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "cmns.h"
+#include "macros_soc.h"
+#include "private/private_record.h"
+#include "private/private_recordDump.h"
+#include "record.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // Prototypes
 

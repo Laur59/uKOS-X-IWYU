@@ -7,15 +7,15 @@
 
 #ifdef CONFIG_MAN_LED_S
 
-#include    "led.h"
+#include "led.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
-#include    "modules.h"
-#include    "os_errors.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"      // IWYU pragma: keep (to get KNB_CORES)
+#include "modules.h"
+#include "os_errors.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

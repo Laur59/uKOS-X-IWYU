@@ -6,9 +6,9 @@
  *          uKOS-X satellite_03 image.
  */
 
-#include    "satellites.h"
+#include "satellites.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
 #ifndef LV_ATTRIBUTE_MEM_ALIGN
 #define LV_ATTRIBUTE_MEM_ALIGN

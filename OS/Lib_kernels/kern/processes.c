@@ -19,29 +19,29 @@
  *           int32_t kern_installCallBack(void (*code)(uint8_t state)) *
  */
 
-#include    "processes.h"
+#include "processes.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 // crt0.h is required for KERN_PREPARE_FRAME
-#include    "crt0.h"                        // IWYU pragma: keep
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_identifiers.h"
-#include    "kern/private/private_lists.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_kern.h"
-#include    "kern/private/private_xLibrary.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "syscallDispatcher.h"           // IWYU pragma: keep
-#include    "types.h"
+#include "crt0.h"                        // IWYU pragma: keep
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_identifiers.h"
+#include "kern/private/private_lists.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_kern.h"
+#include "kern/private/private_xLibrary.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "syscallDispatcher.h"           // IWYU pragma: keep
+#include "types.h"
 
         proc_t      vKern_proc[KNB_CORES][KKERN_NB_PROCESSES];
         proc_t      *vKern_runProc[KNB_CORES];

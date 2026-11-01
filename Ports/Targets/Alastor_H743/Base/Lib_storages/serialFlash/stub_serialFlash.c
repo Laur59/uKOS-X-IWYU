@@ -6,13 +6,13 @@
  * Goal:     stub for the connection of the "serialFlash" manager 1-Wire device by spi1 device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "MX25R6435/MX25R6435.h"         // IWYU pragma: export
-#include    "Registers/stm32H7x3_gpio.h"
-#include    "board.h"
-#include    "kern/kern.h"
-#include    "shared_spi0/shared_spi0.h"
+#include "MX25R6435/MX25R6435.h"         // IWYU pragma: export
+#include "Registers/stm32H7x3_gpio.h"
+#include "board.h"
+#include "kern/kern.h"
+#include "shared_spi0/shared_spi0.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -92,4 +92,4 @@ static  uint8_t     cb_writeRead(uint8_t data) {
     return wRData;
 }
 
-#include    "model_flash_spi.c_inc"
+#include "model_flash_spi.c_inc"

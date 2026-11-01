@@ -43,20 +43,20 @@
  *
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "serial/serial.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_mailboxes.h"  // IWYU pragma: keep (for symbol mbox)
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "serial/serial.h"
+#include "kern/kern.h"
+#include "kern/private/private_mailboxes.h"  // IWYU pragma: keep (for symbol mbox)
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

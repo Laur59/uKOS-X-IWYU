@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include    "linker.h"
+#include "linker.h"
 
 // C++ constructors initialissation
 // --------------------------------

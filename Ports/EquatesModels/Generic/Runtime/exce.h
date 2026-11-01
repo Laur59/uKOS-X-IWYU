@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros_soc.h"      // KNB_CORES
-#include    "Registers/soc_vectors.h"   // KNB_EXCEPTIONS, KNB_INTERRUPTIONS
+#include "macros_soc.h"      // KNB_CORES
+#include "Registers/soc_vectors.h"   // KNB_EXCEPTIONS, KNB_INTERRUPTIONS
 
 #ifdef __cplusplus
 extern  "C" {

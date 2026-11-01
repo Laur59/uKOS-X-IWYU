@@ -23,9 +23,9 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "modules.h"
+#include "modules.h"
 
 #define KTFT0_NUM   (((uint32_t)'_'<<8U) + (uint32_t)'1')
 #define KTFT0MAN    (KTFT0_NUM<<8U)

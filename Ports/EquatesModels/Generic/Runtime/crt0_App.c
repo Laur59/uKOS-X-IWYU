@@ -26,23 +26,23 @@
  * _end                  +-----------------+
  */
 
-#include    <stddef.h>
-#include    <stdint.h>
-#include    <stdlib.h>
-#include    <string.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include    "serial/serial.h"
-#include    "cmns.h"
-#include    "crt0.h"
-#include    "linker.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "system/system.h"
-#include    "types.h"
-#include    "FLASH.ck"
+#include "serial/serial.h"
+#include "cmns.h"
+#include "crt0.h"
+#include "linker.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "system/system.h"
+#include "types.h"
+#include "FLASH.ck"
 
 #ifndef KSYSTEM_CRT0_CHECK_OS_VERSION_S
 #define KSYSTEM_CRT0_CHECK_OS_VERSION_S     true

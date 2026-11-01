@@ -25,18 +25,18 @@
  *           - kernel_message_C1
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/K210_sysctl.h"
-#include    "Registers/K210_timer.h"
-#include    "clockTree.h"
-#include    "kern/private/private_preciseSignals.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_scheduler.h"
-#include    "kern/private/private_temporal.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
+#include "Registers/K210_sysctl.h"
+#include "Registers/K210_timer.h"
+#include "clockTree.h"
+#include "kern/private/private_preciseSignals.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_scheduler.h"
+#include "kern/private/private_temporal.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
 
 #define K1ms_B      ((float64_t)(0.001))
 

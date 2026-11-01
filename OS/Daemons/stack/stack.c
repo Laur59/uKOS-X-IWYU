@@ -5,24 +5,24 @@
  * Goal:     idle daemon; run when all the other processes are suspended.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 #if ((KKERN_WITH_STATISTICS_S == true) && (KDAEMONS_WITH_STACK_INT_S == true))
-#include    <stdlib.h>
+#include <stdlib.h>
 #endif
 
-#include    "macros.h"
-#include    "modules.h"
+#include "macros.h"
+#include "modules.h"
 #if ((KKERN_WITH_STATISTICS_S == true) && (KDAEMONS_WITH_STACK_INT_S == true))
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "serial/serial.h"
 #endif
-#include    "types.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

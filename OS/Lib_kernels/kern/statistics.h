@@ -10,9 +10,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern_types.h"  // IWYU pragma: keep
+#include "kern_types.h"  // IWYU pragma: keep
 
 #if (KKERN_WITH_STATISTICS_S == true)
 

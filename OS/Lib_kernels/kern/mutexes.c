@@ -18,23 +18,23 @@
  *           int32_t kern_getMutexById(const char_t identifier, mutx_t **handle) *
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "mutexes.h"
-#include    "kern/private/private_mutexes.h"
+#include "mutexes.h"
+#include "kern/private/private_mutexes.h"
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_identifiers.h"
-#include    "kern/private/private_lists.h"
-#include    "kern/private/private_processes.h"
-#include    "kern/private/private_kern.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "syscallDispatcher.h"           // IWYU pragma: keep
-#include    "types.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_identifiers.h"
+#include "kern/private/private_lists.h"
+#include "kern/private/private_processes.h"
+#include "kern/private/private_kern.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "syscallDispatcher.h"           // IWYU pragma: keep
+#include "types.h"
 
 mutx_t      vKern_mutx[KNB_CORES][KKERN_NB_MUTEXES];
 uint16_t    vKern_nbMutx[KNB_CORES];

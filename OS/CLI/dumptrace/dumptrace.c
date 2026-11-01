@@ -5,21 +5,21 @@
  * Goal:     Display the trace fifo captured with record_trace().
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
-#include    <string.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "record/private/private_record.h"
-#include    "record/record.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "record/private/private_record.h"
+#include "record/record.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

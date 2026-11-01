@@ -8,9 +8,9 @@
  *   DCACHE_LINE_SIZE ICACHE_LINE_SIZE
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros_core.h"
+#include "macros_core.h"
 
 // Prototypes
 

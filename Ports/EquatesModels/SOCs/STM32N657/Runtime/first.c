@@ -6,17 +6,17 @@
  * Goal:     Vectors for the uKOS-X system (first).
  */
 
-#include    "first.h"
+#include "first.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/memsys.h"
-#include    "core.h"
-#include    "crt0.h"
-#include    "soc_reg.h"
-#include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
-#include    "linker.h"
-#include    "macros_core.h"
+#include "Registers/memsys.h"
+#include "core.h"
+#include "crt0.h"
+#include "soc_reg.h"
+#include "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
+#include "linker.h"
+#include "macros_core.h"
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,

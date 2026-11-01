@@ -5,13 +5,13 @@
  * Goal:     Display the purpose of the Bangla team.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "macros.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "macros.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

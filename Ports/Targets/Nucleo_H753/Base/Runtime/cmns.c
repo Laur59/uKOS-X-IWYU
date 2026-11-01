@@ -6,18 +6,18 @@
  * Nucleo_H753 – Minimal I/O routines (pre-kernel UART, delay).
  */
 
-#include    "cmns.h"
+#include "cmns.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "clockTree.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "soc_reg.h"
-#include    "types.h"
+#include "clockTree.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "soc_reg.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

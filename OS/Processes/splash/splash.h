@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "ulvgl.h"
+#include "ulvgl.h"
 
 // Display size
 

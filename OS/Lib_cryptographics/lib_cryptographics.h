@@ -31,7 +31,7 @@
 // IWYU pragma: begin_exports
 
 #ifdef CONFIG_MAN_RANDOM_S
-#include    "random/random.h"
+#include "random/random.h"
 #endif
 
 // IWYU pragma: end_exports

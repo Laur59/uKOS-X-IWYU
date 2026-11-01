@@ -9,7 +9,7 @@
 #pragma once
 
 // OTG_HS_PWRCLK address definitions
-#include    <stdint.h>
+#include <stdint.h>
 
 // ---------------------------------
 

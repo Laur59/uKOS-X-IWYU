@@ -7,12 +7,12 @@
  * first_dispatch_ecall() in first_riscv.c sets vMessage = a0 before calling here.
  */
 
-#include    "syscallDispatcher.h"
+#include "syscallDispatcher.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/rv32_csr.h"
-#include    "macros_soc.h"
+#include "Registers/rv32_csr.h"
+#include "macros_soc.h"
 
 // Weak stubs — overridden by the RISC-V kernel model in Phase 3.3.
 

@@ -6,9 +6,9 @@
  * Goal:     stub for the connection of the "i2c1" manager to the si2c1 device.
  */
 
-#include    "clockTree.h"
-#include    "macros_core.h"
-#include    "soc_reg.h"
+#include "clockTree.h"
+#include "macros_core.h"
+#include "soc_reg.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -38,4 +38,4 @@ static  void    cb_enable(void) {
     REG(RCC)->APB1LLPENR |= RCC_APB1LLPENR_I2C1LPEN;
 }
 
-#include    "model_i2c.c_inc"
+#include "model_i2c.c_inc"

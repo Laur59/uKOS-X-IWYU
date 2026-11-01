@@ -5,17 +5,17 @@
  * Goal:     Give a random (eventually pseudo-random) number.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "random/random.h"
-#include    "serial/serial.h"
-#include    "text/text.h"
-#include    "types.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "random/random.h"
+#include "serial/serial.h"
+#include "text/text.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

@@ -12,7 +12,7 @@
 #define Alastor_H743_S
 #endif
 
-#include    "MT9V03x/MT9V03x.h"
+#include "MT9V03x/MT9V03x.h"
 
 // GPIO settings
 // -------------

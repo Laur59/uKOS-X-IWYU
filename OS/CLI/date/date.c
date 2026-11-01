@@ -6,19 +6,19 @@
  * Display and set the system date and time.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
-#include    <string.h>
-#include    <time.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
-#include    "calendar/calendar.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "text/text.h"
-#include    "types.h"
+#include "calendar/calendar.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "text/text.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

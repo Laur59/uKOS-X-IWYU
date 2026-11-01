@@ -5,20 +5,20 @@
  * Simple UI for the banner demo.
  */
 
-#include    "ui.h"
+#include "ui.h"
 
-#include    <inttypes.h>
-#include    <stdint.h>
+#include <inttypes.h>
+#include <stdint.h>
 
-#include    "ulvgl.h"
-#include    "ip.h"
-#include    "kern/kern.h"
-#include    "kern/kern_types.h"
-#include    "macros.h"
-#include    "macros_soc.h"
-#include    "switch/switch.h"
-#include    "system/system.h"
-#include    "types.h"
+#include "ulvgl.h"
+#include "ip.h"
+#include "kern/kern.h"
+#include "kern/kern_types.h"
+#include "macros.h"
+#include "macros_soc.h"
+#include "switch/switch.h"
+#include "system/system.h"
+#include "types.h"
 
 typedef struct  line    line_t;
 

@@ -85,17 +85,17 @@
  *           +-----------------------------------+
  */
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
+#include "kern/kern.h"
 #ifdef __arm__
-#include    "macros_core.h"
+#include "macros_core.h"
 #endif
-#include    "macros_soc.h"          // IWYU pragma: keep
-#include    "private/private_lists.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "macros_soc.h"          // IWYU pragma: keep
+#include "private/private_lists.h"
+#include "record/record.h"
+#include "types.h"
 
 enum {
         KLIST_EMPTY = 0U,                                       // The list is empty

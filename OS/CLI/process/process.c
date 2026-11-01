@@ -5,22 +5,22 @@
  * Goal:     List the installed processes.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <string.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <string.h>
 
-#include    "kern/kern.h"
-#include    "kern/private/private_processes.h"
-#include    "machine/machine.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "spin.h"
-#include    "text/text.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "kern/private/private_processes.h"
+#include "machine/machine.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "spin.h"
+#include "text/text.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

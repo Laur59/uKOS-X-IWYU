@@ -9,13 +9,13 @@
  *   cb_configure cb_readI2C cb_writeI2C
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "STTS22H/STTS22H.h"
-#include    "kern/kern.h"
-#include    "os_errors.h"
-#include    "temperature/temperature.h"
-#include    "types.h"
+#include "STTS22H/STTS22H.h"
+#include "kern/kern.h"
+#include "os_errors.h"
+#include "temperature/temperature.h"
+#include "types.h"
 
 /*
  * \brief model_stts22h_init

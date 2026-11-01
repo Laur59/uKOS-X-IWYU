@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include    "core.h"    // IWYU pragma: keep
-#include    "macros_soc.h"
+#include "core.h"    // IWYU pragma: keep
+#include "macros_soc.h"
 
 // uKernel macros
 // --------------

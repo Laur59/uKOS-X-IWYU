@@ -8,9 +8,9 @@
  * Included by OS/Lib_cryptographics/random/random.c, which declares the model functions static.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "random/random.h"
+#include "random/random.h"
 
 /*
  * \brief model_random_hard_init

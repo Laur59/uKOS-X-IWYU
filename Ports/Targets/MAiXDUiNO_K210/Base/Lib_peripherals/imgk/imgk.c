@@ -6,24 +6,24 @@
  * Goal:     imgk manager.
  */
 
-#include    "imgk.h"
-#include    "OV2640.h"
+#include "imgk.h"
+#include "OV2640.h"
 
-#include    <math.h>
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <math.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "Registers/K210_dvp.h"
-#include    "clockTree.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "Registers/K210_dvp.h"
+#include "clockTree.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 static              uint16_t    *vImageE0 = nullptr;
 static              uint16_t    *vImageE1 = nullptr;

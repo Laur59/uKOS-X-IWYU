@@ -6,10 +6,10 @@
  * Goal:     header for the uKOS-X applications.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "modules.h"
-#include    "types.h"
+#include "modules.h"
+#include "types.h"
 
 extern  int32_t         aStart(uint32_t argc, const char_t *argv[]);
 extern  uintptr_t       _lnApplication;

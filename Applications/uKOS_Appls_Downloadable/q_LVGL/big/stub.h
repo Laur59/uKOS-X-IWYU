@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "ulvgl.h"
+#include "ulvgl.h"
 
 // Provided by the board stub, used by the application
 // stub_LCD_On is the board's model_lcd_tft_rgb8888_init, renamed by the stub

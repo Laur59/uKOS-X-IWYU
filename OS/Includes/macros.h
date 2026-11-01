@@ -7,10 +7,10 @@
 
 #pragma once
 
-#include    <stdint.h>  // IWYU pragma: keep
+#include <stdint.h>  // IWYU pragma: keep
 
 #ifdef UKOS_S
-#include    "types.h"           // IWYU pragma: keep (for char_t)
+#include "types.h"           // IWYU pragma: keep (for char_t)
 // Note: RESERVE/RELEASE macros use KWAIT_INFINITY from kern/temporal.h
 // Users must include kern/temporal.h explicitly to use these macros
 #endif

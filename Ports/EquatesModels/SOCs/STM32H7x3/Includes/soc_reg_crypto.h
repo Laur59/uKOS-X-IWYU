@@ -12,6 +12,6 @@
 #pragma once
 
 #if defined(STM32H753_S)
-#include    "Registers/stm32H753_cryp.h"    // IWYU pragma: export
-#include    "Registers/stm32H753_hash.h"    // IWYU pragma: export
+#include "Registers/stm32H753_cryp.h"    // IWYU pragma: export
+#include "Registers/stm32H753_hash.h"    // IWYU pragma: export
 #endif

@@ -6,13 +6,13 @@
  * Nucleo_H753 – Stub for the LED manager.
  */
 
-#include    "led/led.h"
+#include "led/led.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "macros_core.h"
-#include    "os_errors.h"
+#include "board.h"
+#include "macros_core.h"
+#include "os_errors.h"
 
 static  bool    vMute;
 

@@ -23,9 +23,9 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "modules.h"
+#include "modules.h"
 
 #define KOCT0_NUM   (((uint32_t)'_'<<8U) + (uint32_t)'0')
 #define KOCT0MAN    (KOCT0_NUM<<8U)

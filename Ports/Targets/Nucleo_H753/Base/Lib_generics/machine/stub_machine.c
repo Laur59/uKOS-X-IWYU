@@ -6,14 +6,14 @@
  * Nucleo_H753 – Stub for the machine manager.
  */
 
-#include    "machine/machine.h"
+#include "machine/machine.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/scb.h"
-#include    "macros_core.h"
-#include    "os_errors.h"
-#include    "types.h"
+#include "Registers/scb.h"
+#include "macros_core.h"
+#include "os_errors.h"
+#include "types.h"
 
 /*
  * \brief stub_machine_restart

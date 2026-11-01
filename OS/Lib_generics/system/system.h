@@ -23,10 +23,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "modules.h"
-#include    "types.h"
+#include "modules.h"
+#include "types.h"
 
 /*!
  * \addtogroup Lib_generics

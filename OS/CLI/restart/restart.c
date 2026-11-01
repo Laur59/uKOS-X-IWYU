@@ -5,15 +5,15 @@
  * Goal:     Make a restart.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "kern/kern.h"
-#include    "machine/machine.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "machine/machine.h"
+#include "macros.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

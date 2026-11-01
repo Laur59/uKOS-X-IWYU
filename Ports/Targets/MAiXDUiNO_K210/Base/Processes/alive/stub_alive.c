@@ -6,17 +6,17 @@
  * Goal:     alive process; the system is working.
  */
 
-#include    "alive/alive.h"
+#include "alive/alive.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "led/led.h"
+#include "kern/kern.h"
+#include "led/led.h"
 // macros_core.h is required for INTERRUPTION_OFF
-#include    "macros_core.h"     // IWYU pragma: keep
-#include    "macros_soc.h"
-#include    "types.h"
+#include "macros_core.h"     // IWYU pragma: keep
+#include "macros_soc.h"
+#include "types.h"
 
 /*
  * \brief stub_alive_process

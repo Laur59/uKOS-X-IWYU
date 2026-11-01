@@ -6,14 +6,14 @@
  * Goal:     stub for the connection of the "sdcard" manager with the spi1 device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "board.h"
-#include    "kern/kern.h"
-#include    "sdcard/sdcard.h"
-#include    "soc_reg.h"
-#include    "spi/spi.h"
-#include    "spi_common.h"
+#include "board.h"
+#include "kern/kern.h"
+#include "sdcard/sdcard.h"
+#include "soc_reg.h"
+#include "spi/spi.h"
+#include "spi_common.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -142,4 +142,4 @@ static  void    cb_readSPI(uint8_t *destination, uint16_t size) {
     spi_multipleWriteRead(KSPI1, nullptr, 0U, destination, size, KWAIT_INFINITY);
 }
 
-#include    "model_sdcard_spi.c_inc"
+#include "model_sdcard_spi.c_inc"

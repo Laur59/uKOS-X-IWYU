@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 // Necessary for basic C (code, rodata, data, initialised, bss)
 // ------------------------------------------------------------

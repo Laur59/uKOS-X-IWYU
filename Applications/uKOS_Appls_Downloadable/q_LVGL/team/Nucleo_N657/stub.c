@@ -7,16 +7,16 @@
  * Interface between the lvgl and the hardware.
  */
 
-#include    "stub.h"
+#include "stub.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/stm32N657_gpioe.h"
-#include    "ulvgl.h"
-#include    "lcd_display.h"
-#include    "macros_core.h"
-#include    "spi/spi.h"
-#include    "spi_common.h"
+#include "Registers/stm32N657_gpioe.h"
+#include "ulvgl.h"
+#include "lcd_display.h"
+#include "macros_core.h"
+#include "spi/spi.h"
+#include "spi_common.h"
 
 #define BLCD_CS         9U              // LCD CS
 #define BLCD_DC         10U             // LCD Data/Command

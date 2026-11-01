@@ -6,13 +6,13 @@
  * Stub for the connection of the "urt0" manager to the uart device.
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "clockTree.h"
-#include    "macros_core.h"
-#include    "serial_common.h"
-#include    "soc_reg.h"
-#include    "urt0/urt0.h"
+#include "clockTree.h"
+#include "macros_core.h"
+#include "serial_common.h"
+#include "soc_reg.h"
+#include "urt0/urt0.h"
 
 // Model callbacks
 // ---------------
@@ -87,8 +87,8 @@ static  void    cb_init_C1(void) {
 #define KUART_SEMA_TX_C0_S
 #define KUART_SEMA_TX_C1_S
 
-#include    "model_uart_C0.c_inc"
-#include    "model_uart_C1.c_inc"
+#include "model_uart_C0.c_inc"
+#include "model_uart_C1.c_inc"
 
 int32_t stub_urt0_init(void) {
     uint32_t    core;

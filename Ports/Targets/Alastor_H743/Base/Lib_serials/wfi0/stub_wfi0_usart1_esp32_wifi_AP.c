@@ -7,17 +7,17 @@
  *           wifi mode in access point
  */
 
-#include    <stdint.h>
-#include    <stdlib.h>
-#include    <string.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include    "board.h"
-#include    "clockTree.h"
-#include    "kern/kern.h"
-#include    "os_errors.h"
-#include    "soc_reg.h"
-#include    "types.h"
-#include    "wfi0/wfi0.h"
+#include "board.h"
+#include "clockTree.h"
+#include "kern/kern.h"
+#include "os_errors.h"
+#include "soc_reg.h"
+#include "types.h"
+#include "wfi0/wfi0.h"
 
 #undef  VERBOSE_S               // Display the answer
 
@@ -414,4 +414,4 @@ static  void    local_sndCommand(const uint8_t *command, uint32_t wait) {
     kern_suspendProcess(wait);
 }
 
-#include    "model_usart_esp32_wifi_AP.c_inc"
+#include "model_usart_esp32_wifi_AP.c_inc"

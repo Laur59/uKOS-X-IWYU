@@ -29,11 +29,11 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern/kern.h"
-#include    "macros_soc.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros_soc.h"
+#include "types.h"
 
 #define KSIGN_ANONYMOUS_ID  "Sign_anonymous"
 

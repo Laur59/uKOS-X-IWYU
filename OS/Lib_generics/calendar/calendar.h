@@ -22,9 +22,9 @@
  * @{
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "types.h"
+#include "types.h"
 
 // Modifiable in the makefile: default calendar parameters
 

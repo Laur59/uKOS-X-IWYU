@@ -7,16 +7,16 @@
  *           - The gdb loaded application has to start with SET_INTERRUPTION
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"       // IWYU pragma: keep (for PROCESS_STACKMALLOC)
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"       // IWYU pragma: keep (for PROCESS_STACKMALLOC)
+#include "modules.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

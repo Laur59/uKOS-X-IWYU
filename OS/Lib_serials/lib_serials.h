@@ -34,36 +34,36 @@
 // IWYU pragma: begin_exports
 
 #ifdef CONFIG_MAN_SERIAL_S
-#include    "serial/serial.h"
+#include "serial/serial.h"
 #else
 #define KDEF0   0
 #endif
 #ifdef CONFIG_MAN_URT0_S
-#include    "urt0/urt0.h"
+#include "urt0/urt0.h"
 #endif
 #ifdef CONFIG_MAN_URT1_S
-#include    "urt1/urt1.h"
+#include "urt1/urt1.h"
 #endif
 #ifdef CONFIG_MAN_URT2_S
-#include    "urt2/urt2.h"
+#include "urt2/urt2.h"
 #endif
 #ifdef CONFIG_MAN_URT3_S
-#include    "urt3/urt3.h"
+#include "urt3/urt3.h"
 #endif
 #ifdef CONFIG_MAN_URT4_S
-#include    "urt4/urt4.h"
+#include "urt4/urt4.h"
 #endif
 #ifdef CONFIG_MAN_CDC0_S
-#include    "cdc0/cdc0.h"
+#include "cdc0/cdc0.h"
 #endif
 #ifdef CONFIG_MAN_CDC1_S
-#include    "cdc1/cdc1.h"
+#include "cdc1/cdc1.h"
 #endif
 #ifdef CONFIG_MAN_WFI0_S
-#include    "wfi0/wfi0.h"
+#include "wfi0/wfi0.h"
 #endif
 #if (defined(CONFIG_MAN_BLE0_S))
-#include    "ble0/ble0.h"
+#include "ble0/ble0.h"
 #endif
 
 // IWYU pragma: end_exports

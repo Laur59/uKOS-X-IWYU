@@ -5,11 +5,11 @@
  * Implementation file for the TestClass process manager.
  */
 
-#include    "demo_class.hpp"
+#include "demo_class.hpp"
 
-#include    <stdio.h>
+#include <stdio.h>
 
-#include    "serial/serial.h"
+#include "serial/serial.h"
 
 
 // Constructor implementation

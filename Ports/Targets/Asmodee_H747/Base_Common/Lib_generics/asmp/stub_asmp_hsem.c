@@ -42,16 +42,16 @@
  *           In a homogeneous configuration: PREEMPTION_THRESHOLD(core)
  */
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "asmp/asmp.h"
-#include    "core_reg.h"
-#include    "kern/kern.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "soc_reg.h"
-#include    "types.h"
+#include "asmp/asmp.h"
+#include "core_reg.h"
+#include "kern/kern.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "soc_reg.h"
+#include "types.h"
 
 #define KSIGNATURE_CORE_0       0xC24U              // cortex-M4
 #define KSIGNATURE_CORE_1       0xC27U              // cortex-M7

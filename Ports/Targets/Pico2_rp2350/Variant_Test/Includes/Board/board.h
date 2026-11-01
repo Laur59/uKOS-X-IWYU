@@ -12,7 +12,7 @@
 #define Pico2_rp2350_S
 #endif
 
-#include    "macros_core.h"
+#include "macros_core.h"
 
 // GPIO settings
 // -------------

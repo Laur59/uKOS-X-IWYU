@@ -6,19 +6,19 @@
  * Firefly_H743 – Connect the splash process to the WKS43WV067 LTDC display.
  */
 
-#include    "splash/splash.h"
+#include "splash/splash.h"
 
-#include    <stdint.h>
-#include    <string.h>
+#include <stdint.h>
+#include <string.h>
 
-#include    "Registers/stm32H7x3_gpio.h"
-#include    "Registers/stm32H7x3_ltdc.h"  // for LTDC
-#include    "Registers/stm32H7x3_rcc.h"
-#include    "ulvgl.h"
-#include    "board.h"
-#include    "kern/kern.h"
-#include    "lcd_display.h"
-#include    "macros_core.h"
+#include "Registers/stm32H7x3_gpio.h"
+#include "Registers/stm32H7x3_ltdc.h"  // for LTDC
+#include "Registers/stm32H7x3_rcc.h"
+#include "ulvgl.h"
+#include "board.h"
+#include "kern/kern.h"
+#include "lcd_display.h"
+#include "macros_core.h"
 
 // Connect the physical device to the logical manager
 // --------------------------------------------------
@@ -110,4 +110,4 @@ static  void    cb_powerLCD(void) {
     kern_suspendProcess(100U);
 }
 
-#include    "model_lcd_tft_rgb8888.c_inc"
+#include "model_lcd_tft_rgb8888.c_inc"

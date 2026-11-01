@@ -8,14 +8,14 @@
  *               - manager system calls
  */
 
-#include    "syscallDispatcher.h"
+#include "syscallDispatcher.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "Lib_generics/record/record.h"
-#include    "Registers/soc_vectors.h"
-#include    "types.h"
+#include "Lib_generics/record/record.h"
+#include "Registers/soc_vectors.h"
+#include "types.h"
 
 /*
  * \brief SVCall_C0_IRQHandler

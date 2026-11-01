@@ -16,21 +16,21 @@
  *           int32_t kern_getPreciseSignalById(const char_t *identifier, prcs_t **handle) *
  */
 
-#include    "preciseSignals.h"
-#include    "kern/private/private_preciseSignals.h"
+#include "preciseSignals.h"
+#include "kern/private/private_preciseSignals.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "debug.h"
-#include    "kern/kern.h"
-#include    "kern/private/private_identifiers.h"
-#include    "kern/private/private_processes.h"
-#include    "macros_core.h"
-#include    "macros_soc.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "debug.h"
+#include "kern/kern.h"
+#include "kern/private/private_identifiers.h"
+#include "kern/private/private_processes.h"
+#include "macros_core.h"
+#include "macros_soc.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 #if (KKERN_NB_PRECISE_SIGNALS > 0)
 

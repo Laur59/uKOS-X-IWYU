@@ -6,18 +6,18 @@
  * Alive process: blink a LED to signal the system is running.
  */
 
-#include    "alive/alive.h"
+#include "alive/alive.h"
 
-#include    <stdint.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "led/led.h"
-#include    "macros_core.h"
+#include "kern/kern.h"
+#include "led/led.h"
+#include "macros_core.h"
 #ifdef __riscv
-#include    "macros_soc.h"
+#include "macros_soc.h"
 #endif
-#include    "types.h"
+#include "types.h"
 
 /*
  * \brief stub_alive_process

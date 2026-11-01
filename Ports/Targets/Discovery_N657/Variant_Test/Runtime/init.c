@@ -10,20 +10,20 @@
  *           !!! the variable into the RAM.
  */
 
-#include    "init.h"
+#include "init.h"
 
-#include    <stddef.h>
-#include    <stdint.h>
+#include <stddef.h>
+#include <stdint.h>
 
-#include    "APS256XXN/APS256XXN.h"     // IWYU pragma: export
-#include    "cache.h"
-#include    "clockTree.h"
-#include    "core_reg.h"
-#include    "linker.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "modules.h"
-#include    "soc_reg.h"
+#include "APS256XXN/APS256XXN.h"     // IWYU pragma: export
+#include "cache.h"
+#include "clockTree.h"
+#include "core_reg.h"
+#include "linker.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "modules.h"
+#include "soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -1237,4 +1237,4 @@ static  void    local_wait_us(uint32_t us) {
     for (time = 0; time < us; time++) { NOP; }
 }
 
-#include    "model_xpi_apsram.c_inc"
+#include "model_xpi_apsram.c_inc"

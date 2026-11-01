@@ -29,7 +29,7 @@
  * @{
  */
 
-#include    "types.h"
+#include "types.h"
 
 /*!
  * \brief Compare 2 identifiers (string_1 -> string_2)

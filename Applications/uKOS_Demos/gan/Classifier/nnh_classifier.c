@@ -6,17 +6,17 @@
  *          Hardware classifier.
  */
 
-#include    <inttypes.h>
-#include    <math.h>
-#include    <stdlib.h>
-#include    <stdio.h>
+#include <inttypes.h>
+#include <math.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #ifdef USE_NN_HARDWARE
-#include    "kern/kern.h"
-#include    "libNN_Hardware.h"
-#include    "nn.h"
-#include    "types.h"
-#include    "ui.h"
+#include "kern/kern.h"
+#include "libNN_Hardware.h"
+#include "nn.h"
+#include "types.h"
+#include "ui.h"
 
 static  int8_t  vInput[KNN_INPUT_SIZE];
 static  int8_t  vOutput[KNN_OUTPUT_SIZE];

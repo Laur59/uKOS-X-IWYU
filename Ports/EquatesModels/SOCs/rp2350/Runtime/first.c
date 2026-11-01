@@ -7,20 +7,20 @@
  */
 
 #ifdef __riscv
-#include    "first.h"
+#include "first.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "Registers/core_addendum.h"
-#include    "Registers/soc_vectors.h"
-#include    "core.h"
-#include    "exce.h"
+#include "Registers/core_addendum.h"
+#include "Registers/soc_vectors.h"
+#include "core.h"
+#include "exce.h"
 #ifdef PRIVILEGED_USER_S
-#include    "kern/privileges.h"
+#include "kern/privileges.h"
 #endif
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
-#include    "macros_soc.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"  // IWYU pragma: keep (for INTERRUPTION_IN INTERRUPTION_OUT)
+#include "macros_soc.h"
 
 // vPriv_insideException (kern/privileges.h): kern_setPrivilegeMode() checks this flag
 // and skips the RIGHTS_ELEVATION ecall when set, so a kernel service called from an
@@ -600,13 +600,13 @@ void    vector_table_C0(void) {
 
 #else       // ARM
 
-#include    "first.h"
+#include "first.h"
 
-#include    "Registers/soc_vectors.h"
-#include    "crt0.h"
-#include    "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
-#include    "linker.h"
-#include    "macros_core.h"
+#include "Registers/soc_vectors.h"
+#include "crt0.h"
+#include "kern/private/private_temporal.h"   // IWYU pragma: keep (for vKern_TimeException)
+#include "linker.h"
+#include "macros_core.h"
 
 // Vector table: ...
 // However rather than start at zero the vector table starts at address 0x00000004,

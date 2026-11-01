@@ -6,7 +6,7 @@
  *          uKOS-X background image.
  */
 
-#include    "ulvgl.h"
+#include "ulvgl.h"
 
 #ifndef LV_ATTRIBUTE_MEM_ALIGN
 #define LV_ATTRIBUTE_MEM_ALIGN

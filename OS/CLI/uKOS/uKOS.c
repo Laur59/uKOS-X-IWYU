@@ -6,16 +6,16 @@
  * Display the uKOS-X target implementation and its history.
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
+#include <stdint.h>
+#include <stdio.h>
 
-#include    "ip.h"
-#include    "macros.h"
-#include    "modules.h"
-#include    "serial/serial.h"
-#include    "text/text.h"
-#include    "types.h"
-#include    "version.h"
+#include "ip.h"
+#include "macros.h"
+#include "modules.h"
+#include "serial/serial.h"
+#include "text/text.h"
+#include "types.h"
+#include "version.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

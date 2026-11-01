@@ -5,27 +5,27 @@
  * Goal:     spi manager.
  */
 
-#include    "spi.h"
+#include "spi.h"
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "macros.h"
-#include    "modules.h"
-#include    "os_errors.h"
+#include "macros.h"
+#include "modules.h"
+#include "os_errors.h"
 #ifdef CONFIG_MAN_SPI0_S
-#include    "spi0/spi0.h"
+#include "spi0/spi0.h"
 #endif
 #ifdef CONFIG_MAN_SPI1_S
-#include    "spi1/spi1.h"
+#include "spi1/spi1.h"
 #endif
 #ifdef CONFIG_MAN_SPI2_S
-#include    "spi2/spi2.h"
+#include "spi2/spi2.h"
 #endif
 #ifdef CONFIG_MAN_SPI3_S
-#include    "spi3/spi3.h"
+#include "spi3/spi3.h"
 #endif
-#include    "spi_common.h"
-#include    "types.h"
+#include "spi_common.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_SPI_S
 

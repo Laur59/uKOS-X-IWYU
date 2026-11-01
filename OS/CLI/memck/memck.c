@@ -5,18 +5,18 @@
  * Goal:     This tool cyclically verify the memory integrity.
  */
 
-#include    <inttypes.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"       // IWYU pragma: keep (for PROCESS_STACKMALLOC)
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "serial/serial.h"
-#include    "types.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"       // IWYU pragma: keep (for PROCESS_STACKMALLOC)
+#include "modules.h"
+#include "os_errors.h"
+#include "serial/serial.h"
+#include "types.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

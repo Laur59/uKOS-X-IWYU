@@ -20,10 +20,10 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
-#include    "kern_types.h"  // IWYU pragma: keep
-#include    "types.h"
+#include "kern_types.h"  // IWYU pragma: keep
+#include "types.h"
 
 #if (KKERN_NB_POOLS > 0)
 

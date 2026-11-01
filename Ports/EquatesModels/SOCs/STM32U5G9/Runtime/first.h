@@ -8,6 +8,6 @@
 
 #pragma once
 
-#include    <stdint.h>
+#include <stdint.h>
 
 extern  const   uintptr_t   g_pfnVectors_C0[];

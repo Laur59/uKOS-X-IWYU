@@ -10,14 +10,14 @@
  *           !!! the variable into the RAM.
  */
 
-#include    "init.h"
+#include "init.h"
 
-#include    "clockTree.h"
-#include    "core_reg.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "modules.h"
-#include    "soc_reg.h"
+#include "clockTree.h"
+#include "core_reg.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "modules.h"
+#include "soc_reg.h"
 
 // uKOS-X specific (see the module.h)
 // ==================================

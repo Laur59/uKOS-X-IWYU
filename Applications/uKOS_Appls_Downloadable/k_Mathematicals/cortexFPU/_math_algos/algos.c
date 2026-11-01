@@ -16,10 +16,10 @@
  *
  */
 
-#include    <math.h>
+#include <math.h>
 
-#include    "types.h"
-#include    "os_errors.h"
+#include "types.h"
+#include "os_errors.h"
 
 /*
  * \brief pi_lambert

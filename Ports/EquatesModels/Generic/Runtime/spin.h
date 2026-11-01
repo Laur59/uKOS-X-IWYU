@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include    <stdint.h>
-#include    <stdatomic.h>
+#include <stdint.h>
+#include <stdatomic.h>
 
-#include    "macros_soc.h"
+#include "macros_soc.h"
 
 // Structures for locks
 // --------------------

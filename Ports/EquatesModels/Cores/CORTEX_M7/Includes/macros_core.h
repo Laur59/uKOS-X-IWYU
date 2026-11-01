@@ -8,18 +8,18 @@
 
 #pragma once
 
-#include    <stdint.h>  // IWYU pragma: keep
-#include    <stdlib.h>  // IWYU pragma: keep (for exit in CHECK_STACK_SANITY)
+#include <stdint.h>  // IWYU pragma: keep
+#include <stdlib.h>  // IWYU pragma: keep (for exit in CHECK_STACK_SANITY)
 
-#include    "Registers/soc_vectors.h"   // IWYU pragma: keep
-#include    "core.h"    // IWYU pragma: keep
-#include    "core_reg.h"
-#include    "exce.h"
-#include    "kern/kern.h"
-#include    "linker.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"       // IWYU pragma: keep for KMEMO_ALIGN_8
-#include    "syscallDispatcher.h"
+#include "Registers/soc_vectors.h"   // IWYU pragma: keep
+#include "core.h"    // IWYU pragma: keep
+#include "core_reg.h"
+#include "exce.h"
+#include "kern/kern.h"
+#include "linker.h"
+#include "macros_soc.h"
+#include "memo/memo.h"       // IWYU pragma: keep for KMEMO_ALIGN_8
+#include "syscallDispatcher.h"
 
 // uKernel macros
 // --------------

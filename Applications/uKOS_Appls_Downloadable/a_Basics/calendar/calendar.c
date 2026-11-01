@@ -42,26 +42,26 @@
  *
  */
 
-#include    <inttypes.h>
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <time.h>
+#include <inttypes.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <time.h>
 
-#include    <sys/time.h>
+#include <sys/time.h>
 
-#include    "crt0.h"
-#include    "calendar/calendar.h"
-#include    "serial/serial.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "memo/memo.h"
-#include    "led/led.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "crt0.h"
+#include "calendar/calendar.h"
+#include "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "memo/memo.h"
+#include "led/led.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 #ifndef _CLOCKS_PER_SEC_
 #error "_CLOCKS_PER_SEC_ is not defined"

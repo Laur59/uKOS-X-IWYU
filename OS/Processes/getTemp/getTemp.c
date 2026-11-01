@@ -17,28 +17,28 @@
  *                                               - free the buffer k
  */
 
-#include    <stdint.h>
-#include    <stdio.h>
-#include    <stdlib.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include    "serial/serial.h"
-#include    "kern/kern.h"
-#include    "macros.h"
-#include    "macros_core.h"
-#include    "macros_core_stackFrame.h"
-#include    "macros_soc.h"
-#include    "memo/memo.h"
-#include    "modules.h"
-#include    "os_errors.h"
-#include    "record/record.h"
-#include    "types.h"
+#include "serial/serial.h"
+#include "kern/kern.h"
+#include "macros.h"
+#include "macros_core.h"
+#include "macros_core_stackFrame.h"
+#include "macros_soc.h"
+#include "memo/memo.h"
+#include "modules.h"
+#include "os_errors.h"
+#include "record/record.h"
+#include "types.h"
 
 #ifdef CONFIG_MAN_TEMPERATURE_S
-#include    <string.h>
+#include <string.h>
 
-#include    "temperature/temperature.h"
+#include "temperature/temperature.h"
 #else
-#include    "random/random.h"
+#include "random/random.h"
 #endif
 
 // uKOS-X specific (see the module.h)
