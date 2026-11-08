@@ -16,6 +16,10 @@ everything it writes and looks dead while still enumerating.  UART bridges keep
 DTR low, since asserting it resets some targets.  Override either way with
 --assert-dtr / --no-assert-dtr.
 
+The one exception to never re-opening is a USB CDC port whose device went away:
+the board's USB device is gone with every reset, so the session waits for the
+node to return and opens it again, with the same settings.
+
 Clients talk to the daemon over a Unix socket and get line-oriented,
 prompt-synchronised request/response behaviour.
 
@@ -68,6 +72,7 @@ KDEFAULT_TIMEOUT = 10.0
 KBUFFER_MAX = 4 * 1024 * 1024
 KSETTLE = 0.025
 KSTART_TIMEOUT = 30.0
+KREOPEN_WAIT = 5.0
 
 KEOL = {"cr": b"\r", "lf": b"\n", "crlf": b"\r\n"}
 
@@ -132,6 +137,8 @@ class Session:
         self.last_rx = None
         self.stopping = False
         self.cond = threading.Condition()
+        self.online = threading.Event()
+        self.online.set()
 
         self.ser = serial.Serial()
         self.ser.port = port
@@ -158,6 +165,8 @@ class Session:
                     if pending:
                         data += self.ser.read(pending)
             except (OSError, serial.SerialException):
+                if self._reopen():
+                    continue
                 break
             if not data:
                 continue
@@ -174,6 +183,32 @@ class Session:
                     del self.buf[:excess]
                     self.discarded += excess
                 self.cond.notify_all()
+
+    def _reopen(self):
+        """Open a USB CDC port again once its device is back.
+
+        A board reset takes the board's USB device with it, and a descriptor
+        of the old device fails for good, so the session would otherwise be
+        dead until restarted, and would miss the boot banner.  A UART bridge
+        stays on the bus through a reset; losing one is a real failure.
+        """
+
+        if not is_cdc_port(self.ser.port):
+            return False
+        self.online.clear()
+        try:
+            self.ser.close()
+        except (OSError, serial.SerialException):
+            pass
+        while not self.stopping:
+            time.sleep(0.05)
+            try:
+                self.ser.open()
+            except (OSError, serial.SerialException):
+                continue
+            self.online.set()
+            return True
+        return False
 
     def mark(self):
         """Absolute stream position of the current end of buffer."""
@@ -232,6 +267,7 @@ class Session:
                 self.cond.wait(min(quiet - idle, 0.05))
 
     def write(self, data):
+        self.online.wait(KREOPEN_WAIT)
         self.ser.write(data)
         self.ser.flush()
 

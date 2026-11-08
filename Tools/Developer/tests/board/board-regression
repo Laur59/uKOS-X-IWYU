@@ -39,7 +39,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
 from ukos_board import (KHERE, KROOT, KSERIAL, KSPECS, Refusal,  # noqa: E402
-                        console_answers, console_bauds, describe, identify,
+                        console_answers, console_bauds, console_ports,
+                        describe, identify,
                         log_mark, log_since, per_core, RX_MUTEX_CORE,
                         parse_dump, prepare, prepare_row, probe_for_port,
                         reset_board, send_json, send_row, serial,
@@ -154,7 +155,8 @@ def select_board(args, sessions):
     # Ask every ST-Link console. Reading `uKOS` is harmless, and an ST-Link
     # virtual COM port does not reset its target when it is opened.
     answering = []
-    for port, _sn in stlink_ports():
+    for port in ([p for p, _sn in stlink_ports()]
+                 + console_ports(args.board)):
         name, started = sessions.open(port)
         board = board_on(name)
         if board and (args.board in (None, board)):
@@ -306,11 +308,11 @@ def judge(results, known):
 
 def run(args, sessions):
     port, name = select_board(args, sessions)
-    sn = probe_for_port(port)
 
     rc, ident, modules = identify(name)
     if rc == 2:
         raise Refusal("the board on %s did not answer 'uKOS' / 'list'" % port)
+    sn = probe_for_port(port, ident)
     vcs = ident.get("VCS#", "?")
     matches, dirty, why = firmware_check(vcs)
     if not matches and not args.any_firmware:
@@ -383,7 +385,7 @@ def run(args, sessions):
                                False, args.allow_poison, args.allow_terminal)
             if not skip and (args.no_reset or not sn):
                 skip = "needs a reset afterwards: %s" % (
-                    "--no-reset" if args.no_reset else "no ST-Link probe")
+                    "--no-reset" if args.no_reset else "no probe")
             if skip:
                 res.update(result="skip", error=skip)
                 continue
@@ -469,7 +471,7 @@ def run(args, sessions):
 
         if args.no_reset or not sn:
             res["recovery"] = "none (%s)" % ("--no-reset" if args.no_reset
-                                            else "no ST-Link probe")
+                                            else "no probe")
             lost = "the board %s at %s" % (
                 "crashed" if dump else "hung", tid)
             continue

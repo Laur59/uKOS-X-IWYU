@@ -41,5 +41,5 @@ python3 NN_model.py --model_file NN_model.tflite --mode full
 xxd -i NN_model.tflite > NN_model.c_inc
 ```
 
-During the build, the make/CMake infrastructure automatically generates `NN_model.c_inc` from `NN_model.xxd`; this generated file is included by the application so that the network architecture and its trained parameters (such as weights and biases) are embedded directly into the program. In this way, the application can use the classifier without requiring any external model file at runtime.
+This file must then be included in the application so that the network architecture and its trained parameters can be embedded directly into the program. In this way, the application can use the classifier without requiring any external model file at runtime.
 

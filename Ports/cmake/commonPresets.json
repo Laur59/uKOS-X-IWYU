@@ -23,7 +23,7 @@
       "name": "gcc",
       "inherits": "base",
       "displayName": "GCC   · newlib",
-      "description": "GCC toolchain, newlib (default C library), user mode ON, stack protection ON",
+      "description": "GNU GCC toolchain, newlib (default C library), user mode ON, stack protection ON",
       "cacheVariables": {
         "USE_LLVM": "OFF"
       }
@@ -32,89 +32,84 @@
       "name": "llvm",
       "inherits": "base",
       "displayName": "Clang · newlib",
-      "description": "Clang/LLVM toolchain, newlib (default C library), user mode ON, stack protection ON",
+      "description": "LLVM Clang toolchain, newlib (default C library), user mode ON, stack protection ON",
       "cacheVariables": {
         "USE_LLVM": "ON"
       }
     },
-	{
-	  "name": "gcc-picolibc",
-	  "inherits": "gcc",
-	  "displayName": "GCC   · picolibc",
-	  "description": "GNU GCC toolchain, picolibc",
-	  "cacheVariables": { "C_LIBRARY": "picolibc" }
-	},
-	{
-	  "name": "llvm-picolibc",
-	  "inherits": "llvm",
-	  "displayName": "Clang · picolibc",
-	  "description": "LLVM Clang toolchain, picolibc",
-	  "cacheVariables": { "C_LIBRARY": "picolibc" }
-	},
+    {
+      "name": "gcc-picolibc",
+      "inherits": "gcc",
+      "displayName": "GCC   · picolibc",
+      "description": "GNU GCC toolchain, picolibc",
+      "cacheVariables": { "C_LIBRARY": "picolibc" }
+    },
+    {
+      "name": "llvm-picolibc",
+      "inherits": "llvm",
+      "displayName": "Clang · picolibc",
+      "description": "LLVM Clang toolchain, picolibc",
+      "cacheVariables": { "C_LIBRARY": "picolibc" }
+    },
     {
       "name": "llvm-llvmlibc",
       "inherits": "llvm",
       "displayName": "Clang · llvm-libc",
-      "description": "Clang/LLVM toolchain, user mode ON, stack protection ON, C library LLVM libc",
+      "description": "LLVM Clang toolchain, LLVM libc",
       "cacheVariables": {
         "C_LIBRARY": "llvmlibc"
       }
+    }
+  ],
+
+  "buildPresets": [
+    { "name": "gcc",           "configurePreset": "gcc" },
+    { "name": "gcc-picolibc",  "configurePreset": "gcc-picolibc" },
+    { "name": "llvm",          "configurePreset": "llvm" },
+    { "name": "llvm-picolibc", "configurePreset": "llvm-picolibc" },
+    { "name": "llvm-llvmlibc", "configurePreset": "llvm-llvmlibc" }
+  ],
+
+  "workflowPresets": [
+    {
+      "name": "llvm",
+      "displayName": "Clang · newlib",
+      "steps": [
+        { "type": "configure", "name": "llvm" },
+        { "type": "build",     "name": "llvm" }
+      ]
     },
     {
-      "name": "gcc-nocanary",
-      "inherits": "base",
-      "description": "GCC toolchain, user mode ON, stack protection OFF",
-      "cacheVariables": {
-        "USE_LLVM": "OFF",
-        "CANARY": "OFF"
-      }
+      "name": "llvm-picolibc",
+      "displayName": "Clang · picolibc",
+      "steps": [
+        { "type": "configure", "name": "llvm-picolibc" },
+        { "type": "build",     "name": "llvm-picolibc" }
+      ]
     },
     {
-      "name": "gcc-nouser",
-      "inherits": "base",
-      "description": "GCC toolchain, user mode OFF, stack protection ON",
-      "cacheVariables": {
-        "USE_LLVM": "OFF",
-        "USER_MODE": "OFF"
-      }
+      "name": "llvm-llvmlibc",
+      "displayName": "Clang · llvm-libc",
+      "steps": [
+        { "type": "configure", "name": "llvm-llvmlibc" },
+        { "type": "build",     "name": "llvm-llvmlibc" }
+      ]
     },
     {
-      "name": "gcc-nouser-nocanary",
-      "inherits": "base",
-      "description": "GCC toolchain, user mode OFF, stack protection OFF",
-      "cacheVariables": {
-        "USE_LLVM": "OFF",
-        "USER_MODE": "OFF",
-        "CANARY": "OFF"
-      }
+      "name": "gcc",
+      "displayName": "GCC   · newlib",
+      "steps": [
+        { "type": "configure", "name": "gcc" },
+        { "type": "build",     "name": "gcc" }
+      ]
     },
     {
-      "name": "llvm-nocanary",
-      "inherits": "base",
-      "description": "Clang/LLVM toolchain, user mode ON, stack protection OFF",
-      "cacheVariables": {
-        "USE_LLVM": "ON",
-        "CANARY": "OFF"
-      }
-    },
-    {
-      "name": "llvm-nouser",
-      "inherits": "base",
-      "description": "Clang/LLVM toolchain, user mode OFF, stack protection ON",
-      "cacheVariables": {
-        "USE_LLVM": "ON",
-        "USER_MODE": "OFF"
-      }
-    },
-    {
-      "name": "llvm-nouser-nocanary",
-      "inherits": "base",
-      "description": "Clang/LLVM toolchain, user mode OFF, stack protection OFF",
-      "cacheVariables": {
-        "USE_LLVM": "ON",
-        "USER_MODE": "OFF",
-        "CANARY": "OFF"
-      }
+      "name": "gcc-picolibc",
+      "displayName": "GCC   · picolibc",
+      "steps": [
+        { "type": "configure", "name": "gcc-picolibc" },
+        { "type": "build",     "name": "gcc-picolibc" }
+      ]
     }
   ]
 }

@@ -11,29 +11,29 @@
  *          Run the downloaded application...
  *
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 1, Pi = 3.133333333 Time = 9
+ *  n = 1, Pi = 3.133333333 Time = 17
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 2, Pi = 2.846092796 Time = 10
+ *  n = 2, Pi = 3.141422466 Time = 56
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 3, Pi = 2.653938321 Time = 10
+ *  n = 3, Pi = 3.141587390 Time = 54
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 4, Pi = 2.514732720 Time = 18
+ *  n = 4, Pi = 3.141592458 Time = 51
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 5, Pi = 2.405836197 Time = 18
+ *  n = 5, Pi = 3.141592645 Time = 51
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 6, Pi = 2.316420392 Time = 17
+ *  n = 6, Pi = 3.141592653 Time = 46
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 7, Pi = 2.240572416 Time = 18
+ *  n = 7, Pi = 3.141592654 Time = 53
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 8, Pi = 2.174716608 Time = 18
+ *  n = 8, Pi = 3.141592654 Time = 53
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 9, Pi = 2.116526375 Time = 17
+ *  n = 9, Pi = 3.141592654 Time = 51
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 10, Pi = 2.064403060 Time = 18
+ *  n = 10, Pi = 3.141592654 Time = 50
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 11, Pi = 2.017200923 Time = 18
+ *  n = 11, Pi = 3.141592654 Time = 44
  *  P2: The old dreams were good dreams. They didn't work out, but I'm glad I had them.
- *  n = 12, Pi = 1.974070807 Time = 18
+ *  n = 12, Pi = 3.141592654 Time = 53
  *  .....
  */
 
@@ -148,10 +148,10 @@ static void aProcess_0([[maybe_unused]] const void *argument) {
         led_toggle(KLED_1);
 
         kern_readTickCount(&time[0]);
-        Pi_f = Pi_f + ((1.0 / pow(16, n_f)) * ((4.0 / ((8.0 * n_f) + 1.0)))
+        Pi_f = Pi_f + ((1.0 / pow(16, n_f)) * ((4.0 / ((8.0 * n_f) + 1.0))
                 - (2.0 / ((8.0 * n_f) + 4.0))
                 - (1.0 / ((8.0 * n_f) + 5.0))
-                - (1.0 / ((8.0 * n_f) + 6.0)));
+                - (1.0 / ((8.0 * n_f) + 6.0))));
 
         kern_readTickCount(&time[1]);
         delta = (uint32_t)(time[1] - time[0]);

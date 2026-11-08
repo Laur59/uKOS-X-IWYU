@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
+
+cmake_minimum_required(VERSION 3.31)
+
+# Applications CMake module setup
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/../../../../cmake")
+
+include(set-project-paths)
+
+include(${PATH_UKOS}/Ports/cmake/select-arm-toolchain.cmake)
+
+project(
+    gan
+    VERSION 1.0
+    LANGUAGES CXX C
+)
+
+set(DISPLAY WKS43WV067_5_Inches)
+
+# Microcontroller description (mandatory variables)
+set(SOC STM32H757)
+set(CORE CORTEX_M7)
+
+# Target
+set(BOARD Firefly_H757)
+set(VARIANT Variant_Test_CM7)
+set(BASE Base_CM7)
+
+# Extra compilation options
+add_compile_options(-g3 # includes extra information for debugger
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
+    -Os # optimisation
+)
+add_compile_definitions(
+    $<$<COMPILE_LANGUAGE:CXX>:TF_LITE_STATIC_MEMORY=1>
+    $<$<COMPILE_LANGUAGE:CXX>:CORTEX>
+)
+
+set(PATH_INCLUDES
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic/third_party/flatbuffers/include
+    ${PATH_TP_LIBRARY}/Tflite-micro/Generic/CORTEX_M_generic/third_party/gemmlowp
+    ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}
+    ${PATH_TP_LIBRARY}/LVGL/${DISPLAY}/${CORE}
+    ${PATH_TP_LIBRARY}/LVGL
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Classifier
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Graphics
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Graphics/Widgets
+)
+find_library(MYLIB TFLite ${PATH_TP_LIBRARY}/Tflite-micro/${CORE})
+
+# Directories in the makefile's APPL_SRC declaration order -- the link order
+# of the make build is recovered from the first appearance of each directory.
+set(OBJ
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/gan.cpp
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Firefly_H757/stub.c
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Classifier/nnh_classifier.c
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Classifier/tfl_classifier.cpp
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Graphics/lvgl.c
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Graphics/ui.c
+    ${PATH_UKOS}/Applications/uKOS_Demos/gan/Graphics/Widgets/Firefly_H757/background/background.c
+)
+
+include(common)

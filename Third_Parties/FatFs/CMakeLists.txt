@@ -35,6 +35,7 @@
 #   - Library/FatFs/*/flash/libFatFs.a
 #   - Library/FatFs/*/sdcard/libFatFs.a
 #   - Library/FatFs/*/sdcard_flash/libFatFs.a
+#   - Library/FatFs/include/source/*.h
 
 cmake_minimum_required(VERSION 3.31)
 
@@ -220,7 +221,9 @@ endforeach()
 #
 # cmake --install build gathers libFatFs.a for every core/variant from the
 # per-core build trees (build/build-<CORE>/<VARIANT>/) and deploys them to
-# Library/FatFs/<CORE>/<VARIANT>/.
+# Library/FatFs/<CORE>/<VARIANT>/. The public headers go to
+# Library/FatFs/include/source/, with the ffconf.h the archives were built with
+# (Step 2 removes upstream's), so that a consumer never needs the cloned tree.
 #------------------------------------------------------------------------
 
 foreach(CORE ${SUPPORTED_CORES})
@@ -233,6 +236,14 @@ foreach(CORE ${SUPPORTED_CORES})
         endforeach()
     endif()
 endforeach()
+
+install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/FatFs-current/source/"
+        DESTINATION "FatFs/include/source"
+        FILES_MATCHING PATTERN "*.h"
+)
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/Construction/System/ffconf.h"
+        DESTINATION "FatFs/include/source"
+)
 
 #------------------------------------------------------------------------
 # Step 5: Create convenience targets
@@ -278,4 +289,5 @@ endforeach()
 message("")
 message("Output libraries will be in:")
 message("  Library/FatFs/<CORE>/<VARIANT>/libFatFs.a  (VARIANT: flash, sdcard, sdcard_flash)")
+message("  Library/FatFs/include/source/*.h")
 message("══════════════════════════════════════════════════════════════")

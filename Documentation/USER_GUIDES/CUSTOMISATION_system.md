@@ -171,14 +171,14 @@ By construction, the kernel is set with the following configuration:
 | KKERN_WITH_STATISTICS_S = true | Include the statistics |
 | KKERN_WITH_DEBUG_S = true | Include the stop |
 | KKERN_WITH_TRTC_S = true | Support the hardware RTC              |
-| KKERN_NB_PROCESSES = 48 | Max. 48 processes                |
-| KKERN_NB_MAILBOXES = 48 | Max. 48 mailboxes |
-| KKERN_NB_SEMAPHORES = 48 | Max. 48 semaphores       |
-| KKERN_NB_MUTEXES = 48 | Max. 48 mutexes |
-| KKERN_NB_SOFTWARE_TIMERS = 8 | Max. 8 software timers |
-| KKERN_NB_SIGNALS = 8 | Max. 8 signals |
-| KKERN_NB_POOLS = 8 | Max. 8 pool regions    |
-| KKERN_NB_PRECISE_SIGNALS = 8 | Max. 8 precise signals |
+| KKERN_NB_PROCESSES = 48U | Max. 48 processes                |
+| KKERN_NB_MAILBOXES = 48U | Max. 48 mailboxes |
+| KKERN_NB_SEMAPHORES = 48U | Max. 48 semaphores       |
+| KKERN_NB_MUTEXES = 48U | Max. 48 mutexes |
+| KKERN_NB_SOFTWARE_TIMERS = 8U | Max. 8 software timers |
+| KKERN_NB_SIGNALS = 8U | Max. 8 signals |
+| KKERN_NB_POOLS = 8U | Max. 8 pool regions    |
+| KKERN_NB_PRECISE_SIGNALS = 8U | Max. 8 precise signals |
 
 Adaptation example
 
@@ -186,11 +186,11 @@ Adaptation example
 # Modifying the number of objects
 
 add_compile_definitions(
-    KKERN_NB_MAILBOXES=8
-    KKERN_NB_MUTEXES=8
-    KKERN_NB_PROCESSES=8
-    KKERN_NB_SEMAPHORES=8
-    KKERN_NB_SIGNALS=2
+    KKERN_NB_MAILBOXES=8U
+    KKERN_NB_MUTEXES=8U
+    KKERN_NB_PROCESSES=8U
+    KKERN_NB_SEMAPHORES=8U
+    KKERN_NB_SIGNALS=2U
 )
 ...
 # Modifying the behaviour of the kernel

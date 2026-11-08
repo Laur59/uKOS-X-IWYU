@@ -38,7 +38,6 @@
 #include "os_errors.h"
 #include "record/record.h"
 #include "serial/serial.h"
-#include "TinyUSB_interface.h"
 #include "types.h"
 
 // uKOS-X specific (see the module.h)

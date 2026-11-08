@@ -8,7 +8,7 @@
 | ---------- | -------------------- |
 | CPU        | 2 x rp2350 @ 150-MHz |
 | Core       | M33 / RV32IMAC       |
-| Comm       | urt0, cdc0, cdc1     |
+| Comm       | cdc0, cdc1           |
 | Periph     |                      |
 | Extensions |                      |
 
@@ -17,7 +17,7 @@
 | Variant      | Description           | Specific |
 | ------------ | --------------------- | ------------------------- |
 | Variant_Test | For Initial tests     | With MicroPython embedded |
-|              | Building for M33      | make -j USER_MODE=1       |
-|              | Building for RV32IMAC | make -j CORE=RV32IMAC     |
 |              |                       | With FS CDC TinyUSB       |
 |              |                       | With TensorFlow           |
+|              | Building for M33      | cmake --preset llvm       |
+|              | Building for RV32IMAC | cmake --preset llvm  -DCORE=RV32IMAC |

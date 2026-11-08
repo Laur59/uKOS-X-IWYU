@@ -37,8 +37,10 @@ upstream keeps one `soc_vectors.c_inc`, the CM4 list since its 0.6.7
 delivery (the CM7 one before).
 
 `Burn/`: `swd_FT4232_b.sh` (the Asmodee_H747's own FT4232, channel B, and its
-default), `jlinkexe.sh` (its `device STM32H747XI` has not been tried on an
-STM32H757), `stlink.sh` (names no probe serial: with several ST-Links attached
+default), `jlinkexe.sh` (the `burn` target hands it `SOC`, which names the
+device; an idle Asmodee_H747 flashes as it stands, by connecting under reset,
+while the Firefly_H757 has no nRESET on its J-Link and needs `bench` to keep the
+CM7 awake, since a core in WFI refuses the attach), `stlink.sh` (names no probe serial: with several ST-Links attached
 it flashes the first one), `stm32-dfu.sh`, `dfu-arduino.sh` (the DFU of the
 Arduino Portenta bootloader, `2341:035b`, the Portenta_H747's default; never
 follow it with `jlinkexe.sh`, whose full-chip `erase` wipes that bootloader).

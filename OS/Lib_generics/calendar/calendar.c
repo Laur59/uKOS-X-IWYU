@@ -50,12 +50,15 @@ MODULE(
 // Library specific
 // ================
 
+// Default time zone: Bucharest (EET-2EEST,M3.5.0/3,M10.5.0/4)
+// Upstream default: Central Europe (CET-1CEST,M3.5.0/2,M10.5.0/2)
+
 #ifndef TZ_UTC_SHIFT
-#define TZ_UTC_SHIFT        "CET-1"
+#define TZ_UTC_SHIFT        "EET-2"
 #endif
 
 #ifndef TZ_DST_SPEC
-#define TZ_DST_SPEC         "CEST,M3.5.0/2,M10.5.0/2"
+#define TZ_DST_SPEC         "EEST,M3.5.0/3,M10.5.0/4"
 #endif
 
 #define KSZ_TZ_UTC_SHIFT    (16U + 1U)

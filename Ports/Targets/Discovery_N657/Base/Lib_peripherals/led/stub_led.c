@@ -18,10 +18,6 @@
 // now carries SPI5_SCK for spi0: LD6 shows the SPI clock instead. LED 2 is
 // accepted and ignored, so code written for three LEDs still runs.
 
-// LED 2 was LD6 (green, active high) on PE15, which is also Arduino D13 and
-// now carries SPI5_SCK for spi0: LD6 shows the SPI clock instead. LED 2 is
-// accepted and ignored, so code written for three LEDs still runs.
-
 static  bool    vMute;
 
 /*

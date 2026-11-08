@@ -25,7 +25,7 @@
       "stop_on_fail": true,
       "timeout": 10,
       "unsafe": true,
-      "requires": ["unsafe", "module:hexloader"],
+      "requires": ["unsafe", "module:hexloader", "sym:linker_lnUMemo"],
       "note": "one byte (AB) at the start of the user memory publishes that address, like an S-record terminator alone, and breaks any application header left there. run used to jump to it and HardFault (fixed, ../DEFECTS.md); it must refuse. stop_on_fail: if the download itself goes wrong, run is not called"
     }
   ]

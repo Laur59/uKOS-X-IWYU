@@ -14,12 +14,16 @@ A configuration is a compiler (llvm, gcc), a C library (newlib, picolibc,
 llvmlibc - Clang only) and a mode: default, U (privileged only, USER_MODE=OFF),
 Y (no canary, CANARY=OFF) or UY (both). The full set is 20 per board.
 
-Only boards flashed through an ST-Link are supported (KFLASH): the board is
-found by its console, and the probe behind that console port is the one that
-flashes and resets it. The Burn/ scripts instead find a probe by connecting
-under reset to every ST-Link in turn, which resets every board they try. A
-board that needs a physical action to be flashed (BOOTSEL, DFU, a jumper) gets
-its own flashing method in KFLASH; none is written yet.
+Only the boards in KFLASH are supported. An "stlink" board is found by its
+console, and the probe behind that console port is the one that flashes and
+resets it. The Burn/ scripts instead find a probe by connecting under reset to
+every ST-Link in turn, which resets every board they try. A "jlink" board
+(ukos_board.KJLINK) is found by its consoles, and the J-Link attaches while
+`bench` keeps the core awake. It may have several variants, one per core: each
+configuration then builds and flashes them all, in one J-Link connection, and
+tests every console. A board that needs a physical action to be flashed
+(BOOTSEL, DFU, a jumper) gets its own flashing method in KFLASH; none is written
+yet.
 
 The SoC is the one the board reports when it differs from its variant's
 default, so a NUCLEO-H743ZI2 would be built with -DSOC=STM32H743 without being told.
@@ -48,10 +52,10 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
-from ukos_board import (KHERE, KROOT, Refusal, console_answers,  # noqa: E402
-                        find_programmer, identify, log_mark, log_since,
-                        read_variant, send_json, serial, session_for_port,
-                        stlink_ports)
+from ukos_board import (KHERE, KJLINK, KROOT, Refusal,  # noqa: E402
+                        console_answers, console_ports, find_programmer,
+                        identify, jlink_run, log_mark, log_since, read_variant,
+                        send_json, serial, session_for_port, stlink_ports)
 
 KCOMPILERS = ("llvm", "gcc")
 KLIBS      = ("newlib", "picolibc", "llvmlibc")
@@ -59,18 +63,21 @@ KMODES     = ("default", "U", "Y", "UY")
 KTESTS     = ("regression", "coredump")
 KDEFAULT   = ("llvm", "newlib", "default")
 
-# Preset suffix and the cache values each mode must produce
+# USER_MODE and CANARY of each mode
 KMODE = {
-    "default": ("",                  "ON",  "ON"),
-    "U":       ("-nouser",           "OFF", "ON"),
-    "Y":       ("-nocanary",         "ON",  "OFF"),
-    "UY":      ("-nouser-nocanary",  "OFF", "OFF"),
+    "default": ("ON",  "ON"),
+    "U":       ("OFF", "ON"),
+    "Y":       ("ON",  "OFF"),
+    "UY":      ("OFF", "OFF"),
 }
 
-# How each board is flashed. "stlink" needs no physical action; a board that
-# does (BOOTSEL, DFU, a jumper) needs a method of its own before it is listed.
+# How each board is flashed. Neither method needs a physical action; a board
+# that does (BOOTSEL, DFU, a jumper) needs a method of its own before it is
+# listed.
 KFLASH = {
+    "Asmodee_H747":   "jlink",
     "Discovery_U5G9": "stlink",
+    "Firefly_H757":   "jlink",
     "Nucleo_F207":    "stlink",
     "Nucleo_H753":    "stlink",
     "Nucleo_L4R5":    "stlink",
@@ -138,9 +145,10 @@ def git(*args):
 # The board
 # =========
 
-def find_board(board):
-    """(port, probe serial number, session name, started) of the board."""
+def find_stlink_board(board):
+    """The one console of an ST-Link board."""
 
+    variant = os.path.join(KROOT, "Ports", "Targets", board, "Variant_Test")
     for port, sn in stlink_ports():
         name = session_for_port(port)
         started = False
@@ -152,11 +160,66 @@ def find_board(board):
         rc, rep = send_json("uKOS", name, 6)
         if rc == 0 and re.search(r"^Board:\s+%s\s*$" % re.escape(board),
                                  rep.get("text", ""), re.M):
-            return port, sn, name, started
+            return [{"variant": variant, "core": "", "port": port, "sn": sn,
+                     "name": name, "started": started}]
         if started:
             serial(["stop"], name)
     raise Refusal("no ST-Link console answers as %s; flash it once by hand "
                   "so that it boots, then run this again" % board)
+
+
+def find_jlink_board(board):
+    """A console per variant of a J-Link board, in KJLINK's order. The first
+    one is the core that the J-Link flashes through."""
+
+    found = {}
+    for port in console_ports(board):
+        name = session_for_port(port)
+        started = False
+        if not name:
+            name = "matrix-" + os.path.basename(port).replace("cu.", "")
+            if serial(["start", "--port", port], name)[0] != 0:
+                continue
+            started = True
+        rc, rep = send_json("uKOS", name, 6)
+        text = rep.get("text", "") if rc == 0 else ""
+        variant = re.search(r"^Variant:\s+(\S+)\s*$", text, re.M)
+        variant = variant.group(1) if variant else None
+        if (re.search(r"^Board:\s+%s\s*$" % re.escape(board), text, re.M)
+                and variant in KJLINK[board] and variant not in found):
+            found[variant] = {
+                "variant": os.path.join(KROOT, "Ports", "Targets", board,
+                                        variant),
+                "core": variant.rsplit("_", 1)[-1], "port": port,
+                "sn": KJLINK[board][variant]["device"], "name": name,
+                "started": started,
+                "dump": KJLINK[board][variant].get("dump")}
+        elif started:
+            serial(["stop"], name)
+
+    missing = [v for v in KJLINK[board] if v not in found]
+    if missing:
+        for console in found.values():
+            if console["started"]:
+                serial(["stop"], console["name"])
+        raise Refusal("no console answers as %s %s; flash it once by hand so "
+                      "that it boots, then run this again"
+                      % (board, ", ".join(missing)))
+    for console in found.values():
+        if console["dump"]:
+            console["dump"] = found[console["dump"]]["name"]
+    for variant, console in found.items():
+        port = KJLINK[board][variant].get("dump_port")
+        if port:
+            console["dump"] = session_for_port(port)
+            if not console["dump"]:
+                console["dump"] = "matrix-" + os.path.basename(port).replace(
+                    "cu.", "")
+                console["dump_started"] = True
+                if serial(["start", "--port", port], console["dump"])[0] != 0:
+                    raise Refusal("cannot open %s, where the %s dumps come "
+                                  "out" % (port, variant))
+    return [found[v] for v in KJLINK[board]]
 
 
 def wait_boot(name, mark):
@@ -180,20 +243,20 @@ def run_logged(cmd, log, cwd=None):
                               stderr=subprocess.STDOUT).returncode
 
 
-def build(config, variant, soc, logs):
+def build(config, variant, soc, logs, tag):
     """Configure and build in the variant's own build/ and Artefacts/;
     returns (artefacts dir, problem or None)."""
 
     compiler, lib, mode = config
-    tag = label(config).replace(" ", "")
     build_dir = os.path.join(variant, "build")
     # Explicit: the default is $PWD/Artefacts, and PWD is the caller's
     artefacts = os.path.join(variant, "Artefacts")
     shutil.rmtree(build_dir, ignore_errors=True)
-    suffix, user, canary = KMODE[mode]
+    user, canary = KMODE[mode]
 
-    cmd = ["cmake", "--preset", compiler + suffix, "-B", build_dir,
-           "-DC_LIBRARY=" + lib, "-DARTEFACTS_DIR=" + artefacts]
+    cmd = ["cmake", "--preset", compiler, "-B", build_dir,
+           "-DC_LIBRARY=" + lib, "-DUSER_MODE=" + user, "-DCANARY=" + canary,
+           "-DARTEFACTS_DIR=" + artefacts]
     if soc:
         cmd.append("-DSOC=" + soc)
     log = os.path.join(logs, tag + "-configure.log")
@@ -218,7 +281,7 @@ def build(config, variant, soc, logs):
     return artefacts, None
 
 
-def flash(sn, artefacts, logs, tag):
+def flash_stlink(sn, artefacts, logs, tag):
     """Flash FLASH.hex through the probe `sn`; None or the problem."""
 
     cli = find_programmer()
@@ -232,6 +295,57 @@ def flash(sn, artefacts, logs, tag):
     with open(log, errors="replace") as handle:
         verified = "verified successfully" in handle.read()
     return None if rc == 0 and verified else "flashing failed (%s)" % log
+
+
+def flash_jlink(console, images, logs, tag):
+    """Flash every image in one connection, which resets the board once, then
+    start it; None or the problem. `loadfile` prints O.K. only once the J-Link
+    has verified what it wrote."""
+
+    log = os.path.join(logs, tag + "-flash.log")
+    ran, output = jlink_run(console["sn"],
+                            ["h"]
+                            + ["loadfile " + os.path.join(i, "FLASH.hex")
+                               for i in images]
+                            + ["r", "g"],
+                            console["name"])
+    with open(log, "w") as handle:
+        handle.write(output)
+    done = len(re.findall(r"^O\.K\.\s*$", output, re.M))
+    return None if ran and done == len(images) else "flashing failed (%s)" % log
+
+
+def build_and_flash(config, ctx, tag):
+    """Build every variant, flash them and wait for each console; None or the
+    problem. Also the marker of what is on the board: ctx["flashed"]."""
+
+    images = []
+    for console in ctx["consoles"]:
+        artefacts, problem = build(config, console["variant"], ctx["soc"],
+                                   ctx["logs"], tag + console["core"])
+        if problem:
+            return problem
+        images.append(artefacts)
+
+    marks = [log_mark(c["name"]) for c in ctx["consoles"]]
+    first = ctx["consoles"][0]
+    if KFLASH[ctx["board"]] == "jlink":
+        problem = flash_jlink(first, images, ctx["logs"], tag)
+    else:
+        problem = flash_stlink(first["sn"], images[0], ctx["logs"], tag)
+    ctx["flashed"] = config
+    if problem:
+        return problem
+    for console, mark in zip(ctx["consoles"], marks):
+        if not wait_boot(console["name"], mark):
+            return "%sthe board did not boot after flashing" % (
+                console["core"] + ": " if console["core"] else "")
+    for console in ctx["consoles"]:
+        problem = check_image(console["name"], config, ctx["head"])
+        if problem:
+            return "%s%s" % (console["core"] + ": " if console["core"] else "",
+                             problem)
+    return None
 
 
 def check_image(name, config, head):
@@ -265,40 +379,51 @@ def run_test(cmd, log):
     return rc == 0, short if rc == 0 else "rc %d, %s (%s)" % (rc, short, log)
 
 
+def merge(results):
+    """One (passed, short result) from those of every console."""
+
+    return (all(ok for _, ok, _ in results),
+            "; ".join("%s%s" % (core + " " if core else "", short)
+                      for core, _, short in results))
+
+
 def one(config, ctx):
     """Build, flash and test one configuration; returns its result row."""
 
     tag = label(config).replace(" ", "")
     row = {"config": label(config)}
-    artefacts, problem = build(config, ctx["variant"], ctx["soc"],
-                               ctx["logs"])
-    if problem:
-        row["error"] = problem
-        return row
-
-    mark = log_mark(ctx["name"])
-    problem = flash(ctx["sn"], artefacts, ctx["logs"], tag)
-    ctx["flashed"] = config
-    if not problem and not wait_boot(ctx["name"], mark):
-        problem = "the board did not boot after flashing"
-    if not problem:
-        problem = check_image(ctx["name"], config, ctx["head"])
+    problem = build_and_flash(config, ctx, tag)
     if problem:
         row["error"] = problem
         return row
 
     bindir = os.path.join(KROOT, "Tools", "Developer", "bin")
     if "regression" in ctx["tests"]:
-        row["regression"] = run_test(
-            [os.path.join(bindir, "board-regression"), "--board", ctx["board"],
-             "--port", ctx["port"], "--expect-libc", config[1]],
-            os.path.join(ctx["logs"], tag + "-board-regression.log"))
+        results = []
+        for console in ctx["consoles"]:
+            ok, short = run_test(
+                [os.path.join(bindir, "board-regression"),
+                 "--board", ctx["board"], "--port", console["port"],
+                 "--expect-libc", config[1]],
+                os.path.join(ctx["logs"], "%s%s-board-regression.log"
+                             % (tag, console["core"])))
+            results.append((console["core"], ok, short))
+        row["regression"] = merge(results)
     if "coredump" in ctx["tests"]:
         if ctx["board"] in ctx["coredump_boards"]:
-            row["coredump"] = run_test(
-                [os.path.join(bindir, "coredump-test"), "--name", ctx["name"],
-                 "--sn", ctx["sn"], "-v"],
-                os.path.join(ctx["logs"], tag + "-coredump-test.log"))
+            results = []
+            for console in ctx["consoles"]:
+                cmd = [os.path.join(bindir, "coredump-test"),
+                       "--name", console["name"], "-v"]
+                if KFLASH[ctx["board"]] == "stlink":
+                    cmd += ["--sn", console["sn"]]
+                if console.get("dump"):
+                    cmd += ["--dump-name", console["dump"]]
+                ok, short = run_test(cmd, os.path.join(
+                    ctx["logs"], "%s%s-coredump-test.log"
+                    % (tag, console["core"])))
+                results.append((console["core"], ok, short))
+            row["coredump"] = merge(results)
         else:
             row["coredump"] = (True, "n/a (no faulting address for %s)"
                                % ctx["board"])
@@ -352,9 +477,6 @@ def main():
     if args.board not in KFLASH:
         raise Refusal("%s cannot be flashed by this tool yet (supported: %s)"
                       % (args.board, ", ".join(sorted(KFLASH))))
-    variant = os.path.join(KROOT, "Ports", "Targets", args.board,
-                           "Variant_Test")
-    facts = read_variant(variant)
     configs = configurations(args)
     tests = split(args.tests, KTESTS, "test")
     if not configs:
@@ -374,19 +496,22 @@ def main():
         print("\ndry run: nothing was built or flashed")
         return 0
 
-    port, sn, name, started = find_board(args.board)
-    ident = identify(name)[1] or {}
+    consoles = (find_jlink_board if KFLASH[args.board] == "jlink"
+                else find_stlink_board)(args.board)
+    facts = read_variant(consoles[0]["variant"])
+    ident = identify(consoles[0]["name"])[1] or {}
     soc = args.soc or ident.get("SoC")
     soc = soc if soc and soc != facts["soc"] else None
     logs = args.logs or tempfile.mkdtemp(prefix="board-matrix-")
     os.makedirs(logs, exist_ok=True)
-    print("%sconsole%s    %s  probe %s  session %s" % (BOLD, NC, port, sn, name))
+    for console in consoles:
+        print("%sconsole%s    %s  probe %s  session %s"
+              % (BOLD, NC, console["port"], console["sn"], console["name"]))
     print("%ssoc%s        %s" % (BOLD, NC, soc or facts["soc"]))
     print("%slogs%s       %s\n" % (BOLD, NC, logs))
 
-    ctx = {"board": args.board, "variant": variant, "soc": soc,
-           "logs": logs, "port": port, "sn": sn, "name": name, "head": head,
-           "tests": tests, "flashed": None,
+    ctx = {"board": args.board, "consoles": consoles, "soc": soc,
+           "logs": logs, "head": head, "tests": tests, "flashed": None,
            "coredump_boards": coredump_boards()}
     rows = []
     try:
@@ -404,19 +529,15 @@ def main():
     restored = None
     if ctx["flashed"] not in (None, KDEFAULT) and not args.no_restore:
         print("\nrestoring %s ... " % label(KDEFAULT), end="", flush=True)
-        artefacts, problem = build(KDEFAULT, variant, soc, logs)
-        if not problem:
-            mark = log_mark(name)
-            problem = flash(sn, artefacts, logs, "restore")
-            if not problem and not wait_boot(name, mark):
-                problem = "the board did not boot"
-            if not problem:
-                problem = check_image(name, KDEFAULT, head)
+        problem = build_and_flash(KDEFAULT, ctx, "restore")
         restored = problem is None
         print("%s" % ("%sdone%s" % (GREEN, NC) if restored
                       else "%sFAILED%s: %s" % (RED, NC, problem)))
-    if started:
-        serial(["stop"], name)
+    for console in consoles:
+        if console["started"]:
+            serial(["stop"], console["name"])
+        if console.get("dump_started"):
+            serial(["stop"], console["dump"])
 
     failed = [r for r in rows if not passed(r)]
     print("\n%s%d/%d configurations passed%s%s" % (

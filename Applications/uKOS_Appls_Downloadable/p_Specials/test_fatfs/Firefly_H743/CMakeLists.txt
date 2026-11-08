@@ -31,8 +31,7 @@ add_compile_options(
 )
 
 set(PATH_INCLUDES
-    ${PATH_UKOS}/Third_Parties/FatFs/FatFs-current/source
-    ${PATH_UKOS}/Third_Parties/FatFs/Construction/System
+    ${PATH_TP_LIBRARY}/FatFs/include/source
 )
 
 include(common)

@@ -659,17 +659,21 @@ endmacro()
 # FATFS (File system) integration
 # Usage example:
 #   add_FatFs(STORAGE flash)
+set(FATFS_ALLOWED_STORAGES flash sdcard sdnand sdcard_flash sdcard_sdnand_flash)
+
 macro(add_FatFs)
     cmake_parse_arguments(FATFS "" "STORAGE" "" ${ARGN})
 
+    list(JOIN FATFS_ALLOWED_STORAGES ", " _fatfs_allowed_str)
+
     # Validate mandatory arguments
     if(NOT DEFINED FATFS_STORAGE)
-        message(FATAL_ERROR "add_FatFS: STORAGE is mandatory (flash, or sdcard, or sdcard_flash)")
+        message(FATAL_ERROR "add_FatFs: STORAGE is mandatory (${_fatfs_allowed_str})")
     endif()
 
     # Validate STORAGE value
-    if(NOT FATFS_STORAGE STREQUAL "flash" AND NOT FATFS_STORAGE STREQUAL "sdcard" AND NOT FATFS_STORAGE STREQUAL "sdcard_flash")
-        message(FATAL_ERROR "add_FatFs: STORAGE must be flash, or sdcard, or sdcard_flash, got '${FATFS_STORAGE}'")
+    if(NOT FATFS_STORAGE IN_LIST FATFS_ALLOWED_STORAGES)
+        message(FATAL_ERROR "add_FatFs: STORAGE must be one of ${_fatfs_allowed_str}, got '${FATFS_STORAGE}'")
     endif()
 
     add_compile_definitions(CONFIG_MAN_FATFS_S)

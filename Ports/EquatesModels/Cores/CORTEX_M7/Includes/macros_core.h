@@ -143,24 +143,32 @@
 #define INTERRUPTION_SET_PERIPH core_setBASEPRI((uint32_t)KINT_IMASK_PERIPHERALS<<(uint32_t)KNVIC_PRIORITY_SHIFT)
 #endif
 
+[[gnu::always_inline]] static inline void core_interruptionOffHard(void) {
+
+    __asm volatile (
+        "cpsid       i      \n\t"
+        "isb         0xF"
+        :
+        :
+        : "memory"
+    );
+}
 #ifndef INTERRUPTION_OFF_HARD
-#define INTERRUPTION_OFF_HARD   __asm volatile ("                                                                            \n \
-                                cpsid       i                                                                                \n \
-                                isb         0xF"                                                                                \
-                                :                                                                                               \
-                                :                                                                                               \
-                                : "memory"                                                                                      \
-                                )
+#define INTERRUPTION_OFF_HARD   core_interruptionOffHard()
 #endif
 
+[[gnu::always_inline]] static inline void core_interruptionOnHard(void) {
+
+    __asm volatile (
+        "cpsie       i      \n\t"
+        "isb         0xF"
+        :
+        :
+        : "memory"
+    );
+}
 #ifndef INTERRUPTION_ON_HARD
-#define INTERRUPTION_ON_HARD    __asm volatile ("                                                                            \n \
-                                cpsie       i                                                                                \n \
-                                isb         0xF"                                                                                \
-                                :                                                                                               \
-                                :                                                                                               \
-                                : "memory"                                                                                      \
-                                )
+#define INTERRUPTION_ON_HARD    core_interruptionOnHard()
 #endif
 
 #ifndef INTERRUPTION_OFF
@@ -216,6 +224,7 @@ extern  volatile    bool    vPriv_insideException[KNB_CORES];
 
 [[noreturn]]
 extern              void    model_coreDump_displayExceptions(uintptr_t lr, uintptr_t *msp);
+extern              void    model_coreDump_cleanDCache(void);
 
 #define EXCEPTION_SPECIFIC_HANDLER(exc)                                                                                         \
                                 __attribute__((used)) static void exc##_local_IRQHandler(uintptr_t lr, uintptr_t *msp) {        \
@@ -224,6 +233,7 @@ extern              void    model_coreDump_displayExceptions(uintptr_t lr, uintp
                                                                                                                                 \
                                     go = vExce_indExcVectors[core][(int32_t)exc##_IRQn + (int32_t)KNB_EXCEPTIONS];              \
                                     if (go == nullptr) {                                                                        \
+                                        model_coreDump_cleanDCache();                                                           \
                                         model_coreDump_displayExceptions(lr, msp);                                              \
                                     }                                                                                           \
                                     vPriv_insideException[core] = true;                                                         \

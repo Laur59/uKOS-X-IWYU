@@ -785,6 +785,85 @@ KREVIVE_TRIES = 8
 KREVIVE_WAIT  = 2          # seconds between attempts
 
 
+# Boards without an ST-Link, reached through a SEGGER J-Link, per variant: the
+# device the J-Link attaches to and the USB product name of the variant's
+# console. Each core has its own access port, hence one device per variant.
+# "dump" names the variant whose console prints this one's core dump, when they
+# differ: a dump goes out through cmns_send() on urt0's USART, whatever the
+# console runs on, and the CM7's USART1 is the wire of the CM4's console.
+# "dump_port" is the port it comes out on when no console holds that wire, as
+# for the CM7's USART6 on Asmodee_H747. "port" pins a console to one channel of
+# a bridge whose channels share a product name: the others carry the dump wire
+# and SWD, and must not be opened to ask them who they are.
+KJLINK = {
+    "Firefly_H757": {
+        "Variant_Test_CM7": {"device": "STM32H757XI_M7",
+                             "product": "uKOS-X Firefly_H757",
+                             "dump": "Variant_Test_CM4"},
+        "Variant_Test_CM4": {"device": "STM32H757XI_M4",
+                             "product": "USB Serial"},
+    },
+    "Asmodee_H747": {
+        "Variant_Test_CM7": {"device": "STM32H747XI_M7",
+                             "product": "uKOS-X Asmodee_H747",
+                             "dump_port": "/dev/cu.usbserial-uKOS_2"},
+        "Variant_Test_CM4": {"device": "STM32H747XI_M4",
+                             "product": "uKOS - Asmodee",
+                             "port": "/dev/cu.usbserial-uKOS_3"},
+    },
+}
+
+KJLINK_TRIES   = 4
+KJLINK_TIMEOUT = 120       # seconds, for one connection, flashing included
+KJLINK_REST    = 8         # seconds for a console's bench to end
+KJLINK_NOTCONN = "Could not connect"
+
+
+def jlink_device(board, variant):
+    """The device a J-Link attaches to for this variant, or None."""
+
+    return KJLINK.get(board, {}).get(variant, {}).get("device")
+
+
+def jlink_run(device, commands, name=None):
+    """Run J-Link commands in one connection; returns (ran, output).
+
+    On the STM32H7 a core in WFI refuses the debugger, and the J-Link has no
+    reset line on the Firefly to attach under reset: the attach succeeds only
+    while the core works, and only for the core that works. A crashed core
+    spins, so the first try goes without any load. After that `bench` keeps the
+    core busy, started from its console `name`, for as long as the attach takes.
+    """
+
+    jlink = shutil.which("JLinkExe")
+    if jlink is None:
+        return False, "JLinkExe not found"
+    lines = ["device " + device, "si SWD", "speed 4000", "connect"]
+    with tempfile.NamedTemporaryFile("w", suffix=".jlink") as script:
+        script.write("\n".join(lines + commands + ["exit"]) + "\n")
+        script.flush()
+        output = ""
+        for attempt in range(KJLINK_TRIES):
+            if attempt and name:
+                serial(["raw", "bench\\r"], name)
+            try:
+                done = subprocess.run([jlink, "-NoGui", "1", "-ExitOnError", "1",
+                                       "-CommandFile", script.name],
+                                      stdin=subprocess.DEVNULL,
+                                      capture_output=True, text=True,
+                                      errors="replace", timeout=KJLINK_TIMEOUT)
+            except subprocess.TimeoutExpired:
+                return False, "JLinkExe timed out"
+            output = done.stdout + done.stderr
+            if done.returncode == 0:
+                return True, output
+            if KJLINK_NOTCONN not in output:
+                break
+            if attempt and name:
+                time.sleep(KJLINK_REST)
+    return False, output
+
+
 def find_programmer():
     for cand in KPROGRAMMER_HINTS:
         if os.path.isfile(cand):
@@ -792,8 +871,9 @@ def find_programmer():
     return shutil.which("STM32_Programmer_CLI")
 
 
-def probe_for_port(port):
-    """The ST-Link serial number behind a console port, or None.
+def probe_for_port(port, ident=None):
+    """The probe behind a console port, or None: the J-Link device of a board
+    in KJLINK, else the ST-Link serial number.
 
     The USB serial number of an ST-Link's virtual COM port is the probe's own
     serial number - the sn= the programmer takes. Knowing it means resetting
@@ -801,6 +881,10 @@ def probe_for_port(port):
     the Burn/ scripts do) resets every board it tries.
     """
 
+    device = jlink_device((ident or {}).get("Board"),
+                          (ident or {}).get("Variant"))
+    if device:
+        return device
     try:
         from serial.tools import list_ports
     except ImportError:
@@ -824,6 +908,23 @@ def stlink_ports():
             and "STLINK" in (info.product or "").upper()]
 
 
+def console_ports(board):
+    """The ports that may carry a console of a board in KJLINK, which has no
+    ST-Link to name it. Only the board's answer on them tells which is which."""
+
+    variants = KJLINK.get(board, {}).values()
+    pinned = {v["port"] for v in variants if "port" in v}
+    products = {v["product"] for v in variants if "port" not in v}
+    try:
+        from serial.tools import list_ports
+    except ImportError:
+        return []
+    return [info.device
+            for info in sorted(list_ports.comports(), key=lambda i: i.device)
+            if info.device.startswith("/dev/cu.")
+            and (info.product in products or info.device in pinned)]
+
+
 def console_answers(name, timeout=6):
     rc, rep = send_json("uKOS", name, timeout, expect=[r"^Board:\s+\S+$"])
     return rc == 0
@@ -833,7 +934,8 @@ RX_BANNER = re.compile(r"^uKOS-X, \(c\) ", re.M)
 
 
 def reset_board(board, sn, name):
-    """Reset one board over SWD and wait for its console.
+    """Reset one board over SWD and wait for its console. `sn` is what
+    probe_for_port() returned: an ST-Link serial number or a J-Link device.
 
     Returns (rebooted, seconds, detail). A console that answers is not proof
     of a reset - a running Discovery_N657 refuses SWD, the reset silently does
@@ -844,13 +946,16 @@ def reset_board(board, sn, name):
     """
 
     cli = find_programmer()
-    if cli is None or not sn:
+    if not sn or (cli is None and board not in KJLINK):
         return False, 0.0, "no programmer or no probe"
     mark = log_mark(name)
     started = time.time()
-    subprocess.run([cli, "-c", "port=SWD", "sn=" + sn]
-                   + KRESET.get(board, KRESET_DEFAULT) + ["-rst"],
-                   capture_output=True, text=True)
+    if board in KJLINK:
+        jlink_run(sn, ["r", "g"], name)
+    else:
+        subprocess.run([cli, "-c", "port=SWD", "sn=" + sn]
+                       + KRESET.get(board, KRESET_DEFAULT) + ["-rst"],
+                       capture_output=True, text=True)
     for _ in range(KREVIVE_TRIES):
         time.sleep(KREVIVE_WAIT)
         if RX_BANNER.search(log_since(name, mark)) and console_answers(name):

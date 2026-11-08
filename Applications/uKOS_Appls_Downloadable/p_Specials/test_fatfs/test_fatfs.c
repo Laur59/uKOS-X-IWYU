@@ -93,6 +93,28 @@ MODULE(
 );
 #endif
 
+// Feature selection
+// The WITH_xxx macros gate the prototypes below as well as the code, so they
+// have to be known before the first of them is read.
+
+#ifdef Alastor_H743_S
+#define WITH_SDCARD_S
+#define WITH_SERIAL_FLASH_S
+#define WITH_FORMAT_S
+#endif
+
+#ifdef Firefly_H743_S
+#define WITH_SDCARD_S
+#define WITH_SERIAL_FLASH_S
+#define WITH_FORMAT_S
+#endif
+
+#ifdef Firefly_H757_S
+#define WITH_SDCARD_S
+#define WITH_SERIAL_FLASH_S
+#define WITH_FORMAT_S
+#endif
+
 // Important: FATFS and FIL variables have to be static
 // and not local; the size of the variable is huge!!
 
@@ -104,6 +126,10 @@ static          FIL         fp_sdcard_1, fp_sdcard_2, fp_sdcard_3, fp_serialFlas
 static          DIR         dir;
 [[maybe_unused]]
 static          FILINFO     fno;
+
+#ifdef WITH_FORMAT_S
+static          BYTE        work[FF_MAX_SS];
+#endif
 
 [[maybe_unused]]
 static          char_t      buffer_sdcard_1[128];
@@ -130,26 +156,6 @@ static  const   char_t      aTest_serialFlash_1[]   = "F4: The best time to code
 static  const   char_t      aTest_serialFlash_2[]   = "F5: Measure twice, cut once; test thrice, deploy once.";
 [[maybe_unused]]
 static  const   char_t      aTest_serialFlash_3[]   = "F6: When in doubt, print it out - logs are cheap, bugs aren't.";
-
-// Feature selection
-// The WITH_xxx macros gate the prototypes below as well as the code, so they
-// have to be known before the first of them is read.
-
-#ifdef Alastor_H743_S
-#define WITH_SDCARD_S
-#define WITH_SERIAL_FLASH_S
-#define WITH_FORMAT_S
-#endif
-
-#ifdef Firefly_H743_S
-#undef  WITH_SDCARD_S
-#define WITH_SERIAL_FLASH_S
-#define WITH_FORMAT_S
-#endif
-
-#ifdef WITH_FORMAT_S
-static          BYTE        work[FF_MAX_SS];
-#endif
 
 // Prototype
 
@@ -191,6 +197,7 @@ static  void    test_folder(const char_t *folder);
  *       suicide
  *
  */
+
 #define DRIVE_FLASH     "/flash"
 #define DRIVE_SDCARD    "/sdcard"
 

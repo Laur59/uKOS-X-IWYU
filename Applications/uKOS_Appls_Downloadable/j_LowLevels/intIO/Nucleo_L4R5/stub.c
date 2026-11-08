@@ -37,8 +37,9 @@ void    stub_intr_io_init(void) {
     NVIC_SetPriority(EXTI15_10_C0_IRQn, KHW_PRIORITY_HIGH);
     NVIC_EnableIRQ(EXTI15_10_C0_IRQn);
 
+    EXTI->RTSR1 &= ~(1U<<BPC13);
     EXTI->FTSR1 |= (1U<<BPC13);
-    EXTI->PR1   |= (1U<<BPC13);
+    EXTI->PR1    =  (1U<<BPC13);
     EXTI->IMR1  |= (1U<<BPC13);
 }
 
@@ -51,7 +52,7 @@ static  void    stub_intr_io_interruption(void) {
 
     core = GET_RUNNING_CORE;
 
-    EXTI->PR1 |= (1U<<BPC13);
+    EXTI->PR1 = (1U<<BPC13);
     vCounter++;
 
     PREEMPTION_THRESHOLD(core);

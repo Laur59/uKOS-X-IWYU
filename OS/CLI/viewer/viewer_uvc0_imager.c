@@ -25,7 +25,6 @@
 #include "os_errors.h"
 #include "record/record.h"
 #include "serial/serial.h"
-#include "TinyUSB_interface.h"
 #include "types.h"
 
 #ifdef CONFIG_MAN_IMAGER_S

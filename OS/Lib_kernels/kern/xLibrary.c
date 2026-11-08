@@ -186,8 +186,7 @@ void    xLibrary_release([[maybe_unused]] proc_t *handle) {
  *
  * \warning On a multi-core image (K210, rp2350) the cores share the library's
  * \warning single errno, so errno remains racy between cores. That is a property
- * \warning of the libraries, not of this swap, and needs real TLS to fix - see
- * \warning Documentation/USER_GUIDES/TLS_SUPPORT_ASSESSMENT.md.
+ * \warning of the libraries, not of this swap, and needs real TLS to fix.
  *
  * \warning call usable only by the uKernel.
  *

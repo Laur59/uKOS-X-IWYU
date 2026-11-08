@@ -14,9 +14,12 @@
 #include "Registers/nvic.h"
 #include "TinyUSB/TinyUSB.h"
 #include "Registers/soc_vectors.h"
+#include "cdc0/cdc0.h"
+#include "cdc1/cdc1.h"
 #include "clockTree.h"
 #include "macros_core.h"
 #include "macros_soc.h"
+#include "os_errors.h"
 #include "tusb_option.h"
 
 // Save the GCC diagnostic

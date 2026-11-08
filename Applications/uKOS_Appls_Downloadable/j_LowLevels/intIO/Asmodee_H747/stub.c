@@ -17,7 +17,7 @@
 #include "macros_core.h"
 #include "kern/kern.h"
 
-#define BPA0    0U
+#define BPA00   0U
 
 // Prototypes
 
@@ -37,9 +37,10 @@ void    stub_intr_io_init(void) {
     NVIC_SetPriority(EXTI0_C0_IRQn, KHW_PRIORITY_HIGH);
     NVIC_EnableIRQ(EXTI0_C0_IRQn);
 
-    EXTI->FTSR1   |= (1U<<BPA0);
-    EXTI->CPUPR1  |= (1U<<BPA0);
-    EXTI->CPUIMR1 |= (1U<<BPA0);
+    EXTI->RTSR1   &= ~(1U<<BPA00);
+    EXTI->FTSR1   |=  (1U<<BPA00);
+    EXTI->CPUPR1   =  (1U<<BPA00);
+    EXTI->CPUIMR1 |=  (1U<<BPA00);
 }
 
 /*
@@ -51,7 +52,7 @@ static  void    stub_intr_io_interruption(void) {
 
     core = GET_RUNNING_CORE;
 
-    EXTI->CPUPR1 |= (1U<<BPA0);
+    EXTI->CPUPR1 = (1U<<BPA00);
     vCounter++;
 
     PREEMPTION_THRESHOLD(core);

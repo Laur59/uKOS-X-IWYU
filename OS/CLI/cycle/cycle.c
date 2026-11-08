@@ -108,7 +108,7 @@ static  bool    local_getIndex(serialManager_t serialManager, uint16_t *index);
  * \brief Main entry point
  *
  */
-static  int32_t prgm([[maybe_unused]] uint32_t argc, [[maybe_unused]] const char_t *argv[]) {
+static  int32_t prgm(uint32_t argc, const char_t *argv[]) {
             uint32_t            core;
             char_t              *dummy;
             uint16_t            indexModule, indexSerialManager = 0U;

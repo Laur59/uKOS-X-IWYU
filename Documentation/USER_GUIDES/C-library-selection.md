@@ -407,13 +407,11 @@ hook is a picolibc *build-time* option, so the shipped `libc.a` kept using the g
 the two diverged; and the accessor returned a pointer into `proc_t`, which on a
 privileged/user build lives in the privileged RAM region and faulted with `DACCVIOL` when
 a user-mode process assigned `errno`. Reinstating it would mean rebuilding picolibc with
-`-Derrno-function=`, which also makes the toolchain uKOS-X-specific. See
-[TLS_SUPPORT_ASSESSMENT.md](TLS_SUPPORT_ASSESSMENT.md) §4.1.
+`-Derrno-function=`, which also makes the toolchain uKOS-X-specific.
 
 > `_REENT_GLOBAL_ERRNO`, still among the picolibc compile definitions, is a newlib-era
 > name; picolibc spells it `__GLOBAL_ERRNO`, so the define has no effect. `__DYNAMIC_REENT__`
-> on the newlib side is likewise redundant — `sys/config.h` defines it anyway. Both are
-> catalogued in the TLS assessment, §4.4.
+> on the newlib side is likewise redundant — `sys/config.h` defines it anyway.
 
 ### 6.3 llvmlibc — same swap, for a different reason
 
@@ -423,8 +421,7 @@ All three live in the same `libc.a` member, so uKOS-X cannot override the entry 
 definition of `__llvm_libc_errno` is a duplicate symbol, and the library would keep using
 the operators anyway. Because uKOS-X code and library code do reach the same `int`, the
 kernel makes it per-process by the same park-and-reload as picolibc, again through
-`proc_t.oErrno`. See
-[TLS_SUPPORT_ASSESSMENT.md](TLS_SUPPORT_ASSESSMENT.md) §4.2.
+`proc_t.oErrno`.
 
 ### 6.4 Known limitation — multi-core
 
@@ -465,8 +462,7 @@ Supporting declarations live in `Ports/EquatesModels/Generic/Runtime/linker.h`
 guarded by `#ifdef __clang__`.
 
 The full account of why the thread pointer is never installed is *picolibc and
-thread-local storage* in `CLAUDE.md`; what it would cost to lift the restriction is
-assessed in [TLS_SUPPORT_ASSESSMENT.md](TLS_SUPPORT_ASSESSMENT.md).
+thread-local storage* in `CLAUDE.md`.
 
 ---
 

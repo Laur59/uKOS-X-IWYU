@@ -74,7 +74,7 @@ int32_t shared_spi0_reserve(uint32_t manager, uint32_t timeout) {
                     case KIMUA:
                     case KIMUM:
                     case KTEMPERATURE: { local_spi0_imu_init();   break; }
-                    case KFLASH:       { local_spi0_flash_init(); break; }
+                    case KMEMORY:      { local_spi0_flash_init(); break; }
                     default: {
 
 // Make MISRA happy :-)
@@ -142,7 +142,7 @@ int32_t shared_spi0_select(uint32_t manager) {
         case KTEMPERATURE:
         case KIMUA:  { GPIOC->ODR &= (uint32_t)~(1U<<BSEL_ACCELERO); break; }
         case KIMUM:  { GPIOF->ODR &= (uint32_t)~(1U<<BSEL_MAGNETO);  break; }
-        case KFLASH: { GPIOB->ODR &= (uint32_t)~(1U<<BSEL_FLASH);    break; }
+        case KMEMORY: { GPIOB->ODR &= (uint32_t)~(1U<<BSEL_FLASH);   break; }
         default: {
 
 // Make MISRA happy :-)
@@ -166,10 +166,10 @@ int32_t shared_spi0_deselect(uint32_t manager) {
     PRIVILEGE_ELEVATE;
     switch (manager) {
         case KTEMPERATURE:
-        case KIMUA: { GPIOC->ODR |= (1U<<BSEL_ACCELERO);                                   break; }
-        case KIMUM: { GPIOF->ODR |= (1U<<BSEL_MAGNETO);                                    break; }
-        case KIMU:  { GPIOC->ODR |= (1U<<BSEL_ACCELERO); GPIOF->ODR |= (1U<<BSEL_MAGNETO); break; }
-        case KFLASH: { GPIOB->ODR |= (1U<<BSEL_FLASH);                                     break; }
+        case KIMUA:   { GPIOC->ODR |= (1U<<BSEL_ACCELERO);                                   break; }
+        case KIMUM:   { GPIOF->ODR |= (1U<<BSEL_MAGNETO);                                    break; }
+        case KIMU:    { GPIOC->ODR |= (1U<<BSEL_ACCELERO); GPIOF->ODR |= (1U<<BSEL_MAGNETO); break; }
+        case KMEMORY: { GPIOB->ODR |= (1U<<BSEL_FLASH);                                      break; }
         default: {
 
 // Make MISRA happy :-)

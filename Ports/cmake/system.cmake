@@ -541,7 +541,7 @@ if(NOT EXISTS ${BURN_SCRIPT})
 endif()
 add_custom_target(burn
     DEPENDS ${TARGET_ELF}
-    COMMAND ${BURN_SCRIPT}
+    COMMAND ${CMAKE_COMMAND} -E env SOC=${SOC} ${BURN_SCRIPT}
     VERBATIM
 )
 

@@ -10,6 +10,9 @@
 #include <tusb.h>             // for SystemCoreClock
 
 #include "TinyUSB/TinyUSB.h"
+#include "cdc0/cdc0.h"
+#include "cdc1/cdc1.h"
+#include "os_errors.h"
 #include "tusb_option.h"      // for BOARD_TUD_RHPORT, CFG_TUD_CDC, CFG_TUD_MSC
 
 // Save the GCC diagnostic

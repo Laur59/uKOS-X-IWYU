@@ -24,7 +24,8 @@
  *
  */
 
-#include <stdint.h>
+#include <inttypes.h>
+#include <stdio.h>
 
 #include "crt0.h"
 #include "serial/serial.h"
@@ -38,7 +39,24 @@
 #include "os_errors.h"
 #include "record/record.h"
 #include "types.h"
+
+// The Firefly_H757 CM7 has no urt0: its console is the cdc0. TinyUSB signals
+// per packet and nothing else reads the characters, so the process flushes
+// them or the FIFO fills up and the events stop. The event is printed because
+// the board has no LED 2, and its LED 1 is shared with the alive of the CM4.
+
+#if (defined(Firefly_H757_S))
+#include "cdc0/cdc0.h"
+
+#define KSERIAL_RX              KCDC0
+#define KSEMAPHORE_RX           KCDC0_SEMAPHORE_RX
+
+#else
 #include "urt0/urt0.h"
+
+#define KSERIAL_RX              KURT0
+#define KSEMAPHORE_RX           KURT0_SEMAPHORE_RX
+#endif
 
 // uKOS-X specific (see the module.h)
 // ==================================
@@ -68,7 +86,7 @@ MODULE(
     prgm,                               // Address of the code (prgm for tools, aStart for applications, nullptr for libraries)
     nullptr,                            // Address of the clean code (clean the module)
     " 1.0",                             // Revision string (major . minor)
-    ((1u<<BSHOW) | (1u<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
+    ((1U<<BSHOW) | (1U<<BEXE_CONSOLE)), // Flags (BSHOW = visible with "man", BEXE_CONSOLE = executable, BCONFIDENTIAL = hidden)
     0                                   // Execution cores
 );
 
@@ -104,7 +122,7 @@ static void aProcess_0([[maybe_unused]] const void *argument) {
     int32_t     status;
     sema_t      *semaphore;
 
-    while (kern_getSemaphoreById(KURT0_SEMAPHORE_RX, &semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
+    while (kern_getSemaphoreById(KSEMAPHORE_RX, &semaphore) != KERR_KERN_NOERR) { kern_suspendProcess(1U); }
 
     while (true) {
         status = kern_waitSemaphore(semaphore, 500U);
@@ -119,12 +137,18 @@ static void aProcess_0([[maybe_unused]] const void *argument) {
 // Thanks to the kern_suspendProcess(KWAIT_REMAINING_TIMEOUT);
 
             kern_suspendProcess(KWAIT_REMAINING_TIMEOUT);
+
+            #if (defined(Firefly_H757_S))
+            serial_flush(KSERIAL_RX);
+            (void)dprintf(KSERIAL_RX, "RX event\n");
+            #endif
+
             led_on(KLED_1);
             led_on(KLED_2);
             kern_suspendProcess(50U);
             led_off(KLED_1);
             led_off(KLED_2);
-
+            (void)dprintf(KSYST, "Synchro ...\n");
         }
         else {
 
@@ -147,17 +171,25 @@ static void aProcess_0([[maybe_unused]] const void *argument) {
  */
 MAIN_ENTRY(argc, argv[]) {
                     proc_t      *process_0;
-    static  const   urtxCnf_t   configureURTx = {
+
+    #if (defined(Firefly_H757_S))
+    static  const   cdcxCnf_t   configureRX = {
+                                    .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
+                                };
+
+    #else
+    static  const   urtxCnf_t   configureRX = {
                                     .oNBBits   = KSERIAL_NB_BITS_8,
                                     .oStopBits = KSERIAL_STOPBITS_1,
                                     .oParity   = KSERIAL_PARITY_NONE,
                                     .oBaudRate = KSERIAL_BAUDRATE_DEFAULT,
                                     .oKernSync = ((uint32_t)1U<<(uint32_t)BSERIAL_SEMAPHORE_RX)
                                 };
+    #endif
 
     kern_suspendProcess(100U);
-    serial_configure(KURT0, &configureURTx);
-    serial_flush(KURT0);
+    serial_configure(KSERIAL_RX, &configureRX);
+    serial_flush(KSERIAL_RX);
 
 // ---------------------------------I-----------------------------------------I--------------I
 
@@ -179,7 +211,7 @@ MAIN_ENTRY(argc, argv[]) {
 
     if (kern_createProcess(&specification_0, nullptr, &process_0) != KERR_KERN_NOERR) { LOG(KFATAL_USER, "Create proc"); return EXIT_OS_FAILURE; }
 
-// Do not return with "EXIT_OS_SUCCESS_CLI" because the "console" uses the KURT0
+// Do not return with "EXIT_OS_SUCCESS_CLI" because the "console" uses the same manager
 
     LOG(KINFO_USER, "Application launched, kill the console");
     return EXIT_OS_SUCCESS;

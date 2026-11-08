@@ -13,7 +13,7 @@ The main differences compared to the upstream repository are:
 - Development and testing are performed on **macOS**
   (Linux is likely to work but is not actively tested)
 - Selectable C library (`-DC_LIBRARY=`): newlib (default), picolibc, or llvmlibc
-  (LLVM libc, ARM/Clang only)
+  (LLVM libc, Clang only)
 
 This fork aims to improve maintainability and build correctness rather than to
 extend or modify functionality.
@@ -23,6 +23,8 @@ To build the package for the first time, start with
 sit beside it in `Documentation/USER_GUIDES/`.
 
 For project history, heritage, and credits, see [ABOUT.md](ABOUT.md).
+
+[Examples of building toolchains](https://gitlab.com/tools-for-embedded/scripts/toolchain-scripts.git).
 
 ## Components not included in this fork
 

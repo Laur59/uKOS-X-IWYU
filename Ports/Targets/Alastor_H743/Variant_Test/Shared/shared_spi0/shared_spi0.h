@@ -21,7 +21,7 @@ enum {
         KIMUA,                                  // Accelerometer imu manager
         KIMUM,                                  // Magnetometer imu manager
         KTEMPERATURE,                           // Temperature temperature manager
-        KFLASH                                  // flash manager
+        KMEMORY,                                // flash memory manager
 };
 
 // Peripheral macro

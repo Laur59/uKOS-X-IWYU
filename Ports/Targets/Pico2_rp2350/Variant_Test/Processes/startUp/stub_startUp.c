@@ -26,7 +26,6 @@
 #include "serial/serial.h"
 #include "serial_common.h"
 #include "system/system.h"
-#include "TinyUSB_interface.h"
 #include "types.h"
 
 

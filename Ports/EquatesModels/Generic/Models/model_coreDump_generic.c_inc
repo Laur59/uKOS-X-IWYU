@@ -13,6 +13,7 @@
 
 #include "cmns.h"
 #include "kern/private/private_processes.h"
+#include "linker.h"
 #include "machine/machine.h"
 #include "macros.h"
 #include "macros_soc.h"
@@ -30,10 +31,20 @@ static  void    local_readFunctionName([[maybe_unused]] const uintptr_t pc, cons
     #if ((uKOS_ARCHITECTURE == 0U) && (!defined(__clang__)))
             intptr_t    offset, nameLen;
     const   uintptr_t   *ptr;
+    const   uintptr_t   stCode = (uintptr_t)linker_stPrgmCode;
+    const   uintptr_t   enCode = stCode + (uintptr_t)linker_lnPrgmCode;
+
+// Only the image is known to be readable: a wild PC, or a walk past the start of
+// the code, would fault here, inside the fault handler, and lose the whole dump
+
+    *function = nullptr;
+    if ((pc < stCode) || (pc >= enCode)) {
+        return;
+    }
 
     ptr = (const uintptr_t *)((pc + 2U) & (~0x3U));
 
-    for (offset = 1; (offset < (intptr_t)(16U * 1024U)) && ((uintptr_t)&ptr[-offset] > (uintptr_t)0x0U); ++offset) {
+    for (offset = 1; (offset < (intptr_t)(16U * 1024U)) && ((uintptr_t)&ptr[-offset] >= stCode); ++offset) {
         if ((ptr[-offset] & (uintptr_t)0xFFFFFF00U) == (uintptr_t)0xFF000000U) {
             nameLen = (intptr_t)(ptr[-offset] & (uintptr_t)0xFFU);
             *function = &((const char_t *)&ptr[-offset])[-nameLen];

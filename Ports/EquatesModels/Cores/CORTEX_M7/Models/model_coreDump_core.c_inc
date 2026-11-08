@@ -23,9 +23,12 @@
 #include "macros_core.h"
 #include "macros_core_stackFrame.h"
 #include "macros_soc.h"
+#include "model_I_D_cache.c_inc"
 #include "record/private/private_recordDump.h"
 #include "serial/serial.h"
 #include "types.h"
+
+#define KSCB_CCR_DC     (1U<<16U)           // SCB->CCR: D-cache enabled
 
 static  uintptr_t   *vStackBefore[KNB_CORES], *vStackAfter[KNB_CORES], vStackCoreDump[KNB_CORES][ENDREG];
 static  uint32_t    vExceptionNb[KNB_CORES];
@@ -36,6 +39,27 @@ static  void    local_processException(uintptr_t *stackBefore, uintptr_t *stackA
 static  void    local_printException(const char_t **vectorName);
 static  void    local_printCore(void);
 static  void    local_printStackFrame(void);
+
+/*
+ * \brief model_coreDump_cleanDCache
+ *
+ * - Write the dirty D-cache lines back to the memory
+ *
+ * The MPU is off in a HardFault (MPU_CTRL.HFNMIENA is 0), and the default memory
+ * map makes 0xA0000000-0xDFFFFFFF non-cacheable device memory. From here on a
+ * stack in such a memory, as the SDRAM of the Firefly_H757 at 0xD0000000, is read
+ * and written past the cache: without this clean the dump prints the old content
+ * of the memory instead of a frame still dirty in the cache, and a later eviction
+ * would overwrite the registers that CORE_DUMP_SAVE_STACK_FRAME stores. It must
+ * therefore run before that macro.
+ *
+ */
+void    model_coreDump_cleanDCache(void) {
+
+    if ((SCB->CCR & KSCB_CCR_DC) != 0U) {
+        model_cache_D_Clean();
+    }
+}
 
 /*
  * \brief model_coreDump_displayExceptions

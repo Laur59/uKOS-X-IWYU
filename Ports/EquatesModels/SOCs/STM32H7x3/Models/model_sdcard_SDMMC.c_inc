@@ -71,16 +71,16 @@ int32_t model_sdcard_init(void) {
 }
 
 /*
- * \brief model_sdcard_readStatus
+ * \brief model_sdcard_isPresent
  *
- * - Read the status of the card (only if it is inserted)
+ * - Read the status of the sdcard (only inserted)
  *
  */
-int32_t model_sdcard_readStatus(void) {
+int32_t model_sdcard_isPresent(void) {
     int32_t     status;
 
     #ifdef WITH_SD_INSERTED_S
-    status = (cb_cardInserted() == true)    ? (KERR_STORAGE_NOERR) : (KERR_STORAGE_NODEV);
+    status = (cb_isPresent() == true) ? (KERR_STORAGE_NOERR) : (KERR_STORAGE_NODEV);
 
     #else
     status = KERR_STORAGE_NOERR;
@@ -112,12 +112,12 @@ int32_t model_sdcard_readStatus(void) {
  */
 int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
     int32_t     status;
-    uint8_t     i, csd[16], cid[16];
-    uint32_t    ocr, speed;
+    uint8_t     csd[16], cid[16];
+    uint32_t    i, ocr, speed, cSize, readBlLen, cSizeMult;
 
     vSdCard = (sdcard_specification_t){ 0 };
 
-    status = model_sdcard_readStatus();
+    status = model_sdcard_isPresent();
     if (status != KERR_STORAGE_NOERR) { return status; }
 
 // Waiting for > than 1-ms after the power-on
@@ -134,7 +134,7 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
 
 // ACMD41: Start card initialization process
 
-    for (i = 0U; i < 200U; i++) {
+    for (i = 0U; i < 2000U; i++) {
         if (!local_writeCommand(KCMD55_APP_CMD, 0U, SDMMC_RESP_SHORT))                          { return KERR_STORAGE_CANRE; }
         if (!local_writeCommand(KACMD41_SD_SEND_OP_COND, 0x40300000U, SDMMC_RESP_SHORT))        { return KERR_STORAGE_CANRE; }
 
@@ -165,7 +165,9 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
     SDMMC->CLKCR &= ~SDMMC_CLKCR_WIDBUS;
     SDMMC->CLKCR |=  (1U * SDMMC_CLKCR_WIDBUS_0);
 
-    if (!local_writeCommand(KCMD16_SET_BLOCKLEN, KSDCARD_SZ_SECTOR, SDMMC_RESP_SHORT))           { return KERR_STORAGE_CANRE; }
+    if ((specification->oCapacityStatus & KSDCARD_CT_BLOCK) == 0U) {
+        if (!local_writeCommand(KCMD16_SET_BLOCKLEN, KSDCARD_SZ_SECTOR, SDMMC_RESP_SHORT))           { return KERR_STORAGE_CANRE; }
+    }
 
 // Extract "Product name"
 // Extract "Manufacturer"
@@ -174,19 +176,31 @@ int32_t model_sdcard_initialise(sdcard_specification_t *specification) {
     for (i = 0U; i < 5U; i++) { specification->oProductName[i] = cid[3U + i]; }
     specification->oProductName[5] = 0;
     specification->oManufacturer   = cid[0];
-    specification->oSerialNumber   = (((uint32_t)cid[8]<<24U)
-                                   |  ((uint32_t)cid[9]<<16U)
-                                   |  ((uint32_t)cid[10]<<8U)
-                                   |  ((uint32_t)cid[11]));
+    specification->oSerialNumber   = ((uint32_t)cid[8]<<24U) | ((uint32_t)cid[9]<<16U) | ((uint32_t)cid[10]<<8U) | ((uint32_t)cid[11]);
 
 // Extract "Voltage"
 // Extract "Device size"
 // Extract "Speed"
 
     specification->oVoltage = (uint16_t)((ocr>>15U) & 0x1FFU);
-    specification->oSize    = (uint64_t)(((((uint32_t)(csd[7] & 0x3FU)<<16U)
-                            |               ((uint32_t)csd[8]<<8U)
-                            |               ((uint32_t)csd[9])) + 1LLU) * 512LLU * 1024LLU);
+    if ((csd[0] & 0xC0U) == 0x40U) {
+
+// CSD v2 : SDHC / SDXC
+
+    cSize = ((uint32_t)(csd[7] & 0x3FU)<<16U) | ((uint32_t)csd[8]<<8U) | (uint32_t)csd[9];
+
+    specification->oSize = ((uint64_t)cSize + 1U) * 512U * 1024U;
+    }
+    else {
+
+// CSD v1 : SDSC / SD NAND
+
+    readBlLen = csd[5] & 0x0Fu;
+    cSize     = ((uint32_t)(csd[6] & 0x03U)<<10U) | ((uint32_t)csd[7]<<2U) | ((uint32_t)(csd[8] & 0xC0U)>>6U);
+    cSizeMult = ((uint32_t)(csd[9] & 0x03U)<<1U)  | ((uint32_t)(csd[10] & 0x80U)>>7U);
+
+    specification->oSize = ((uint64_t)cSize + 1u)<<(cSizeMult + 2u + readBlLen);
+    }
 
     switch (csd[3] & 0x07U) {
         case 0x0U: { speed = 100000U;           break; }
@@ -238,7 +252,7 @@ int32_t model_sdcard_read(const sdcard_specification_t *specification, uint8_t *
     uint8_t     i;
     bool        error = false;
 
-    status = model_sdcard_readStatus();
+    status = model_sdcard_isPresent();
     if (status != KERR_STORAGE_NOERR) { return status;             }
     if (nbSectors == 0U)              { return KERR_STORAGE_LNBU0; }
 
@@ -265,7 +279,7 @@ int32_t model_sdcard_write(const sdcard_specification_t *specification, const ui
     uint8_t     i;
     bool        error = false;
 
-    status = model_sdcard_readStatus();
+    status = model_sdcard_isPresent();
     if (status != KERR_STORAGE_NOERR) { return status;             }
     if (nbSectors == 0U)              { return KERR_STORAGE_LNBU0; }
 
@@ -302,6 +316,12 @@ int32_t model_sdcard_ioctl(storageIoctl_t command, void *buffer) {
             *(uint32_t *)buffer = (uint32_t)(vSdCard.oSize / KSDCARD_SZ_SECTOR);
             break;
         }
+        case KGET_CNTRL_SYNC: {
+            if (local_commandReady() == false) {
+                return (KERR_STORAGE_TRANT);
+            }
+            break;
+        }
         default: {
 
 // Make MISRA happy :-)
@@ -322,6 +342,9 @@ int32_t model_sdcard_ioctl(storageIoctl_t command, void *buffer) {
  *
  */
 static  bool    local_readBlock(uint8_t *destination, uint32_t sector) {
+    uint32_t    realSector;
+
+    realSector = ((vSdCard.oCapacityStatus & KSDCARD_CT_BLOCK) != 0u) ? (sector) : (sector * KSDCARD_SZ_SECTOR);
 
     if (!local_commandReady()) {
         return false;
@@ -331,7 +354,7 @@ static  bool    local_readBlock(uint8_t *destination, uint32_t sector) {
     SDMMC->DLENR  = KSDCARD_SZ_SECTOR;
     SDMMC->DCTRL  = (9U * SDMMC_DCTRL_DBLOCKSIZE_0) | SDMMC_DCTRL_DTDIR | SDMMC_DCTRL_DTEN;
 
-    if (!local_writeCommand(KCMD17_READ_SINGLE_BLOCK, sector, SDMMC_RESP_SHORT)) {
+    if (!local_writeCommand(KCMD17_READ_SINGLE_BLOCK, realSector, SDMMC_RESP_SHORT)) {
         return false;
     }
 
@@ -398,6 +421,9 @@ static  bool    local_readSector(uint8_t *destination, uint32_t size) {
  *
  */
 static  bool    local_writeBlock(const uint8_t *source, uint32_t sector) {
+    uint32_t    realSector;
+
+    realSector = ((vSdCard.oCapacityStatus & KSDCARD_CT_BLOCK) != 0u) ? (sector) : (sector * KSDCARD_SZ_SECTOR);
 
     if (!local_commandReady()) {
         return false;
@@ -407,7 +433,7 @@ static  bool    local_writeBlock(const uint8_t *source, uint32_t sector) {
     SDMMC->DLENR  = KSDCARD_SZ_SECTOR;
     SDMMC->DCTRL  = (9U * SDMMC_DCTRL_DBLOCKSIZE_0) | SDMMC_DCTRL_DTEN;
 
-    if (!local_writeCommand(KCMD24_WRITE_BLOCK, sector, SDMMC_RESP_SHORT)) {
+    if (!local_writeCommand(KCMD24_WRITE_BLOCK, realSector, SDMMC_RESP_SHORT)) {
         return false;
     }
 
@@ -430,11 +456,7 @@ static  bool    local_writeSector(const uint8_t *source, uint32_t size) {
     while (words > 0U) {
         if ((SDMMC->STAR & SDMMC_STAR_TXFIFOHE) != 0U) {
             for (i = 0U; (i < 8U) && (words > 0U); i++) {
-                data = ((uint32_t)source[0]<<0U)
-                     | ((uint32_t)source[1]<<8U)
-                     | ((uint32_t)source[2]<<16U)
-                     | ((uint32_t)source[3]<<24U);
-
+                data = ((uint32_t)source[0]<<0U) | ((uint32_t)source[1]<<8U) | ((uint32_t)source[2]<<16U) | ((uint32_t)source[3]<<24U);
                 SDMMC->FIFOR = data;
                 source += 4U;
                 words--;
@@ -448,7 +470,10 @@ static  bool    local_writeSector(const uint8_t *source, uint32_t size) {
 
         kern_switchFast();
         kern_readTickCount(&time[1]);
-        if ((time[1] - time[0]) >= SDMMC_TIMEOUT) { SDMMC->ICR = 0xFFFFFFFFU; return false; }
+        if ((time[1] - time[0]) >= SDMMC_TIMEOUT) {
+            SDMMC->ICR = 0xFFFFFFFFU;
+            return false;
+        }
 
     }
 
@@ -461,7 +486,10 @@ static  bool    local_writeSector(const uint8_t *source, uint32_t size) {
 
         kern_switchFast();
         kern_readTickCount(&time[1]);
-        if ((time[1] - time[0]) >= SDMMC_TIMEOUT) { SDMMC->ICR = 0xFFFFFFFFU; return false; }
+        if ((time[1] - time[0]) >= SDMMC_TIMEOUT) {
+            SDMMC->ICR = 0xFFFFFFFFU;
+            return false;
+        }
     }
 
     SDMMC->ICR = 0xFFFFFFFFU;
@@ -485,9 +513,7 @@ static  void    local_clockSpeed(uint32_t speed) {
 
     SDMMC->POWER = 0U;
     SDMMC->CLKCR = 0U;
-    SDMMC->CLKCR = (div * SDMMC_CLKCR_CLKDIV_0)
-                 | SDMMC_CLKCR_HWFC_EN
-                 | wideBus;
+    SDMMC->CLKCR = (div * SDMMC_CLKCR_CLKDIV_0) | SDMMC_CLKCR_HWFC_EN | wideBus;
 
 // Power-on
 
@@ -500,26 +526,44 @@ static  void    local_clockSpeed(uint32_t speed) {
  */
 static  bool    local_writeCommand(uint32_t command, uint32_t argument, uint32_t response) {
     uint64_t    time[2];
+    uint32_t    status;
 
     SDMMC->ICR  = 0xFFFFFFFFU;
     SDMMC->ARGR = argument;
-    SDMMC->CMDR = (command & 0x3FU)
-                | (response * SDMMC_CMDR_WAITRESP_0)
-                | SDMMC_CMDR_CPSMEN;
 
+    SDMMC->CMDR = (command & 0x3FU) | (response * SDMMC_CMDR_WAITRESP_0) | SDMMC_CMDR_CPSMEN;
     kern_readTickCount(&time[0]);
-    while ((SDMMC->STAR & (SDMMC_STAR_CTIMEOUT | SDMMC_STAR_CCRCFAIL | SDMMC_STAR_CMDREND | SDMMC_STAR_CMDSENT)) == 0U) {
+
+    do {
+        status = SDMMC->STAR;
+        if ((status & (SDMMC_STAR_CTIMEOUT | SDMMC_STAR_CCRCFAIL | SDMMC_STAR_CMDREND | SDMMC_STAR_CMDSENT)) != 0U) {
+            break;
+        }
+
         kern_switchFast();
         kern_readTickCount(&time[1]);
-        if ((time[1] - time[0]) >= SDMMC_TIMEOUT)                                                                               { SDMMC->ICR = 0xFFFFFFFFU; return false; }
+
+        if ((time[1] - time[0]) >= SDMMC_TIMEOUT) {
+            SDMMC->ICR = 0xFFFFFFFFU;
+            return false;
+        }
+
+    } while (true);
+
+    if ((status & SDMMC_STAR_CTIMEOUT) != 0U) {
+        SDMMC->ICR = 0xFFFFFFFFU;
+        return false;
     }
 
-// CMD0 has no response
-// R3/R7 may not use CRC the same way; ignore CCRCFAIL for ACMD41
+    if ((response == SDMMC_RESP_NONE) && ((status & SDMMC_STAR_CMDSENT) != 0U)) {
+        SDMMC->ICR = 0xFFFFFFFFU;
+        return true;
+    }
 
-    if ((response == SDMMC_RESP_NONE) && ((SDMMC->STAR & SDMMC_STAR_CMDSENT) != 0U))                                            { SDMMC->ICR = 0xFFFFFFFFU; return true;  }
-    if ((SDMMC->STAR & SDMMC_STAR_CTIMEOUT) != 0U)                                                                              { SDMMC->ICR = 0xFFFFFFFFU; return false; }
-    if ((command != KACMD41_SD_SEND_OP_COND) && (command != KCMD8_SEND_IF_COND) && ((SDMMC->STAR & SDMMC_STAR_CCRCFAIL) != 0U)) { SDMMC->ICR = 0xFFFFFFFFU; return false; }
+    if ((command != KACMD41_SD_SEND_OP_COND) && ((status & SDMMC_STAR_CCRCFAIL) != 0U)) {
+        SDMMC->ICR = 0xFFFFFFFFU;
+        return false;
+    }
 
     SDMMC->ICR = 0xFFFFFFFFU;
     return true;

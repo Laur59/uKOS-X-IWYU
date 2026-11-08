@@ -44,9 +44,10 @@ Tools/Developer/bin/board-regression --board Discovery_N657 --expect-libc llvmli
 Flash the board yourself first; the tool never flashes. Then, for one board:
 
 1. **Board.** `--port`, or `--board NAME`, which asks `uKOS` on every ST-Link
-   console; with neither, the only ST-Link console that answers. A board
-   without an ST-Link (K210 behind a UART bridge, Firefly on its own USB CDC
-   port) needs `--port`;
+   console and on the consoles `KJLINK` names for that board; with neither, the
+   only ST-Link console that answers. Another board without an ST-Link (K210
+   behind a UART bridge, Firefly_H743 on its own USB CDC port) needs `--port`,
+   and so does `Firefly_H757`, whose two cores answer on two consoles;
    adding `--board` then checks the answer. A `ukos-serial` session already
    holding the port is reused and left running; otherwise one is started at
    the console's baud rate and stopped on exit. That rate comes from the
@@ -103,7 +104,39 @@ can be reached over SWD only while it is faulted** ("Cannot connect to access
 port 1" while it runs normally), so it recovers from a CRASH but a HANG ends as
 BOARD LOST. To get a fresh N657 boot without touching the board, fault it
 first (`dump F0000000 F0000010` raises a BusFault) and then reset it. Boards
-without an ST-Link console (Firefly, K210, Pico2) run, but a crash ends them.
+without an ST-Link console (Firefly_H743, K210, Pico2) run, but a crash ends
+them; `Firefly_H757` recovers through its J-Link.
+
+### Boards behind a J-Link
+
+`KJLINK` in `ukos_board.py` lists the boards reached through a SEGGER J-Link,
+per variant: the J-Link device and the USB product name of the console. On
+`Asmodee_H747` the CM4 console is pinned to `cu.usbserial-uKOS_3`, because the
+four FT4232 channels share a product name, and the CM7 dumps come out on USART6,
+`cu.usbserial-uKOS_2`, which no console holds (`dump_port`). `Firefly_H757`,
+measured on the board:
+
+| | |
+|---|---|
+| CM7 console | cdc0, `cu.usbmodem*` with product `uKOS-X Firefly_H757` |
+| CM4 console | urt0, the CH340 bridge (product `USB Serial`) |
+| Reset | `SYSRESETREQ` only, since the probe's nRESET reaches nothing; from either core it restarts both |
+| Attach, core in WFI | refused (0 of 8 on each core), under reset as well |
+| Attach, core running `bench` | accepted (8 of 8 on the CM7, 4 of 4 on the CM4), but only by the core that runs it |
+| Attach, core faulted | accepted, because it spins |
+
+So `jlink_run()` first tries without any load, which is all a crashed board
+needs, then starts `bench` on the console and attaches at once, since later
+phases of `bench` leave gaps. **A board hung with its core in WFI cannot be
+reached**: that ends as BOARD LOST, and it takes a person with the BOOT0 button
+or the power switch. The J-Link is not identified by board, so keep one attached.
+
+A reset takes the USB device away with it, so `ukos-serial` waits for a CDC node
+to return and opens it again, in the same session, and the banner still reaches
+its log. A core dump does not reach cdc0 at all: it goes out through
+`cmns_send()` on USART1, which is the wire of the CM4's console. On the CM7
+`board-regression` therefore reports a crash as a **HANG**, and recovers it the
+same way. `coredump-test --dump-name` reads the dump from the other session.
 
 ### Known failures
 
@@ -374,9 +407,14 @@ skipped. The check compares the revision only, so an image of the same commit
 built with another compiler or C library would pass it with wrong addresses -
 another reason the image there has to be the flashed one.
 
-Only boards flashed through an ST-Link are listed in `KFLASH`. A board that needs
-a physical action before it can be flashed - Pico2_rp2350 (BOOTSEL), Firefly_H743
-(DFU), the N657 boards (a jumper) - needs a flashing method of its own there.
+`KFLASH` lists the boards that need no physical action, by method: `stlink`, or
+`jlink` for `Firefly_H757` and `Asmodee_H747`. A J-Link board may have one variant per core: each
+configuration builds them all, writes them in one connection, so the board
+resets once, and runs both tools on each console, about 4 minutes per
+configuration. Its consoles must answer before the first flash, as the board is
+found by them. A board that needs a physical action before it can be flashed -
+Pico2_rp2350 (BOOTSEL), Firefly_H743 (DFU), the N657 boards (a jumper) - needs a
+flashing method of its own there.
 
 ## The core dump test
 
@@ -442,8 +480,17 @@ pre-fix firmware `35f7ba715`, which has no mark-clearing loop at all, produces a
 capture that **passes every assertion here**. Only the host suite covers that
 defect. See `Tools/Developer/tests/DEFECTS.md`.
 
-`KBOARDS` carries `Discovery_U5G9`, `Nucleo_H753` and `Nucleo_L4R5`, all three
-verified end to end including the SWD recovery. Between them they cover two C
+```bash
+ukos-serial --name f7 start --port /dev/cu.usbmodem21201          # CM7, cdc0
+ukos-serial --name f4 start --port /dev/cu.usbserial-2140 --no-assert-dtr  # CM4
+coredump-test --name f7 --dump-name f4 -v                         # the CM7's
+coredump-test --name f4 -v                                        # the CM4's
+```
+
+`KBOARDS` carries `Asmodee_H747`, `Discovery_U5G9`, `Firefly_H757`,
+`Nucleo_H753` and `Nucleo_L4R5`, all verified end to end including the SWD
+recovery; the Asmodee_H747 and Firefly_H757 have no probe to name and reset
+through their J-Link, see *Boards behind a J-Link*. Between the other three they cover two C
 libraries — the L4R5 image is `llvmlibc`, the other two `newlib` — so the dump's
 own `snprintf` formatting is exercised under both.
 

@@ -71,8 +71,7 @@
  *   user-mode process assigning errno faulted with DACCVIOL.
  *
  * Restoring that hook therefore requires rebuilding picolibc itself with
- * -Derrno-function=, which also makes the toolchain uKOS-X specific. See
- * Documentation/USER_GUIDES/TLS_SUPPORT_ASSESSMENT.md.
+ * -Derrno-function=, which also makes the toolchain uKOS-X specific.
  */
 
 /*

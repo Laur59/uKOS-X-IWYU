@@ -42,13 +42,20 @@ import time
 KHERE = os.path.dirname(os.path.realpath(__file__))
 KSERIAL = os.path.normpath(os.path.join(KHERE, "..", "..", "ukos-serial"))
 
+sys.path.insert(0, KHERE)
+
+from ukos_board import jlink_device, jlink_run  # noqa: E402
+
 # Per board: an address whose read faults, and the device name the ST-Link
 # programmer reports for it. The address is deliberately far outside anything
 # the memory map claims, so it stays valid across firmware revisions; which
 # fault it raises is not fixed (an MPU region can claim it as DACCVIOL before
-# the bus reports PRECISERR), so the exception class is never asserted.
+# the bus reports PRECISERR), so the exception class is never asserted. A board
+# in ukos_board.KJLINK has no ST-Link, hence no device name.
 KBOARDS = {
+    "Asmodee_H747":   {"addr": "F0000000", "device": None},
     "Discovery_U5G9": {"addr": "F0000000", "device": "STM32U5xx"},
+    "Firefly_H757":   {"addr": "F0000000", "device": None},
     "Nucleo_H753":    {"addr": "F0000000", "device": "STM32H7xx"},
     "Nucleo_L4R5":    {"addr": "F0000000", "device": "STM32L4Rxxx/STM32L4Sxxx"},
 }
@@ -141,6 +148,10 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--name", help="ukos-serial session name")
+    ap.add_argument("--dump-name", help="ukos-serial session of the port the "
+                    "dump comes out on, when it is not the console's: "
+                    "cmns_send() writes to urt0's USART, so a console on cdc0 "
+                    "never sees it (default: --name)")
     ap.add_argument("--addr", help="override the faulting address (hex, no 0x)")
     ap.add_argument("--sn", help="ST-Link serial number, to avoid probing every board")
     ap.add_argument("--programmer", help="path to STM32_Programmer_CLI")
@@ -164,7 +175,8 @@ def main():
                          "ukos-serial start --port /dev/cu.usbmodemXXXX\n")
         return 1
     try:
-        board = json.loads(out)["board"]["Board"]
+        identity = json.loads(out)["board"]
+        board = identity["Board"]
     except Exception:
         sys.stderr.write("error: could not read the board name from "
                          "'ukos-serial verify --json'\n")
@@ -175,11 +187,12 @@ def main():
                          "address for it\n" % board)
         return 1
     spec = KBOARDS[board]
+    jlink = jlink_device(board, identity.get("Variant"))
     addr = args.addr or spec["addr"]
     end = "%08X" % (int(addr, 16) + 0x10)
 
     cli = find_programmer(args.programmer)
-    if cli is None and not args.no_reset and not args.dry_run:
+    if cli is None and not jlink and not args.no_reset and not args.dry_run:
         sys.stderr.write("error: STM32_Programmer_CLI not found; the board "
                          "could not be revived after the dump. Pass "
                          "--programmer, or --no-reset to accept that.\n")
@@ -187,12 +200,13 @@ def main():
 
     print("board      %s" % board)
     print("fault      dump %s %s" % (addr, end))
-    print("recovery   %s" % ("none (--no-reset)" if args.no_reset else "SWD reset via %s" % cli))
+    print("recovery   %s" % ("none (--no-reset)" if args.no_reset else "SWD reset via %s" % (
+            "J-Link, " + jlink if jlink else cli)))
     if args.dry_run:
         print("\ndry run: nothing was sent, the board is untouched")
         return 0
 
-    logpath = serial(["log", "--path"], args.name)[1].strip()
+    logpath = serial(["log", "--path"], args.dump_name or args.name)[1].strip()
     try:
         with open(logpath, errors="replace") as fh:
             mark = len(fh.readlines())
@@ -225,12 +239,21 @@ def main():
     revived = None
     if not args.no_reset:
         print("resetting the board over SWD ...")
-        sn = args.sn or find_probe(cli, spec["device"], args.verbose)
-        if sn is None:
-            sys.stderr.write("error: no ST-Link reporting %s\n" % spec["device"])
-            return 1
-        subprocess.run([cli, "-c", "port=SWD", "mode=UR", "sn=" + sn, "-rst"],
-                       capture_output=True, text=True)
+        if jlink:
+            # No load: the core that faulted spins, so it can be attached
+            ran, output = jlink_run(jlink, ["r", "g"])
+            if not ran:
+                sys.stderr.write("error: the J-Link did not reset the board:\n"
+                                 "%s\n" % output[-500:])
+                return 1
+        else:
+            sn = args.sn or find_probe(cli, spec["device"], args.verbose)
+            if sn is None:
+                sys.stderr.write("error: no ST-Link reporting %s\n"
+                                 % spec["device"])
+                return 1
+            subprocess.run([cli, "-c", "port=SWD", "mode=UR", "sn=" + sn, "-rst"],
+                           capture_output=True, text=True)
 
         # The reset returns as soon as the core is released, well before the
         # firmware has booted far enough to answer, so a single verify here

@@ -147,7 +147,7 @@ int32_t sdcard_release([[maybe_unused]] reserveMode_t reserveMode) {
  * int32_t                   status;
  * sdcard_specification_t    sdcard;
  *
- *    status = sdcard_initialise(&sdCard);
+ *    status = sdcard_initialise(&sdcard);
  *    if (status != KERR_STORAGE_NOERR) {
  *        exit(EXIT_OS_FAILURE);
  *    }
@@ -176,14 +176,14 @@ int32_t sdcard_initialise(sdcard_specification_t *specification) {
 }
 
 /*
- * \brief Read the status of the sdcard
+ * \brief Is the sdcard present
  *
  * Call example in C:
  *
  * \code{.c}
  * int32_t    status;
  *
- *    status = sdcard_readStatus();
+ *    status = sdcard_isPresent();
  * \endcode
  *
  * \return      KERR_STORAGE_NOERR  OK
@@ -191,14 +191,14 @@ int32_t sdcard_initialise(sdcard_specification_t *specification) {
  * \return      KERR_STORAGE_NODEV  No sdcard
  *
  */
-int32_t sdcard_readStatus(void) {
+int32_t sdcard_isPresent(void) {
     int32_t     status;
 
     PRIVILEGE_ELEVATE;
     status = local_init();
     if (status != KERR_STORAGE_NOERR) { PRIVILEGE_RESTORE; return status; }
 
-    status = stub_sdcard_readStatus();
+    status = stub_sdcard_isPresent();
     PRIVILEGE_RESTORE;
     return status;
 }
@@ -284,7 +284,7 @@ int32_t sdcard_read(uint8_t *buffer, uint32_t size, uint32_t sector) {
             return KERR_STORAGE_TRANT;
         }
 
-        for (i = 0; i < nbBytesLastSector; i++) {
+        for (i = 0U; i < nbBytesLastSector; i++) {
             *memory = lastSectorBuffer[i];
             memory++;
         }

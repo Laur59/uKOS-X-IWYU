@@ -506,7 +506,7 @@ void    *_sbrk_r(reent_t *reent, [[maybe_unused]] ptrdiff_t increment) {
  * - malloc - Allocate a memory block
  *
  */
-void    *__wrap__malloc_r([[maybe_unused]] reent_t *reent, size_t size) {
+void    *__wrap__malloc_r(reent_t *reent, size_t size) {
     void    *address;
 
     address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)size * sizeof(uint8_t)), "__wrap__malloc_r");
@@ -535,7 +535,7 @@ void    __wrap__free_r([[maybe_unused]] reent_t *reent, void *address) {
  * - realloc - Realloc a memory block
  *
  */
-void    *__wrap__realloc_r([[maybe_unused]] reent_t *reent, void *address, size_t size) {
+void    *__wrap__realloc_r(reent_t *reent, void *address, size_t size) {
     void    *newAddress;
 
     newAddress = memo_realloc(KMEMO_ALIGN_8, address, (uint32_t)size, "__wrap__realloc_r");
@@ -553,7 +553,7 @@ void    *__wrap__realloc_r([[maybe_unused]] reent_t *reent, void *address, size_
  * - calloc - Allocate a memory block and set the block to 0
  *
  */
-void    *__wrap__calloc_r([[maybe_unused]] reent_t *reent, size_t num, size_t size) {
+void    *__wrap__calloc_r(reent_t *reent, size_t num, size_t size) {
     void    *address;
 
     address = memo_malloc(KMEMO_ALIGN_8, ((uint32_t)((num * size) * sizeof(uint8_t))), "__wrap__calloc_r");

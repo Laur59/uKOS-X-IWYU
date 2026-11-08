@@ -6,9 +6,12 @@
 #           !!! It is mandatory to program the CM7 before the CM4
 #
 #           - Usage:
-#             ./jlinkexe.sh
+#             cmake --build build --target burn     (sets SOC)
+#             SOC=STM32H757 ./jlinkexe.sh           (from Variant_*/build)
 
 set -e
+
+: "${SOC:?set SOC to STM32H747 or STM32H757}"
 
 CALL_DIR="${PWD:A}"
 PROJECT_ROOT="${CALL_DIR:h:h}"
@@ -16,7 +19,7 @@ PROJECT_ROOT="${CALL_DIR:h:h}"
 cd "${PROJECT_ROOT}"
 
 JLinkExe << EOF
-device STM32H747XI
+device ${SOC}XI_M7
 si SWD
 speed 4000
 r

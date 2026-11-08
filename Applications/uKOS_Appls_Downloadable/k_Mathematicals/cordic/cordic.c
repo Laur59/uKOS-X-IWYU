@@ -266,7 +266,7 @@ MAIN_ENTRY(argc, argv[]) {
 // at the bottom of the stack and the kernel reports "stack underflow" at the next context
 // switch. picolibc and newlib use lighter float printf implementations, but not light
 // enough for KKERN_SZ_STACK_MM either: newlib needs 1632 bytes on a Cortex-M85
-// so they get KKERN_SZ_STACK_LL.
+// (Discovery_V873), so they get KKERN_SZ_STACK_LL.
 
     #ifdef CONFIG_MAN_LLVMLIBC_S
     #define KLOCAL_SZ_STACK_PROCESS     KKERN_SZ_STACK_XLIB

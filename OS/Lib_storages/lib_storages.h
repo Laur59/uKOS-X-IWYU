@@ -31,8 +31,8 @@
 #ifdef CONFIG_MAN_SDCARD_S
 #include "sdcard/sdcard.h"
 #endif
-#ifdef CONFIG_MAN_SERIAL_FLASH_S
-#include "serialFlash/serialFlash.h"
+#ifdef CONFIG_MAN_FLASH_S
+#include "flash/flash.h"
 #endif
 #ifdef CONFIG_MAN_STORAGE_S
 #include "storage/storage.h"
