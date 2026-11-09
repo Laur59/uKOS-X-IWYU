@@ -61,7 +61,7 @@ project(
 )
 
 # Microcontroller description (mandatory variables)
-set(SOC STM32H747)
+set(SOC STM32H757)
 set(CORE CORTEX_M7)
 
 # Target

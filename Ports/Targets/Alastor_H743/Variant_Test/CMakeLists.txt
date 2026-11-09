@@ -292,7 +292,7 @@ set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u shar_p proc_p proc_u tool
 
 # Optional managers
 add_MicroPython()
-add_FatFs(STORAGE sdcard_flash)
+add_FatFs()
 
 # System configuration flags
 

@@ -82,8 +82,7 @@ PATH_PORT				=  $(PATH_UKOS)/Ports
 PATH_LIB_MICROPYTHON	=  $(PATH_UKOS)/Third_Parties/MicroPython/Library/$(CORE)
 MICROPYTHON				=  libMicroPython
 
-STORAGE					=  sdcard_flash
-PATH_LIB_FATFS			=  $(PATH_UKOS)/Third_Parties/FatFs/Library/$(CORE)/$(STORAGE)
+PATH_LIB_FATFS			=  $(PATH_UKOS)/Third_Parties/FatFs/Library/$(CORE)
 FATFS					=  libFatFs
 
 # Target & Infrastructure

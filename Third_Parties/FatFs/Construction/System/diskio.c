@@ -79,45 +79,34 @@ enum {
  *
  */
 DSTATUS		disk_status(BYTE pdrv) {
-	int32_t		status;
-	DSTATUS		fatFsStatus = STA_NOINIT;
 
 	switch (pdrv) {
-		#if (defined(SDCARD_S))
 		case DEV_SDCARD: {
-			RESERVE(SDCARD, KMODE_READ_WRITE);
-			status = storage_isPresent(KSDCARD);
-			RELEASE(SDCARD, KMODE_READ_WRITE);
+			if (storage_reserve(KSDCARD, KMODE_READ_WRITE, KWAIT_INFINITY)	!= KERR_STORAGE_NOERR) { return (STA_NODISK); }
+			if (storage_isPresent(KSDCARD)									!= KERR_STORAGE_NOERR) { return (STA_NODISK); }
+			if (storage_release(KSDCARD, KMODE_READ_WRITE)					!= KERR_STORAGE_NOERR) { return (STA_NODISK); }
 
-			fatFsStatus = (status == KERR_STORAGE_NOERR) ? (0) : (STA_NODISK);
-			return (fatFsStatus);
+			return (0);
 		}
-		#endif
 
-		#if (defined(SDNAND_S))
 		case DEV_SDNAND: {
-			RESERVE(SDNAND, KMODE_READ_WRITE);
-			status = storage_isPresent(KSDNAND);
-			RELEASE(SDNAND, KMODE_READ_WRITE);
+			if (storage_reserve(KSDNAND, KMODE_READ_WRITE, KWAIT_INFINITY)	!= KERR_STORAGE_NOERR) { return (STA_NODISK); }
+			if (storage_isPresent(KSDNAND)									!= KERR_STORAGE_NOERR) { return (STA_NODISK); }
+			if (storage_release(KSDNAND, KMODE_READ_WRITE)					!= KERR_STORAGE_NOERR) { return (STA_NODISK); }
 
-			fatFsStatus = (status == KERR_STORAGE_NOERR) ? (0) : (STA_NODISK);
-			return (fatFsStatus);
+			return (0);
 		}
-		#endif
 
-		#if (defined(FLASH_S))
 		case DEV_FLASH: {
-			RESERVE(FLASH, KMODE_READ_WRITE);
-			status = storage_isPresent(KFLASH);
-			RELEASE(FLASH, KMODE_READ_WRITE);
+			if (storage_reserve(KFLASH, KMODE_READ_WRITE, KWAIT_INFINITY)	!= KERR_STORAGE_NOERR) { return (STA_NODISK); }
+			if (storage_isPresent(KFLASH)									!= KERR_STORAGE_NOERR) { return (STA_NODISK); }
+			if (storage_release(KFLASH, KMODE_READ_WRITE)					!= KERR_STORAGE_NOERR) { return (STA_NODISK); }
 
-			fatFsStatus = (status == KERR_STORAGE_NOERR) ? (0) : (STA_NODISK);
-			return (fatFsStatus);
+			return (0);
 		}
-		#endif
 
 		default: {
-			return (fatFsStatus);
+			return (STA_NODISK);
 		}
 
 	}
@@ -130,45 +119,34 @@ DSTATUS		disk_status(BYTE pdrv) {
  *
  */
 DSTATUS		disk_initialize(BYTE pdrv) {
-	int32_t		status;
-	DSTATUS		fatFsStatus = STA_NOINIT;
 
 	switch (pdrv) {
-		#if (defined(SDCARD_S))
 		case DEV_SDCARD: {
-			RESERVE(SDCARD, KMODE_READ_WRITE);
-			status = storage_initialise(KSDCARD, &vSdCard);
-			RELEASE(SDCARD, KMODE_READ_WRITE);
+			if (storage_reserve(KSDCARD, KMODE_READ_WRITE, KWAIT_INFINITY)	!= KERR_STORAGE_NOERR) { return (STA_NOINIT); }
+			if (storage_initialise(KSDCARD, &vSdCard)						!= KERR_STORAGE_NOERR) { return (STA_NOINIT); }
+			if (storage_release(KSDCARD, KMODE_READ_WRITE)					!= KERR_STORAGE_NOERR) { return (STA_NOINIT); }
 
-			fatFsStatus = (status == KERR_STORAGE_NOERR) ? (0) : (STA_NOINIT);
-			return (fatFsStatus);
+			return (0);
 		}
-		#endif
 
-		#if (defined(SDNAND_S))
 		case DEV_SDNAND: {
-			RESERVE(SDNAND, KMODE_READ_WRITE);
-			status = storage_initialise(KSDNAND, &vSdNand);
-			RELEASE(SDNAND, KMODE_READ_WRITE);
+			if (storage_reserve(KSDNAND, KMODE_READ_WRITE, KWAIT_INFINITY)	!= KERR_STORAGE_NOERR) { return (STA_NOINIT); }
+			if (storage_initialise(KSDNAND, &vSdNand)						!= KERR_STORAGE_NOERR) { return (STA_NOINIT); }
+			if (storage_release(KSDNAND, KMODE_READ_WRITE)					!= KERR_STORAGE_NOERR) { return (STA_NOINIT); }
 
-			fatFsStatus = (status == KERR_STORAGE_NOERR) ? (0) : (STA_NOINIT);
-			return (fatFsStatus);
+			return (0);
 		}
-		#endif
 
-		#if (defined(FLASH_S))
 		case DEV_FLASH: {
-			RESERVE(FLASH, KMODE_READ_WRITE);
-			status = storage_initialise(KFLASH, nullptr);
-			RELEASE(FLASH, KMODE_READ_WRITE);
+			if (storage_reserve(KFLASH, KMODE_READ_WRITE, KWAIT_INFINITY)	!= KERR_STORAGE_NOERR) { return (STA_NOINIT); }
+			if (storage_initialise(KFLASH, nullptr)							!= KERR_STORAGE_NOERR) { return (STA_NOINIT); }
+			if (storage_release(KFLASH, KMODE_READ_WRITE)					!= KERR_STORAGE_NOERR) { return (STA_NOINIT); }
 
-			fatFsStatus = (status == KERR_STORAGE_NOERR) ? (0) : (STA_NOINIT);
-			return (fatFsStatus);
+			return (0);
 		}
-		#endif
 
 		default: {
-			return (fatFsStatus);
+			return (STA_NOINIT);
 		}
 
 	}
@@ -181,49 +159,38 @@ DSTATUS		disk_initialize(BYTE pdrv) {
  *
  */
 DRESULT		disk_read(BYTE pdrv, BYTE *buff, LBA_t sector, UINT count) {
-	int32_t		status;
 	uint16_t	szSector;
-	DRESULT		fatFsResult = RES_PARERR;
 
 	switch (pdrv) {
-		#if (defined(SDCARD_S))
 		case DEV_SDCARD: {
-			RESERVE(SDCARD, KMODE_READ_WRITE);
-			storage_ioctl(KSDCARD, KGET_SECTOR_SIZE, (void *)&szSector);
-			status = storage_read(KSDCARD, (uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector);
-			RELEASE(SDCARD, KMODE_READ_WRITE);
+			if (storage_reserve(KSDCARD, KMODE_READ_WRITE, KWAIT_INFINITY)								!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_ioctl(KSDCARD, KGET_SECTOR_SIZE, (void *)&szSector)								!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_read(KSDCARD, (uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector)	!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_release(KSDCARD, KMODE_READ_WRITE)												!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
 
-			fatFsResult = (status == KERR_STORAGE_NOERR) ? (RES_OK) : (RES_ERROR);
-			return (fatFsResult);
+			return (RES_OK);
 		}
-		#endif
 
-		#if (defined(SDNAND_S))
 		case DEV_SDNAND: {
-			RESERVE(SDNAND, KMODE_READ_WRITE);
-			storage_ioctl(KSDNAND, KGET_SECTOR_SIZE, (void *)&szSector);
-			status = storage_read(KSDNAND, (uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector);
-			RELEASE(SDNAND, KMODE_READ_WRITE);
+			if (storage_reserve(KSDNAND, KMODE_READ_WRITE, KWAIT_INFINITY)								!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_ioctl(KSDNAND, KGET_SECTOR_SIZE, (void *)&szSector)								!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_read(KSDNAND, (uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector)	!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_release(KSDNAND, KMODE_READ_WRITE)												!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
 
-			fatFsResult = (status == KERR_STORAGE_NOERR) ? (RES_OK) : (RES_ERROR);
-			return (fatFsResult);
+			return (RES_OK);
 		}
-		#endif
 
-		#if (defined(FLASH_S))
 		case DEV_FLASH: {
-			RESERVE(FLASH, KMODE_READ_WRITE);
-			storage_ioctl(KFLASH, KGET_SECTOR_SIZE, (void *)&szSector);
-			status = storage_read(KFLASH, (uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector);
-			RELEASE(FLASH, KMODE_READ_WRITE);
+			if (storage_reserve(KFLASH, KMODE_READ_WRITE, KWAIT_INFINITY)								!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_ioctl(KFLASH, KGET_SECTOR_SIZE, (void *)&szSector)								!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_read(KFLASH, (uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector)	!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_release(KFLASH, KMODE_READ_WRITE)												!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
 
-			fatFsResult = (status == KERR_STORAGE_NOERR) ? (RES_OK) : (RES_ERROR);
-			return (fatFsResult);
+			return (RES_OK);
 		}
-		#endif
 
 		default: {
-			return (fatFsResult);
+			return (RES_PARERR);
 		}
 
 	}
@@ -236,49 +203,38 @@ DRESULT		disk_read(BYTE pdrv, BYTE *buff, LBA_t sector, UINT count) {
  *
  */
 DRESULT		disk_write(BYTE pdrv, const BYTE *buff, LBA_t sector, UINT count) {
-	int32_t		status;
 	uint16_t	szSector;
-	DRESULT		fatFsResult = RES_PARERR;
 
 	switch (pdrv) {
-		#if (defined(SDCARD_S))
 		case DEV_SDCARD: {
-			RESERVE(SDCARD, KMODE_READ_WRITE);
-			storage_ioctl(KSDCARD, KGET_SECTOR_SIZE, (void *)&szSector);
-			status = storage_write(KSDCARD, (const uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector);
-			RELEASE(SDCARD, KMODE_READ_WRITE);
+			if (storage_reserve(KSDCARD, KMODE_READ_WRITE, KWAIT_INFINITY)										!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_ioctl(KSDCARD, KGET_SECTOR_SIZE, (void *)&szSector)										!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_write(KSDCARD, (const uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector)	!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_release(KSDCARD, KMODE_READ_WRITE)														!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
 
-			fatFsResult = (status == KERR_STORAGE_NOERR) ? (RES_OK) : (RES_ERROR);
-			return (fatFsResult);
+			return (RES_OK);
 		}
-		#endif
 
-		#if (defined(SDNAND_S))
 		case DEV_SDNAND: {
-			RESERVE(SDNAND, KMODE_READ_WRITE);
-			storage_ioctl(KSDNAND, KGET_SECTOR_SIZE, (void *)&szSector);
-			status = storage_write(KSDNAND, (const uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector);
-			RELEASE(SDNAND, KMODE_READ_WRITE);
+			if (storage_reserve(KSDNAND, KMODE_READ_WRITE, KWAIT_INFINITY)										!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_ioctl(KSDNAND, KGET_SECTOR_SIZE, (void *)&szSector)										!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_write(KSDNAND, (const uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector)	!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_release(KSDNAND, KMODE_READ_WRITE)														!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
 
-			fatFsResult = (status == KERR_STORAGE_NOERR) ? (RES_OK) : (RES_ERROR);
-			return (fatFsResult);
+			return (RES_OK);
 		}
-		#endif
 
-		#if (defined(FLASH_S))
 		case DEV_FLASH: {
-			RESERVE(FLASH, KMODE_READ_WRITE);
-			storage_ioctl(KFLASH, KGET_SECTOR_SIZE, (void *)&szSector);
-			status = storage_write(KFLASH, (const uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector);
-			RELEASE(FLASH, KMODE_READ_WRITE);
+			if (storage_reserve(KFLASH, KMODE_READ_WRITE, KWAIT_INFINITY)										!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_ioctl(KFLASH, KGET_SECTOR_SIZE, (void *)&szSector)										!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_write(KFLASH, (const uint8_t *)buff, (uint32_t)(count * szSector), (uint32_t)sector)	!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_release(KFLASH, KMODE_READ_WRITE)														!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
 
-			fatFsResult = (status == KERR_STORAGE_NOERR) ? (RES_OK) : (RES_ERROR);
-			return (fatFsResult);
+			return (RES_OK);
 		}
-		#endif
 
 		default: {
-			return (fatFsResult);
+			return (RES_PARERR);
 		}
 
 	}
@@ -291,45 +247,34 @@ DRESULT		disk_write(BYTE pdrv, const BYTE *buff, LBA_t sector, UINT count) {
  *
  */
 DRESULT		disk_ioctl(BYTE pdrv, BYTE cmd, void *buff) {
-	int32_t		status;
-	DRESULT		fatFsResult = RES_PARERR;
 
 	switch (pdrv) {
-		#if (defined(SDCARD_S))
 		case DEV_SDCARD: {
-			RESERVE(SDCARD, KMODE_READ_WRITE);
-			status = storage_ioctl(KSDCARD, (storageIoctl_t)cmd, buff);
-			RELEASE(SDCARD, KMODE_READ_WRITE);
+			if (storage_reserve(KSDCARD, KMODE_READ_WRITE, KWAIT_INFINITY)	!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_ioctl(KSDCARD, (storageIoctl_t)cmd, buff)			!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_release(KSDCARD, KMODE_READ_WRITE)					!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
 
-			fatFsResult = (status == KERR_STORAGE_NOERR) ? (RES_OK) : (RES_PARERR);
-			return (fatFsResult);
+			return (RES_OK);
 		}
-		#endif
 
-		#if (defined(SDNAND_S))
 		case DEV_SDNAND: {
-			RESERVE(SDNAND, KMODE_READ_WRITE);
-			status = storage_ioctl(KSDNAND, (storageIoctl_t)cmd, buff);
-			RELEASE(SDNAND, KMODE_READ_WRITE);
+			if (storage_reserve(KSDNAND, KMODE_READ_WRITE, KWAIT_INFINITY)	!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_ioctl(KSDNAND, (storageIoctl_t)cmd, buff)			!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_release(KSDNAND, KMODE_READ_WRITE)					!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
 
-			fatFsResult = (status == KERR_STORAGE_NOERR) ? (RES_OK) : (RES_PARERR);
-			return (fatFsResult);
+			return (RES_OK);
 		}
-		#endif
 
-		#if (defined(FLASH_S))
 		case DEV_FLASH: {
-			RESERVE(FLASH, KMODE_READ_WRITE);
-			status = storage_ioctl(KFLASH, (storageIoctl_t)cmd, buff);
-			RELEASE(FLASH, KMODE_READ_WRITE);
+			if (storage_reserve(KFLASH, KMODE_READ_WRITE, KWAIT_INFINITY)	!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_ioctl(KFLASH, (storageIoctl_t)cmd, buff)			!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
+			if (storage_release(KFLASH, KMODE_READ_WRITE)					!= KERR_STORAGE_NOERR) { return (RES_ERROR); }
 
-			fatFsResult = (status == KERR_STORAGE_NOERR) ? (RES_OK) : (RES_PARERR);
-			return (fatFsResult);
+			return (RES_OK);
 		}
-		#endif
 
 		default: {
-			return (fatFsResult);
+			return (RES_PARERR);
 		}
 
 	}
@@ -342,8 +287,8 @@ DRESULT		disk_ioctl(BYTE pdrv, BYTE cmd, void *buff) {
  *
  */
 DWORD	get_fattime (void) {
-	time_t		now;
-	tm_t		localTime;
+	time_t	now;
+	tm_t	localTime;
 
 	now = time(nullptr);
 	localtime_r(&now, &localTime);

@@ -62,8 +62,16 @@ if(NOT DEFINED CXXSTANDARD)
 endif()
 
 # Compile definitions
+# Identity macros, kept aligned with the APPLICATION make build
+# (Applications/Mkfiles/*_application_<CORE>.mk: FLAGS_UKOS = -DUKOS_S
+# -D$(BOARD)_S -D$(SOC)_S -D$(CORE)_S). Unlike the system world, the make
+# side defines no valued BOARD=/VARIANT=/SOC=/CORE= macros here -- adding
+# them changes any source that stringifies one of these names (p_Specials/
+# speed prints "Target: "STRG(BOARD), and its documented output is the
+# un-expanded "Target: BOARD").
 target_compile_definitions(system_compiler_flags INTERFACE
 	UKOS_S
+	${BOARD}_S
 	${SOC}_S
 	${CORE}_S
 )

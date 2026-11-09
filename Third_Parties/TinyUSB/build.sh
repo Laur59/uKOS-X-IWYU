@@ -78,7 +78,7 @@ printf '%b%s%b' "${GREEN}" "${splash}" "${NC}"
 # --------
 
 readonly package=0.21.0
-readonly hash=c0d04a7
+readonly hash=59faee9
 
 export PATH="${PATH_GCC_ARM}/bin":"${PATH}"
 printf '%b%s%b\n' "${YELLOW}" "$(arm-none-eabi-gcc --version)" "${NC}"
@@ -114,8 +114,7 @@ cd ../../..
 # Patch the package (for pico2 hazard3)
 local patch_rc=0
 local patch_output
-patch_output=$(patch -p1 --forward < ./Construction/Interface/Patches/mcu/raspberrypi/pico2/hazard3.patch 2>&1) \
-    || patch_rc=$?
+patch_output=$(patch -p1 --forward < ./Construction/Interface/Patches/mcu/raspberrypi/pico2/hazard3.patch 2>&1) || patch_rc=$?
 
 if (( patch_rc == 0 )); then
     print "  [patch] hazard3: applied."

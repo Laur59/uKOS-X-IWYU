@@ -184,6 +184,7 @@ target_sources(libx_p PRIVATE
 	${PATH_BASE}/Lib_peripherals/switch/stub_switch.c
 	${PATH_BASE}/Lib_storages/flash/stub_flash.c
 	${PATH_BASE}/Lib_storages/sdcard/stub_sdcard.c
+	${PATH_BASE}/Lib_storages/sdnand/stub_sdnand.c
 	${PATH_COMX}/Lib_generics/asmp/stub_asmp_hsem.c
 )
 target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
@@ -280,7 +281,7 @@ set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TI
 add_MicroPython()
 add_LVGL(DISPLAY WKS43WV067_5_Inches)
 target_include_directories(proc_u PRIVATE ${LVGL_INCLUDE_DIRECTORIES})
-add_FatFs(STORAGE sdcard_sdnand_flash)
+add_FatFs()
 
 # System configuration flags
 

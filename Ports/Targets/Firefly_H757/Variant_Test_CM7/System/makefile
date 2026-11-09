@@ -91,8 +91,7 @@ FAMILY					=  h7
 SPEED					=  FS
 PROFILE					=  cdc_cdc
 
-STORAGE					=  sdcard_sdnand_flash
-PATH_LIB_FATFS			=  $(PATH_UKOS)/Third_Parties/FatFs/Library/$(CORE)/$(STORAGE)
+PATH_LIB_FATFS			=  $(PATH_UKOS)/Third_Parties/FatFs/Library/$(CORE)
 FATFS					=  libFatFs
 
 PATH_INCLUDES			+= -I$(PATH_UKOS)/Third_Parties/TinyUSB/Construction/Interface/Includes/mcu/$(PROVIDER)

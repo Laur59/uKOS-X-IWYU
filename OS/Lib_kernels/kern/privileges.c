@@ -65,7 +65,8 @@ volatile	bool	vPriv_insideException[KNB_CORES] = MCSET(false);
 // Prototypes
 
 #if (defined(PRIVILEGED_USER_S))
-static	void	local_elevate(uintptr_t callAddress);
+static			void	local_elevate(uintptr_t callAddress);
+static	inline	bool	local_inHandlerMode(void);
 #endif
 
 /*
@@ -120,8 +121,17 @@ int32_t	kern_setPrivilegeMode([[maybe_unused]] uint8_t mode) {
 
 // Determine if the elevation request originates from an SVC or an exception.
 // If so, enabling privileged mode is unnecessary.
+//
+// Handler mode is privileged by definition, and the nesting counter, the
+// BPROC_PRIV_ELEVATED bit and CONTROL.nPRIV all belong to the interrupted
+// thread. The two flags above do not cover every handler: the interrupt
+// wrapper sets neither, yet calls kern_readTickCount() twice per interrupt.
+// A pair run from there against a thread whose counter reads 0 ended with
+// SET_USER_MODE and demoted that thread, which then faulted on its next
+// kernel write; kern_killProcess() resets the dying process's descriptor
+// before it leaves, and TIM7 can still interrupt it there (multiKill).
 
-	if ((in_svc == true) || (in_exc == true)) {
+	if ((in_svc == true) || (in_exc == true) || (local_inHandlerMode() == true)) {
 		return (KERR_KERN_NOERR);
 	}
 
@@ -201,6 +211,9 @@ void	kern_privilegeElevate(void) {
 	#endif
 }
 
+// Local routines
+// ==============
+
 #if (defined(PRIVILEGED_USER_S))
 [[gnu::noinline, gnu::used]]
 static	void	local_elevate(uintptr_t callAddress) {
@@ -213,5 +226,26 @@ static	void	local_elevate(uintptr_t callAddress) {
 
 	SET_PRIVILEGED_MODE;
 	INTERRUPTION_OFF_HARD;
+}
+
+/*
+ * \brief local_inHandlerMode
+ *
+ * - true when executing an exception or an interrupt handler
+ * - IPSR is readable by MRS at any privilege level, unlike SCB->ICSR
+ *	 (IS_EXCEPTION), which faults when read from an unprivileged thread
+ *
+ */
+[[gnu::always_inline]]
+static	inline	bool	local_inHandlerMode(void) {
+
+	#if defined(__ARM_ARCH)
+	const	uint32_t	ipsr = core_getIPSR();
+
+	return ((ipsr & 0x1FFu) != 0u);
+
+	#else
+	return (false);
+	#endif
 }
 #endif

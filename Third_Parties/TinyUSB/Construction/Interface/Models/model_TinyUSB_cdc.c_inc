@@ -199,7 +199,7 @@ void	tud_cdc_rx_cb(uint8_t itf) {
 	#if (defined(CONFIG_MAN_CDC1_S))
 	static	sema_t	*semaphoreCDC1 = nullptr;
 
-	if (itf == KPORT0) {
+	if (itf == KPORT1) {
 		if (semaphoreCDC1 == nullptr) {
 			if (kern_getSemaphoreById(KCDC1_SEMAPHORE_RX, &semaphoreCDC1) != KERR_KERN_NOERR) {
 				semaphoreCDC1 = nullptr;
