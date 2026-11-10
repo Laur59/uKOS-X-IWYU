@@ -1,0 +1,16 @@
+{
+  "app": "a_Basics/multiKill",
+  "note": "Creates and kills processes in a loop and prints every 1000th iteration; the rate depends on the core (about 2 per second on Firefly_H757, 0.5 on Nucleo_L4R5). A crash here was a kernel defect (84b302246).",
+  "tests": [
+    {
+      "id": "a_Basics/multiKill/creates-and-kills",
+      "expect": [
+        {
+          "re": "^Iteration = \\d+000$",
+          "min": 10
+        }
+      ],
+      "timeout": 30
+    }
+  ]
+}

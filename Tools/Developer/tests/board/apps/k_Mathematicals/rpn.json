@@ -1,0 +1,55 @@
+{
+  "app": "k_Mathematicals/rpn",
+  "note": "An RPN calculator on the console, decnumber underneath; it reads a number or ENTER + - * / POW quit per line and prints the stack after each operation. The row types the example of its own header, (35 ENTER 5 +) 10 /, and expects X = 4. Its main returns EXIT_OS_SUCCESS, which kills the console process (OS/Includes/exit_codes.h), so the calculator keeps the console for good: 'quit' ends the calculator and leaves the board without a console until a reset.",
+  "tests": [
+    {
+      "id": "k_Mathematicals/rpn/computes-the-header-example",
+      "input": [
+        {
+          "sleep": 1
+        },
+        {
+          "write": "35\r"
+        },
+        {
+          "sleep": 0.5
+        },
+        {
+          "write": "ENTER\r"
+        },
+        {
+          "sleep": 0.5
+        },
+        {
+          "write": "5\r"
+        },
+        {
+          "sleep": 0.5
+        },
+        {
+          "write": "+\r"
+        },
+        {
+          "sleep": 0.5
+        },
+        {
+          "write": "10\r"
+        },
+        {
+          "sleep": 0.5
+        },
+        {
+          "write": "/\r"
+        },
+        {
+          "sleep": 0.5
+        }
+      ],
+      "expect": [
+        "(?s)^Result = 40$.*^Result = 4$",
+        "(?s)^Y = 40$\\n^X = 10$"
+      ],
+      "console": false
+    }
+  ]
+}

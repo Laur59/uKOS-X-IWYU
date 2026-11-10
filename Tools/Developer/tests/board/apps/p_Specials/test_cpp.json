@@ -1,0 +1,12 @@
+{
+  "app": "p_Specials/test_cpp",
+  "note": "A C++ object constructed, used and destructed; logs no 'Application launched'.",
+  "tests": [
+    {
+      "id": "p_Specials/test_cpp/constructs-and-destructs",
+      "expect": [
+        "(?s)^Construction$\\n^in the middle \\(counter = 0\\)$\\n^Destruction$"
+      ]
+    }
+  ]
+}

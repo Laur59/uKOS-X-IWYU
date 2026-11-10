@@ -1,0 +1,112 @@
+{
+  "app": "p_Specials/sdcard",
+  "note": "Raw SD card tests, chosen by argument: 'hexloader test <n>', n = 0 to 5. Without one it logs a fatal 'Format problem' and exits, which is what the first row checks. Tests 2, 4 and 5 write the card.",
+  "tests": [
+    {
+      "id": "p_Specials/sdcard/no-argument-refused",
+      "timeout": 5,
+      "settle": 3,
+      "log_allow": [
+        "Format problem"
+      ],
+      "log_expect": [
+        "Fatal user .* Format problem$"
+      ]
+    },
+    {
+      "id": "p_Specials/sdcard/test-0-reads-three-sectors",
+      "args": "test 0",
+      "expect": [
+        "^Sector = 0$",
+        "^Sector = 2$",
+        {
+          "re": "^(0x[0-9A-F]{2} )+$",
+          "min": 3
+        }
+      ],
+      "refute": [
+        "^Read problem$"
+      ]
+    },
+    {
+      "id": "p_Specials/sdcard/test-1-reads-every-sector",
+      "args": "test 1",
+      "timeout": 20,
+      "expect": [
+        "^sector 0$",
+        "^sector 1000$",
+        "^sector 2000$"
+      ],
+      "refute": [
+        "^Read problem$"
+      ],
+      "note": "reading the whole card takes about 20 h; the row checks the first thousands"
+    },
+    {
+      "id": "p_Specials/sdcard/test-2-writes-two-sectors",
+      "args": "test 2",
+      "requires": [
+        "unsafe",
+        "hw:sdcard-scratch"
+      ],
+      "expect": [
+        "^Sector = \\d+$",
+        "^s = 0$",
+        "^s = 1$"
+      ],
+      "refute": [
+        "^(Write|Read) problem$"
+      ],
+      "note": "WRITES the card"
+    },
+    {
+      "id": "p_Specials/sdcard/test-3-card-parameters",
+      "args": "test 3",
+      "expect": [
+        "^Card type +sdcard V\\.[12]$",
+        "^Card size \\[Bytes\\] +[1-9]\\d*$",
+        "^Card Serial Number +[0-9A-F]{8}$"
+      ]
+    },
+    {
+      "id": "p_Specials/sdcard/test-4-write-read-timing",
+      "args": "test 4",
+      "requires": [
+        "unsafe",
+        "hw:sdcard-scratch"
+      ],
+      "expect": [
+        {
+          "re": "^Write time for 100 sectors: +\\d+-us, sector nb +\\d+$",
+          "min": 2
+        },
+        {
+          "re": "^Read  time for 100 sectors: +\\d+-us, sector nb +\\d+$",
+          "min": 2
+        }
+      ],
+      "refute": [
+        "^(Write|Read|Coherency) problem$"
+      ],
+      "note": "WRITES the card"
+    },
+    {
+      "id": "p_Specials/sdcard/test-5-floats-round-trip",
+      "args": "test 5",
+      "requires": [
+        "unsafe",
+        "hw:sdcard-scratch"
+      ],
+      "expect": [
+        {
+          "re": "^ 3\\.142  1\\.843  3\\.142  1\\.843$",
+          "min": 3
+        }
+      ],
+      "refute": [
+        "^(Write|Read) problem$"
+      ],
+      "note": "WRITES sector 0 of the card"
+    }
+  ]
+}

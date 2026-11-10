@@ -1,0 +1,17 @@
+{
+  "app": "m_MicroPythons/basic",
+  "note": "Starts MicroPython with a script that reads the board's mode switch into a bytearray and prints it in a loop; the byte depends on the board and its switches (0x03 on Firefly_H757, 0x00 on Nucleo_L4R5).",
+  "tests": [
+    {
+      "id": "m_MicroPythons/basic/runs-the-script",
+      "expect": [
+        "^Package \\d+\\.\\d+\\.\\d+ for uKOS-X ",
+        "^Built with int on 64-bits and float on simple precision$",
+        {
+          "re": "^bytearray\\(b'\\\\x[0-9a-f]{2}'\\)$",
+          "min": 5
+        }
+      ]
+    }
+  ]
+}

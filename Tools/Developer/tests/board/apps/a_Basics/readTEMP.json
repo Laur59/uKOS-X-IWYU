@@ -1,0 +1,19 @@
+{
+  "app": "a_Basics/readTEMP",
+  "note": "Reads the temperature sensor once a second and prints it in kelvin with %5.2f, from a process that needs KKERN_SZ_STACK_LL under newlib (1316bfd11). The row checks the line and that the value is plausible for a board on a bench, 270 to 329 K, not the exact figure.",
+  "tests": [
+    {
+      "id": "a_Basics/readTEMP/prints-the-temperature",
+      "expect": [
+        {
+          "re": "^Temperature = (2[7-9]\\d|3[0-2]\\d)\\.\\d\\d \\[K\\]$",
+          "min": 10
+        }
+      ],
+      "refute": [
+        "^Temperature = (?!(2[7-9]\\d|3[0-2]\\d)\\.\\d\\d \\[K\\]$)"
+      ],
+      "timeout": 20
+    }
+  ]
+}

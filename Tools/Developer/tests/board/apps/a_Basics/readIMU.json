@@ -1,0 +1,32 @@
+{
+  "app": "a_Basics/readIMU",
+  "note": "Reads the LSM9DS1 every 10 ms, averages the last 16 samples and prints the acceleration in g, tab-separated (DISP_COOLTERM_S). The first 16 lines ramp while the window fills. Both boards that build it have a dead or absent LSM9DS1 on the bench (Alastor_H743, and Asmodee_H747 per the user, 2026-11-09): there every raw value equals the bias taken at start-up, so x and y print exactly 0.000000 and z a constant -0.999912. The first row checks that the application runs; the second, which needs --have imu, that the sensor moves.",
+  "tests": [
+    {
+      "id": "a_Basics/readIMU/prints-the-acceleration",
+      "expect": [
+        {
+          "re": "^-?\\d+\\.\\d{6}\\t-?\\d+\\.\\d{6}\\t-?\\d+\\.\\d{6}$",
+          "min": 100
+        }
+      ]
+    },
+    {
+      "id": "a_Basics/readIMU/sensor-answers",
+      "requires": [
+        "hw:imu"
+      ],
+      "expect": [
+        {
+          "re": "^-?\\d+\\.\\d{6}\\t-?\\d+\\.\\d{6}\\t-?0\\.9\\d{5}$",
+          "min": 50
+        },
+        {
+          "re": "^(?!0\\.000000\\t0\\.000000\\t)-?\\d+\\.\\d{6}\\t-?\\d+\\.\\d{6}\\t-?\\d+\\.\\d{6}$",
+          "min": 50
+        }
+      ],
+      "note": "a board lying flat reads about 1 g on z, and a live sensor never gives x and y of exactly 0.000000 for long; not yet run on a board with a working LSM9DS1"
+    }
+  ]
+}

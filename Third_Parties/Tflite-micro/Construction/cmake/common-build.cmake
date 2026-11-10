@@ -43,15 +43,18 @@ if(NOT EXISTS "${TREE}/tensorflow/lite/micro")
 endif()
 
 # Every exported source, minus those upstream does not compile: kissfft is
-# #included by signal/src/kiss_fft_wrappers/*.cc, and reference/comparisons.cc
-# is a leftover of an older export that no longer exists upstream (build.sh now
-# clears the tree before exporting it).
+# #included by signal/src/kiss_fft_wrappers/*.cc (upstream lists its .c files
+# under THIRD_PARTY_CC_HDRS in tools/make/sources.inc), and
+# reference/comparisons.cc is a leftover of an older export that no longer
+# exists upstream (build.sh now clears the tree before exporting it).
+# kissfft is excluded by pattern, not by path: KissFFT 131.2.0 (upstream
+# 54f15766) moved kiss_fftr.c out of tools/, and a stale path compiled it on
+# its own, leaving kiss_fft and kiss_fft_alloc undefined in a whole-archive link.
 file(GLOB_RECURSE TFLITE_SOURCES CONFIGURE_DEPENDS "${TREE}/*.cc" "${TREE}/*.c")
 list(REMOVE_ITEM TFLITE_SOURCES
     "${TREE}/tensorflow/lite/kernels/internal/reference/comparisons.cc"
-    "${TREE}/third_party/kissfft/kiss_fft.c"
-    "${TREE}/third_party/kissfft/tools/kiss_fftr.c"
 )
+list(FILTER TFLITE_SOURCES EXCLUDE REGEX "/third_party/kissfft/.*\\.c$")
 
 # Upstream optimises the kernels for speed and the rest for size
 set(TFLITE_KERNEL_OPT "-O2" CACHE STRING "Optimisation level of the TFLite kernels (upstream: -O2)")

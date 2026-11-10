@@ -1,0 +1,13 @@
+{
+  "app": "l_MLPs/tfl_vs_ukos",
+  "note": "Times the same network under TensorFlow Lite Micro and under the uKOS-X MLPN and prints min and max, forever.",
+  "tests": [
+    {
+      "id": "l_MLPs/tfl_vs_ukos/times-both",
+      "expect": [
+        "^Exec time for TensorFlowLite, min = \\d+ \\[us\\], max = \\d+ \\[us\\]$",
+        "^Exec time for MLPN uKOS-X, +min = \\d+ \\[us\\], max = \\d+ \\[us\\]$"
+      ]
+    }
+  ]
+}

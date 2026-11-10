@@ -1,0 +1,21 @@
+{
+  "app": "p_Specials/uKOS_minimal",
+  "note": "A sensor, an actuator and a dispatcher process exchanging through a queue; it prints nothing, so the row checks that the processes run.",
+  "tests": [
+    {
+      "id": "p_Specials/uKOS_minimal/runs",
+      "timeout": 3,
+      "settle": 5,
+      "after": [
+        {
+          "send": "process",
+          "expect": [
+            "Process sensor\\.",
+            "Process actuator\\.",
+            "Process dispatcher\\."
+          ]
+        }
+      ]
+    }
+  ]
+}

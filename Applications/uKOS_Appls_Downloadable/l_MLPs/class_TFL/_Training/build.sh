@@ -22,4 +22,9 @@ MODEL_FILE=NN_model
 
 python3 NN_model.py --model_file ${MODEL_FILE}.tflite 2>"${MODEL_FILE}_warnings.log"
 
+# Keep the log only when the script printed something on stderr
+[[ -s "${MODEL_FILE}_warnings.log" ]] || rm -f "${MODEL_FILE}_warnings.log"
+
 xxd "${MODEL_FILE}.tflite" > "${MODEL_FILE}.xxd"
+
+rm -f *.keras *.tflite

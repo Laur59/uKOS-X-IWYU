@@ -1,0 +1,15 @@
+{
+  "app": "n_NewLibs/basic",
+  "note": "newlib demo: prints a quote, then a series converging to pi with its time per term. Its scanf part waits for input on KURT1, which no row drives, and it keeps the console.",
+  "tests": [
+    {
+      "id": "n_NewLibs/basic/prints",
+      "expect": [
+        "^P2: The old dreams were good dreams\\.",
+        "^n = 1, Pi = 3\\.133333333 Time = \\d+$",
+        "^n = 7, Pi = 3\\.141592654 Time = \\d+$"
+      ],
+      "console": false
+    }
+  ]
+}

@@ -27,8 +27,9 @@
  */
 
 typedef enum {
-            KSDCARD       = (((uint32_t)'s'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'d'),    // sdcard manager
-            KFLASH        = (((uint32_t)'s'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'l'<<8U) | (uint32_t)'h')     // flash manager
+            KSDCARD = (((uint32_t)'s'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'c'<<8U) | (uint32_t)'d'),    // sdcard manager
+            KSDNAND = (((uint32_t)'s'<<24U) | ((uint32_t)'d'<<16U) | ((uint32_t)'n'<<8U) | (uint32_t)'d'),  // sdnand manager
+            KFLASH  = (((uint32_t)'s'<<24U) | ((uint32_t)'f'<<16U) | ((uint32_t)'l'<<8U) | (uint32_t)'h')     // flash manager
 } storage_manager_t;
 
 // For ioctl (!! Maintain the same order than suggested by FatFs)

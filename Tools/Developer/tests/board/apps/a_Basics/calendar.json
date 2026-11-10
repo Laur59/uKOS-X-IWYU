@@ -1,0 +1,22 @@
+{
+  "app": "a_Basics/calendar",
+  "note": "Prints the C library time functions (time, localtime, strftime, a 1 s delay), then sets the Unix time to 31 March 2025 and prints the local time every second.",
+  "tests": [
+    {
+      "id": "a_Basics/calendar/prints",
+      "expect": [
+        "^Time now = \\d+$",
+        "^Local time: \\w{3} \\w{3} [ \\d]\\d \\d\\d:\\d\\d:\\d\\d \\d{4}$",
+        "^New timestamp \\(1 minute later\\): \\d+$",
+        "^Formatted time: \\d+ [AP]M$",
+        "^Execution time: 1\\.\\d+ seconds$",
+        "^New Unix time 64-bits= 1743426\\d+$",
+        {
+          "re": "^Local time: Mon Mar 31 \\d\\d:\\d\\d:\\d\\d 2025$",
+          "min": 5
+        }
+      ],
+      "timeout": 20
+    }
+  ]
+}

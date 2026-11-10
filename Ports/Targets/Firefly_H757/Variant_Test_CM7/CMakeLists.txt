@@ -132,6 +132,7 @@ add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/cdc1/cdc1.c CONFIG_MAN_CD
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_serials/serial/serial.c CONFIG_MAN_SERIAL_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_storages/flash/flash.c CONFIG_MAN_FLASH_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_storages/sdcard/sdcard.c CONFIG_MAN_SDCARD_S)
+add_source_with_define(libx_p ${PATH_OSYS}/Lib_storages/sdnand/sdnand.c CONFIG_MAN_SDNAND_S)
 add_source_with_define(libx_p ${PATH_OSYS}/Lib_storages/storage/storage.c CONFIG_MAN_STORAGE_S)
 target_sources(libx_p PRIVATE
     ${PATH_BASE}/Lib_generics/machine/stub_machine.c
@@ -143,6 +144,7 @@ target_sources(libx_p PRIVATE
     ${PATH_BASE}/Lib_peripherals/watchdog/stub_watchdog.c
     ${PATH_BASE}/Lib_storages/flash/stub_flash.c
     ${PATH_BASE}/Lib_storages/sdcard/stub_sdcard.c
+    ${PATH_BASE}/Lib_storages/sdnand/stub_sdnand.c
     ${PATH_COMX}/Lib_generics/asmp/stub_asmp_hsem.c
 )
 target_link_libraries(libx_p PUBLIC system_compiler_flags ${TINYUSB})
@@ -237,7 +239,7 @@ set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TI
 add_MicroPython()
 add_LVGL(DISPLAY WKS43WV067_5_Inches)
 target_include_directories(proc_u PRIVATE ${LVGL_INCLUDE_DIRECTORIES})
-add_FatFs(STORAGE sdcard_flash)
+add_FatFs()
 
 # System configuration flags
 

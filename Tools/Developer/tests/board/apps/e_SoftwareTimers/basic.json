@@ -1,0 +1,16 @@
+{
+  "app": "e_SoftwareTimers/basic",
+  "note": "A software timer prints 'Running ...' periodically, forever.",
+  "tests": [
+    {
+      "id": "e_SoftwareTimers/basic/fires",
+      "expect": [
+        {
+          "re": "^Running \\.\\.\\.$",
+          "min": 3
+        }
+      ],
+      "timeout": 20
+    }
+  ]
+}

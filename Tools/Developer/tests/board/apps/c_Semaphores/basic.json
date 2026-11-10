@@ -1,0 +1,44 @@
+{
+  "app": "c_Semaphores/basic",
+  "note": "Takes an RX semaphore on purpose (cdc0 on Firefly_H757, urt0 elsewhere, which is the console only where the console runs on urt0): the console never answers again, and the LEDs show the characters it receives. 'Synchro ...' is printed for each character received, so the row types one; on Firefly_H757 it also writes 'RX event' on KSERIAL_RX.",
+  "tests": [
+    {
+      "id": "c_Semaphores/basic/takes-the-console",
+      "except": [
+        "Asmodee_H747"
+      ],
+      "input": [
+        {
+          "sleep": 2
+        },
+        {
+          "write": "x"
+        }
+      ],
+      "expect": [
+        "^Synchro \\.\\.\\.$"
+      ],
+      "console": false
+    },
+    {
+      "id": "c_Semaphores/basic/watches-urt0",
+      "boards": [
+        "Asmodee_H747"
+      ],
+      "input": [
+        {
+          "sleep": 2
+        },
+        {
+          "write": "x",
+          "on": "dump"
+        }
+      ],
+      "expect": [
+        "^Synchro \\.\\.\\.$"
+      ],
+      "console": false,
+      "note": "the application watches urt0 on every board but Firefly_H757 (cdc0); on Asmodee_H747 the console is cdc0 and urt0 is the FT4232 wire that also carries the CM7 core dumps, so the character is typed there"
+    }
+  ]
+}

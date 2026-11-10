@@ -58,9 +58,11 @@ target_sources(proc_u PRIVATE
 ### Adding third party FatFs library
 
 ```cmake
-# FatFs (file system) integration. STORAGE is flash, sdcard or sdcard_flash and
-# selects Third_Parties/Library/FatFs/${CORE}/${STORAGE}/libFatFs.a
-add_FatFs(STORAGE sdcard_flash)
+# FatFs (file system) integration. One archive per core,
+# Third_Parties/Library/FatFs/${CORE}/libFatFs.a, serves the three volumes
+# "sdcard", "sdnand" and "flash"; each is reached through the storage manager,
+# so the variant must also compile the managers of the drives it uses.
+add_FatFs()
 ```
 
 ### Adding third party LVGL library

@@ -1,0 +1,16 @@
+{
+  "app": "k_Mathematicals/cordic",
+  "note": "Computes an angle by CORDIC and by newlib and prints both with their time; the two must agree.",
+  "tests": [
+    {
+      "id": "k_Mathematicals/cordic/agrees-with-newlib",
+      "expect": [
+        "^Cordic angle  1\\.3830344, time \\d+-us$",
+        "^newlib angle  1\\.3830344, time \\d+-us$"
+      ],
+      "refute": [
+        "^(Cordic|newlib) angle  (?!1\\.3830344,)"
+      ]
+    }
+  ]
+}

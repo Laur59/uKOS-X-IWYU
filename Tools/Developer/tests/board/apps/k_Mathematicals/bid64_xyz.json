@@ -1,0 +1,15 @@
+{
+  "app": "k_Mathematicals/bid64_xyz",
+  "note": "Decimal floating point through decnumber; the results are exact, so they are asserted as values.",
+  "tests": [
+    {
+      "id": "k_Mathematicals/bid64_xyz/computes",
+      "expect": [
+        "^0\\.004565e-3 mul 1\\.747470e\\+4 = 0\\.07977200550$",
+        "^0\\.004565e-3 div 1\\.747470e\\+4 = 2\\.612348137593206E-10$",
+        "^Problem: Division by zero$",
+        "^0\\.004565e-3 div 00000000000 = Infinity$"
+      ]
+    }
+  ]
+}

@@ -22,6 +22,7 @@
 
 #ifndef NO_KERNEL_S
 static  void    local_compose(const char_t *identifier, const char_t **idSpacer);
+static  void    local_sendString(const char_t *text);
 #endif
 
 /*
@@ -43,8 +44,10 @@ void    record_printTrace(void) {
             cmns_send(KDEF0, "      Time [us]  Parameter            Information\n\n");
 
             for (i = 0; i < vRecord_NbTraceWrites[core]; i++) {
-                (void)snprintf(&string[0], 200U, "%12"PRIu64"-us  0x%016"PRIXPTR"    %s\n", vRecord_RTraceFifo[core]->oTimeStamp, vRecord_RTraceFifo[core]->oParameter, vRecord_RTraceFifo[core]->oMessage);
+                (void)snprintf(&string[0], 200U, "%12"PRIu64"-us  0x%016"PRIXPTR"    ", vRecord_RTraceFifo[core]->oTimeStamp, vRecord_RTraceFifo[core]->oParameter);
                 cmns_send(KDEF0, &string[0]);
+                local_sendString(vRecord_RTraceFifo[core]->oMessage);
+                cmns_send(KDEF0, "\n");
 
                 vRecord_RTraceFifo[core]++;
                 vRecord_RTraceFifo[core] = (vRecord_RTraceFifo[core] == &vRecord_traceFifo[core][KRECORD_SZ_TRACE_FIFO]) ? (&vRecord_traceFifo[core][0]) : vRecord_RTraceFifo[core];
@@ -131,15 +134,19 @@ void    record_printLog(void) {
                         local_compose(rOldLogBuffer->oIdentifier, &idSpacerI);
                         local_compose(rOldLogBuffer->oFunction,   &idSpacerF);
 
-                        (void)snprintf(&string[0], 200U, "%12"PRIu64"-us  %s  %s  %s  %s  %s  %5"PRIu32"   %s\n", rOldLogBuffer->oTimeStamp,
-                                                                                                                  logCategory,
-                                                                                                                  rOldLogBuffer->oIdentifier,
-                                                                                                                  idSpacerI,
-                                                                                                                  rOldLogBuffer->oFunction,
-                                                                                                                  idSpacerF,
-                                                                                                                  rOldLogBuffer->oLineNumber,
-                                                                                                                  rOldLogBuffer->oMessage);
+                        (void)snprintf(&string[0], 200U, "%12"PRIu64"-us  %s  ", rOldLogBuffer->oTimeStamp, logCategory);
                         cmns_send(KDEF0, &string[0]);
+                        local_sendString(rOldLogBuffer->oIdentifier);
+                        cmns_send(KDEF0, "  ");
+                        cmns_send(KDEF0, idSpacerI);
+                        cmns_send(KDEF0, "  ");
+                        local_sendString(rOldLogBuffer->oFunction);
+                        cmns_send(KDEF0, "  ");
+                        cmns_send(KDEF0, idSpacerF);
+                        (void)snprintf(&string[0], 200U, "  %5"PRIu32"   ", rOldLogBuffer->oLineNumber);
+                        cmns_send(KDEF0, &string[0]);
+                        local_sendString(rOldLogBuffer->oMessage);
+                        cmns_send(KDEF0, "\n");
 
                         rOldLogBuffer->oMark = true;
                     }
@@ -190,5 +197,22 @@ static  void    local_compose(const char_t *identifier, const char_t **idSpacer)
 
     len = strlen(identifier);
     *idSpacer = (len <= (sizeof(aSpacer) - 1U)) ? (&aSpacer[len]) : (&aSpacer[0]);
+}
+
+/*
+ * \brief local_sendString
+ *
+ * - Send a string that may live in external RAM
+ *
+ * In a HardFault the MPU is off, so the default memory map makes the FMC
+ * SDRAM (0xA0000000-0xDFFFFFFF) Device memory, where an unaligned access
+ * faults. snprintf("%s") copies its argument with memcpy, which in LLVM libc
+ * uses unaligned word loads and stalled the dump inside the handler.
+ * cmns_send() reads one byte at a time. nullptr prints as snprintf did.
+ *
+ */
+static  void    local_sendString(const char_t *text) {
+
+    cmns_send(KDEF0, (text != nullptr) ? text : "(null)");
 }
 #endif

@@ -1,0 +1,19 @@
+{
+  "app": "b_MailBoxes/timerQueue",
+  "note": "A hardware timer feeds a queue; the counter is printed, forever. Built with ALLOW_HARDWARE_ACCESS_S, so it logs the warning 'Direct hardware access permitted' on purpose.",
+  "tests": [
+    {
+      "id": "b_MailBoxes/timerQueue/counts",
+      "expect": [
+        "(?s)^Counter = 0$\\n^Counter = 1$\\n^Counter = 2$",
+        {
+          "re": "^Counter = \\d+$",
+          "min": 50
+        }
+      ],
+      "log_allow": [
+        "Direct hardware access permitted"
+      ]
+    }
+  ]
+}

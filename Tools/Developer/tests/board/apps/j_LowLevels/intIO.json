@@ -1,0 +1,73 @@
+{
+  "app": "j_LowLevels/intIO",
+  "note": "Counts the interrupts of an EXTI line (Firefly_H757: line 8, PA8; Asmodee_H747: line 0, PA0; Nucleo_L4R5: line 13, PC13, the user button) and prints the counter every second. On Firefly_H757 nothing drives PA8, so the row fires the line in software through the CM4's J-Link (EXTI_SWIER1 = 0x58000008, bit 8). Built with ALLOW_HARDWARE_ACCESS_S, so it logs 'Direct hardware access permitted' on purpose.",
+  "tests": [
+    {
+      "id": "j_LowLevels/intIO/counts-software-interrupts",
+      "boards": [
+        "Firefly_H757"
+      ],
+      "input": [
+        {
+          "await": "^Counter = 00000000$",
+          "timeout": 10
+        },
+        {
+          "jlink": [
+            "w4 0x58000008 0x100",
+            "w4 0x58000008 0x100",
+            "w4 0x58000008 0x100"
+          ]
+        }
+      ],
+      "expect": [
+        "^Counter = 0000000[1-9]$"
+      ],
+      "log_allow": [
+        "Direct hardware access permitted"
+      ]
+    },
+    {
+      "id": "j_LowLevels/intIO/counts-software-interrupts-line-0",
+      "boards": [
+        "Asmodee_H747"
+      ],
+      "input": [
+        {
+          "await": "^Counter = 00000000$",
+          "timeout": 10
+        },
+        {
+          "jlink": [
+            "w4 0x58000008 0x1",
+            "w4 0x58000008 0x1",
+            "w4 0x58000008 0x1"
+          ]
+        }
+      ],
+      "expect": [
+        "^Counter = 0000000[1-9]$"
+      ],
+      "log_allow": [
+        "Direct hardware access permitted"
+      ],
+      "note": "On Asmodee_H747 the line is EXTI 0 (PA0), fired in software through the CM4's J-Link: EXTI_SWIER1 = 0x58000008, bit 0"
+    },
+    {
+      "id": "j_LowLevels/intIO/prints-the-counter",
+      "boards": [
+        "Nucleo_L4R5"
+      ],
+      "expect": [
+        {
+          "re": "^Counter = [0-9A-F]{8}$",
+          "min": 3
+        }
+      ],
+      "log_allow": [
+        "Direct hardware access permitted"
+      ],
+      "note": "On Nucleo_L4R5 the line is EXTI 13, PC13, the blue user button. Firing it in software needs a write to EXTI_SWIER1 (0x40010410, bit 13) over SWD, and a hot-plug ST-Link attach to the running board was refused ('Unable to get core ID'), with bench running as well, on 2026-11-09. So the row checks that the application runs and prints its counter, not that it counts"
+    }
+  ]
+}

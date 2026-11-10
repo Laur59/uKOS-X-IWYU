@@ -160,7 +160,7 @@
 #include "modules.h"
 #include "os_errors.h"
 
-#define KKERN_VERSION   " 1.3"
+#define KKERN_VERSION   " 1.4"
 
 // uKOS-X specific (see the module.h)
 // ==================================

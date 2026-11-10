@@ -12,7 +12,7 @@ if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
     exit 1
 fi
 
-export  PYTHONPATH="$PYTHONPATH:$(pwd)"
+export  PYTHONPATH="${PYTHONPATH:+$PYTHONPATH:}$(pwd)"
 
 python3 "${PATH_UKOS_X_PACKAGE}/OS/Lib_neurals/mlpn/backprop.py"
 rm -rf __pycache__

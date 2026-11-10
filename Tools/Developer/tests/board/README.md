@@ -14,8 +14,10 @@ Two entry points share one library (`ukos_board.py`) and the same specs:
 - **`run-board-tests`** — the bare runner: an existing session, no recovery,
   every row printed. For writing and debugging specs.
 
-Two more tools sit beside them: **`coredump-test`** (see *The core dump test*) and
-**`board-matrix`**, the only one that flashes (see *Every configuration*).
+Three more tools sit beside them: **`coredump-test`** (see *The core dump test*),
+**`board-matrix`** (see *Every configuration*) and **`app-regression`**, which
+runs the downloadable applications (see *The applications*). The last two are
+the ones that flash.
 
 ```sh
 ukos-serial start --port /dev/cu.usbmodem21403      # once, by hand
@@ -124,6 +126,7 @@ measured on the board:
 | Attach, core in WFI | refused (0 of 8 on each core), under reset as well |
 | Attach, core running `bench` | accepted (8 of 8 on the CM7, 4 of 4 on the CM4), but only by the core that runs it |
 | Attach, core faulted | accepted, because it spins |
+| Storage | SD card slot, an on-board **sdnand** chip (SDMMC, `CONFIG_MAN_SDNAND_S`, CM7 only) and the `flash` drive |
 
 So `jlink_run()` first tries without any load, which is all a crashed board
 needs, then starts `bench` on the console and attaches at once, since later
@@ -137,6 +140,25 @@ its log. A core dump does not reach cdc0 at all: it goes out through
 `cmns_send()` on USART1, which is the wire of the CM4's console. On the CM7
 `board-regression` therefore reports a crash as a **HANG**, and recovers it the
 same way. `coredump-test --dump-name` reads the dump from the other session.
+
+No CLI exercises the sdnand or the FatFs volumes, so no spec row covers them:
+the only on-target check is the downloadable `p_Specials/test_fatfs`, which
+`app-regression` runs (see *The applications*). Its drives are chosen at compile time by the board's `_S`
+macro, not detected at run time: `/sdcard` and `/flash` on `Alastor_H743` and
+`Firefly_H743`, `/sdcard`, `/sdnand` and `/flash` on `Firefly_H757`. A drive a
+board selects but does not have stops the run at `f_mkfs erreur`, where the app
+spins.
+
+It **formats every drive it tests**, the SD card in the slot included, so run
+it only with a card whose contents you do not need (the same rule as `--have
+sdcard-scratch`). Each drive gets three folders and one file in each; a pass
+prints `f_mkfs passed` once per drive, every `f_* passed` line nine times on the
+H757 and no `erreur`, reads back the nine quotes `F1:` to `F9:`, and ends with
+`3 dirs, 0 files.` for each root and a tree of three folders and three
+`TEST_<n>.TXT` per drive. File dates read `29-02-2024` because the RTC is not
+set after a reset; that is not a failure. On `Firefly_H757` the full run passes
+on all three drives (`91b6dd839`, the tree of `c77e112f1`, `llvm` + `newlib`,
+2026-11-09). The two H743 boards have not been run since the 6.15.0 change.
 
 ### Known failures
 
@@ -501,6 +523,121 @@ script rather than guessing: the L4R5 reports `STM32L4Rxxx/STM32L4Sxxx`, not the
 exactly. The address must be *checked*, not assumed: confirm the console dies
 and a dump appears, because a read of an unmapped region can just as easily
 return zeros.
+
+## The applications
+
+`Tools/Developer/bin/app-regression` runs the downloadable applications that
+`Applications/uKOS_Appls_Downloadable/apps.yaml` lists for one board:
+
+```sh
+app-regression --board Firefly_H757 -n                       # what would run, offline
+app-regression --board Firefly_H757                          # flash, then every application
+app-regression --board Firefly_H757 --no-flash --apps k_Mathematicals,p_Specials/sdcard
+app-regression --board Firefly_H757 --allow-unsafe --have sdcard-scratch
+app-regression --board Firefly_H757 --apps q_LVGL/big --record /tmp/rec   # write a spec
+```
+
+It flashes one configuration (`--compiler`, `--lib`, `--mode`; LLVM newlib by
+default) with `board-matrix`'s own code, so it supports `board-matrix`'s boards.
+Then, per application: build it against that image, **reset the board**, start
+`hexloader` with the row's `args` (handed on to the application, as in
+`hexloader test 3`), stream the `.hex` and check the output against
+`apps/<group>/<app>.json`. A final reset leaves no application running.
+
+Three things decide that shape:
+
+- **A reset before every download.** Once `hexloader` has started an
+  application it keeps the user memory reserved (its processes may still run
+  from there, `../DEFECTS.md`), so the next download is refused with "The user
+  memory is busy" until a reset.
+- **Build after the flash.** An application links the variant's
+  `Artefacts/FLASH.elf` and carries its signature; one built against any other
+  image is refused with "failed to find the application signature!".
+  `--no-flash` checks that the board runs HEAD and that `Artefacts/` holds it.
+- **One hex line per write, 1 ms apart.** Faster overruns hexloader's 128-byte
+  receive buffer ("Hex: buffer full error"); `gan`'s 118 486 lines take about
+  three minutes.
+
+A spec has the fields of the module docstring of `app-regression`. The ones
+that matter most:
+
+| Field | For |
+|---|---|
+| `expect`, `{"re", "min"}` | output that must appear within `timeout`; `min` counts matches |
+| `refute` | output that must not appear |
+| `input` | `write` (on the console, or `"on": "dump"` for the dump console's wire), `await`, `sleep`, and `jlink` commands run through another core |
+| `dump` | a core dump or panic the application causes on purpose |
+| `console: false` | the application keeps or kills the console |
+| `boards`, `except` | the boards a row is for, or is not for |
+| `after`, `log_allow`, `log_expect` | console commands and `dumplog` checks once the window is over |
+
+Every application's first line follows the console prompt on the same line, so
+the prompt is dropped before matching and patterns can begin with `^`. **Never
+write "at least n times" as `(?s)(...){n}`**: over a long output (`pooling`
+prints ten thousand lines in 15 s) it backtracks exponentially and the runner
+hangs; `{"re": ..., "min": n}` counts instead.
+
+A core dump or a panic goes out through `cmns_send()`, which on `Firefly_H757`
+is the CM4's wire, so the runner watches that console as well: `canary`'s
+"Stack smashing!" is matched there. A dump or panic no row expects is a
+**crash**. Rows that change the board are gated as in the CLI specs:
+`test_fatfs` formats every drive and `sdcard` tests 2, 4 and 5 write the card,
+so they need `--allow-unsafe --have sdcard-scratch`.
+
+The applications that keep the console are not failures: `plotSin`,
+`c_Semaphores/basic`, `class_Py`, `cluster_Py`, `n_NewLibs/basic` and `rpn`
+return `EXIT_OS_SUCCESS` from `main`, which kills the console process
+(`OS/Includes/exit_codes.h`); `canary`, `tracing` and `watchdog` stop or restart
+the system on purpose. The silent ones (`gan`, `q_LVGL/big`, `uKOS_minimal`) are
+checked through `process`, which must list their processes; the picture on the
+panel is not checked. `intIO` counts EXTI line 8, which nothing drives on the
+H757, so its row fires the line in software through the CM4's J-Link.
+
+Known failures go to `APP-KNOWN-FAILURES`, in the format of `KNOWN-FAILURES`
+and with the same contract; it is a separate file so that `board-regression`
+does not report every application row as "not exercised".
+
+### Verified on
+
+`Firefly_H757`, LLVM newlib, 2026-11-09: all 43 applications, 49 rows pass and
+one skips (the H743 row of `test_fatfs`), including `test_fatfs`, `sdcard` and
+its card-writing tests. Writing the specs found two defects in `sdcard` test 5,
+fixed in `3180e677e`: its process stack was too small under newlib, so it broke
+the heap ("Panic: memo_malloc descriptor broken!"), and it wrote 10 bytes for two
+`float64_t`, so the second read back as 0. Negative controls, each by verdict:
+an unexpected core dump (`CRASH`), a missing process in `after`, a warning not
+in `log_allow` and a `refute` that matches (`FAIL`), a known failure (`known`)
+and a known row that passes (exit `3`).
+
+`Nucleo_L4R5`, LLVM newlib, 2026-11-09 (`17494026b`): all 32 applications pass,
+one row skips (the H757's `intIO`). Its first run showed four rows that held on
+the H757 only, which is why a second board matters: `multiKill` counted at the
+H757's rate, `c_Semaphores/basic` passed only because a stray character reached
+the H757's console (the row now types one), `f_Signals/calendar` expected the
+2025 that `a_Basics/calendar` had left in the H757's clock (the application never
+sets it), and the MicroPython script prints the board's mode switch. On the L4R5
+`intIO` counts the user button, PC13; a hot-plug ST-Link attach to fire it in
+software was refused ("Unable to get core ID", with `bench` running as well), so
+its row checks only that the counter is printed.
+
+`Asmodee_H747`, LLVM newlib, 2026-11-09 (`d583cd3d6`): all 43 applications, 41
+rows pass and 6 skip for a stated reason. Three rows need hardware the bench
+board lacks: `readIMU`'s `sensor-answers` (`--have imu`; its LSM9DS1 reads a
+frozen 0, 0, -0.999912 g, as on `Alastor_H743`) and the two `o_Imagings`
+applications (`--have camera`; without one they print "img0 manager
+problem"). Two rows are the board's own. `c_Semaphores/basic` watches urt0,
+which on this board is the FT4232 wire that also carries the CM7 dumps, not
+the console, so its row types on the dump console's session. `intIO` counts
+EXTI line 0 (`0x58000008`, bit 0), fired through the CM4's J-Link. Its first
+attempt rebooted the board under the application: the probe's reset line is
+wired here, and a refused attach to a core idling in WFI falls back to
+connecting under reset. A `jlink` step therefore starts `bench` on that
+core's console before its first attach.
+
+Not yet run: the other boards of `apps.yaml`. A board needs its consoles and
+probe in `board-matrix`'s `KFLASH`, and its own rows where it differs. Watch
+for two kinds of over-specific row, both found above: a rate or a count that
+depends on the core, and state one application leaves for the next.
 
 ## Not yet exercised
 

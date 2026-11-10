@@ -6,16 +6,29 @@
 # Generate the TensorFlow Lite model for the debris classifier.
 
 import	argparse
-import	numpy as np
-import	tensorflow as tf
 import	os
 import	logging
+
+# Must be set before TensorFlow is imported, otherwise the C++ runtime has
+# already read it. 0 = all logs, 1 = info, 2 = warning, 3 = error only
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+import	numpy as np
+import	tensorflow as tf
 from	tensorflow import keras
 from	tensorflow.keras import layers
 
-# 0 = all logs, 1 = info, 2 = warning, 3 = error only
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 logging.getLogger('absl').setLevel(logging.ERROR)
+
+# tf.lite.Interpreter is deprecated in favour of LiteRT (package ai-edge-litert).
+# Use LiteRT when it is installed; otherwise fall back to tf.lite.Interpreter,
+# whose deprecation warning then reaches the log as a reminder to install it.
+try:
+	from ai_edge_litert import interpreter as tflite
+	KOP_RESOLVER = tflite.OpResolverType.BUILTIN_WITHOUT_DEFAULT_DELEGATES
+except ImportError:
+	tflite = tf.lite
+	KOP_RESOLVER = tf.lite.experimental.OpResolverType.BUILTIN_WITHOUT_DEFAULT_DELEGATES
 
 # Reproducibility
 SEED = 42
@@ -29,8 +42,9 @@ def load_data(file_path):
 	try:
 
 		# Use genfromtxt (more flexible than loadtxt)
+		# Any run of spaces or tabs separates the columns
 		print(f"Read the file : {file_path}")
-		data = np.genfromtxt(file_path, delimiter = '\t', dtype = np.float32)
+		data = np.genfromtxt(file_path, dtype = np.float32)
 		data = np.atleast_2d(data)
 
 		# Remove invalid rows containing NaN or Inf
@@ -212,7 +226,9 @@ def main():
 
 	# Use TensorFlow Lite Interpreter to test the TFLite model
 	# Use the argument passed to the command line
-	interpreter = tf.lite.Interpreter(model_path = args.model_file)
+	# Reference kernels only: no XNNPACK delegate (and no "Created TensorFlow Lite
+	# XNNPACK delegate" message), closer to what TFLite Micro runs on the target.
+	interpreter = tflite.Interpreter(model_path = args.model_file, experimental_op_resolver_type = KOP_RESOLVER)
 	interpreter.allocate_tensors()
 	input_details  = interpreter.get_input_details()
 	output_details = interpreter.get_output_details()

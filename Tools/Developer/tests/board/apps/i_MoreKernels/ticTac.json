@@ -1,0 +1,14 @@
+{
+  "app": "i_MoreKernels/ticTac",
+  "note": "Measures the time of dprintf and of the tick count and prints the system identity, forever.",
+  "tests": [
+    {
+      "id": "i_MoreKernels/ticTac/measures",
+      "expect": [
+        "^dprintf time_1 \\d+ \\[us\\]$",
+        "^Machine = \\w+ cpt = \\d+ ",
+        "^TickCount time \\d+ \\[us\\]$"
+      ]
+    }
+  ]
+}

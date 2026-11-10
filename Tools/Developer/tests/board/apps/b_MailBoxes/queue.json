@@ -1,0 +1,16 @@
+{
+  "app": "b_MailBoxes/queue",
+  "note": "A queue of messages, printed in order, forever.",
+  "tests": [
+    {
+      "id": "b_MailBoxes/queue/messages",
+      "expect": [
+        "(?s)^Message = 0$\\n^Message = 1$\\n^Message = 2$",
+        {
+          "re": "^Message = \\d+$",
+          "min": 50
+        }
+      ]
+    }
+  ]
+}

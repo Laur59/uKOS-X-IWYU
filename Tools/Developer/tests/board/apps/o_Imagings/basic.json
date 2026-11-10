@@ -1,0 +1,18 @@
+{
+  "app": "o_Imagings/basic",
+  "note": "Configures an Aptina MT9V03x camera and acquires an image when its semaphore is signalled and sends it. Without a camera, imager_configure() fails and the application prints 'img0 manager problem' at once (Asmodee_H747, no camera attached, 2026-11-09), so its row needs --have camera.",
+  "tests": [
+    {
+      "id": "o_Imagings/basic/configures-the-camera",
+      "requires": [
+        "hw:camera"
+      ],
+      "refute": [
+        "^img0 manager problem$"
+      ],
+      "timeout": 5,
+      "settle": 5,
+      "note": "checks only that the camera configures; what a good image looks like is not specified yet, because no bench board has the camera"
+    }
+  ]
+}

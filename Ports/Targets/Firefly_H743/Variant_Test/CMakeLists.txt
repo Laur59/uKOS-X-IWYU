@@ -232,7 +232,7 @@ set(UKOS_COMPONENTS rtcb_p kern_p kern_u libx_p libx_u proc_p proc_u tool_u ${TI
 add_MicroPython()
 add_LVGL(DISPLAY WKS43WV067_5_Inches)
 target_include_directories(proc_u PRIVATE ${LVGL_INCLUDE_DIRECTORIES})
-add_FatFs(STORAGE sdcard_flash)
+add_FatFs()
 
 # System configuration flags
 

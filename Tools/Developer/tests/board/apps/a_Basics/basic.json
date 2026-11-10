@@ -1,0 +1,19 @@
+{
+  "app": "a_Basics/basic",
+  "note": "Two processes print a counter, one up and one down, on KSYST, forever.",
+  "tests": [
+    {
+      "id": "a_Basics/basic/prints",
+      "expect": [
+        {
+          "re": "^output on the KSYST Serial Communication Manager \\(defined in the PROCESS macros\\) \\d+$",
+          "min": 5
+        },
+        {
+          "re": "^output on the KSYST Serial Communication Manager \\(defined in the PROCESS macros\\) -\\d+$",
+          "min": 5
+        }
+      ]
+    }
+  ]
+}

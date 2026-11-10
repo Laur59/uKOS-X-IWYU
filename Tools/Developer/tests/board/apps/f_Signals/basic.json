@@ -1,0 +1,13 @@
+{
+  "app": "f_Signals/basic",
+  "note": "Processes exchange signals and print the events they receive, forever.",
+  "tests": [
+    {
+      "id": "f_Signals/basic/signals",
+      "expect": [
+        "^P2 - Events 00000001X$",
+        "^P3 - Events 00001000$"
+      ]
+    }
+  ]
+}

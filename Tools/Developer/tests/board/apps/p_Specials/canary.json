@@ -1,0 +1,14 @@
+{
+  "app": "p_Specials/canary",
+  "note": "Overflows a stack buffer on purpose: the canary catches it, prints 'Stack smashing!' and stops the system. The text goes out through cmns_send(), so on Firefly_H757 it arrives on the CM4's console, as a core dump does. The console is gone until the next reset.",
+  "tests": [
+    {
+      "id": "p_Specials/canary/stops-the-system",
+      "dump": [
+        "^Stack smashing!$",
+        "^Panic: system stopped!$"
+      ],
+      "console": false
+    }
+  ]
+}

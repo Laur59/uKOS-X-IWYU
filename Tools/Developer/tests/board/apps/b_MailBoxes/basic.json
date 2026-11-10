@@ -1,0 +1,14 @@
+{
+  "app": "b_MailBoxes/basic",
+  "note": "Three processes send their quotes to a mailbox; the receiver prints each message with its size and address.",
+  "tests": [
+    {
+      "id": "b_MailBoxes/basic/messages",
+      "expect": [
+        "^Message size = 83; 0x[0-9A-F]+ message -> P1: The old dreams were good dreams\\.",
+        "^Message size = 48; 0x[0-9A-F]+ message -> P2: The quick brown fox jumps over the lazy dog\\.$",
+        "^Message size = 72; 0x[0-9A-F]+ message -> P3: I didn't know he was dead"
+      ]
+    }
+  ]
+}

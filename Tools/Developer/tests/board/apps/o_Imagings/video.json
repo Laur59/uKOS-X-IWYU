@@ -1,0 +1,20 @@
+{
+  "app": "o_Imagings/video",
+  "note": "Streams camera frames and prints the image size and the frame rate (%5.2f) per frame, from a process that needs KKERN_SZ_STACK_LL under newlib: with KKERN_SZ_STACK_MM it panicked with 'process stack underflow detected!' before its first line on Asmodee_H747 (A/B, 2026-11-09). The first rate is low (the camera starting); the row asks for later ones above 1 fps. It cannot run on the bench Discovery_U5G9, which has no SRAM6 for application data.",
+  "tests": [
+    {
+      "id": "o_Imagings/video/streams",
+      "expect": [
+        {
+          "re": "^Image size: \\d+ x \\d+, Frame rate = +\\d+\\.\\d\\d-fps$",
+          "min": 20
+        },
+        {
+          "re": "^Image size: \\d+ x \\d+, Frame rate = +[1-9]\\d*\\.\\d\\d-fps$",
+          "min": 10
+        }
+      ],
+      "timeout": 20
+    }
+  ]
+}

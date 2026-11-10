@@ -1,0 +1,21 @@
+{
+  "app": "l_MLPs/gan",
+  "note": "A GAN drawing on the LCD through LVGL; it prints nothing, so the row checks that its processes run. Seeing the picture takes the panel itself (the user saw it on 2026-11-09). The image is 118k hex lines: about 3 minutes of download.",
+  "tests": [
+    {
+      "id": "l_MLPs/gan/runs",
+      "timeout": 5,
+      "settle": 5,
+      "after": [
+        {
+          "send": "process",
+          "expect": [
+            "Process lvgl\\.",
+            "Process lvgl_tick\\.",
+            "Process gan\\."
+          ]
+        }
+      ]
+    }
+  ]
+}

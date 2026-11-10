@@ -1,0 +1,16 @@
+{
+  "app": "l_MLPs/cluster_Py",
+  "note": "Assigns random points to five clusters and prints the probabilities, forever. Runs MicroPython in the console's context, so the console never answers again.",
+  "tests": [
+    {
+      "id": "l_MLPs/cluster_Py/clusters",
+      "expect": [
+        {
+          "re": "^In-0 +-?\\d\\.\\d{3}, In-1 +-?\\d\\.\\d{3}, result: Out-0 +\\d+\\.\\d%, Out-1 +\\d+\\.\\d%, Out-2 +\\d+\\.\\d%, Out-3 +\\d+\\.\\d%, Out-4 +\\d+\\.\\d%",
+          "min": 5
+        }
+      ],
+      "console": false
+    }
+  ]
+}

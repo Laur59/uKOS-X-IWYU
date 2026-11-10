@@ -1,0 +1,750 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2026 Laurent von Allmen
+
+"""Build, download and check the downloadable applications of one board.
+
+It flashes the board's system image as board-matrix does (one configuration:
+a compiler, a C library and a mode), then takes every application that
+Applications/uKOS_Appls_Downloadable/apps.yaml lists for the board, builds it
+against that image, resets the board, streams the .hex through `hexloader` and
+checks what the application prints against its spec,
+apps/<group>/<app>.json.
+
+Every application gets a reset first: hexloader keeps the user memory reserved
+once it has started an application, because the processes it created may still
+run from there, so a second download would be refused until a reset. An
+application is also linked against the variant's Artefacts/FLASH.elf and
+carries its signature, so it is built after the flash, against the image that
+is on the board; a mismatch shows as "failed to find the application
+signature!".
+
+A spec holds one or more rows, each one download:
+
+  id        "<group>/<app>/<what>"
+  args      arguments after `hexloader`, handed on to the application
+  expect    patterns that must all appear in the console output, within
+            timeout; {"re": pattern, "min": n} must match at least n times
+            (never write that as a (?s)(...){n} pattern: it backtracks
+            exponentially over a long output)
+  refute    patterns that must not appear, from the download to the end
+  timeout   seconds for the expect patterns (default 15)
+  settle    seconds to keep watching once they all matched (default 2)
+  input     steps after the download: {"write": text}, {"await": re, "timeout":
+            s}, {"sleep": s}, or {"jlink": [commands]}, run through a J-Link
+            core other than the application's (a J-Link board only); a
+            write with "on": "dump" goes to the session of the dump console,
+            the wire of urt0 where the console runs elsewhere (Asmodee_H747)
+  dump      patterns of a core dump or panic the application causes on
+            purpose, matched against the console and the dump console (a
+            panic goes out through cmns_send(), on the Firefly_H757 the CM4's
+            wire); any other core dump is a crash
+  console   false when the application keeps or kills the console, so nothing
+            is asked of it afterwards (default true: `dumplog` must show no
+            record above Info but those matching a "log_allow" pattern, and
+            every "log_expect" pattern)
+  after     console commands once the window is over, each {"send": cmd,
+            "expect": [re], "refute": [re]} (`process` listing the
+            application's processes is how a silent one shows it runs)
+  requires  "hw:<tag>" (needs --have <tag>) and "unsafe" (needs
+            --allow-unsafe), as in the CLI specs
+  boards    the boards the row applies to (default: all that build the app)
+  except    boards the row does not apply to
+
+Patterns are multiline Python regexes over the output with line endings
+normalised to \\n, as in the CLI specs. Known failures are listed in
+APP-KNOWN-FAILURES, in the format of KNOWN-FAILURES; a listed row that passes
+fails the run.
+
+--record DIR runs the applications without a spec too (or all of them with
+--record-all) and keeps their output for --record-time seconds in DIR, which is
+how a spec is written: from what the application really prints.
+
+Exit codes: 0 every row passed or is known, 1 setup error or refusal,
+3 at least one row failed.
+"""
+
+import argparse
+import importlib.machinery
+import importlib.util
+import json
+import os
+import re
+import shutil
+import socket
+import subprocess
+import sys
+import tempfile
+import time
+
+sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
+
+from ukos_board import (KHERE, KJLINK, KROOT, Refusal,  # noqa: E402
+                        elf_revision, find_programmer, have_tags, jlink_run,
+                        log_mark, log_since, rundir, send_json, serial)
+
+KAPPS_DIR  = os.path.join(KROOT, "Applications", "uKOS_Appls_Downloadable")
+KAPPS_YAML = os.path.join(KAPPS_DIR, "apps.yaml")
+KSPECS     = os.path.join(KHERE, "apps")
+KKNOWN     = os.path.join(KHERE, "APP-KNOWN-FAILURES")
+
+KTIMEOUT   = 15
+KSETTLE    = 2
+KLINE_WAIT = 0.001         # seconds between hex lines: the RX buffer is 128 bytes
+KLOADED    = re.compile(r"^Hex: download terminated\.$", re.M)
+KHEX_ERROR = re.compile(r"^Hex: (?!download terminated\.).*$", re.M)
+# A core dump, or a panic: both stop the system and go out through
+# cmns_send(), so on a J-Link board they may land on another core's console.
+KDUMP      = re.compile(r"^(System dead! Core DUMP!!|Panic: .*)$", re.M)
+# An application's first line follows the console's prompt on the same line
+# ("uKOS-X > Counter = 0"); dropped before matching, so patterns can say ^.
+KPROMPT    = re.compile(r"^uKOS-X > ", re.M)
+KLOG_BAD   = re.compile(r"^\s*\d+-us\s+(Fatal|Error|Warning) \w+", re.M)
+# Refused by the console once the download is over: the user memory was busy,
+# so every hex line came back as a command.
+KNOT_FOUND = re.compile(r"^Module not found or user memory busy", re.M)
+
+RED = GREEN = YELLOW = BOLD = DIM = NC = ""
+
+
+def colours(enable):
+    global RED, GREEN, YELLOW, BOLD, DIM, NC
+    if enable:
+        RED, GREEN, YELLOW = "\033[0;31m", "\033[0;32m", "\033[0;33m"
+        BOLD, DIM, NC = "\033[1m", "\033[2m", "\033[0m"
+
+
+def load_script(name, module):
+    """Import one of the sibling scripts, which have no .py suffix."""
+
+    loader = importlib.machinery.SourceFileLoader(
+        module, os.path.join(KHERE, name))
+    spec = importlib.util.spec_from_loader(module, loader)
+    loaded = importlib.util.module_from_spec(spec)
+    loader.exec_module(loaded)
+    return loaded
+
+
+matrix = load_script("board-matrix", "board_matrix")
+regression = load_script("board-regression", "board_regression")
+
+
+# The applications
+# ================
+
+def board_apps(board):
+    """["<group>/<app>", ...] that apps.yaml lists for `board`, in its order.
+
+    The file is three levels deep (group:, app:, - board) and nothing more, so
+    it is read without a YAML library; anything else in it is refused rather
+    than misread.
+    """
+
+    found, group, app = [], None, None
+    with open(KAPPS_YAML) as handle:
+        for number, line in enumerate(handle, 1):
+            text = line.split("#", 1)[0].rstrip()
+            if not text.strip():
+                continue
+            if re.match(r"^\S[^:]*:$", text):
+                group, app = text[:-1], None
+            elif re.match(r"^  \S[^:]*:$", text):
+                app = text.strip()[:-1]
+            elif re.match(r"^    - \S+$", text) and group and app:
+                if text.split("-", 1)[1].strip() == board:
+                    found.append("%s/%s" % (group, app))
+            else:
+                raise Refusal("%s:%d: unexpected line %r"
+                              % (KAPPS_YAML, number, line.rstrip()))
+    return found
+
+
+def app_variant(app_dir):
+    """The system variant an application is built for (set(VARIANT ...))."""
+
+    with open(os.path.join(app_dir, "CMakeLists.txt")) as handle:
+        found = re.search(r"^\s*set\(\s*VARIANT\s+(\S+?)\s*\)", handle.read(),
+                          re.M)
+    return found.group(1) if found else "Variant_Test"
+
+
+def load_spec(app, specs=KSPECS):
+    """The rows of an application's spec, or None when it has none."""
+
+    path = os.path.join(specs, app + ".json")
+    if not os.path.exists(path):
+        return None
+    with open(path) as handle:
+        try:
+            spec = json.load(handle)
+        except ValueError as exc:
+            raise Refusal("%s is not valid JSON: %s" % (path, exc))
+    if spec.get("app") != app:
+        raise Refusal("%s declares app %r, expected %r"
+                      % (path, spec.get("app"), app))
+    rows = spec.get("tests", [])
+    for row in rows:
+        if not row.get("id", "").startswith(app + "/"):
+            raise Refusal("%s: row id %r does not start with %s/"
+                          % (path, row.get("id"), app))
+        for key in ("expect", "refute", "dump", "log_allow", "log_expect"):
+            for pattern in row.get(key, []):
+                if isinstance(pattern, dict):
+                    pattern = pattern.get("re", "")
+                try:
+                    re.compile(pattern)
+                except re.error as exc:
+                    raise Refusal("%s: %s: bad %s pattern %r: %s"
+                                  % (path, row["id"], key, pattern, exc))
+    return rows
+
+
+def skip_reason(row, board, have, allow_unsafe):
+    if row.get("boards") and board not in row["boards"]:
+        return "not for %s" % board
+    if board in row.get("except", []):
+        return "not for %s" % board
+    for need in row.get("requires", []):
+        if need.startswith("hw:") and need[3:] not in have_tags(have):
+            return "%s not available (pass --have %s)" % (need, need[3:])
+        if need == "unsafe" and not allow_unsafe:
+            return "needs --allow-unsafe"
+    return None
+
+
+def build_app(app_dir, config, logs, tag):
+    """Configure and build an application; (hex path, problem or None)."""
+
+    compiler, lib, mode = config
+    user, canary = matrix.KMODE[mode]
+    build_dir = os.path.join(app_dir, "build")
+    shutil.rmtree(build_dir, ignore_errors=True)
+    log = os.path.join(logs, tag + "-configure.log")
+    if matrix.run_logged(["cmake", "--preset", compiler, "-B", build_dir,
+                          "-DC_LIBRARY=" + lib, "-DUSER_MODE=" + user,
+                          "-DCANARY=" + canary], log, cwd=app_dir) != 0:
+        return None, "configure failed (%s)" % log
+    log = os.path.join(logs, tag + "-build.log")
+    if matrix.run_logged(["cmake", "--build", build_dir], log) != 0:
+        return None, "build failed (%s)" % log
+    with open(log, errors="replace") as handle:
+        if re.search(r"\bwarning\b", handle.read(), re.I):
+            return None, "the build printed a warning (%s)" % log
+    hexes = [f for f in os.listdir(build_dir) if f.endswith(".hex")]
+    if len(hexes) != 1:
+        return None, "expected one .hex in %s, found %s" % (build_dir, hexes)
+    return os.path.join(build_dir, hexes[0]), None
+
+
+# The board
+# =========
+
+def request(name, req):
+    """One request to a ukos-serial session over its socket."""
+
+    sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    sock.connect(os.path.join(rundir(), name + ".sock"))
+    try:
+        sock.sendall(json.dumps(req).encode() + b"\n")
+        data = b""
+        while not data.endswith(b"\n"):
+            chunk = sock.recv(65536)
+            if not chunk:
+                break
+            data += chunk
+    finally:
+        sock.close()
+    return json.loads(data or b"{}")
+
+
+def download(name, hex_path, args):
+    """Start hexloader and stream the image; None or the problem. Lines go one
+    per write with a pause: faster overruns hexloader's 128-byte receive buffer
+    ("Hex: buffer full error")."""
+
+    mark = log_mark(name)
+    command = "hexloader" + (" " + args if args else "")
+    rc, _, err = serial(["send", command, "--no-expect", "--unsafe"], name)
+    if rc != 0:
+        return "cannot start hexloader: %s" % err.strip()
+    deadline = time.time() + 5
+    while "waiting for the code" not in log_since(name, mark):
+        if time.time() > deadline:
+            text = log_since(name, mark).strip()
+            return "hexloader did not start: %s" % (text[-200:] or "no answer")
+        time.sleep(0.05)
+    if "user memory is busy" in log_since(name, mark):
+        return "hexloader: the user memory is busy (no reset since the last " \
+               "application?)"
+    with open(hex_path) as handle:
+        for line in handle:
+            line = line.strip()
+            if line:
+                request(name, {"cmd": "raw", "data": line + "\r"})
+                time.sleep(KLINE_WAIT)
+    deadline = time.time() + 10
+    while time.time() < deadline:
+        text = log_since(name, mark)
+        if KLOADED.search(text):
+            return None
+        error = KHEX_ERROR.search(text)
+        if error:
+            return error.group(0)
+        time.sleep(0.1)
+    return "no 'Hex: download terminated.' after the last line"
+
+
+def reset(ctx, console):
+    """Reset the board and wait for the application console to boot again;
+    None or the problem.
+
+    A J-Link board is reset through a core other than the application's when
+    it has one: the J-Link attaches only to a core that works, and an
+    application that took its console leaves no way to start `bench` there.
+    SYSRESETREQ from either core restarts both.
+    """
+
+    mark = log_mark(console["name"])
+    if matrix.KFLASH[ctx["board"]] == "jlink":
+        other = [c for c in ctx["consoles"] if c is not console] or [console]
+        ran, output = jlink_run(other[0]["sn"], ["r", "g"], other[0]["name"])
+        if not ran:
+            return "J-Link reset failed: %s" % output.strip().splitlines()[-1:]
+    else:
+        cli = find_programmer()
+        if cli is None:
+            return "STM32_Programmer_CLI not found"
+        subprocess.run([cli, "-c", "port=SWD", "sn=" + console["sn"],
+                        "mode=UR", "-rst"], capture_output=True, text=True)
+    if not matrix.wait_boot(console["name"], mark):
+        return "the board did not boot after the reset"
+    return None
+
+
+# One row
+# =======
+
+def output(name, mark):
+    """What a console printed since `mark`, without the prompts."""
+
+    return KPROMPT.sub("", log_since(name, mark))
+
+
+def expectation(item):
+    """(compiled pattern, least count) of one expect entry."""
+
+    if isinstance(item, dict):
+        return re.compile(item["re"], re.M), item.get("min", 1)
+    return re.compile(item, re.M), 1
+
+
+def satisfied(entry, text):
+    pattern, least = entry
+    if least == 1:
+        return pattern.search(text) is not None
+    return len(pattern.findall(text)) >= least
+
+
+def watch(row, ctx, console, dump_name, mark, dump_mark):
+    """Wait for the expect patterns, then settle; the failures."""
+
+    waiting = [expectation(e) for e in row.get("expect", [])]
+    deadline = time.time() + row.get("timeout", KTIMEOUT)
+    steps = list(row.get("input", []))
+    failures = []
+    while steps:
+        step = steps.pop(0)
+        if "write" in step:
+            target = console["name"]
+            if step.get("on") == "dump":
+                target = console.get("dump") or console["name"]
+            request(target, {"cmd": "raw", "data": step["write"]})
+        elif "await" in step:
+            end = time.time() + step.get("timeout", 10)
+            while not re.search(step["await"], output(console["name"], mark),
+                                re.M):
+                if time.time() > end:
+                    failures.append("input: await %s not seen within %ss"
+                                    % (step["await"], step.get("timeout", 10)))
+                    steps = []
+                    break
+                time.sleep(0.2)
+        elif "sleep" in step:
+            time.sleep(step["sleep"])
+        elif "jlink" in step:
+            other = [c for c in ctx["consoles"] if c is not console]
+            if matrix.KFLASH[ctx["board"]] != "jlink" or not other:
+                failures.append("input: a jlink step needs a J-Link board "
+                                "with another core")
+                break
+            # Keep that core busy before the first attach: a core in WFI
+            # refuses the J-Link, and where the probe's reset line is wired
+            # (Asmodee_H747) the J-Link then connects under reset, which
+            # reboots the board under the application.
+            request(other[0]["name"], {"cmd": "raw", "data": "bench\r"})
+            time.sleep(1.0)
+            ran, _ = jlink_run(other[0]["sn"], step["jlink"],
+                               other[0]["name"])
+            if not ran:
+                failures.append("input: jlink %s failed" % step["jlink"])
+                break
+    while waiting and time.time() < deadline:
+        text = output(console["name"], mark)
+        waiting = [e for e in waiting if not satisfied(e, text)]
+        if waiting:
+            time.sleep(0.5)
+    text = output(console["name"], mark)
+    for pattern, least in waiting:
+        failures.append("expect %s  %s within %ss" % (
+            pattern.pattern, "not seen" if least == 1 else "%d of %d times"
+            % (len(pattern.findall(text)), least),
+            row.get("timeout", KTIMEOUT)))
+    time.sleep(row.get("settle", KSETTLE))
+
+    text = output(console["name"], mark)
+    dump_text = output(dump_name, dump_mark) if dump_name else ""
+    for pattern in row.get("refute", []):
+        found = re.search(pattern, text, re.M)
+        if found:
+            failures.append("refute %s  matched %r" % (pattern, found.group(0)))
+    return failures, text, dump_text
+
+
+def run_row(row, app, ctx, hex_path):
+    """Download and check one row; its result dict."""
+
+    console = ctx["by_variant"][row["variant"]]
+    dump_name = console.get("dump") or console["name"]
+    res = {"id": row["id"], "result": "pass", "failures": []}
+
+    problem = reset(ctx, console)
+    if problem:
+        res.update(result="hang", failures=["reset: " + problem])
+        return res
+    mark = log_mark(console["name"])
+    dump_mark = log_mark(dump_name)
+    problem = download(console["name"], hex_path, row.get("args", ""))
+    if problem:
+        res.update(result="fail", failures=["download: " + problem],
+                   text=log_since(console["name"], mark))
+        return res
+
+    failures, text, dump_text = watch(row, ctx, console, dump_name, mark,
+                                     dump_mark)
+    res["text"] = text
+    both = text + ("\n" + dump_text if dump_name != console["name"] else "")
+    dumped = KDUMP.search(both)
+    if row.get("dump"):
+        for pattern in row["dump"]:
+            if not re.search(pattern, both, re.M):
+                failures.append("dump %s  not seen" % pattern)
+    elif dumped:
+        res["result"] = "crash"
+        res["dump"] = both[dumped.start():][:1500]
+    if KNOT_FOUND.search(text):
+        failures.append("the console treated hex lines as commands")
+
+    if row.get("console", True) and not row.get("dump") and not dumped:
+        # The after steps first: they may be what gives the console back
+        # (rpn's quit).
+        for step in row.get("after", []):
+            rc, rep_after = send_json(step["send"], console["name"],
+                                      step.get("timeout", 15),
+                                      expect=step.get("expect"),
+                                      refute=step.get("refute"))
+            for failure in rep_after.get("failures", []):
+                failures.append("after %s: %s %s" % (
+                    step["send"], failure.get("kind"),
+                    failure.get("pattern")))
+            if rc not in (0, 3):
+                failures.append("after %s: rc %d %s" % (
+                    step["send"], rc, rep_after.get("error", "")))
+        rc, rep = send_json("dumplog", console["name"], 15)
+        if rc == 2:
+            res["result"] = "hang"
+            failures.append("the console no longer answers (pass "
+                            "\"console\": false if that is by design)")
+        else:
+            log = rep.get("text", "")
+            res["log"] = log
+            allowed = [re.compile(p) for p in row.get("log_allow", [])]
+            bad = [line.strip() for line in log.splitlines()
+                   if KLOG_BAD.match(line)
+                   and not any(p.search(line) for p in allowed)]
+            if bad:
+                failures.append("dumplog has records above Info: %s"
+                                % "; ".join(re.sub(r"\s+", " ", b)[:120]
+                                            for b in bad[:3]))
+            for pattern in row.get("log_expect", []):
+                if not re.search(pattern, log, re.M):
+                    failures.append("log_expect %s  not in dumplog" % pattern)
+    if failures and res["result"] == "pass":
+        res["result"] = "fail"
+    res["failures"] = failures
+    with open(os.path.join(ctx["logs"], row["id"].replace("/", "__") + ".txt"),
+              "w") as handle:
+        handle.write(text)
+        if dump_name != console["name"]:
+            handle.write("\n===== %s =====\n%s" % (dump_name, dump_text))
+        if res.get("log"):
+            handle.write("\n===== dumplog =====\n%s" % res["log"])
+    return res
+
+
+def record(app, ctx, hex_path, seconds, directory):
+    """Download an application and keep what it prints for `seconds`."""
+
+    variant = app_variant(os.path.join(KAPPS_DIR, app, ctx["board"]))
+    console = ctx["by_variant"][variant]
+    dump_name = console.get("dump") or console["name"]
+    problem = reset(ctx, console)
+    if problem:
+        return problem
+    mark, dump_mark = log_mark(console["name"]), log_mark(dump_name)
+    problem = download(console["name"], hex_path, "")
+    time.sleep(seconds)
+    path = os.path.join(directory, app.replace("/", "__") + ".txt")
+    with open(path, "w") as handle:
+        handle.write(log_since(console["name"], mark))
+        if dump_name != console["name"]:
+            handle.write("\n===== %s =====\n" % dump_name)
+            handle.write(log_since(dump_name, dump_mark))
+        if not problem:
+            rc, rep = send_json("dumplog", console["name"], 15)
+            handle.write("\n===== dumplog (rc %d) =====\n%s"
+                         % (rc, rep.get("text", "")))
+    return problem
+
+
+# Main
+# ====
+
+def report_row(res, verbose):
+    colour = {"pass": GREEN, "skip": DIM, "gap": YELLOW}.get(res["result"], RED)
+    verdict = res.get("verdict")
+    if verdict == "known":
+        colour = YELLOW
+    tail = ""
+    if verdict == "known":
+        tail = "   %sknown: %s%s" % (DIM, res.get("reference") or "-", NC)
+    elif verdict == "fixed":
+        tail = "   %slisted in APP-KNOWN-FAILURES: remove the line%s" % (RED, NC)
+    print("  %s%-5s%s %s%s%s" % (colour, res["result"].upper(), NC, res["id"],
+                                 "  (%s)" % res["why"] if res.get("why") else "",
+                                 tail))
+    for failure in res.get("failures", []):
+        print("        %s" % failure)
+    if res.get("dump"):
+        print("        %s" % res["dump"].strip().replace("\n", "\n        "))
+    if res.get("text") and (verbose or (res["result"] not in ("pass", "skip")
+                                        and verdict != "known")):
+        lines = res["text"].strip().splitlines()
+        for line in lines[-12:]:
+            print("        %s| %s%s" % (DIM, line, NC))
+
+
+def main():
+    ap = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--board", required=True,
+                    help="board name: %s" % ", ".join(sorted(matrix.KFLASH)))
+    ap.add_argument("--apps", help="comma-separated <group>/<app> or <group> "
+                    "(default: every application apps.yaml lists for the board)")
+    ap.add_argument("--compiler", default="llvm", choices=matrix.KCOMPILERS)
+    ap.add_argument("--lib", default="newlib", choices=matrix.KLIBS)
+    ap.add_argument("--mode", default="default", choices=matrix.KMODES)
+    ap.add_argument("--no-flash", action="store_true",
+                    help="use the image on the board: it must be HEAD and the "
+                    "one in the variant's Artefacts/")
+    ap.add_argument("--have", action="append", default=[], metavar="TAG",
+                    help="hardware present for rows requiring hw:TAG")
+    ap.add_argument("--allow-unsafe", action="store_true",
+                    help="run rows that change persistent state (format a "
+                    "card, write the flash)")
+    ap.add_argument("--record", metavar="DIR",
+                    help="also run the applications without a spec and keep "
+                    "their output in DIR")
+    ap.add_argument("--record-all", action="store_true",
+                    help="with --record: record every application, spec or not")
+    ap.add_argument("--record-time", type=int, default=20, metavar="S",
+                    help="seconds of output to record (default %(default)s)")
+    ap.add_argument("--specs", default=KSPECS, metavar="DIR",
+                    help="spec directory (default: %(default)s)")
+    ap.add_argument("--known", default=KKNOWN, metavar="FILE",
+                    help="known failures (default: %(default)s)")
+    ap.add_argument("--logs", help="directory for the build logs (default: a "
+                    "new temporary one)")
+    ap.add_argument("-v", "--verbose", action="store_true",
+                    help="show the output of passing rows too")
+    ap.add_argument("-n", "--dry-run", action="store_true",
+                    help="list what would run, touch nothing")
+    args = ap.parse_args()
+    colours(sys.stdout.isatty())
+
+    if args.board not in matrix.KFLASH:
+        raise Refusal("%s cannot be flashed by this tool yet (supported: %s)"
+                      % (args.board, ", ".join(sorted(matrix.KFLASH))))
+    if args.lib == "llvmlibc" and args.compiler != "llvm":
+        raise Refusal("llvmlibc needs --compiler llvm")
+    config = (args.compiler, args.lib, args.mode)
+
+    apps = board_apps(args.board)
+    if args.apps:
+        wanted = [a.strip().strip("/") for a in args.apps.split(",") if a.strip()]
+        unknown = [w for w in wanted
+                   if not any(a == w or a.startswith(w + "/") for a in apps)]
+        if unknown:
+            raise Refusal("not listed for %s in apps.yaml: %s"
+                          % (args.board, ", ".join(unknown)))
+        apps = [a for a in apps
+                if any(a == w or a.startswith(w + "/") for w in wanted)]
+
+    # The rows, or why an application has none
+    plan = []
+    for app in apps:
+        app_dir = os.path.join(KAPPS_DIR, app, args.board)
+        if not os.path.isdir(app_dir):
+            raise Refusal("apps.yaml lists %s for %s, but %s does not exist"
+                          % (app, args.board, app_dir))
+        rows = load_spec(app, args.specs)
+        variant = app_variant(app_dir)
+        for row in rows or []:
+            row["variant"] = variant
+        plan.append((app, app_dir, rows))
+
+    head = matrix.git("rev-parse", "--short", "HEAD")
+    known = regression.load_known(args.known, args.board)
+    print("%sboard%s      %s" % (BOLD, NC, args.board))
+    print("%scommit%s     %s" % (BOLD, NC, head))
+    print("%sconfig%s     %s" % (BOLD, NC, matrix.label(config)))
+    print("%sapps%s       %d, %d with a spec" % (
+        BOLD, NC, len(plan), sum(1 for _, _, r in plan if r is not None)))
+    if args.dry_run:
+        for app, _, rows in plan:
+            if rows is None:
+                print("  %sGAP%s   %s  (no spec)" % (YELLOW, NC, app))
+            for row in rows or []:
+                why = skip_reason(row, args.board, args.have, args.allow_unsafe)
+                print("  %s %s%s" % ("SKIP " if why else "run  ", row["id"],
+                                     "  (%s)" % why if why else ""))
+        print("\ndry run: nothing was built, flashed or downloaded")
+        return 0
+
+    consoles = (matrix.find_jlink_board if matrix.KFLASH[args.board] == "jlink"
+                else matrix.find_stlink_board)(args.board)
+    logs = args.logs or tempfile.mkdtemp(prefix="app-regression-")
+    os.makedirs(logs, exist_ok=True)
+    if args.record:
+        os.makedirs(args.record, exist_ok=True)
+    ctx = {"board": args.board, "consoles": consoles, "soc": None,
+           "logs": logs, "head": head, "flashed": None,
+           "by_variant": {os.path.basename(c["variant"]): c for c in consoles}}
+    for console in consoles:
+        print("%sconsole%s    %s  session %s" % (BOLD, NC, console["port"],
+                                                 console["name"]))
+    print("%slogs%s       %s\n" % (BOLD, NC, logs))
+
+    results = []
+    try:
+        if args.no_flash:
+            for console in consoles:
+                rc, rep = send_json("uKOS", console["name"], 10)
+                vcs = re.search(r"^VCS#:\s+(\S+)", rep.get("text", ""), re.M)
+                vcs = vcs.group(1) if vcs else "?"
+                built = elf_revision(console["variant"])
+                if vcs != head or built != vcs:
+                    raise Refusal("%s runs %s, Artefacts/ holds %s and HEAD is "
+                                  "%s: flash first (drop --no-flash)"
+                                  % (os.path.basename(console["variant"]), vcs,
+                                     built, head))
+        else:
+            print("flashing %s ... " % matrix.label(config), end="", flush=True)
+            problem = matrix.build_and_flash(config, ctx, "system")
+            if problem:
+                print("%sFAILED%s: %s" % (RED, NC, problem))
+                return 1
+            print("%sdone%s" % (GREEN, NC))
+
+        for app, app_dir, rows in plan:
+            todo = [r for r in rows or []
+                    if not skip_reason(r, args.board, args.have,
+                                       args.allow_unsafe)]
+            for row in rows or []:
+                why = skip_reason(row, args.board, args.have, args.allow_unsafe)
+                if why:
+                    res = {"id": row["id"], "result": "skip", "why": why}
+                    results.append(res)
+                    report_row(res, args.verbose)
+            wants_record = args.record and (rows is None or args.record_all)
+            if not todo and not wants_record:
+                if rows is None:
+                    res = {"id": app, "result": "gap", "why": "no spec"}
+                    results.append(res)
+                    report_row(res, args.verbose)
+                continue
+
+            hex_path, problem = build_app(app_dir, config, logs,
+                                          app.replace("/", "__"))
+            if problem:
+                for row in todo or [{"id": app}]:
+                    res = {"id": row["id"], "result": "fail",
+                           "failures": ["build: " + problem]}
+                    results.append(res)
+                    report_row(res, args.verbose)
+                continue
+            if wants_record:
+                problem = record(app, ctx, hex_path, args.record_time,
+                                 args.record)
+                print("  %sREC%s   %s%s" % (DIM, NC, app,
+                                            "  (%s)" % problem if problem
+                                            else ""))
+                if rows is None:
+                    results.append({"id": app, "result": "gap",
+                                    "why": "no spec, recorded"})
+            for row in todo:
+                started = time.time()
+                res = run_row(row, app, ctx, hex_path)
+                regression.judge([res], known)
+                res["seconds"] = time.time() - started
+                results.append(res)
+                report_row(res, args.verbose)
+    except KeyboardInterrupt:
+        print("\n%sinterrupted%s" % (YELLOW, NC))
+    finally:
+        # Leave no application running: the next user expects a free user
+        # memory and a console of its own.
+        if ctx["flashed"] or args.no_flash:
+            for console in consoles[:1]:
+                target = ctx["by_variant"].get(
+                    os.path.basename(console["variant"]), console)
+                reset(ctx, target)
+        for console in consoles:
+            if console["started"]:
+                serial(["stop"], console["name"])
+            if console.get("dump_started"):
+                serial(["stop"], console["dump"])
+
+    count = {}
+    for res in results:
+        key = res.get("verdict") if res.get("verdict") == "known" \
+            else res["result"]
+        count[key] = count.get(key, 0) + 1
+    bad = [r for r in results
+           if r["result"] in ("fail", "crash", "hang")
+           and r.get("verdict") != "known" or r.get("verdict") == "fixed"]
+    print("\n%s%s%s" % (BOLD, ", ".join("%d %s" % (n, k) for k, n in
+                                          sorted(count.items())), NC))
+    print("%s%s%s" % (RED if bad else GREEN,
+                      "FAIL (%d)" % len(bad) if bad else "PASS", NC))
+    print("logs in %s" % logs)
+    return 3 if bad else 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except Refusal as error:
+        sys.stderr.write("app-regression: %s\n" % error)
+        sys.exit(1)

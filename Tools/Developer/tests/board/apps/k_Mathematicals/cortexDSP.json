@@ -1,0 +1,13 @@
+{
+  "app": "k_Mathematicals/cortexDSP",
+  "note": "CMSIS-DSP style row and column sums of a fixed matrix; the values are exact.",
+  "tests": [
+    {
+      "id": "k_Mathematicals/cortexDSP/computes",
+      "expect": [
+        "(?s)^Rows$\\n+^Result = 127$\\n+^45$\\n^55$\\n^65$",
+        "(?s)^Cols$\\n+^46$\\n^55$\\n^65$"
+      ]
+    }
+  ]
+}

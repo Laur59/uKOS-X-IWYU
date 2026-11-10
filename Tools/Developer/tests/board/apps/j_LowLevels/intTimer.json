@@ -1,0 +1,19 @@
+{
+  "app": "j_LowLevels/intTimer",
+  "note": "A hardware timer interrupt counts; the count is printed in steps of 100, forever. Built with ALLOW_HARDWARE_ACCESS_S, so it logs 'Direct hardware access permitted' on purpose.",
+  "tests": [
+    {
+      "id": "j_LowLevels/intTimer/counts",
+      "expect": [
+        "(?s)^Timer = 100$\\n^Timer = 200$\\n^Timer = 300$",
+        {
+          "re": "^Timer = \\d+00$",
+          "min": 10
+        }
+      ],
+      "log_allow": [
+        "Direct hardware access permitted"
+      ]
+    }
+  ]
+}

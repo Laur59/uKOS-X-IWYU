@@ -1,0 +1,15 @@
+{
+  "app": "d_Mutexes/basic",
+  "note": "Processes update shared fields under a mutex and print them, forever.",
+  "tests": [
+    {
+      "id": "d_Mutexes/basic/prints",
+      "expect": [
+        {
+          "re": "^-?\\d+ --> Process \\d, Field +\\d+, Counter \\d+$",
+          "min": 30
+        }
+      ]
+    }
+  ]
+}

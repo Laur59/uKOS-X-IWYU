@@ -1,0 +1,17 @@
+{
+  "app": "a_Basics/plotSin",
+  "note": "Kills the console on purpose, waits 10 s, then prints a noisy sine in the Arduino format (x, tab, y), forever: y is 80 times a sine of amplitude 5 plus a noise of 1, so values look random near x = 0.",
+  "tests": [
+    {
+      "id": "a_Basics/plotSin/plots",
+      "expect": [
+        {
+          "re": "^\\d+\\t *-?\\d+\\.\\d\\d$",
+          "min": 30
+        }
+      ],
+      "timeout": 30,
+      "console": false
+    }
+  ]
+}

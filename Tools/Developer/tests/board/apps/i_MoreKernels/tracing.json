@@ -1,0 +1,19 @@
+{
+  "app": "i_MoreKernels/tracing",
+  "note": "Counts down 20 s and then crashes on purpose with a HardFault, whose core dump is the point of the demo. The console is gone afterwards; the next reset brings the board back.",
+  "tests": [
+    {
+      "id": "i_MoreKernels/tracing/crashes-with-a-dump",
+      "expect": [
+        "^The machine will crash in 20 seconds!!$",
+        "^The machine will crash in 1 seconds!!$"
+      ],
+      "dump": [
+        "^System dead! Core DUMP!!",
+        "^Exception: +HardFault$"
+      ],
+      "timeout": 35,
+      "console": false
+    }
+  ]
+}

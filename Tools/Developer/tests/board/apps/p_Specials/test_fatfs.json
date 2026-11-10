@@ -1,0 +1,84 @@
+{
+  "app": "p_Specials/test_fatfs",
+  "note": "Formats every drive the board selects (WITH_<drive>_S, chosen at compile time from the board macro, not detected), then mounts each, makes three folders and writes one file in each, reads the files back, prints them and lists every drive twice. Each drive has its own three quotes: F1-F3 on /sdcard, F4-F6 on /sdnand, F7-F9 on /flash. A failing FatFs call prints '<call> erreur <n>' and spins, so the run stops there. File dates read 29-02-2024 because the RTC is not set after a reset. The process exits at the end and the console stays.",
+  "tests": [
+    {
+      "id": "p_Specials/test_fatfs/three-drives",
+      "boards": [
+        "Firefly_H757"
+      ],
+      "expect": [
+        {
+          "re": "^f_mkfs passed$",
+          "min": 3
+        },
+        {
+          "re": "^f_mount passed$",
+          "min": 3
+        },
+        "^F1: The old dreams were good dreams\\.",
+        "^F2: The quick brown fox",
+        "^F3: I didn't know he was dead",
+        "^F4: Life is what happens",
+        "^F5: Pack my box",
+        "^F6: I am not afraid of death",
+        "^F7: The best time to code",
+        "^F8: Measure twice",
+        "^F9: When in doubt",
+        "(?s)^Directory /sdcard/$\\n(^   <DIR>   \\w+$\\n){3}^3 dirs, 0 files\\.$",
+        "(?s)^Directory /sdnand/$\\n(^   <DIR>   \\w+$\\n){3}^3 dirs, 0 files\\.$",
+        "(?s)^Directory /flash/$\\n(^   <DIR>   \\w+$\\n){3}^3 dirs, 0 files\\.$",
+        {
+          "re": "^\\d\\d-\\d\\d-\\d{4} +\\d\\d:\\d\\d:\\d\\d +TEST_\\d\\.TXT$",
+          "min": 9
+        }
+      ],
+      "refute": [
+        "erreur",
+        "^Failed to open"
+      ],
+      "timeout": 180,
+      "requires": [
+        "unsafe",
+        "hw:sdcard-scratch"
+      ],
+      "note": "FORMATS the SD card in the slot, the on-board sdnand and the flash drive: pass --have sdcard-scratch only with a card whose contents you do not need. Passed by hand on 2026-11-09 (91b6dd839, llvm + newlib)"
+    },
+    {
+      "id": "p_Specials/test_fatfs/sdcard-and-flash",
+      "boards": [
+        "Alastor_H743",
+        "Firefly_H743"
+      ],
+      "expect": [
+        {
+          "re": "^f_mkfs passed$",
+          "min": 2
+        },
+        {
+          "re": "^f_mount passed$",
+          "min": 2
+        },
+        "^F1: The old dreams were good dreams\\.",
+        "^F2: The quick brown fox",
+        "^F3: I didn't know he was dead",
+        "^F7: The best time to code",
+        "^F8: Measure twice",
+        "^F9: When in doubt",
+        "(?s)^Directory /sdcard/$\\n(^   <DIR>   \\w+$\\n){3}^3 dirs, 0 files\\.$",
+        "(?s)^Directory /flash/$\\n(^   <DIR>   \\w+$\\n){3}^3 dirs, 0 files\\.$"
+      ],
+      "refute": [
+        "erreur",
+        "^Failed to open",
+        "/sdnand"
+      ],
+      "timeout": 180,
+      "requires": [
+        "unsafe",
+        "hw:sdcard-scratch"
+      ],
+      "note": "FORMATS the SD card in the slot and the flash drive; these boards have no sdnand. Not yet run on either board with this runner"
+    }
+  ]
+}

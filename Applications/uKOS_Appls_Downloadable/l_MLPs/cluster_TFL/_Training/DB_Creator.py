@@ -1,98 +1,143 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-#
-# Goal:		Generate 2 database files (for learning and for validation).
-# 			Display the 2 dataset
-#
-#			The databases:
-#			Class 1:  x < -0.1 and y >  0.1
-#			Class 2:  x >  0.1 and y >  0.1
-#			Class 3:  x < -0.1 and y < -0.1
-#			Class 4:  ((-0.1 < x < 0.1) or (-0.1 < y < 0.1))
-#
-#			Necessary packages:
-#			python3 -m pip install numpy pyserial matplotlib
-#
-#			python3 DB_Creator.py
 
-# Necessary packages
+"""Generate the learning and validation datasets for the cluster TensorFlow Lite classifier.
 
-import	numpy as np
-import	matplotlib.pyplot as plt
+Two files are written, ``DB_L_file.txt`` (learning) and ``DB_V_file.txt``
+(validation), and both datasets are plotted side by side.
 
-KNB_CLASSES				= 5								# Number of classes
-KNB_SAMPLES				= 5000							# Number of samples
-KNB_SAMPLES_PER_CLASS	= (KNB_SAMPLES // KNB_CLASSES)	# Number of samples per classe
-KABS_MAX_FUNCTION		= 1								# Max of the function
-KABS_MAX_OUTPUT			= 0.98							# Abs max of the expected output
-KGOOD					= KABS_MAX_OUTPUT				# Max value for "good" answers
-KBAD					= 0.00							# Max value for "bad" answers
+Points (x, y) are drawn uniformly in [-KABS_MAX_FUNCTION, +KABS_MAX_FUNCTION]²
+and assigned to one of five classes:
 
-# Return an x-Y random value
-# --------------------------
+* C1, top-left:     x < -KBAND and y > +KBAND
+* C2, top-right:    x > +KBAND and y > +KBAND
+* C3, bottom-left:  x < -KBAND and y < -KBAND
+* C4, bottom-right: x > +KBAND and y < -KBAND
+* C5, cross:        |x| < KBAND or |y| < KBAND (the band between the quadrants)
 
-def generate_randomValues():
-	return ((np.random.rand(2) - 0.5) * 2 * KABS_MAX_FUNCTION)
+Each class receives KNB_SAMPLES_PER_CLASS points. A drawn point whose class
+is already full is discarded, so the classes are interleaved in the files.
 
-# Generate the data set
-# ---------------------
+Each line of the output files is tab-separated: ``x  y  t1 .. t5``, where
+t1..t5 is the one-hot target (KGOOD for the active class, KBAD otherwise).
 
-def generate_dataSet(fd, ax, isLearning = True):
-	class_counts = [0] * 5
-	markers = ['ro', 'go', 'bo', 'yo', 'm.'] if isLearning else ['r+', 'g+', 'b+', 'y+', 'm+']
-	ax.set_title("Learning" if isLearning else "Validation")
-	ax.set_aspect("equal")
-	ax.grid(True)
+Requirements:
+    python3 -m pip install numpy matplotlib
 
-	while any(count < KNB_SAMPLES_PER_CLASS for count in class_counts):
-		x, y = generate_randomValues()
-		scaled_x, scaled_y = x / KABS_MAX_FUNCTION, y / KABS_MAX_FUNCTION
-		output = [KBAD] * 5
-		marker = None
+Usage:
+    python3 DB_Creator.py
+"""
 
-		if x < -0.1 and y > 0.1 and class_counts[0] < KNB_SAMPLES_PER_CLASS:
-			output[0] = KGOOD
-			class_counts[0] += 1
-			marker = markers[0]
-		elif x > 0.1 and y > 0.1 and class_counts[1] < KNB_SAMPLES_PER_CLASS:
-			output[1] = KGOOD
-			class_counts[1] += 1
-			marker = markers[1]
-		elif x < -0.1 and y < -0.1 and class_counts[2] < KNB_SAMPLES_PER_CLASS:
-			output[2] = KGOOD
-			class_counts[2] += 1
-			marker = markers[2]
-		elif x > 0.1 and y < -0.1 and class_counts[3] < KNB_SAMPLES_PER_CLASS:
-			output[3] = KGOOD
-			class_counts[3] += 1
-			marker = markers[3]
-		elif ((-0.1 < x < 0.1) or (-0.1 < y < 0.1)) and class_counts[4] < KNB_SAMPLES_PER_CLASS:
-			output[4] = KGOOD
-			class_counts[4] += 1
-			marker = markers[4]
+from collections.abc import Sequence
+from typing import TextIO
 
-		if marker:
-			ax.plot(scaled_x, scaled_y, marker)
-			fd.write(f"{scaled_x:.6f}\t{scaled_y:.6f}\t" + "\t".join(f"{v:.2f}" for v in output) + "\n")
+import matplotlib.pyplot as plt
+import numpy as np
+from matplotlib.axes import Axes
 
-# Main
-# ----
+KNB_CLASSES = 5                                       # Number of classes
+KNB_SAMPLES = 5000                                    # Number of samples
+KNB_SAMPLES_PER_CLASS = KNB_SAMPLES // KNB_CLASSES    # Number of samples per class
+KABS_MAX_FUNCTION = 1                                 # Max of the function
+KBAND = 0.1                                           # Half-width of the cross (class C5)
+KABS_MAX_OUTPUT = 0.98                                # Abs max of the expected output
+KGOOD = KABS_MAX_OUTPUT                               # Target value for the active class
+KBAD = 0.00                                           # Target value for the other classes
 
-def main():
-	fig, (ax1, ax2) = plt.subplots(1, 2, figsize = (10, 5))
+KMARKERS_LEARNING = ("ro", "go", "bo", "yo", "m.")
+KMARKERS_VALIDATION = ("r+", "g+", "b+", "y+", "m+")
 
-	# Open the DB_L_file & DB_V_file database files
-	# Generate the dataset DB_L_file file
-	# Generate the dataset DB_V_file file
-	with open("DB_L_file.txt", "w") as fd_l, open("DB_V_file.txt", "w") as fd_v:
-		generate_dataSet(fd_l, ax1, isLearning = True)
-		generate_dataSet(fd_v, ax2, isLearning = False)
+Point = tuple[float, float]
 
-	plt.tight_layout()
-	plt.show()
+_rng = np.random.default_rng()
 
-# Main entry point
+
+def generate_random_values() -> Point:
+    """Return a random (x, y) point drawn uniformly in [-KABS_MAX_FUNCTION, +KABS_MAX_FUNCTION]²."""
+    x, y = (_rng.random(2) - 0.5) * 2 * KABS_MAX_FUNCTION
+    return float(x), float(y)
+
+
+def normalize_point(x: float, y: float) -> Point:
+    """Scale (x, y) from [-KABS_MAX_FUNCTION, +KABS_MAX_FUNCTION] to [-1, 1]."""
+    return x / KABS_MAX_FUNCTION, y / KABS_MAX_FUNCTION
+
+
+def classify(x: float, y: float) -> int | None:
+    """Return the class index (0 for C1 .. 4 for C5) of (x, y).
+
+    The five regions are disjoint. Points lying exactly on a region
+    boundary (|x| or |y| equal to KBAND) belong to none and return None.
+    """
+    if -KBAND < x < KBAND or -KBAND < y < KBAND:
+        return 4
+    if x < -KBAND and y > KBAND:
+        return 0
+    if x > KBAND and y > KBAND:
+        return 1
+    if x < -KBAND and y < -KBAND:
+        return 2
+    if x > KBAND and y < -KBAND:
+        return 3
+    return None
+
+
+def one_hot(cls: int) -> list[float]:
+    """Return the target vector of class ``cls``."""
+    target = [KBAD] * KNB_CLASSES
+    target[cls] = KGOOD
+    return target
+
+
+def setup_axes(ax: Axes, title: str) -> None:
+    """Configure ``ax`` for displaying a dataset."""
+    ax.set_title(title)
+    ax.set_aspect("equal")
+    ax.grid(True)
+
+
+def generate_dataset(fd: TextIO, ax: Axes, markers: Sequence[str], title: str) -> None:
+    """Generate one dataset, write it to ``fd`` and plot it on ``ax``.
+
+    Args:
+        fd: Open text file receiving the tab-separated samples.
+        ax: Matplotlib axes on which the samples are plotted.
+        markers: One Matplotlib format string per class.
+        title: Title of the plot.
+    """
+    setup_axes(ax, title)
+    points: list[list[Point]] = [[] for _ in range(KNB_CLASSES)]
+
+    while min(len(p) for p in points) < KNB_SAMPLES_PER_CLASS:
+        x, y = generate_random_values()
+        cls = classify(x, y)
+        if cls is None or len(points[cls]) >= KNB_SAMPLES_PER_CLASS:
+            continue
+
+        xn, yn = normalize_point(x, y)
+        points[cls].append((xn, yn))
+        fields = [f"{xn:.6f}", f"{yn:.6f}", *(f"{t:.2f}" for t in one_hot(cls))]
+        fd.write("\t".join(fields) + "\n")
+
+    for cls_points, marker in zip(points, markers, strict=True):
+        xs, ys = zip(*cls_points)
+        ax.plot(xs, ys, marker)
+
+
+def main() -> None:
+    """Generate the learning and validation datasets and display them."""
+    _, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
+
+    with (
+        open("DB_L_file.txt", "w", encoding="utf-8") as fd_l,
+        open("DB_V_file.txt", "w", encoding="utf-8") as fd_v,
+    ):
+        generate_dataset(fd_l, ax1, markers=KMARKERS_LEARNING, title="Learning")
+        generate_dataset(fd_v, ax2, markers=KMARKERS_VALIDATION, title="Validation")
+
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__ == "__main__":
-	main()
+    main()

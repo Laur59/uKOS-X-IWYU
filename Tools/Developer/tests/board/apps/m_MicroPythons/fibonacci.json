@@ -1,0 +1,16 @@
+{
+  "app": "m_MicroPythons/fibonacci",
+  "note": "Starts MicroPython with a script that prints the Fibonacci series below 1000 in a loop.",
+  "tests": [
+    {
+      "id": "m_MicroPythons/fibonacci/runs-the-script",
+      "expect": [
+        "^Package \\d+\\.\\d+\\.\\d+ for uKOS-X ",
+        {
+          "re": "^0 1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 ?$",
+          "min": 3
+        }
+      ]
+    }
+  ]
+}

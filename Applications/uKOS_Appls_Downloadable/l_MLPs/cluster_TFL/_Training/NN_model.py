@@ -1,126 +1,182 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-#
-# Generate the TensorFlow Lite model for the cluster_TFL application, trained on the Sysquake database.
 
-import	argparse
-import	numpy as np
-import	tensorflow as tf
-import	os
-import	logging
-from	tensorflow import keras
-from	tensorflow.keras import layers
+"""Train the cluster_TFL classifier and export it as a TensorFlow Lite model.
 
-# 0 = all logs, 1 = info, 2 = warning, 3 = error only
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-logging.getLogger('absl').setLevel(logging.ERROR)
+The learning dataset ``DB_L_file.txt`` (written by ``DB_Creator.py``) is
+loaded, shuffled and used to train a small MLP; 20 % of it is held out for
+validation. The trained model is saved in Keras format next to the TFLite
+file, converted to TFLite, and the TFLite model is run on a few reference
+points to check that it gives the same answers as the Keras model.
 
-# Load the learning dataset
-# -------------------------
+Network (the input layer has no weights)::
 
-def load_data(file_path):
-	try:
+    L1:  2 inputs -> 12 outputs, tanh
+    L2: 12 inputs -> 24 outputs, tanh
+    L3: 24 inputs ->  5 outputs, softmax
 
-		# Use genfromtxt (more flexible than loadtxt)
-		print(f"Read the fle : {file_path}")
-		data = np.genfromtxt(file_path, delimiter = '\t', dtype = np.float32)
-		data = np.atleast_2d(data)
+Usage:
+    python3 NN_model.py --model_file NN_model.tflite
+"""
 
-		# Remove invalid rows containing NaN or Inf
-		data = data[~np.isnan(data).any(axis = 1)]
-		data = data[~np.isinf(data).any(axis = 1)]
+import argparse
+import logging
+import os
+import sys
+from pathlib import Path
 
-		print("Data read from the file :")
-		print(data)
+# Must be set before TensorFlow is imported, otherwise the C++ runtime has
+# already read it. 0 = all logs, 1 = info, 2 = warning, 3 = error only.
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
-		if data.shape[1] != 7:
-			raise ValueError("The file needs exactly 7 columns (x1, x2, y1, y2, y3, y4, y5) per line.")
+import numpy as np  # noqa: E402
+import tensorflow as tf  # noqa: E402
 
-		# Get the inputs (X) and the output (Y)
-		# (x1, x2) are the inputs
-		# (y1, y2, y3, y4, y5) are the output
-		X = data[:, :2]
-		Y = data[:, 2:]
-		return X, Y
+logging.getLogger("absl").setLevel(logging.ERROR)
 
-	except Exception as e:
-		print(f"Error during the file reading : {e}")
-		return None, None
+# tf.lite.Interpreter is deprecated in favour of LiteRT (package ai-edge-litert).
+# Use LiteRT when it is installed; otherwise fall back to tf.lite.Interpreter,
+# whose deprecation warning then reaches the log as a reminder to install it.
+try:
+    from ai_edge_litert import interpreter as tflite  # noqa: E402
+    KOP_RESOLVER = tflite.OpResolverType.BUILTIN_WITHOUT_DEFAULT_DELEGATES
+except ImportError:
+    tflite = tf.lite
+    KOP_RESOLVER = tf.lite.experimental.OpResolverType.BUILTIN_WITHOUT_DEFAULT_DELEGATES
 
-# Build the model
-# ---------------
+KDATASET_FILE = "DB_L_file.txt"     # Learning dataset
+KNB_INPUTS = 2                      # x, y
+KNB_OUTPUTS = 5                     # One per class
+KHIDDEN_LAYERS = (12, 24)           # Neurons of the hidden layers
+KL2_FACTOR = 1e-4                   # L2 regularisation of the hidden layers
+KLEARNING_RATE = 1e-3               # Adam learning rate
+KEPOCHS = 100                       # Number of training epochs
+KBATCH_SIZE = 32                    # Mini-batch size
+KVALIDATION_SPLIT = 0.2             # Fraction of the dataset held out for validation
 
-def build_model():
-	model = tf.keras.Sequential([
-		tf.keras.layers.InputLayer(shape = (2,), dtype = tf.float32),											# Layer 1,  2 - 12
-		tf.keras.layers.Dense(12, activation = 'tanh', kernel_regularizer = tf.keras.regularizers.l2(1e-4)),	# Layer 2, 12 - 24
-		tf.keras.layers.Dense(24, activation = 'tanh', kernel_regularizer = tf.keras.regularizers.l2(1e-4)),	# Layer 3, 24 - 5
-		tf.keras.layers.Dense(5,  activation = 'softmax')														# Layer 4, 5
-	])
+#: Reference inputs (one per class) used to compare the Keras and TFLite outputs.
+KTEST_INPUTS = np.array(
+    [
+        [-0.5, 0.5],                # C1, top-left
+        [0.5, 0.5],                 # C2, top-right
+        [-0.5, -0.5],               # C3, bottom-left
+        [0.5, -0.5],                # C4, bottom-right
+        [0.0, 0.0],                 # C5, cross
+    ],
+    dtype=np.float32,
+)
 
-	# Compile the model
-	model.compile(
-		optimizer = tf.keras.optimizers.Adam(learning_rate = 1e-3),
-		loss = 'categorical_crossentropy',
-		metrics = ['accuracy']
-	)
-	return model
 
-# Main
-# ----
+def load_data(file_path: str | Path) -> tuple[np.ndarray, np.ndarray]:
+    """Load a whitespace-separated dataset and split it into inputs and targets.
 
-def main():
+    Any run of spaces or tabs separates the columns, so the files load the
+    same whether their tabs were kept or expanded by an editor. Rows
+    containing NaN or Inf are discarded.
 
-	# Set up command-line arguments using argparse
-	parser = argparse.ArgumentParser(description = 'Train and test a TensorFlow model.')
-	parser.add_argument('--model_file', type = str, help = 'Path to the TFLite model file', required = True)
-	args = parser.parse_args()
+    Returns:
+        ``(X, Y)``: the inputs (x, y) and the one-hot targets (t1 .. t5).
 
-	# Load the learning dataset
-	X, Y = load_data('DB_L_file.txt')
+    Raises:
+        OSError: If the file cannot be read.
+        ValueError: If the file does not have KNB_INPUTS + KNB_OUTPUTS columns.
+    """
+    print(f"Read the file : {file_path}")
+    data = np.atleast_2d(np.genfromtxt(file_path, dtype=np.float32))
+    data = data[np.isfinite(data).all(axis=1)]
 
-	if X is None or Y is None:
-		print("Data cannot be loaded!")
-		return
+    print("Data read from the file :")
+    print(data)
 
-	# Shuffle the dataset
-	indices = np.arange(X.shape[0])
-	np.random.shuffle(indices)
-	X = X[indices]
-	Y = Y[indices]
+    nb_columns = KNB_INPUTS + KNB_OUTPUTS
+    if data.shape[1] != nb_columns:
+        raise ValueError(
+            f"{file_path}: expected {nb_columns} columns (x, y, t1 .. t5) per line, "
+            f"found {data.shape[1]}"
+        )
 
-	# Build the model
-	model = build_model()
-	model.fit(X, Y, epochs = 100, batch_size = 32, validation_split = 0.2)
-	loss = model.evaluate(X, Y)
-	print(f'Loss of the model : {loss}')
+    return data[:, :KNB_INPUTS], data[:, KNB_INPUTS:]
 
-	# Test the model with TensorFlow
-	output = model(np.array([[-0.5, 0.5], [0.5, 0.5], [-0.5, -0.5], [0.5, -0.5], [0, 0]], dtype = np.float32))
-	print("Output TF", output)
 
-	# Convert the model to TFLite format
-	model.save('NN_model.keras')
-	converter = tf.lite.TFLiteConverter.from_keras_model(model)
-	tflite_model = converter.convert()
-	with open('NN_model.tflite', 'wb') as f:
-		f.write(tflite_model)
+def build_model() -> tf.keras.Model:
+    """Build and compile the MLP classifier."""
+    regularizer = tf.keras.regularizers.l2(KL2_FACTOR)
+    model = tf.keras.Sequential(
+        [
+            tf.keras.layers.InputLayer(shape=(KNB_INPUTS,), dtype=tf.float32),
+            *(
+                tf.keras.layers.Dense(units, activation="tanh", kernel_regularizer=regularizer)
+                for units in KHIDDEN_LAYERS
+            ),
+            tf.keras.layers.Dense(KNB_OUTPUTS, activation="softmax"),
+        ]
+    )
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(learning_rate=KLEARNING_RATE),
+        loss="categorical_crossentropy",
+        metrics=["accuracy"],
+    )
+    return model
 
-	# Use TensorFlow Lite Interpreter to test the TFLite model
-	# Use the argument passed to the command line
-	interpreter = tf.lite.Interpreter(model_path = args.model_file)
-	interpreter.allocate_tensors()
-	input_details  = interpreter.get_input_details()
-	output_details = interpreter.get_output_details()
 
-	for input_data in [[-0.5, 0.5], [0.5, 0.5], [-0.5, -0.5], [0.5, -0.5], [0, 0]]:
-		interpreter.set_tensor(input_details[0]['index'], np.array([input_data], dtype = np.float32))
-		interpreter.invoke()
-		output = interpreter.get_tensor(output_details[0]['index'])
-		print("Output TFLite", output)
+def run_tflite(model_file: Path, inputs: np.ndarray) -> None:
+    """Run the TFLite model in ``model_file`` on each row of ``inputs`` and print the outputs."""
+    # Reference kernels only: no XNNPACK delegate (and no "Created TensorFlow Lite
+    # XNNPACK delegate" message), closer to what TFLite Micro runs on the target.
+    interpreter = tflite.Interpreter(
+        model_path=str(model_file), experimental_op_resolver_type=KOP_RESOLVER
+    )
+    interpreter.allocate_tensors()
+    input_index = interpreter.get_input_details()[0]["index"]
+    output_index = interpreter.get_output_details()[0]["index"]
 
-# Main entry point
+    for row in inputs:
+        interpreter.set_tensor(input_index, row[np.newaxis, :])
+        interpreter.invoke()
+        print("Output TFLite", interpreter.get_tensor(output_index))
+
+
+def parse_args() -> argparse.Namespace:
+    """Parse the command-line arguments."""
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--model_file",
+        type=Path,
+        required=True,
+        help="path of the TFLite model to write (the Keras model is saved alongside it)",
+    )
+    return parser.parse_args()
+
+
+def main() -> int:
+    """Train, convert and check the model. Return the process exit status."""
+    args = parse_args()
+    tflite_file: Path = args.model_file
+    keras_file = tflite_file.with_suffix(".keras")
+
+    try:
+        X, Y = load_data(KDATASET_FILE)
+    except (OSError, ValueError) as error:
+        print(f"Error: data cannot be loaded: {error}", file=sys.stderr)
+        return 1
+
+    # Shuffle so that validation_split, which takes the last rows, is representative.
+    order = np.random.default_rng().permutation(len(X))
+    X, Y = X[order], Y[order]
+
+    model = build_model()
+    model.fit(X, Y, epochs=KEPOCHS, batch_size=KBATCH_SIZE, validation_split=KVALIDATION_SPLIT)
+    loss, accuracy = model.evaluate(X, Y)
+    print(f"Loss of the model : {loss}, accuracy : {accuracy}")
+
+    print("Output TF", model(KTEST_INPUTS))
+
+    model.save(keras_file)
+    tflite_file.write_bytes(tf.lite.TFLiteConverter.from_keras_model(model).convert())
+
+    run_tflite(tflite_file, KTEST_INPUTS)
+    return 0
+
+
 if __name__ == "__main__":
-	main()
+    sys.exit(main())

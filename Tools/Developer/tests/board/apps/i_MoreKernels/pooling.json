@@ -1,0 +1,18 @@
+{
+  "app": "i_MoreKernels/pooling",
+  "note": "Allocates from and frees to a memory pool and prints 'Passed ...' for every round; a failure prints 'No pool' and logs a fatal record.",
+  "tests": [
+    {
+      "id": "i_MoreKernels/pooling/passes",
+      "expect": [
+        {
+          "re": "^Passed \\.\\.\\.$",
+          "min": 100
+        }
+      ],
+      "refute": [
+        "^No pool$"
+      ]
+    }
+  ]
+}

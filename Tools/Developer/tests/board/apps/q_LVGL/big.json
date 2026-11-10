@@ -1,0 +1,23 @@
+{
+  "app": "q_LVGL/big",
+  "note": "An LVGL scene on the LCD; it prints nothing, so the row checks that the LVGL processes run. Seeing the picture takes the panel.",
+  "tests": [
+    {
+      "id": "q_LVGL/big/runs",
+      "timeout": 3,
+      "settle": 5,
+      "log_expect": [
+        "Info user .* Application launched$"
+      ],
+      "after": [
+        {
+          "send": "process",
+          "expect": [
+            "Process lvgl\\.",
+            "Process lvgl_tick\\."
+          ]
+        }
+      ]
+    }
+  ]
+}

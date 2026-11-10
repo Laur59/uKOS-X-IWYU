@@ -32,9 +32,7 @@
 #   ./very_clean.sh before switching toolchains.
 #
 # Build outputs:
-#   - Library/FatFs/*/flash/libFatFs.a
-#   - Library/FatFs/*/sdcard/libFatFs.a
-#   - Library/FatFs/*/sdcard_flash/libFatFs.a
+#   - Library/FatFs/*/libFatFs.a
 #   - Library/FatFs/include/source/*.h
 
 cmake_minimum_required(VERSION 3.31)
@@ -142,14 +140,6 @@ set(SUPPORTED_CORES
     RV64IMAFDC
 )
 
-# Each core builds one libFatFs.a per variant into Library/FatFs/<core>/<variant>/.
-# Keep this list in sync with FATFS_VARIANTS in the per-core CMakeLists.txt.
-set(FATFS_VARIANTS
-    flash
-    sdcard
-    sdcard_flash
-)
-
 # Determine build type to pass to ExternalProjects
 # Default to MinSizeRel for optimal firmware size (adds -Os -DNDEBUG)
 if(CMAKE_BUILD_TYPE)
@@ -165,12 +155,8 @@ foreach(CORE ${SUPPORTED_CORES})
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/CMakeLists.txt")
         message(STATUS "Configuring build for core: ${CORE}")
 
-        # One byproduct per variant produced by this core
-        set(CORE_BYPRODUCTS "")
-        foreach(VARIANT ${FATFS_VARIANTS})
-            list(APPEND CORE_BYPRODUCTS
-                "${CMAKE_CURRENT_BINARY_DIR}/build-${CORE}/${VARIANT}/libFatFs.a")
-        endforeach()
+        # Archive produced by this core
+        set(CORE_BYPRODUCTS "${CMAKE_CURRENT_BINARY_DIR}/build-${CORE}/libFatFs.a")
 
         ExternalProject_Add(FatFs_${CORE}
             # Prefix - this sets up unique directories for each external project
@@ -219,21 +205,19 @@ endforeach()
 #------------------------------------------------------------------------
 # Step 4: Install rules
 #
-# cmake --install build gathers libFatFs.a for every core/variant from the
-# per-core build trees (build/build-<CORE>/<VARIANT>/) and deploys them to
-# Library/FatFs/<CORE>/<VARIANT>/. The public headers go to
+# cmake --install build gathers libFatFs.a for every core from the
+# per-core build trees (build/build-<CORE>/) and deploys them to
+# Library/FatFs/<CORE>/. The public headers go to
 # Library/FatFs/include/source/, with the ffconf.h the archives were built with
 # (Step 2 removes upstream's), so that a consumer never needs the cloned tree.
 #------------------------------------------------------------------------
 
 foreach(CORE ${SUPPORTED_CORES})
     if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Construction/${CORE}/CMakeLists.txt")
-        foreach(VARIANT ${FATFS_VARIANTS})
-            install(FILES "${CMAKE_CURRENT_BINARY_DIR}/build-${CORE}/${VARIANT}/libFatFs.a"
-                    DESTINATION "FatFs/${CORE}/${VARIANT}"
+        install(FILES "${CMAKE_CURRENT_BINARY_DIR}/build-${CORE}/libFatFs.a"
+                DESTINATION "FatFs/${CORE}"
                     OPTIONAL
             )
-        endforeach()
     endif()
 endforeach()
 
@@ -288,6 +272,6 @@ foreach(CORE ${SUPPORTED_CORES})
 endforeach()
 message("")
 message("Output libraries will be in:")
-message("  Library/FatFs/<CORE>/<VARIANT>/libFatFs.a  (VARIANT: flash, sdcard, sdcard_flash)")
+message("  Library/FatFs/<CORE>/libFatFs.a")
 message("  Library/FatFs/include/source/*.h")
 message("══════════════════════════════════════════════════════════════")

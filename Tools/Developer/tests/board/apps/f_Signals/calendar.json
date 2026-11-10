@@ -1,0 +1,17 @@
+{
+  "app": "f_Signals/calendar",
+  "note": "Calendar alarms raise signals; the receiver prints the alarms and, every second, the epoch and the local time. It does not set the clock: its own source documents 1970, and a board whose clock survives a reset shows whatever the application before it set (a_Basics/calendar sets 31 March 2025).",
+  "tests": [
+    {
+      "id": "f_Signals/calendar/alarms",
+      "expect": [
+        "^Signal: 00000002, Alarme$",
+        "^Signal: 00000003, Alarme$",
+        {
+          "re": "^Signal: 00000003, Epoch = \\d+, Local time: \\w{3} \\w{3} [ \\d]\\d \\d\\d:\\d\\d:\\d\\d \\d{4}$",
+          "min": 3
+        }
+      ]
+    }
+  ]
+}

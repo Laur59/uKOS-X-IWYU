@@ -1,0 +1,15 @@
+{
+  "app": "a_Basics/concurrent",
+  "note": "Four processes print their own counters, forever.",
+  "tests": [
+    {
+      "id": "a_Basics/concurrent/prints",
+      "expect": [
+        "^Process: Aladin +0  Counter: \\d+$",
+        "^Process: Marsupilami +1  Counter: \\d+$",
+        "^Process: Fraggle Rock +2  Counter: \\d+$",
+        "^Process: Lupo de Lupis +3  Counter: \\d+$"
+      ]
+    }
+  ]
+}

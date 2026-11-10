@@ -1,0 +1,15 @@
+{
+  "app": "g_PreciseSignals/basic",
+  "note": "Precise signals; prints four measured periods, forever. The values are timings and move.",
+  "tests": [
+    {
+      "id": "g_PreciseSignals/basic/periods",
+      "expect": [
+        {
+          "re": "^T1 = \\d+, T2 = \\d+, T3 = \\d+, T4 = \\d+$",
+          "min": 10
+        }
+      ]
+    }
+  ]
+}

@@ -16,6 +16,9 @@
 #ifdef CONFIG_MAN_FLASH_S
 #include "flash/flash.h"
 #endif
+#ifdef CONFIG_MAN_SDNAND_S
+#include "sdnand/sdnand.h"
+#endif
 #include "types.h"
 
 #ifdef CONFIG_MAN_STORAGE_S
@@ -76,6 +79,10 @@ int32_t storage_reserve(storage_manager_t manager, reserveMode_t reserveMode, ui
         case KSDCARD: { return sdcard_reserve(reserveMode, timeout); }
         #endif
 
+        #ifdef CONFIG_MAN_SDNAND_S
+        case KSDNAND: { return sdnand_reserve(reserveMode, timeout); }
+        #endif
+
         #ifdef CONFIG_MAN_FLASH_S
         case KFLASH: { return flash_reserve(reserveMode, timeout);   }
         #endif
@@ -107,6 +114,10 @@ int32_t storage_release(storage_manager_t manager, reserveMode_t reserveMode) {
 
         #ifdef CONFIG_MAN_SDCARD_S
         case KSDCARD: { return sdcard_release(reserveMode); }
+        #endif
+
+        #ifdef CONFIG_MAN_SDNAND_S
+        case KSDNAND: { return sdnand_release(reserveMode); }
         #endif
 
         #ifdef CONFIG_MAN_FLASH_S
@@ -145,6 +156,10 @@ int32_t storage_initialise(storage_manager_t manager, [[maybe_unused]] void  *sp
         case KSDCARD: { return sdcard_initialise((sdcard_specification_t *)specification); }
         #endif
 
+        #ifdef CONFIG_MAN_SDNAND_S
+        case KSDNAND: { return sdnand_initialise((sdnand_specification_t *)specification); }
+        #endif
+
         #ifdef CONFIG_MAN_FLASH_S
         case KFLASH: { return flash_initialise();                                            }
         #endif
@@ -176,6 +191,10 @@ int32_t storage_isPresent(storage_manager_t manager) {
 
         #ifdef CONFIG_MAN_SDCARD_S
         case KSDCARD: { return sdcard_isPresent(); }
+        #endif
+
+        #ifdef CONFIG_MAN_SDNAND_S
+        case KSDNAND: { return sdnand_isPresent(); }
         #endif
 
         #ifdef CONFIG_MAN_FLASH_S
@@ -219,6 +238,10 @@ int32_t storage_read(storage_manager_t manager, uint8_t *buffer, uint32_t size, 
         case KSDCARD: { return sdcard_read(buffer, size, sector); }
         #endif
 
+        #ifdef CONFIG_MAN_SDNAND_S
+        case KSDNAND: { return sdnand_read(buffer, size, sector); }
+        #endif
+
         #ifdef CONFIG_MAN_FLASH_S
         case KFLASH: { return flash_read(buffer, size, sector); }
         #endif
@@ -260,6 +283,10 @@ int32_t storage_write(storage_manager_t manager, const uint8_t *buffer, uint32_t
         case KSDCARD: { return sdcard_write(buffer, size, sector); }
         #endif
 
+        #ifdef CONFIG_MAN_SDNAND_S
+        case KSDNAND: { return sdnand_write(buffer, size, sector); }
+        #endif
+
         #ifdef CONFIG_MAN_FLASH_S
         case KFLASH: { return flash_write(buffer, size, sector);     }
         #endif
@@ -297,6 +324,10 @@ int32_t storage_ioctl(storage_manager_t manager, storageIoctl_t command, void *b
 
         #ifdef CONFIG_MAN_SDCARD_S
         case KSDCARD: { return sdcard_ioctl(command, buffer); }
+        #endif
+
+        #ifdef CONFIG_MAN_SDNAND_S
+        case KSDNAND: { return sdnand_ioctl(command, buffer); }
         #endif
 
         #ifdef CONFIG_MAN_FLASH_S

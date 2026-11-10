@@ -1,0 +1,13 @@
+{
+  "app": "a_Basics/suicide",
+  "note": "One process finds the 'list' tool and runs it, then the process exits; the console stays.",
+  "tests": [
+    {
+      "id": "a_Basics/suicide/runs-list-then-exits",
+      "expect": [
+        "^uKOS-X module list\\.$",
+        "^FLASH +\\d+ +X16_ +v 1\\.0 +list +List the system modules\\."
+      ]
+    }
+  ]
+}

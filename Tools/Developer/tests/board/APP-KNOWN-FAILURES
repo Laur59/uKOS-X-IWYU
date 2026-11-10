@@ -1,0 +1,7 @@
+# Application rows of app-regression that fail today, one per line:
+#
+#   <Board>[/<Variant>]  <row id>  <fail|crash|hang>  <reference>
+#
+# The format of KNOWN-FAILURES. A listed row that passes fails the run: remove
+# its line. Kept apart from KNOWN-FAILURES, where board-regression would report
+# every application row as "not exercised".

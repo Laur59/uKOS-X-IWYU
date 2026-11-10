@@ -1,0 +1,14 @@
+{
+  "app": "k_Mathematicals/cortexFPU",
+  "note": "Two series converging to pi, printed per term with the time it took. The first must converge.",
+  "tests": [
+    {
+      "id": "k_Mathematicals/cortexFPU/converges",
+      "expect": [
+        "^n = 1, Pi =  3\\.1333333 Time = \\d+$",
+        "^n = 4, Pi =  3\\.1415925 Time = \\d+$",
+        "^n = 1, Pi =  2\\.4494897$"
+      ]
+    }
+  ]
+}

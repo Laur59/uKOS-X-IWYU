@@ -1,0 +1,17 @@
+{
+  "app": "i_MoreKernels/watchdog",
+  "note": "Feeds the watchdog in automatic and in manual mode for 10 s each, then stops feeding it: the board restarts about 20 s later, which the new boot banner shows.",
+  "tests": [
+    {
+      "id": "i_MoreKernels/watchdog/restarts-the-board",
+      "expect": [
+        "^Watchdog in automatic mode \\(trying for 10'000-ms\\)$",
+        "^Watchdog in manual mode +\\(trying for 10'000-ms\\)$",
+        "^Now waiting 20-s for the watchdog restart$",
+        "^Elapsed 10-s!$",
+        "^uKOS-X, \\(c\\) "
+      ],
+      "timeout": 75
+    }
+  ]
+}

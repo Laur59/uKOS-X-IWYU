@@ -1,0 +1,16 @@
+{
+  "app": "p_Specials/speed",
+  "note": "Counts loop iterations in a 20 ms window and prints them, forever. 'Target: BOARD' is the documented output: the application build defines no valued BOARD macro (Applications/cmake/application.cmake).",
+  "tests": [
+    {
+      "id": "p_Specials/speed/counts",
+      "expect": [
+        "^Target: BOARD$",
+        {
+          "re": "^Counter = \\d+, Time = \\d+$",
+          "min": 5
+        }
+      ]
+    }
+  ]
+}
