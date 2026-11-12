@@ -20,64 +20,32 @@ This example demonstrates how a neural network using µKOS-X can learn and disti
 
 ## Dataset Creation and Classifier Generation
 
+The trained network is not kept in git: after a clone, `_Training/network.c_inc` does not exist until the command below has been run. Compiling the application without it stops with an error; train the network, then compile again.
+
+### Define the network
+
+The file `_Training/config.py` describes the neural network and its training. It is the single place to edit before training, and `build.sh` passes it to the MLPN trainer. It defines:
+
+- `KLAYERS`: the number of neurons of each layer (`KNB_INPUTS` and `KNB_OUTPUTS` are derived from it);
+- `KNON_LINEAR` and `KNON_LINEAR_OUT`: the activation functions of the hidden layers and of the output layer (the available functions are listed in the file);
+- `KGAIN`, `KMOMENTUM` and `KEPOCHS`: the learning rate, the momentum and the number of training epochs;
+- `KVALIDATION`: a few input/output samples used for a rapid validation of the trained network.
+
+For this example, we use a three-layer neural network with 2 input neurons and three successive layers of 12, 24, and 5 neurons, respectively.
+
+The first two layers (L1 and L2) use a non-linear activation function based on an ultrafast approximation of the hyperbolic tangent (tanh). The final layer (L3) uses an ultrafast softmax function to produce normalized output probabilities for the five target classes.
+
 ### Dataset creation
+
+The learning dataset `DB_L_file.txt` and the validation dataset `DB_V_file.txt` are created by `DB_Creator.py`. `build.sh` runs it when the two files do not exist yet and reuses them otherwise. To create them yourself, for instance with another seed:
 
 ```bash
 # Create the learning DB_L_file.txt and the validation DB_V_file.txt files
 cd _Training
-python3 DB_Creator.py
+python3 DB_Creator.py [-seed nnn]
 ```
 
-### Define the network
-
-The file `config.py` contains the high-level description of the neural network architecture and its configuration. It defines the main components of the model, such as the number of layers, the type of neurons, activation functions, and other key parameters required to build the classifier. This file serves as the central place for configuring the network before training, making it easier to adjust the model structure and experiment with different settings.
-
-```bash
-# Application / Network configuration
-#
-# L1 - 2 inputs
-# L1 - 12 output
-# L2 - 12 input (the bias is automatically added)
-# L2 - 24 output
-# L3 - 24 input (the bias is automatically added)
-# L3 - 5 output
-#              I1  O1  O2  O3
-KLAYERS     = [2,  12, 24, 5]
-KNB_INPUTS  = 2
-KNB_OUTPUTS = 5
-
-# KMLPN_TAN0 = libm tanh
-# KMLPN_TAN1 = Lambert's tanh approximation
-# KMLPN_TAN2 = Ultrafast tanh approximation (~2% precision)
-# KMLPN_TAN3 = Fastest tanh approximation (less precise)
-# KMLPN_RELU = Ultrafast relu
-# KMLPN_LINE = Ultrafast linear
-# KMLPN_SMAX = Ultrafast softmax
-#
-KNON_LINEAR     = "KMLPN_TAN2"
-KNON_LINEAR_OUT = "KMLPN_SMAX"
-
-KGAIN     = 0.005
-KMOMENTUM = 0.0
-KEPOCHS   = 200000
-
-# Some Input/Output samples for rapid validation
-#
-#               Input -x -y          Class -1 -2 -3
-KVALIDATION = [
-              [-0.988388,   0.867081,   0.98,   0.00    0.00,    0.00,    0.00],
-              [0.757057,    0.295996,   0.00,   0.98    0.00,    0.00,    0.00],
-              [0.327959,   -0.888219,   0.00,   0.00    0.00,    0.98,    0.00],
-              [-0.478465,  -0.454157,   0.00,   0.00    0.98,    0.00,    0.00],
-              [-0.561333,  -0.588802,   0.00,   0.00    0.98,    0.00,    0.00],
-              [0.474768,   -0.188733,   0.00,   0.00    0.00,    0.98,    0.00]
-              ]
-
-```
-
-For this example, we use a three-layer neural network with 2 input neurons and three successive layers of 12, 24, and 5 neurons, respectively.
-
-The first two layers (L1 and L2) use a non-linear activation function based on an ultrafast approximation of the hyperbolic tangent (tanh). The final layer (L3) uses an ultrafast softmax function to produce normalized output probabilities for the three target classes.
+The random generator is seeded with `nnn`, or with 42 when `-seed` is omitted, so the same seed always produces the same datasets. The script overwrites both files and plots the two datasets; close the plot window to finish. Run `build.sh` afterwards to train the network on the new datasets.
 
 ### Create the Neural Network
 
@@ -90,4 +58,3 @@ cd _Training
 At this step, the file **`network.c_inc`** is created. It contains the structure of the neural network as well as the set of weights associated with it.
 
 This file must then be included in the application so that the network architecture and its trained parameters can be embedded directly into the program. In this way, the application can use the classifier without requiring any external model file at runtime.
-

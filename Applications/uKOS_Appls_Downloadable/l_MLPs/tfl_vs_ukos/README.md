@@ -1,6 +1,6 @@
 # Inference performance of a TFL vs µKOS-X MLPN
 
-(c) 2025-2026, Edo. Franzi, 2026-04-23
+(c) 2025-2026, Edo. Franzi, 2026-11-11
 
 ## Introduction
 
@@ -8,7 +8,11 @@ This example aims to compare the inference speed of a TensorFlow Lite model with
 
 The starting point is to use an existing TensorFlow Lite model and extract all the relevant information required to run it with the µKOS-X MLPN library. This includes the network architecture, weights, and associated parameters.
 
-The model used in this example is derived from the `class_TFL` application.
+The following models need to be copied from the examples  `class_TFL` and  `class_Py`:
+
+From  `class_TFL` :  **NN_model.xxd** and **NN_model.c_inc**
+
+From  `class_Py` :  **network.c_inc**
 
 ## Generate the model for MLPN library
 
