@@ -1,250 +1,262 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
-#
-# Generate the TensorFlow Lite model for the debris classifier.
 
-import	argparse
-import	os
-import	logging
+"""Train the debris classifier and export it as a TensorFlow Lite model.
+
+The learning dataset ``DB_L_file.txt`` is loaded, shuffled and used to train
+a small MLP that sorts 8 normalised features into 3 classes. Two modes:
+
+* ``val``: train on 80 % of the dataset, report on the 20 % held out;
+* ``full``: train on the whole dataset, report on it (what build.sh uses).
+
+The trained model is converted to TFLite, and the TFLite model is run on a
+few reference samples to check that it gives the same answers as the Keras
+model.
+
+Network (the input layer has no weights)::
+
+    L1:  8 inputs -> 24 outputs, tanh
+    L2: 24 inputs -> 12 outputs, tanh
+    L3: 12 inputs ->  3 outputs, softmax
+
+Usage:
+    python3 NN_model.py --model_file NN_model.tflite [--mode val|full]
+"""
+
+import argparse
+import logging
+import os
+import sys
+from pathlib import Path
 
 # Must be set before TensorFlow is imported, otherwise the C++ runtime has
-# already read it. 0 = all logs, 1 = info, 2 = warning, 3 = error only
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+# already read it. 0 = all logs, 1 = info, 2 = warning, 3 = error only.
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
-import	numpy as np
-import	tensorflow as tf
-from	tensorflow import keras
-from	tensorflow.keras import layers
+import numpy as np  # noqa: E402
+import tensorflow as tf  # noqa: E402
 
-logging.getLogger('absl').setLevel(logging.ERROR)
+logging.getLogger("absl").setLevel(logging.ERROR)
 
 # tf.lite.Interpreter is deprecated in favour of LiteRT (package ai-edge-litert).
 # Use LiteRT when it is installed; otherwise fall back to tf.lite.Interpreter,
 # whose deprecation warning then reaches the log as a reminder to install it.
 try:
-	from ai_edge_litert import interpreter as tflite
-	KOP_RESOLVER = tflite.OpResolverType.BUILTIN_WITHOUT_DEFAULT_DELEGATES
+    from ai_edge_litert import interpreter as tflite
+
+    KOP_RESOLVER = tflite.OpResolverType.BUILTIN_WITHOUT_DEFAULT_DELEGATES
 except ImportError:
-	tflite = tf.lite
-	KOP_RESOLVER = tf.lite.experimental.OpResolverType.BUILTIN_WITHOUT_DEFAULT_DELEGATES
+    tflite = tf.lite
+    KOP_RESOLVER = tf.lite.experimental.OpResolverType.BUILTIN_WITHOUT_DEFAULT_DELEGATES
 
-# Reproducibility
-SEED = 42
-np.random.seed(SEED)
-tf.random.set_seed(SEED)
+KDATASET_FILE = "DB_L_file.txt"     # Learning dataset
+KNB_INPUTS = 8                      # x1 .. x8
+KNB_OUTPUTS = 3                     # One per class
+KHIDDEN_LAYERS = (24, 12)           # Neurons of the hidden layers
+KL2_FACTOR = 1e-4                   # L2 regularisation of the hidden layers
+KLEARNING_RATE = 1e-3               # Adam learning rate
+KEPOCHS = 2000                      # Maximum number of training epochs
+KBATCH_SIZE = 16                    # Mini-batch size
+KPATIENCE = 50                      # Epochs without improvement before stopping
+KTRAIN_FRACTION = 0.8               # Fraction of the dataset trained on in "val" mode
+KSEED = 42                          # Seed of NumPy and TensorFlow, for reproducibility
 
-# Load the learning dataset
-# -------------------------
+#: Reference inputs used to compare the Keras and TFLite outputs.
+KTEST_INPUTS = np.array(
+    [
+        [-0.667143288, -0.792564809, -0.507299776, -0.853254438, -0.280102586,  1.0,         -0.612416107, -0.984712332],
+        [-0.865927732, -0.951664954, -0.983669003, -0.550295858, -0.994026501, -0.94423152,  -0.203020134, -0.996673267],
+        [ 0.189591578, -0.954907283, -0.992381638,  0.797724169, -0.994469972,  0.199817193, -0.874161074, -0.99937882 ],
+        [-0.523614221, -0.866881953, -0.50477879,  -0.981247155, -0.276196837, -0.984622643, -0.763422819, -0.995785614],
+        [-0.583224976, -0.854860126, -0.507119705, -0.789167046, -0.282229109,  0.199817193, -0.484899329, -0.975107079],
+        [-0.102865637, -0.951312904, -0.491356622, -0.622758307, -0.264372729, -0.000278533, -0.818791946, -0.992837852],
+    ],
+    dtype=np.float32,
+)  # fmt: skip
 
-def load_data(file_path):
-	try:
 
-		# Use genfromtxt (more flexible than loadtxt)
-		# Any run of spaces or tabs separates the columns
-		print(f"Read the file : {file_path}")
-		data = np.genfromtxt(file_path, dtype = np.float32)
-		data = np.atleast_2d(data)
+def load_data(file_path: str | Path) -> tuple[np.ndarray, np.ndarray]:
+    """Load a whitespace-separated dataset and split it into inputs and targets.
 
-		# Remove invalid rows containing NaN or Inf
-		data = data[~np.isnan(data).any(axis = 1)]
-		data = data[~np.isinf(data).any(axis = 1)]
+    Any run of spaces or tabs separates the columns. Rows containing NaN or
+    Inf are discarded.
 
-		print("Data read from the file :")
-		print(data)
+    Returns:
+        ``(X, Y)``: the inputs (x1 .. x8) and the one-hot targets (y1, y2, y3).
 
-		if data.shape[1] != 11:
-			raise ValueError("The file needs exactly 11 columns (x1, x2, x3, x4, x5, x6, x7, x8, y1, y2, y3) per line.")
+    Raises:
+        OSError: If the file cannot be read.
+        ValueError: If the file does not have KNB_INPUTS + KNB_OUTPUTS columns,
+            or a target row is not one-hot.
+    """
+    print(f"Read the file : {file_path}")
+    data = np.atleast_2d(np.genfromtxt(file_path, dtype=np.float32))
+    data = data[np.isfinite(data).all(axis=1)]
 
-		# Get the inputs (X) and the output (Y)
-		# (x1, x2, x3, x4, x5, x6, x7, x8) are the inputs
-		# (y1, y2, y3) are the output
-		X = data[:, :8]
-		Y = data[:, 8:]
+    print("Data read from the file :")
+    print(data)
 
-		# Check that outputs are one-hot encoded
-		if Y.shape[1] != 3:
-			raise ValueError("The output must contain exactly 3 columns.")
-		if not np.all(np.sum(Y, axis = 1) == 1):
-			raise ValueError("Each output row must be one-hot encoded (sum = 1).")
+    nb_columns = KNB_INPUTS + KNB_OUTPUTS
+    if data.shape[1] != nb_columns:
+        raise ValueError(
+            f"{file_path}: expected {nb_columns} columns (x1 .. x8, y1, y2, y3) per line, "
+            f"found {data.shape[1]}"
+        )
 
-		return X, Y
+    X, Y = data[:, :KNB_INPUTS], data[:, KNB_INPUTS:]
+    if not np.all(np.sum(Y, axis=1) == 1):
+        raise ValueError(f"{file_path}: each target row must be one-hot encoded (sum = 1)")
 
-	except Exception as e:
-		print(f"Error during the file reading : {e}")
-		return None, None
+    return X, Y
 
-# Build the model
-# ---------------
 
-def build_model():
-	model = tf.keras.Sequential([
-		tf.keras.layers.InputLayer(shape = (8,), dtype = tf.float32),
-		tf.keras.layers.Dense(24, activation = 'tanh', kernel_regularizer = tf.keras.regularizers.l2(1e-4)),
-		tf.keras.layers.Dense(12, activation = 'tanh', kernel_regularizer = tf.keras.regularizers.l2(1e-4)),
-		tf.keras.layers.Dense(3,  activation = 'softmax'),
-	])
+def build_model() -> tf.keras.Model:
+    """Build and compile the MLP classifier."""
+    regularizer = tf.keras.regularizers.l2(KL2_FACTOR)
+    model = tf.keras.Sequential(
+        [
+            tf.keras.layers.InputLayer(shape=(KNB_INPUTS,), dtype=tf.float32),
+            *(
+                tf.keras.layers.Dense(units, activation="tanh", kernel_regularizer=regularizer)
+                for units in KHIDDEN_LAYERS
+            ),
+            tf.keras.layers.Dense(KNB_OUTPUTS, activation="softmax"),
+        ]
+    )
+    model.compile(
+        optimizer=tf.keras.optimizers.Adam(learning_rate=KLEARNING_RATE),
+        loss="categorical_crossentropy",
+        metrics=["accuracy"],
+    )
+    return model
 
-	# Compile the model
-	model.compile(
-		optimizer = tf.keras.optimizers.Adam(learning_rate = 1e-3),
-		loss = 'categorical_crossentropy',
-		metrics = ['accuracy']
-	)
-	return model
 
-# Display the confusion matrix
-# ----------------------------
+def print_confusion_matrix(y_true: np.ndarray, y_pred: np.ndarray, title: str = "Confusion matrix") -> None:
+    """Print the confusion matrix of the class indices ``y_true`` and ``y_pred``."""
+    cm = tf.math.confusion_matrix(y_true, y_pred, num_classes=KNB_OUTPUTS).numpy()
 
-def print_confusion_matrix(y_true, y_pred, title = "Confusion matrix"):
-	cm = tf.math.confusion_matrix(y_true, y_pred, num_classes = 3).numpy()
+    print(f"\n{title} :")
+    print("           " + "   ".join(f"Pred {j}" for j in range(KNB_OUTPUTS)))
+    for i, row in enumerate(cm):
+        print(f"True {i}    " + "   ".join(f"{n:6d}" for n in row))
 
-	print(f"\n{title} :")
-	print("           Pred 0   Pred 1   Pred 2")
-	for i in range(cm.shape[0]):
-		print(f"True {i}    {cm[i, 0]:6d}   {cm[i, 1]:6d}   {cm[i, 2]:6d}")
 
-# Test samples
-# ------------
+def train_and_report(model: tf.keras.Model, X: np.ndarray, Y: np.ndarray, mode: str) -> None:
+    """Train ``model`` in ``mode`` and print the loss, accuracy and confusion matrix.
 
-def get_test_samples():
-	return np.array([
-		[-0.667143288, -0.792564809, -0.507299776, -0.853254438, -0.280102586,  1.0,         -0.612416107, -0.984712332],
-		[-0.865927732, -0.951664954, -0.983669003, -0.550295858, -0.994026501, -0.94423152,  -0.203020134, -0.996673267],
-		[ 0.189591578, -0.954907283, -0.992381638,  0.797724169, -0.994469972,  0.199817193, -0.874161074, -0.99937882 ],
-		[-0.523614221, -0.866881953, -0.50477879,  -0.981247155, -0.276196837, -0.984622643, -0.763422819, -0.995785614],
-		[-0.583224976, -0.854860126, -0.507119705, -0.789167046, -0.282229109,  0.199817193, -0.484899329, -0.975107079],
-		[-0.102865637, -0.951312904, -0.491356622, -0.622758307, -0.264372729, -0.000278533, -0.818791946, -0.992837852]
-	], dtype = np.float32)
+    In "val" mode the last (1 - KTRAIN_FRACTION) of the samples are held out,
+    early stopping watches their loss and the report is on them; in "full"
+    mode everything is trained on and reported on.
+    """
+    if mode == "val":
+        split_index = int(KTRAIN_FRACTION * len(X))
+        X_train, Y_train = X[:split_index], Y[:split_index]
+        X_report, Y_report = X[split_index:], Y[split_index:]
+        validation_data = (X_report, Y_report)
+        monitor, label = "val_loss", "Validation"
+    else:
+        X_train, Y_train = X, Y
+        X_report, Y_report = X, Y
+        validation_data = None
+        monitor, label = "loss", "Train"
 
-# Main
-# ----
+    early_stop = tf.keras.callbacks.EarlyStopping(
+        monitor=monitor, patience=KPATIENCE, restore_best_weights=True, verbose=1
+    )
+    model.fit(
+        X_train,
+        Y_train,
+        epochs=KEPOCHS,
+        batch_size=KBATCH_SIZE,
+        validation_data=validation_data,
+        callbacks=[early_stop],
+        verbose=1,
+    )
 
-def main():
+    loss, accuracy = model.evaluate(X_report, Y_report, verbose=0)
+    print(f"\n{label} loss     : {loss:.6f}")
+    print(f"{label} accuracy : {accuracy:.6f}")
 
-	# Set up command-line arguments using argparse
-	parser = argparse.ArgumentParser(description = 'Train and test a TensorFlow model.')
-	parser.add_argument('--model_file', type = str, help = 'Path to the TFLite model file', required = True)
-	parser.add_argument(
-		'--mode',
-		type = str,
-		choices = ['val', 'full'],
-		default = 'val',
-		help = 'val = validation mode, full = train on all data'
-	)
-	args = parser.parse_args()
+    y_true = np.argmax(Y_report, axis=1)
+    y_pred = np.argmax(model.predict(X_report, verbose=0), axis=1)
+    print_confusion_matrix(y_true, y_pred, f"{label} confusion matrix")
 
-	# Load the learning dataset
-	X, Y = load_data('DB_L_file.txt')
 
-	if X is None or Y is None:
-		print("Data cannot be loaded!")
-		return
+def run_tflite(model_file: Path, inputs: np.ndarray) -> np.ndarray:
+    """Run the TFLite model in ``model_file`` on each row of ``inputs``.
 
-	# Shuffle the dataset
-	indices = np.arange(X.shape[0])
-	np.random.shuffle(indices)
-	X = X[indices]
-	Y = Y[indices]
+    Reference kernels only: no XNNPACK delegate (and no "Created TensorFlow
+    Lite XNNPACK delegate" message), closer to what TFLite Micro runs on the
+    target.
 
-	# Build the model
-	model = build_model()
+    Returns:
+        The outputs, one row per input.
+    """
+    interpreter = tflite.Interpreter(model_path=str(model_file), experimental_op_resolver_type=KOP_RESOLVER)
+    interpreter.allocate_tensors()
+    input_index = interpreter.get_input_details()[0]["index"]
+    output_index = interpreter.get_output_details()[0]["index"]
 
-	# Train the model
-	early_stop = tf.keras.callbacks.EarlyStopping(
-		monitor = 'val_loss' if args.mode == 'val' else 'loss',
-		patience = 50,
-		restore_best_weights = True,
-		verbose = 1
-	)
+    outputs = []
+    for row in inputs:
+        interpreter.set_tensor(input_index, row[np.newaxis, :])
+        interpreter.invoke()
+        output = interpreter.get_tensor(output_index)
+        print("Output TFLite", output)
+        outputs.append(output[0])
+    return np.array(outputs, dtype=np.float32)
 
-	if args.mode == 'val':
 
-		# Split the dataset: 80% train / 20% validation
-		split_index = int(0.8 * X.shape[0])
-		X_train = X[:split_index]
-		Y_train = Y[:split_index]
-		X_val   = X[split_index:]
-		Y_val   = Y[split_index:]
+def parse_args() -> argparse.Namespace:
+    """Parse the command-line arguments."""
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--model_file",
+        type=Path,
+        required=True,
+        help="path of the TFLite model to write",
+    )
+    parser.add_argument(
+        "--mode",
+        choices=["val", "full"],
+        default="val",
+        help="val = train on 80%% and validate on 20%%, full = train on all data",
+    )
+    return parser.parse_args()
 
-		model.fit(
-			X_train,
-			Y_train,
-			epochs = 2000,
-			batch_size = 16,
-			validation_data = (X_val, Y_val),
-			callbacks = [early_stop],
-			verbose = 1
-		)
 
-		# Evaluate the model
-		loss, accuracy = model.evaluate(X_val, Y_val, verbose = 0)
-		print(f'\nValidation loss     : {loss:.6f}')
-		print(f'Validation accuracy : {accuracy:.6f}')
+def main() -> int:
+    """Train, convert and check the model. Return the process exit status."""
+    args = parse_args()
+    tflite_file: Path = args.model_file
 
-		# Confusion matrix on validation set
-		y_true = np.argmax(Y_val, axis = 1)
-		y_pred = np.argmax(model.predict(X_val, verbose = 0), axis = 1)
-		print_confusion_matrix(y_true, y_pred, "Validation confusion matrix")
+    np.random.seed(KSEED)
+    tf.random.set_seed(KSEED)
 
-	else:
+    try:
+        X, Y = load_data(KDATASET_FILE)
+    except (OSError, ValueError) as error:
+        print(f"Error: data cannot be loaded: {error}", file=sys.stderr)
+        return 1
 
-		# Train on the full dataset
-		model.fit(
-			X,
-			Y,
-			epochs = 2000,
-			batch_size = 16,
-			callbacks = [early_stop],
-			verbose = 1
-		)
+    # Shuffle: the file is grouped by class and "val" mode holds out the last rows.
+    order = np.random.permutation(len(X))
+    X, Y = X[order], Y[order]
 
-		# Evaluate the model on the full dataset
-		loss, accuracy = model.evaluate(X, Y, verbose = 0)
-		print(f'\nTrain loss     : {loss:.6f}')
-		print(f'Train accuracy : {accuracy:.6f}')
+    model = build_model()
+    train_and_report(model, X, Y, args.mode)
 
-		# Confusion matrix on full dataset
-		y_true = np.argmax(Y, axis = 1)
-		y_pred = np.argmax(model.predict(X, verbose = 0), axis = 1)
-		print_confusion_matrix(y_true, y_pred, "Train confusion matrix")
+    output = model(KTEST_INPUTS, training=False).numpy()
+    print("\nOutput TF")
+    print(output)
+    print("Predicted classes TF :", np.argmax(output, axis=1))
 
-	# Test the model with TensorFlow
-	test_samples = get_test_samples()
-	output = model(test_samples, training = False).numpy()
+    tflite_file.write_bytes(tf.lite.TFLiteConverter.from_keras_model(model).convert())
 
-	print("\nOutput TF")
-	print(output)
-	print("Predicted classes TF :", np.argmax(output, axis = 1))
+    tflite_outputs = run_tflite(tflite_file, KTEST_INPUTS)
+    print("Predicted classes TFLite :", np.argmax(tflite_outputs, axis=1))
+    return 0
 
-	# Convert the model to TFLite format
-	converter = tf.lite.TFLiteConverter.from_keras_model(model)
-	tflite_model = converter.convert()
-	with open('NN_model.tflite', 'wb') as f:
-		f.write(tflite_model)
 
-	# Use TensorFlow Lite Interpreter to test the TFLite model
-	# Use the argument passed to the command line
-	# Reference kernels only: no XNNPACK delegate (and no "Created TensorFlow Lite
-	# XNNPACK delegate" message), closer to what TFLite Micro runs on the target.
-	interpreter = tflite.Interpreter(model_path = args.model_file, experimental_op_resolver_type = KOP_RESOLVER)
-	interpreter.allocate_tensors()
-	input_details  = interpreter.get_input_details()
-	output_details = interpreter.get_output_details()
-
-	tflite_outputs = []
-
-	for input_data in test_samples:
-		interpreter.set_tensor(input_details[0]['index'], np.array([input_data], dtype = np.float32))
-		interpreter.invoke()
-		output = interpreter.get_tensor(output_details[0]['index'])
-		tflite_outputs.append(output[0])
-		print("Output TFLite", output)
-
-	tflite_outputs = np.array(tflite_outputs, dtype = np.float32)
-	print("Predicted classes TFLite :", np.argmax(tflite_outputs, axis = 1))
-
-# Main entry point
 if __name__ == "__main__":
-	main()
+    sys.exit(main())

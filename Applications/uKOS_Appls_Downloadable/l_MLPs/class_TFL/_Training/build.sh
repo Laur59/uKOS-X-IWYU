@@ -1,21 +1,28 @@
 #!/usr/bin/env zsh
 # SPDX-License-Identifier: MIT
 # SPDX-FileCopyrightText: 2025-2026 Edo. Franzi
+# SPDX-FileCopyrightText: 2025-2026 Laurent von Allmen
 #
 # Goal:     Create the TF model
 
-set -euo pipefail
+emulate -L zsh
+setopt ERR_EXIT NO_UNSET PIPE_FAIL
 
 PATH_UKOS_X_PACKAGE="${0:A:h:h:h:h:h:h}"
-if [[ -z "${PATH_UKOS_X_PACKAGE:-}" ]]; then
-    echo "Variable PATH_UKOS_X_PACKAGE is not set!"
-    exit 1
+
+# Dataset creation
+if [[ ! (-f "DB_L_file.txt" && -f "DB_V_file.txt") ]]; then
+    # Create the learning DB_L_file.txt and the validation DB_V_file.txt files
+    python3 DB_Creator.py
 fi
 
 TFLITE_PYENV="${PATH_UKOS_X_PACKAGE}/Third_Parties/Tflite-micro/Construction/Pyenv/Tflite_Pyenv"
 
-if [[ -d "${TFLITE_PYENV:-}" ]]; then
+if [[ -f "${TFLITE_PYENV}/bin/activate" ]]; then
     source "${TFLITE_PYENV}/bin/activate"
+else
+    print "No Python virtual environment available"
+    exit 1
 fi
 
 MODEL_FILE=NN_model

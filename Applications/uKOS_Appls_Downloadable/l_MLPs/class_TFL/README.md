@@ -18,13 +18,19 @@ This example highlights how different geometric patterns can be learned and dist
 
 ## Dataset Creation and Classifier Generation
 
+The trained model is not kept in git: after a clone, `_Training/NN_model.xxd` does not exist until the command below has been run. Configuring the application without it (`cmake --preset …`) stops with a message naming the missing file and this README; train the network, then configure again.
+
 ### Dataset creation
+
+The learning dataset `DB_L_file.txt` and the validation dataset `DB_V_file.txt` are created by `DB_Creator.py`. `build.sh` runs it when the two files do not exist yet and reuses them otherwise. To create them yourself, for instance with another seed:
 
 ```bash
 # Create the learning DB_L_file.txt and the validation DB_V_file.txt files
 cd _Training
-python3 DB_Creator.py
+python3 DB_Creator.py [-seed nnn]
 ```
+
+The random generator is seeded with `nnn`, or with 42 when `-seed` is omitted, so the same seed always produces the same datasets. The script overwrites both files and plots the two datasets; close the plot window to finish. Run `build.sh` afterwards to train the network on the new datasets.
 
 ### Create the Neural Network
 
@@ -45,4 +51,3 @@ cd _Training
 The application includes the file `_Training/NN_model.c_inc`, which contains the complete TFLite model (network structure and trained weights) as the C array `NN_model_tflite[]` and its length `NN_model_tflite_len`. The classifier therefore needs no external model file at runtime.
 
 There is nothing to do by hand: the CMake build of the application regenerates `NN_model.c_inc` from `NN_model.xxd`. After a new training, simply rebuild the application.
-

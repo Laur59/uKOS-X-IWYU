@@ -25,9 +25,13 @@ Requirements:
     python3 -m pip install numpy matplotlib
 
 Usage:
-    python3 DB_Creator.py
+    python3 DB_Creator.py [-seed nnn]
+
+The random generator is seeded with ``nnn``, or with KDEFAULT_SEED when the
+option is omitted, so the same seed always produces the same datasets.
 """
 
+import argparse
 from collections.abc import Sequence
 from typing import TextIO
 
@@ -43,13 +47,14 @@ KBAND = 0.1                                           # Half-width of the cross 
 KABS_MAX_OUTPUT = 0.98                                # Abs max of the expected output
 KGOOD = KABS_MAX_OUTPUT                               # Target value for the active class
 KBAD = 0.00                                           # Target value for the other classes
+KDEFAULT_SEED = 42                                    # Seed of the random generator without -seed
 
 KMARKERS_LEARNING = ("ro", "go", "bo", "yo", "m.")
 KMARKERS_VALIDATION = ("r+", "g+", "b+", "y+", "m+")
 
 Point = tuple[float, float]
 
-_rng = np.random.default_rng()
+_rng = np.random.default_rng(KDEFAULT_SEED)           # Reseeded by main() from -seed
 
 
 def generate_random_values() -> Point:
@@ -124,8 +129,25 @@ def generate_dataset(fd: TextIO, ax: Axes, markers: Sequence[str], title: str) -
         ax.plot(xs, ys, marker)
 
 
+def parse_args() -> argparse.Namespace:
+    """Parse the command-line arguments."""
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "-seed",
+        "--seed",
+        type=int,
+        default=KDEFAULT_SEED,
+        metavar="nnn",
+        help=f"seed of the random generator (default: {KDEFAULT_SEED})",
+    )
+    return parser.parse_args()
+
+
 def main() -> None:
     """Generate the learning and validation datasets and display them."""
+    global _rng
+    _rng = np.random.default_rng(parse_args().seed)
+
     _, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 5))
 
     with (

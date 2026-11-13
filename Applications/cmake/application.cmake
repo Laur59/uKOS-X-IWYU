@@ -236,6 +236,10 @@ endif()
 add_executable(${TARGET_ELF} ${RUNTIME} ${OBJ})
 target_link_libraries(${TARGET_ELF} PUBLIC system_compiler_flags)
 
+# Trained models are not versioned: stop here, with instructions, when one is missing
+include(${CMAKE_CURRENT_LIST_DIR}/model-check.cmake)
+ukos_check_trained_models(${OBJ})
+
 # Generated TFLite models (mlp_model.xxd --> mlp_model.c_inc)
 # Scan the application folder and the folders of all application sources
 # for committed model hex dumps

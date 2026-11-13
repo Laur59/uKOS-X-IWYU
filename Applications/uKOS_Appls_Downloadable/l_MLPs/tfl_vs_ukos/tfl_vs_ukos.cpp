@@ -67,18 +67,19 @@
 #include <cinttypes>
 
 #include "crt0.h"
-#include "serial/serial.h"
 #include "kern/kern.h"
+#include "led/led.h"
 #include "macros.h"
 #include "macros_core.h"
 #include "macros_core_stackFrame.h"
 #include "macros_runtime.h"
 #include "memo/memo.h"
-#include "led/led.h"
+#include "mlpn/mlpn.h"
 #include "modules.h"
 #include "os_errors.h"
 #include "random/random.h"
 #include "record/record.h"
+#include "serial/serial.h"
 #include "types.h"
 
 #pragma GCC diagnostic push

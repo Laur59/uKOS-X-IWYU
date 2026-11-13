@@ -20,13 +20,7 @@ This example demonstrates how a neural network using µKOS-X can learn and disti
 
 ## Dataset Creation and Classifier Generation
 
-### Dataset creation
-
-```bash
-# Create the learning DB_L_file.txt and the validation DB_V_file.txt files
-cd _Training
-python3 DB_Creator.py
-```
+The trained network is not kept in git: after a clone, `_Training/network.c_inc` does not exist until the command below has been run. Configuring the application without it (`cmake --preset …`) stops with a message naming the missing file and this README; train the network, then configure again.
 
 ### Define the network
 
@@ -41,6 +35,18 @@ For this example, we use a three-layer neural network with 2 input neurons and t
 
 The first two layers (L1 and L2) use a non-linear activation function based on an ultrafast approximation of the hyperbolic tangent (tanh). The final layer (L3) uses an ultrafast softmax function to produce normalized output probabilities for the five target classes.
 
+### Dataset creation
+
+The learning dataset `DB_L_file.txt` and the validation dataset `DB_V_file.txt` are created by `DB_Creator.py`. `build.sh` runs it when the two files do not exist yet and reuses them otherwise. To create them yourself, for instance with another seed:
+
+```bash
+# Create the learning DB_L_file.txt and the validation DB_V_file.txt files
+cd _Training
+python3 DB_Creator.py [-seed nnn]
+```
+
+The random generator is seeded with `nnn`, or with 42 when `-seed` is omitted, so the same seed always produces the same datasets. The script overwrites both files and plots the two datasets; close the plot window to finish. Run `build.sh` afterwards to train the network on the new datasets.
+
 ### Create the Neural Network
 
 ```bash
@@ -52,4 +58,3 @@ cd _Training
 At this step, the file **`network.c_inc`** is created. It contains the structure of the neural network as well as the set of weights associated with it.
 
 This file must then be included in the application so that the network architecture and its trained parameters can be embedded directly into the program. In this way, the application can use the classifier without requiring any external model file at runtime.
-
